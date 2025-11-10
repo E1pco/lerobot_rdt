@@ -46,7 +46,7 @@ def create_so101_5dof():
 # -----------------------------
 # 2) 构造目标末端位姿 (位置 + 姿态)
 # -----------------------------
-def build_target_pose(x=0.18, y=0.05, z=0.22, roll=0.0, pitch=np.pi/4, yaw=0.0):
+def build_target_pose(x=0.5, y=0, z=0.1, roll=0.0, pitch=np.pi/4, yaw=0.0):
     r = R.from_euler('xyz', [roll, pitch, yaw], degrees=False)
     T = np.eye(4)
     T[:3, :3] = r.as_matrix()
@@ -98,18 +98,19 @@ def main():
     print("\n[HOME] 即将回到中位（软启动）:")
     for k, v in home_pose.items():
         print(f"  - {k:15s} → {v}")
-    controller.move_all_home()
+    #controller.move_all_home()
+    controller.fast_move_to_pose(home_pose)
     time.sleep(0.6)
 
     # 4.4 构建 5DOF 机器人、准备 IK
     ets = create_so101_5dof()
     gear_sign = {
-        "shoulder_pan": +1,
-        "shoulder_lift": +1,
-        "elbow_flex":   +1,
-        "wrist_flex":   +1,
-        "wrist_roll":   +1,
-    }
+            "shoulder_pan": +1,
+            "shoulder_lift": +1,
+            "elbow_flex":   +1,
+            "wrist_flex":   -1,
+            "wrist_roll":   -1,
+        }
     gear_ratio = {
         "shoulder_pan": 1.0,
         "shoulder_lift": 1.0,
@@ -122,7 +123,7 @@ def main():
     resp = controller.servo.sync_read(0x38, 2, ids)
 
     q0 = np.zeros(5)
-    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
+    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_roll", "wrist_flex"]
 
     for i, name in enumerate(joint_names):
         sid = controller.config[name]["id"]
@@ -133,15 +134,13 @@ def main():
         print(f" {name:15s} : 步数差={delta:+d} → q0={q0[i]:+.4f} rad ")
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.1, y=0.1, z=0.15, roll=0, pitch=-np.pi/4, yaw=np.pi/6)
+    T_goal = build_target_pose(x=0.2, y=-0.25, z=0.15, roll=0, pitch=-np.pi/6, yaw=0)
     print("\n🎯 目标末端位姿矩阵：\n", np.round(T_goal, 3))
-
-    # 4.5 IK 求解（LM）
     sol = ets.ikine_LM(
         Tep=T_goal,
         q0=q0,
         ilimit=100, slimit=5, tol=1e-3,
-        mask=np.array([1, 1, 1, 0, 0.8, 0.8]),  # 位置+姿态(无绕轴)
+        mask=np.array([1, 1, 1, 0.8, 0.8, 0]),  
         k=0.1, method="sugihara",
         kq=0.0, km=0.0 
     )
@@ -159,7 +158,7 @@ def main():
     print("FK(T) =\n", np.round(T_fk, 3))
 
     # 4.6 角度 → 步数映射（只映射 5 个 IK 关节）
-    joint5 = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_roll", "wrist_flex"]
+    joint5 = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
 
 
 

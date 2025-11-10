@@ -90,12 +90,12 @@ class ServoController:
         for name, cfg in self.config.items():
             sid = cfg["id"]
             home = self.get_home_position(name)
-            servo_data[sid] = [
+            servo_data[sid-1] = [
                 home & 0xFF, (home >> 8) & 0xFF,
                 0x00, 0x00,
                 0xE8, 0x03
             ]
-        self.servo.sync_write(0x2A, 6, servo_data)
+        self.servo.sync_write(0x2A, 5, servo_data)
         print("🏠 全部舵机同步回中位完成")
 
     def soft_move_to_home(self, step_count=10, interval=0.15):
@@ -187,6 +187,48 @@ class ServoController:
 
         print("✅ 目标姿态已平滑到位")
 
+    def q_to_servo_targets(self, q_rad, joint_names, home_map, 
+                          counts_per_rev=4096, gear_ratio=None, gear_sign=None):
+        """
+        将关节角度（弧度）转换为舵机目标步数
+        
+        Parameters
+        ----------
+        q_rad : array-like
+            关节角度数组（弧度）
+        joint_names : list of str
+            关节名称列表
+        home_map : dict
+            各关节的中位步数 {"joint_name": home_position}
+        counts_per_rev : int
+            每转编码器计数（默认4096）
+        gear_ratio : dict, optional
+            齿轮比 {"joint_name": ratio}
+        gear_sign : dict, optional
+            方向符号 {"joint_name": +1 or -1}
+        
+        Returns
+        -------
+        targets : dict
+            舵机目标位置 {"joint_name": target_steps}
+        """
+        if gear_ratio is None:
+            gear_ratio = {name: 1.0 for name in joint_names}
+        if gear_sign is None:
+            gear_sign = {name: +1 for name in joint_names}
+        
+        counts_per_rad = counts_per_rev / (2 * 3.141592653589793)  # 2*pi
+        targets = {}
+        
+        for i, name in enumerate(joint_names):
+            steps = int(round(
+                home_map[name] + 
+                gear_sign[name] * gear_ratio[name] * q_rad[i] * counts_per_rad
+            ))
+            targets[name] = steps
+        
+        return targets
+
     def fast_move_to_pose(self, target_dict, speed=1000):
         """
         🚀 非平滑同步运动（直接下发目标步数，支持自定义速度）
@@ -248,7 +290,7 @@ class ServoController:
     def close(self):
         self.servo.close()
 if __name__ == "__main__":
-    controller = ServoController("/dev/ttyACM0", 1000000, "servo_config.json")
+    controller = ServoController("/dev/ttyACM0", 1000000, "left_arm.json")
 
     # 1️⃣ 平滑移动到指定目标姿态
     target_pose = {
@@ -260,8 +302,8 @@ if __name__ == "__main__":
         "gripper": 2037
     }
 
-    # controller.soft_move_to_pose(target_pose, step_count=20, interval=0.1)
-    controller.soft_move_to_home()
+    controller.soft_move_to_pose(target_pose, step_count=10, interval=0.1)
+    #controller.move_all_home()
     # 2️⃣ 完成后实时监控
     time.sleep(1)
     controller.monitor_positions([1, 2, 3, 4, 5, 6])
