@@ -86,21 +86,13 @@ def q_to_servo_targets(q_rad, joint_names, home_map,
 def main():
     # 4.1 初始化底层控制
     controller = ServoController(port="/dev/ttyACM0", baudrate=1_000_000, config_path="servo_config.json")
-    home_pose = {
-        "shoulder_pan": 2096,
-        "shoulder_lift": 1983,
-        "elbow_flex":   2100,
-        "wrist_flex":   1954,
-        "wrist_roll":   2048,
-        "gripper":      2037,   # 抓手不参与 IK，可忽略
-    }
-
-    print("\n[HOME] 即将回到中位（软启动）:")
-    for k, v in home_pose.items():
-        print(f"  - {k:15s} → {v}")
-    #controller.move_all_home()
-    controller.fast_move_to_pose(home_pose)
-    time.sleep(0.6)
+    
+    # 获取home位置（用于计算角度差值）
+    home_pose = {}
+    for name in controller.config.keys():
+        home_pose[name] = controller.get_home_position(name)
+    
+    print("\n📍 跳过回中位，直接读取当前位置...")
 
     # 4.4 构建 5DOF 机器人、准备 IK
     ets = create_so101_5dof()
@@ -118,29 +110,45 @@ def main():
         "wrist_flex":   1.0,
         "wrist_roll":   1.0,
     }
-# 从控制器读取当前实际步数
+    
+    # 从控制器读取当前实际步数
     ids = [cfg["id"] for cfg in controller.config.values()]
     resp = controller.servo.sync_read(0x38, 2, ids)
 
     q0 = np.zeros(5)
     joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_roll", "wrist_flex"]
 
+    print("\n📊 当前关节状态:")
     for i, name in enumerate(joint_names):
         sid = controller.config[name]["id"]
         cur_pos = resp.get(sid, [home_pose[name] & 0xFF, home_pose[name] >> 8])
         current = cur_pos[0] + (cur_pos[1] << 8)
         delta = current - home_pose[name]
         q0[i] = gear_sign[name] * delta * 0.0015339807878856412
-        print(f" {name:15s} : 步数差={delta:+d} → q0={q0[i]:+.4f} rad ")
+        print(f" {name:15s} : 当前步数={current:4d}, 步数差={delta:+5d} → q0={q0[i]:+.4f} rad ")
+    
+    # 计算当前末端位姿
+    T_current = ets.fkine(q0).A
+    print("\n🔍 当前末端位姿矩阵：")
+    print(np.round(T_current, 3))
+    print(f"当前位置: x={T_current[0,3]:.4f}, y={T_current[1,3]:.4f}, z={T_current[2,3]:.4f},roll={0:.4f}, pitch={1:.4f}, yaw={2:.4f}".format(
+        R.from_matrix(T_current[:3, :3]).as_euler('xyz', degrees=False)[0],
+        R.from_matrix(T_current[:3, :3]).as_euler('xyz', degrees=False)[1],
+        R.from_matrix(T_current[:3, :3]).as_euler('xyz', degrees=False)[2],
+    ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.2, y=-0.25, z=0.15, roll=0, pitch=-np.pi/6, yaw=0)
-    print("\n🎯 目标末端位姿矩阵：\n", np.round(T_goal, 3))
+    T_goal = build_target_pose(x=0.15, y=-0.15, z=0.15, roll=np.pi/6, pitch=0, yaw=0)
+    print("\n🎯 目标末端位姿矩阵：")
+    print(np.round(T_goal, 3))
+    print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")
+    
+    print("\n🔄 开始从当前位置进行逆运动学求解...")
     sol = ets.ikine_LM(
         Tep=T_goal,
         q0=q0,
         ilimit=100, slimit=5, tol=1e-3,
-        mask=np.array([1, 1, 1, 0.8, 0.8, 0]),  
+        mask=np.array([1, 1, 1, 1, 1, 0]),  
         k=0.1, method="sugihara",
         kq=0.0, km=0.0 
     )
@@ -152,10 +160,17 @@ def main():
         return
 
     print("\n✅ IK 求解成功")
-    print("q(rad) =", np.round(sol.q, 4))
+    print("目标关节角度 q(rad) =", np.round(sol.q, 4))
+    
     # FK 验证
     T_fk = ets.fkine(sol.q).A
-    print("FK(T) =\n", np.round(T_fk, 3))
+    print("\n验证正运动学结果:")
+    print(np.round(T_fk, 3))
+    print(f"FK位置: x={T_fk[0,3]:.4f}, y={T_fk[1,3]:.4f}, z={T_fk[2,3]:.4f}")
+    
+    # 计算位置误差
+    pos_error = np.linalg.norm(T_fk[:3,3] - T_goal[:3,3])
+    print(f"位置误差: {pos_error*1000:.2f} mm")
 
     # 4.6 角度 → 步数映射（只映射 5 个 IK 关节）
     joint5 = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]

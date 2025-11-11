@@ -13,7 +13,7 @@ class ServoController:
 
         print("✅ 已加载舵机配置:")
         for name, cfg in self.config.items():
-            print(f"  {cfg['id']}: {name} (range={cfg['range_min']}~{cfg['range_max']}, home={cfg['homing_offset']})")
+            print(f"  {cfg['id']}: {name} (range={cfg['range_min']}~{cfg['range_max']})")
 
     # -------------------------
     # 基础功能
@@ -33,8 +33,13 @@ class ServoController:
     def get_home_position(self, name):
         """计算舵机的实际中位寄存器值（考虑偏移）"""
         cfg = self.config[name]
-        range_center = (cfg["range_min"] + cfg["range_max"]) // 2
-        home = range_center
+        # gripper 特殊处理：home 为 range_min（闭合状态）
+        if name == "gripper":
+            home = cfg["range_min"]
+        else:
+            range_center = (cfg["range_min"] + cfg["range_max"]) // 2
+            home = range_center
+        
         home = self.limit_position(name, home)
         return home
 
@@ -90,12 +95,12 @@ class ServoController:
         for name, cfg in self.config.items():
             sid = cfg["id"]
             home = self.get_home_position(name)
-            servo_data[sid-1] = [
+            servo_data[sid] = [
                 home & 0xFF, (home >> 8) & 0xFF,
                 0x00, 0x00,
                 0xE8, 0x03
             ]
-        self.servo.sync_write(0x2A, 5, servo_data)
+        self.servo.sync_write(0x2A, 6, servo_data)
         print("🏠 全部舵机同步回中位完成")
 
     def soft_move_to_home(self, step_count=10, interval=0.15):
@@ -302,8 +307,8 @@ if __name__ == "__main__":
         "gripper": 2037
     }
 
-    controller.soft_move_to_pose(target_pose, step_count=10, interval=0.1)
-    #controller.move_all_home()
+    # controller.soft_move_to_pose(target_pose, step_count=10, interval=0.1)
+    controller.move_all_home()
     # 2️⃣ 完成后实时监控
     time.sleep(1)
     controller.monitor_positions([1, 2, 3, 4, 5, 6])
