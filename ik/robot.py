@@ -1,7 +1,5 @@
 """
 纯 Python 机器人运动学实现
-
-提供 SO100 和 SO101 机械臂的正逆运动学计算，无需 C++ 扩展。
 """
 
 import numpy as np
@@ -60,9 +58,15 @@ class Robot:
         关节数量
     qlim : np.ndarray
         关节限位 (2, n)
+    joint_names : list
+        关节名称列表
+    gear_sign : dict
+        各关节的方向符号 (+1/-1)
+    gear_ratio : dict
+        各关节的减速比
     """
     
-    def __init__(self, ets, qlim=None):
+    def __init__(self, ets, qlim=None, joint_names=None, gear_sign=None, gear_ratio=None):
         """
         初始化机器人模型
         
@@ -72,69 +76,23 @@ class Robot:
             机器人运动学链
         qlim : np.ndarray, optional
             关节限位 (2, n)，第一行为下限，第二行为上限
+        joint_names : list, optional
+            关节名称列表
+        gear_sign : dict, optional
+            各关节的方向符号
+        gear_ratio : dict, optional
+            各关节的减速比
         """
         self.ets = ets
         self.n = ets.n
         self.qlim = qlim
+        self.joint_names = joint_names or [f"joint_{i}" for i in range(self.n)]
+        self.gear_sign = gear_sign or {name: +1 for name in self.joint_names}
+        self.gear_ratio = gear_ratio or {name: 1.0 for name in self.joint_names}
         
         # 将 qlim 设置到 ETS 对象上（IK solver 会从 ets.qlim 读取）
         if qlim is not None:
             self.ets.qlim = qlim
-    
-    # ========== 坐标系转换方法 ==========
-    def user_to_robot(self, x, y, z):
-        """用户坐标 → 机械臂坐标 (对调 X 和 Y)"""
-        return y, x, z
-    
-    def robot_to_user(self, x, y, z):
-        """机械臂坐标 → 用户坐标 (对调 X 和 Y)"""
-        return y, x, z
-    
-    def build_pose(self, x, y, z, roll=0, pitch=0, yaw=0):
-        """
-        构造用户坐标系下的目标位姿矩阵
-        
-        Parameters
-        ----------
-        x, y, z : float
-            用户坐标系中的位置
-        roll, pitch, yaw : float
-            欧拉角（弧度）
-            
-        Returns
-        -------
-        np.ndarray
-            机械臂坐标系下的 4x4 齐次变换矩阵
-        """
-        x_robot, y_robot, z_robot = self.user_to_robot(x, y, z)
-        r = R.from_euler('xyz', [roll, pitch, yaw]).as_matrix()
-        T = np.eye(4)
-        T[:3, :3] = r
-        T[:3, 3] = [x_robot, y_robot, z_robot]
-        return T
-    
-    def get_user_pose(self, T):
-        """
-        从机械臂坐标系的齐次变换矩阵获取用户坐标系的位姿
-        
-        Parameters
-        ----------
-        T : np.ndarray
-            机械臂坐标系下的 4x4 齐次变换矩阵
-            
-        Returns
-        -------
-        tuple
-            (x, y, z, roll, pitch, yaw) 用户坐标系下的位姿
-        """
-        # 从机械臂坐标系转换到用户坐标系
-        x_robot, y_robot, z_robot = T[0, 3], T[1, 3], T[2, 3]
-        x, y, z = self.robot_to_user(x_robot, y_robot, z_robot)
-        
-        # 提取欧拉角
-        rpy = R.from_matrix(T[:3, :3]).as_euler('xyz')
-        
-        return x, y, z, rpy[0], rpy[1], rpy[2]
     
     def fkine(self, q):
         """
@@ -155,7 +113,6 @@ class Robot:
     def fk(self, qpos_data, joint_indices=None):
         """
         并返回末端执行器位姿向量 [X, Y, Z, Roll, Pitch, Yaw]
-        注：对调 X 和 Y 以满足右手系
 
         Parameters
         ----------
@@ -189,9 +146,8 @@ class Robot:
         # 计算正运动学，获取齐次变换矩阵
         T = self.fkine(q)
 
-        # 提取位置并对调 X 和 Y（满足右手系）
+        # 提取位置
         X, Y, Z = T[0, 3], T[1, 3], T[2, 3]
-        X, Y = Y, X  # 对调 X 和 Y
 
         # 提取旋转矩阵并计算欧拉角 (XYZ -> Roll, Pitch, Yaw)
         R_mat = T[:3, :3]
@@ -330,6 +286,15 @@ def create_so101_5dof():
     -------
     Robot
         封装后的机器人对象，具有 .fkine() 和 .ikine_*() 方法
+        
+    Attributes
+    -------
+    robot.joint_names : list
+        关节名称列表
+    robot.gear_sign : dict
+        各关节的方向符号
+    robot.gear_ratio : dict
+        各关节的减速比
     """
     E1 = ET.Rz()      # shoulder_pan
     E2 = ET.tx(0.0612)
@@ -355,7 +320,28 @@ def create_so101_5dof():
         [ 1.91986,  1.74533,  1.69,  1.65806,  2.84121]
     ])
     
-    return Robot(ets, qlim)
+    # 关节名称
+    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
+    
+    # 各关节的方向符号 (+1/-1)
+    gear_sign = {
+        "shoulder_pan": -1,
+        "shoulder_lift": +1,
+        "elbow_flex":   +1,
+        "wrist_flex":   -1,
+        "wrist_roll":   +1,
+    }
+    
+    # 各关节的减速比
+    gear_ratio = {
+        "shoulder_pan": 1.0,
+        "shoulder_lift": 1.0,
+        "elbow_flex":   1.0,
+        "wrist_flex":   1.0,
+        "wrist_roll":   1.0,
+    }
+    
+    return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
 
 
 

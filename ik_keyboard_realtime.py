@@ -17,10 +17,19 @@ from ftservo_controller import ServoController
 from ik.robot import create_so101_5dof
 
 
-# ========== 应用坐标系转换 ==========
-def build_target_pose(robot, x, y, z, roll, pitch, yaw):
-    """构造目标末端位姿 (用户坐标系)"""
-    return robot.build_pose(x, y, z, roll, pitch, yaw)
+# ----------------------------- # 1) 创建 ET 模型
+# -----------------------------
+# 已使用 ik.robot.create_so101_5dof()
+
+
+# -----------------------------
+# 2) 构造位姿矩阵
+# -----------------------------
+def build_target_pose(x, y, z, roll, pitch, yaw):
+    T = np.eye(4)
+    T[:3, :3] = R.from_euler('xyz', [roll, pitch, yaw]).as_matrix()
+    T[:3, 3] = [x, y, z]
+    return T
 
 
 # -----------------------------
@@ -67,9 +76,9 @@ def main():
     time.sleep(1)
     robot = create_so101_5dof()
     ets = robot.ets
-    joint5 = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
-    gear_sign = {k:+1 for k in joint5}
-    gear_ratio = {k:1.0 for k in joint5}
+    joint5 = robot.joint_names
+    gear_sign = robot.gear_sign
+    gear_ratio = robot.gear_ratio
 
 
     ids = [controller.config[name]["id"] for name in joint5]
@@ -88,9 +97,8 @@ def main():
 
     # ✅ 根据当前角度计算末端实际位姿
     T_now = ets.fkine(q0)
-    x, y, z, roll, pitch, yaw = robot.get_user_pose(T_now)
-    pos = np.array([x, y, z])
-    rpy = np.array([roll, pitch, yaw])
+    pos = T_now[:3, 3]
+    rpy = R.from_matrix(T_now[:3, :3]).as_euler('xyz')
     print(f"\n✅ 已同步当前机械臂姿态\n   pos={np.round(pos,3)}, rpy(deg)={np.round(np.degrees(rpy),1)}")
 
     # 控制参数
@@ -128,7 +136,7 @@ def main():
                 elif key == 'o': rpy[2] -= np.deg2rad(2)
 
             # IK 求解
-            T_goal = build_target_pose(robot, pos[0], pos[1], pos[2], rpy[0], rpy[1], rpy[2])
+            T_goal = build_target_pose(*pos, *rpy)
             sol = robot.ikine_LM(
                 Tep=T_goal, 
                 q0=q0,

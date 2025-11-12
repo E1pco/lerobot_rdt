@@ -70,8 +70,21 @@ def solve_pnp(img, K, distCoeffs, pattern_size=(11, 8), square_size=0.020):
 class JoyConCapture:
     def __init__(self, port='/dev/ttyACM0', baudrate=1_000_000,
                  config_path='servo_config.json', cam_id=0,
-                 intrinsic_file='camera_intrinsics.yaml',
                  save_dir='dataset'):
+
+        # 相机内参（从 camera_intrinsics.yaml 硬编码）
+        self.K = np.array([
+            [695.02752293917513, 0., 610.15212806065222],
+            [0., 699.07433251006159, 335.69407450761986],
+            [0., 0., 1.]
+        ], dtype=np.float32)
+        
+        # 畸变系数
+        self.distCoeffs = np.array([
+            -0.35785778869717522, 0.15557389192028667,
+            0.00039959131966935238, 0.007013909478818442,
+            -0.039485138122941008
+        ], dtype=np.float32)
 
         # 舵机控制初始化
         self.controller = ServoController(port=port, baudrate=baudrate, config_path=config_path)
@@ -85,12 +98,6 @@ class JoyConCapture:
         if not self.cap.isOpened():
             raise IOError("❌ 无法打开相机")
 
-        # 加载相机内参
-        fs = cv2.FileStorage(intrinsic_file, cv2.FILE_STORAGE_READ)
-        self.K = fs.getNode("K").mat()
-        self.distCoeffs = fs.getNode("distCoeffs").mat()
-        fs.release()
-
         # 数据保存路径
         os.makedirs(save_dir, exist_ok=True)
         self.save_dir = save_dir
@@ -98,6 +105,7 @@ class JoyConCapture:
 
         print("\n✅ 初始化完成：")
         print(f"相机内参:\n{self.K}")
+        print(f"畸变系数: {self.distCoeffs}")
         print(f"数据保存目录: {save_dir}")
         print("\n📋 采集建议:")
         print("  1. 采集 8-12 组数据，确保足够多样性")
@@ -109,7 +117,7 @@ class JoyConCapture:
 
     def _get_robot_pose(self):
         """读取当前舵机位置并计算 FK"""
-        joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
+        joint_names = self.robot.joint_names
         ids = [self.controller.config[k]["id"] for k in joint_names]
         resp = self.controller.servo.sync_read(0x38, 2, ids)
         
@@ -124,16 +132,7 @@ class JoyConCapture:
             "wrist_flex": 2000,
             "wrist_roll": 2088,
         }
-        
-        # 关键：gear_sign 需要与主控脚本完全一致
-        # 对应 joycon_ik_control_py.py 中 q_to_servo_targets 的 gear_sign
-        gear_sign = {
-            "shoulder_pan": -1,    # 与主控脚本一致
-            "shoulder_lift": +1,
-            "elbow_flex": +1,
-            "wrist_flex": -1,      # 与主控脚本一致
-            "wrist_roll": +1,
-        }
+        gear_sign = self.robot.gear_sign
         
         print(f"\n📡 读取关节角度:")
         for i, name in enumerate(joint_names):
@@ -264,7 +263,6 @@ if __name__ == "__main__":
         baudrate=1_000_000,
         config_path='servo_config.json',
         cam_id=0,
-        intrinsic_file='camera_intrinsics.yaml',
         save_dir='dataset_eyeinhand'
     )
     collector.run()

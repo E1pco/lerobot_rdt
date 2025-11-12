@@ -13,10 +13,15 @@ from scipy.spatial.transform import Rotation as R
 from ftservo_controller import ServoController
 from ik.robot import create_so101_5dof
 
-# ========== 应用坐标系转换 ==========
-def build_target_pose(robot, x=0, y=0.3, z=0.0, roll=0.0, pitch=-np.pi/4, yaw=0.0):
-    """构造目标末端位姿 (用户坐标系)"""
-    return robot.build_pose(x, y, z, roll, pitch, yaw)
+# -----------------------------
+# 2) 构造目标末端位姿 (位置 + 姿态)
+# -----------------------------
+def build_target_pose(x=0.5, y=0, z=0.1, roll=0.0, pitch=np.pi/4, yaw=0.0):
+    r = R.from_euler('xyz', [roll, pitch, yaw], degrees=False)
+    T = np.eye(4)
+    T[:3, :3] = r.as_matrix()
+    T[:3, 3] = [x, y, z]
+    return T
 
 
 # -----------------------------
@@ -62,29 +67,17 @@ def main():
     # 4.4 构建 5DOF 机器人、准备 IK
     robot = create_so101_5dof()
     ets = robot.ets
-    gear_sign = {
-            "shoulder_pan": +1,
-            "shoulder_lift": +1,
-            "elbow_flex":   +1,
-            "wrist_flex":   -1,
-            "wrist_roll":   -1,
-        }
-    gear_ratio = {
-        "shoulder_pan": 1.0,
-        "shoulder_lift": 1.0,
-        "elbow_flex":   1.0,
-        "wrist_flex":   1.0,
-        "wrist_roll":   1.0,
-    }
-    controller.move_all_home()
-    time.sleep(1)
+    
+    # 使用 robot 对象中的 gear_sign 和 gear_ratio
+    gear_sign = robot.gear_sign
+    gear_ratio = robot.gear_ratio
     
     # 从控制器读取当前实际步数
     ids = [cfg["id"] for cfg in controller.config.values()]
     resp = controller.servo.sync_read(0x38, 2, ids)
 
     q0 = np.zeros(5)
-    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_roll", "wrist_flex"]
+    joint_names = robot.joint_names
 
     print("\n📊 当前关节状态:")
     for i, name in enumerate(joint_names):
@@ -94,19 +87,21 @@ def main():
         delta = current - home_pose[name]
         q0[i] = gear_sign[name] * delta * 0.0015339807878856412
         print(f" {name:15s} : 当前步数={current:4d}, 步数差={delta:+5d} → q0={q0[i]:+.4f} rad ")
-
+    controller.move_all_home()
+    time.sleep(1)
     
     # 计算当前末端位姿
     T_current = ets.fkine(q0)
-    print("\n🔍 当前末端位姿矩阵（机械臂坐标系）：")
+    print("\n🔍 当前末端位姿矩阵：")
     print(np.round(T_current, 3))
-    # 转换到用户坐标系显示
-    x_cur, y_cur, z_cur, roll_cur, pitch_cur, yaw_cur = robot.get_user_pose(T_current)
-    print(f"当前位置（用户坐标系）: x={x_cur:.4f}, y={y_cur:.4f}, z={z_cur:.4f}")
-    print(f"当前姿态: roll={roll_cur:.4f}, pitch={pitch_cur:.4f}, yaw={yaw_cur:.4f}")
+    print(f"当前位置: x={T_current[0,3]:.4f}, y={T_current[1,3]:.4f}, z={T_current[2,3]:.4f},roll={0:.4f}, pitch={1:.4f}, yaw={2:.4f}".format(
+        R.from_matrix(T_current[:3, :3]).as_euler('xyz', degrees=False)[0],
+        R.from_matrix(T_current[:3, :3]).as_euler('xyz', degrees=False)[1],
+        R.from_matrix(T_current[:3, :3]).as_euler('xyz', degrees=False)[2],
+    ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(robot, x=0.3, y=0, z=0.115, roll=np.pi/2, pitch=0, yaw=0)
+    T_goal = build_target_pose(x=0.3, y=-0.2, z=0.15, roll=np.pi/4, pitch=0, yaw=0)
     print("\n🎯 目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")
@@ -115,10 +110,10 @@ def main():
     sol = robot.ikine_LM(
         Tep=T_goal,
         q0=q0,
-        ilimit=5000, 
-        slimit=500,
+        ilimit=2000, 
+        slimit=200,
         tol=1e-3,
-        mask=np.array([1, 1, 1, 1,0 , 0]),  
+        mask=np.array([1, 1, 1, 1, 1, 0]),  
         k=0.1, 
         method="sugihara"
     )
@@ -136,17 +131,14 @@ def main():
     T_fk = robot.ets.fkine(sol.q)
     print("\n验证正运动学结果:")
     print(np.round(T_fk, 3))
-    # 转换到用户坐标系显示
-    x_fk, y_fk, z_fk, roll_fk, pitch_fk, yaw_fk = robot.get_user_pose(T_fk)
-    print(f"FK位置（用户坐标系）: x={x_fk:.4f}, y={y_fk:.4f}, z={z_fk:.4f}")
+    print(f"FK位置: x={T_fk[0,3]:.4f}, y={T_fk[1,3]:.4f}, z={T_fk[2,3]:.4f}")
     
-    # 从目标位姿提取用户坐标系的坐标进行对比
-    x_goal, y_goal, z_goal, _, _, _ = robot.get_user_pose(T_goal)
-    pos_error = np.linalg.norm(np.array([x_fk, y_fk, z_fk]) - np.array([x_goal, y_goal, z_goal]))
+    # 计算位置误差
+    pos_error = np.linalg.norm(T_fk[:3,3] - T_goal[:3,3])
     print(f"位置误差: {pos_error*1000:.2f} mm")
 
     # 4.6 角度 → 步数映射（只映射 5 个 IK 关节）
-    joint5 = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
+    joint5 = robot.joint_names
 
 
 
