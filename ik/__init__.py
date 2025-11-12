@@ -1,15 +1,12 @@
 """
 纯 Python 逆运动学求解器库
 
-这个模块提供了多种数值逆运动学求解器的纯 Python 实现，
-无需依赖 C/C++ 扩展，便于理解、调试和扩展。
 
 主要特性：
 - ET/ETS 类：基本变换表示和运动学链
 - 多种求解算法：Newton-Raphson, Gauss-Newton, Levenberg-Marquardt, QP
 - 支持冗余机械臂（>6 DoF）
 - 关节限位避免和可操作度优化
-- SO100/SO101 机器人模型和 FK/IK 函数
 - 清晰的 API 和详细的文档
 """
 
@@ -67,8 +64,6 @@ __all__ = [
     "p_servo",
     
     # 机器人模型
-    "create_so100",
-    "create_so101",
     "create_so101_5dof",
     "get_robot",
     "Robot",

@@ -8,11 +8,10 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 # Import JoyCon controller
-sys.path.insert(0, '/home/elpco/code/lerobot/joycon_robotics')
 from joyconrobotics import JoyconRobotics
 
 # Import IK solver and servo controller
-sys.path.insert(0, '/home/elpco/code/lerobot/lerobot_rdt')
+
 from ftservo_controller import ServoController
 from ik.robot import create_so101_5dof
 
@@ -99,6 +98,7 @@ class JoyConIKController:
         
         # Now connect Joy-Con (after robot is ready)
         print(f"\n[5/5] Connecting to {device} Joy-Con...")
+        self.joycon_device = device  # 保存设备类型以便后续重新连接
         self.joycon = JoyconRobotics(
             device=device,
             without_rest_init=False,  # Enable auto-calibration
@@ -111,6 +111,16 @@ class JoyConIKController:
         self.speed = 800  # Default speed
         self.gripper_open = True
         self.running = True
+        
+        # Gripper control parameters
+        self.gripper_pos = 2037  # 初始夹爪位置
+        self.gripper_min = 1200  # 最小值（完全闭合）
+        self.gripper_max = 2800  # 最大值（完全打开）
+        self.gripper_step = 50   # 每次调整步长
+        
+        # Z axis adjustment
+        self.z_offset = 0.0  # Z 轴偏移
+        self.z_step = 0.001  # Z 轴每次调整步长
         
         # 保存初始位姿作为基准（用于叠加JoyCon偏移）
         self.base_pos = self.current_pos.copy()
@@ -150,6 +160,37 @@ class JoyConIKController:
         print(f"\n✅ 已同步当前机械臂姿态")
         print(f"   pos={np.round(self.current_pos, 3)}, rpy(deg)={np.round(np.degrees(self.current_rpy), 1)}")
     
+    def _reconnect_joycon(self):
+        """Disconnect and reconnect Joy-Con"""
+        try:
+            print("\n🔄 断开 Joy-Con 连接...")
+            self.joycon.disconnnect()
+            time.sleep(0.5)
+            print("✓ Joy-Con 已断开")
+        except Exception as e:
+            print(f"⚠ Joy-Con 断开错误: {e}")
+        
+        try:
+            print("\n🔄 重新连接 Joy-Con...")
+            # 重新创建 JoyCon 实例
+            self.joycon = JoyconRobotics(
+                device=self.joycon_device,
+                without_rest_init=False,  # Enable auto-calibration
+                common_rad=True,
+                lerobot=False
+            )
+            print("✓ Joy-Con 已重新连接并校准")
+            
+            # 更新基准位姿
+            print("\n📍 更新基准位姿...")
+            self.base_pos = self.current_pos.copy()
+            self.base_rpy = self.current_rpy.copy()
+            print(f"   基准位置: {np.round(self.base_pos, 3)} m")
+            print(f"   基准姿态: {np.round(np.degrees(self.base_rpy), 1)} deg")
+        except Exception as e:
+            print(f"❌ Joy-Con 重新连接失败: {e}")
+            self.running = False
+    
     def _process_buttons(self):
         """Process Joy-Con button events"""
         # Check for exit button (X)
@@ -166,8 +207,12 @@ class JoyConIKController:
             print("✓ 机械臂已复位到初始位置")
             
             # 重新读取舵机位置并计算位姿
-            print("� 读取复位后的舵机位置...")
+            print("📡 读取复位后的舵机位置...")
             self._update_current_joints()
+            time.sleep(0.5)
+            
+            # 重新连接 Joy-Con
+            self._reconnect_joycon()
             time.sleep(0.5)
         
         # Speed adjustment
@@ -181,14 +226,27 @@ class JoyConIKController:
             print(f"\n🐌 Speed decreased: {self.speed}")
             time.sleep(0.2)
         
-        # Gripper control (ZR button)
+        # Gripper control (ZR button to tighten, R button to loosen)
         if self.joycon.button.zr == 1:
-            self.gripper_open = not self.gripper_open
-            gripper_pos = 2800 if self.gripper_open else 1200
-            self.controller.move_servo("gripper", gripper_pos, self.speed)
-            status = "OPEN" if self.gripper_open else "CLOSED"
-            print(f"\n🤏 Gripper {status}")
-            time.sleep(0.3)
+            # ZR 按下：夹爪收紧一点
+            self.gripper_pos = max(self.gripper_pos - self.gripper_step, self.gripper_min)
+            self.controller.move_servo("gripper", self.gripper_pos, self.speed)
+            print(f"\n✊ Gripper tightened: {self.gripper_pos}")
+            time.sleep(0.1)
+        
+        if self.joycon.button.r == 1:
+            # R 按下：夹爪松开一点
+            self.gripper_pos = min(self.gripper_pos + self.gripper_step, self.gripper_max)
+            self.controller.move_servo("gripper", self.gripper_pos, self.speed)
+            print(f"\n✋ Gripper loosened: {self.gripper_pos}")
+            time.sleep(0.1)
+        
+        # Z adjustment buttons
+        if self.joycon.button.b == 1:
+            # B 按下：增大 z
+            self.z_offset += self.z_step
+            print(f"\n⬆️  Z increased: {self.z_offset:.4f}")
+            time.sleep(0.1)
     
     def run(self):
         """Main control loop"""
@@ -197,8 +255,10 @@ class JoyConIKController:
         print("=" * 70)
         print("\n控制说明:")
         print("  移动 Joy-Con → 控制机械臂位置和姿态")
-        print("  ZR → 切换夹爪开合")
-        print("  Home → 机械臂复位到初始位置 + 重置JoyCon方向")
+        print("  ZR → 夹爪收紧一点")
+        print("  R → 夹爪松开一点")
+        print("  B → 增大 Z（向上移动）")
+        print("  Home → 机械臂复位到初始位置 + 重新连接 Joy-Con")
         print("  +/- → 调节速度")
         print("  X → 退出程序")
         print("\n" + "=" * 70 + "\n")
@@ -216,8 +276,11 @@ class JoyConIKController:
                 joycon_offset_pos = np.array([pose[0], pose[1], pose[2]])
                 joycon_offset_rpy = np.array([pose[3], pose[4], pose[5]])
                 
+                # 添加 Z 轴手动调整
+                joycon_offset_pos[2] += self.z_offset
+                
                 # 实时打印 JoyCon 原始数据
-                print(f"JoyCon偏移: {[f'{x:.3f}' for x in pose]}, 夹爪状态={gripper_status}")
+                print(f"JoyCon偏移: {[f'{x:.3f}' for x in joycon_offset_pos]}, Z_manual={self.z_offset:.4f}, 夹爪状态={gripper_status}")
                 
                 # 叠加到基准位姿上
                 pos = self.base_pos + joycon_offset_pos

@@ -139,7 +139,6 @@ class Robot:
         # 提取旋转矩阵并计算欧拉角 (XYZ -> Roll, Pitch, Yaw)
         R_mat = T[:3, :3]
 
-        # 计算 Pitch (beta) - 保持与原实现一致的顺序
         beta = atan2(-R_mat[2, 0], math.sqrt(R_mat[0, 0]**2 + R_mat[1, 0]**2))
 
         if cos(beta) != 0:
