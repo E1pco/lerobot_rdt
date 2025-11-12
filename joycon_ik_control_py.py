@@ -16,14 +16,11 @@ from ftservo_controller import ServoController
 from ik.robot import create_so101_5dof
 
 
-def build_target_pose(x, y, z, roll, pitch, yaw):
+def build_target_pose(robot, x, y, z, roll, pitch, yaw):
     """
-    Build 4x4 homogeneous transformation matrix from position and orientation
+    构造用户坐标系下的目标位姿（自动转换到机械臂坐标系）
     """
-    T = np.eye(4)
-    T[:3, :3] = R.from_euler('xyz', [roll, pitch, yaw]).as_matrix()
-    T[:3, 3] = [x, y, z]
-    return T
+    return robot.build_pose(x, y, z, roll, pitch, yaw)
 
 
 # ============================================================================
@@ -65,14 +62,15 @@ class JoyConIKController:
         print(f"✓ Servo controller connected")
         
         # Home position map
-        self.home_pose = {
-            "shoulder_pan": 2096,
-            "shoulder_lift": 1983,
-            "elbow_flex": 2100,
-            "wrist_flex": 1954,
-            "wrist_roll": 2048,
-            "gripper": 2037,
+        home_pose = {
+            "shoulder_pan": 2070,
+            "shoulder_lift": 2062,
+            "elbow_flex": 1949,
+            "wrist_flex": 2000,
+            "wrist_roll": 2088,
+            "gripper": 2050,
         }
+        self.home_pose = home_pose
         
         # Joint configuration
         self.joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", 
@@ -87,8 +85,8 @@ class JoyConIKController:
         
         # Move to home position BEFORE connecting JoyCon
         print(f"\n[3/5] Moving robot to home position...")
-        # self.controller.move_all_home()
-        self.controller.soft_move_to_pose(self.home_pose, step_count=10, interval=0.1)
+        self.controller.move_all_home()
+        # self.controller.soft_move_to_pose(self.home_pose, step_count=10, interval=0.1)
         time.sleep(1.0)
         print(f"✓ Home position reached")
         
@@ -152,10 +150,11 @@ class JoyConIKController:
             self.current_q[i] = self.gear_sign[name] * delta / counts_per_rad
             print(f"  {name:15s}: {current:4d} (Δ={delta:+d}) → {self.current_q[i]:+.4f} rad")
         
-        # ✅ 使用纯 Python FK 计算末端位姿（Robot.fk 返回 [x,y,z,roll,pitch,yaw]）
-        pose = self.robot.fk(self.current_q)
-        self.current_pos = pose[:3]  # [x, y, z]
-        self.current_rpy = pose[3:]  # [roll, pitch, yaw]
+        # ✅ 使用纯 Python FK 计算末端位姿（Robot.get_user_pose 自动转换到用户坐标系）
+        T = self.robot.ets.fkine(self.current_q)
+        x, y, z, roll, pitch, yaw = self.robot.get_user_pose(T)
+        self.current_pos = np.array([x, y, z])  # [x, y, z] 用户坐标系
+        self.current_rpy = np.array([roll, pitch, yaw])  # [roll, pitch, yaw]
 
         print(f"\n✅ 已同步当前机械臂姿态")
         print(f"   pos={np.round(self.current_pos, 3)}, rpy(deg)={np.round(np.degrees(self.current_rpy), 1)}")
@@ -290,11 +289,12 @@ class JoyConIKController:
                 print(f"目标位姿: pos={pos.round(3)}, rpy(deg)={np.rad2deg(rpy).round(1)}")
                 
                 # 构建目标位姿矩阵并使用 Robot 的 ikine_LM 求解
-                T_goal = build_target_pose(*pos, *rpy)
+                T_goal = build_target_pose(self.robot, *pos, *rpy)
                 sol = self.robot.ikine_LM(
                     Tep=T_goal,
                     q0=self.current_q,
-                    ilimit=100,
+                    ilimit=500,
+                    slimit=50,
                     tol=1e-3,
                     mask=[1, 1, 1, 0.8, 0.8, 0],
                     k=0.1,

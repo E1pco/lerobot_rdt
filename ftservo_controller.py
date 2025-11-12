@@ -2,6 +2,15 @@ import json
 import time
 from ftservo_driver import FTServo  # 底层类保持不变
 
+home_pose = {
+    "shoulder_pan": 2070,
+    "shoulder_lift": 2062,
+    "elbow_flex": 1949,
+    "wrist_flex": 2000,
+    "wrist_roll": 2088,
+    "gripper": 2050,
+}
+
 
 class ServoController:
     def __init__(self, port, baudrate, config_path):
@@ -10,6 +19,7 @@ class ServoController:
             self.config = json.load(f)
 
         self.id_map = {v["id"]: name for name, v in self.config.items()}
+        self.home_pose = home_pose
 
         print("✅ 已加载舵机配置:")
         for name, cfg in self.config.items():
@@ -94,7 +104,7 @@ class ServoController:
         servo_data = {}
         for name, cfg in self.config.items():
             sid = cfg["id"]
-            home = self.get_home_position(name)
+            home = self.home_pose[name]
             servo_data[sid] = [
                 home & 0xFF, (home >> 8) & 0xFF,
                 0x00, 0x00,
@@ -122,8 +132,6 @@ class ServoController:
             else:
                 current_pos[name] = self.get_home_position(name)  # 若无响应，直接设为home
 
-        # 计算目标中位
-        home_pos = {name: self.get_home_position(name) for name in self.config.keys()}
 
         # 插值逐步移动
         for step in range(1, step_count + 1):
@@ -131,7 +139,7 @@ class ServoController:
             for name, cfg in self.config.items():
                 sid = cfg["id"]
                 start = current_pos[name]
-                end = home_pos[name]
+                end = home_pose[name]
                 interp = int(start + (end - start) * (step / step_count))
                 servo_data[sid] = [
                     interp & 0xFF, (interp >> 8) & 0xFF,

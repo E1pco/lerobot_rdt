@@ -81,6 +81,61 @@ class Robot:
         if qlim is not None:
             self.ets.qlim = qlim
     
+    # ========== 坐标系转换方法 ==========
+    def user_to_robot(self, x, y, z):
+        """用户坐标 → 机械臂坐标 (对调 X 和 Y)"""
+        return y, x, z
+    
+    def robot_to_user(self, x, y, z):
+        """机械臂坐标 → 用户坐标 (对调 X 和 Y)"""
+        return y, x, z
+    
+    def build_pose(self, x, y, z, roll=0, pitch=0, yaw=0):
+        """
+        构造用户坐标系下的目标位姿矩阵
+        
+        Parameters
+        ----------
+        x, y, z : float
+            用户坐标系中的位置
+        roll, pitch, yaw : float
+            欧拉角（弧度）
+            
+        Returns
+        -------
+        np.ndarray
+            机械臂坐标系下的 4x4 齐次变换矩阵
+        """
+        x_robot, y_robot, z_robot = self.user_to_robot(x, y, z)
+        r = R.from_euler('xyz', [roll, pitch, yaw]).as_matrix()
+        T = np.eye(4)
+        T[:3, :3] = r
+        T[:3, 3] = [x_robot, y_robot, z_robot]
+        return T
+    
+    def get_user_pose(self, T):
+        """
+        从机械臂坐标系的齐次变换矩阵获取用户坐标系的位姿
+        
+        Parameters
+        ----------
+        T : np.ndarray
+            机械臂坐标系下的 4x4 齐次变换矩阵
+            
+        Returns
+        -------
+        tuple
+            (x, y, z, roll, pitch, yaw) 用户坐标系下的位姿
+        """
+        # 从机械臂坐标系转换到用户坐标系
+        x_robot, y_robot, z_robot = T[0, 3], T[1, 3], T[2, 3]
+        x, y, z = self.robot_to_user(x_robot, y_robot, z_robot)
+        
+        # 提取欧拉角
+        rpy = R.from_matrix(T[:3, :3]).as_euler('xyz')
+        
+        return x, y, z, rpy[0], rpy[1], rpy[2]
+    
     def fkine(self, q):
         """
         正运动学计算
@@ -100,6 +155,7 @@ class Robot:
     def fk(self, qpos_data, joint_indices=None):
         """
         并返回末端执行器位姿向量 [X, Y, Z, Roll, Pitch, Yaw]
+        注：对调 X 和 Y 以满足右手系
 
         Parameters
         ----------
@@ -133,8 +189,9 @@ class Robot:
         # 计算正运动学，获取齐次变换矩阵
         T = self.fkine(q)
 
-        # 提取位置
+        # 提取位置并对调 X 和 Y（满足右手系）
         X, Y, Z = T[0, 3], T[1, 3], T[2, 3]
+        X, Y = Y, X  # 对调 X 和 Y
 
         # 提取旋转矩阵并计算欧拉角 (XYZ -> Roll, Pitch, Yaw)
         R_mat = T[:3, :3]

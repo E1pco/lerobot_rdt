@@ -7,9 +7,9 @@ import os
 # 参数配置
 # -------------------------------
 # 棋盘格行列数 (内角点数)
-board_size = (9, 6)  # 横9格竖6格 => 54个角点
+board_size = (11, 8)  # 横11格竖8格 => 88个角点
 # 每个小方格的边长 (单位: 米)
-square_size = 0.025  # 25mm
+square_size = 0.02  # 20mm
 
 # 棋盘格图片所在文件夹
 image_folder = "./calib_images"
