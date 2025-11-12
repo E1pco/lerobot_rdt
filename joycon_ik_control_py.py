@@ -12,66 +12,14 @@ sys.path.insert(0, '/home/elpco/code/lerobot/joycon_robotics')
 from joyconrobotics import JoyconRobotics
 
 # Import IK solver and servo controller
+sys.path.insert(0, '/home/elpco/code/lerobot/lerobot_rdt')
 from ftservo_controller import ServoController
-from lerobot_kinematics.ET import ET
-
-
-# ============================================================================
-# Robot Model Definition
-# ============================================================================
-
-def create_so101_5dof():
-    """
-    Create SO-101 5DOF robot kinematic model using Elementary Transform (ET)
-    
-    Joint sequence: base(Rz) → shoulder(Ry) → elbow(Ry) → wrist_pitch(Ry) → wrist_roll(Rx)
-    
-    Returns
-    -------
-    robot : ET
-        Robot kinematic chain
-    """
-    E1 = ET.Rz()      # shoulder_pan
-    E2 = ET.tx(0.0612)
-    E3 = ET.tz(0.0598)
-    E4 = ET.tx(0.02943)
-    E5 = ET.tz(0.05504)
-    E6 = ET.Ry()      # shoulder_lift
-    E7 = ET.tz(0.1127)
-    E8 = ET.tx(0.02798)
-    E9 = ET.Ry()      # elbow_flex
-    E10 = ET.tx(0.13504)
-    E11 = ET.tz(0.00519)
-    E12 = ET.Ry()     # wrist_flex
-    E13 = ET.tx(0.0593)
-    E14 = ET.tz(0.00996)
-    E15 = ET.Rx()     # wrist_roll
-
-    robot = E1 * E2 * E3 * E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15
-
-    # Joint limits from URDF
-    robot.qlim = np.array([
-        [-1.91986, -1.74533, -1.69, -1.65806, -2.74385],
-        [ 1.91986,  1.74533,  1.69,  1.65806,  2.84121]
-    ])
-    return robot
+from ik.robot import create_so101_5dof
 
 
 def build_target_pose(x, y, z, roll, pitch, yaw):
     """
     Build 4x4 homogeneous transformation matrix from position and orientation
-    
-    Parameters
-    ----------
-    x, y, z : float
-        Position in meters
-    roll, pitch, yaw : float
-        Orientation in radians (XYZ Euler angles)
-    
-    Returns
-    -------
-    T : ndarray (4, 4)
-        Homogeneous transformation matrix
     """
     T = np.eye(4)
     T[:3, :3] = R.from_euler('xyz', [roll, pitch, yaw]).as_matrix()
@@ -194,11 +142,11 @@ class JoyConIKController:
             self.current_q[i] = self.gear_sign[name] * delta / counts_per_rad
             print(f"  {name:15s}: {current:4d} (Δ={delta:+d}) → {self.current_q[i]:+.4f} rad")
         
-        # ✅ 根据当前角度计算末端实际位姿
-        T_current = self.robot.fkine(self.current_q).A
-        self.current_pos = T_current[:3, 3]
-        self.current_rpy = R.from_matrix(T_current[:3, :3]).as_euler('xyz')
-        
+        # ✅ 使用纯 Python FK 计算末端位姿（Robot.fk 返回 [x,y,z,roll,pitch,yaw]）
+        pose = self.robot.fk(self.current_q)
+        self.current_pos = pose[:3]  # [x, y, z]
+        self.current_rpy = pose[3:]  # [roll, pitch, yaw]
+
         print(f"\n✅ 已同步当前机械臂姿态")
         print(f"   pos={np.round(self.current_pos, 3)}, rpy(deg)={np.round(np.degrees(self.current_rpy), 1)}")
     
@@ -220,10 +168,6 @@ class JoyConIKController:
             # 重新读取舵机位置并计算位姿
             print("� 读取复位后的舵机位置...")
             self._update_current_joints()
-            
-            # 重置JoyCon方向校准
-            print("\n🔄 重置JoyCon方向校准...")
-            self.joycon.reset_joycon()
             time.sleep(0.5)
         
         # Speed adjustment
@@ -282,20 +226,18 @@ class JoyConIKController:
                 # 打印叠加后的目标位姿
                 print(f"目标位姿: pos={pos.round(3)}, rpy(deg)={np.rad2deg(rpy).round(1)}")
                 
-                # 构建目标位姿矩阵
+                # 构建目标位姿矩阵并使用 Robot 的 ikine_LM 求解
                 T_goal = build_target_pose(*pos, *rpy)
-                
-                # 逆运动学求解
                 sol = self.robot.ikine_LM(
                     Tep=T_goal,
                     q0=self.current_q,
-                    ilimit=50,
+                    ilimit=100,
                     tol=1e-3,
-                    mask=[1, 1, 1, 0.8, 0.8,0], 
+                    mask=[1, 1, 1, 0.8, 0.8, 0],
                     k=0.1,
                     method="sugihara"
                 )
-                
+
                 if sol.success:
                     # 更新当前关节角度
                     self.current_q = sol.q

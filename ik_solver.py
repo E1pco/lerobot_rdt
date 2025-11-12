@@ -138,7 +138,7 @@ def main():
     ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.15, y=-0.15, z=0.15, roll=np.pi/6, pitch=0, yaw=0)
+    T_goal = build_target_pose(x=0.15, y=0.15, z=0.25, roll=np.pi/2, pitch=0, yaw=0)
     print("\n🎯 目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")
