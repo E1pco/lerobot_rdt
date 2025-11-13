@@ -13,7 +13,7 @@ import select
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
-from ftservo_controller import ServoController
+from driver.ftservo_controller import ServoController
 from ik.robot import create_so101_5dof
 
 

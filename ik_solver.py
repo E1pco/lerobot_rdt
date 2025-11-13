@@ -10,8 +10,38 @@ import time
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
-from ftservo_controller import ServoController
-from ik.robot import create_so101_5dof
+from driver.ftservo_controller import ServoController
+from lerobot_kinematics.ET import ET
+
+# -----------------------------
+# 1) 构建 SO-101 (5DOF) 的 ET 模型
+#    关节顺序：base(Rz) → shoulder(Ry) → elbow(Ry) → wrist_pitch(Ry) → wrist_roll(Rx)
+# -----------------------------
+def create_so101_5dof():
+    E1 = ET.Rz()      # shoulder_pan
+    E2 = ET.tx(0.0612)
+    E3 = ET.tz(0.0598)
+    E4 = ET.tx(0.02943)
+    E5 = ET.tz(0.05504)
+    E6 = ET.Ry()      # shoulder_lift
+    E7 = ET.tz(0.1127)
+    E8 = ET.tx(0.02798)
+    E9 = ET.Ry()      # elbow_flex
+    E10 = ET.tx(0.13504)
+    E11 = ET.tz(0.00519)
+    E12 = ET.Ry()     # wrist_flex
+    E13 = ET.tx(0.0593)
+    E14 = ET.tz(0.00996)
+    E15 = ET.Rx()     # wrist_roll
+
+    robot = E1 * E2 * E3 * E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15
+
+    # 自动同步URDF中的限位
+    robot.qlim = np.array([
+        [-1.91986, -1.74533, -1.69, -1.65806, -2.74385],
+        [ 1.91986,  1.74533,  1.69,  1.65806,  2.84121]
+    ])
+    return robot
 
 # -----------------------------
 # 2) 构造目标末端位姿 (位置 + 姿态)
@@ -55,7 +85,7 @@ def q_to_servo_targets(q_rad, joint_names, home_map,
 # -----------------------------
 def main():
     # 4.1 初始化底层控制
-    controller = ServoController(port="/dev/ttyACM0", baudrate=1_000_000, config_path="servo_config.json")
+    controller = ServoController(port="/dev/ttyACM0", baudrate=1_000_000, config_path="./driver/servo_config.json")
     
     # 获取home位置（用于计算角度差值）
     home_pose = {}
@@ -65,19 +95,28 @@ def main():
     print("\n📍 跳过回中位，直接读取当前位置...")
 
     # 4.4 构建 5DOF 机器人、准备 IK
-    robot = create_so101_5dof()
-    ets = robot.ets
-    
-    # 使用 robot 对象中的 gear_sign 和 gear_ratio
-    gear_sign = robot.gear_sign
-    gear_ratio = robot.gear_ratio
+    ets = create_so101_5dof()
+    gear_sign = {
+        "shoulder_pan": -1,
+        "shoulder_lift": +1,
+        "elbow_flex":   +1,
+        "wrist_flex":   -1,
+        "wrist_roll":   +1,
+    }
+    gear_ratio = {
+        "shoulder_pan": 1.0,
+        "shoulder_lift": 1.0,
+        "elbow_flex":   1.0,
+        "wrist_flex":   1.0,
+        "wrist_roll":   1.0,
+    }
     
     # 从控制器读取当前实际步数
     ids = [cfg["id"] for cfg in controller.config.values()]
     resp = controller.servo.sync_read(0x38, 2, ids)
 
     q0 = np.zeros(5)
-    joint_names = robot.joint_names
+    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_roll", "wrist_flex"]
 
     print("\n📊 当前关节状态:")
     for i, name in enumerate(joint_names):
@@ -87,11 +126,9 @@ def main():
         delta = current - home_pose[name]
         q0[i] = gear_sign[name] * delta * 0.0015339807878856412
         print(f" {name:15s} : 当前步数={current:4d}, 步数差={delta:+5d} → q0={q0[i]:+.4f} rad ")
-    controller.move_all_home()
-    time.sleep(1)
     
     # 计算当前末端位姿
-    T_current = ets.fkine(q0)
+    T_current = ets.fkine(q0).A
     print("\n🔍 当前末端位姿矩阵：")
     print(np.round(T_current, 3))
     print(f"当前位置: x={T_current[0,3]:.4f}, y={T_current[1,3]:.4f}, z={T_current[2,3]:.4f},roll={0:.4f}, pitch={1:.4f}, yaw={2:.4f}".format(
@@ -101,21 +138,19 @@ def main():
     ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.3, y=-0.2, z=0.15, roll=np.pi/4, pitch=0, yaw=0)
+    T_goal = build_target_pose(x=0.15, y=-0.15, z=0.15, roll=np.pi/6, pitch=0, yaw=0)
     print("\n🎯 目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")
     
     print("\n🔄 开始从当前位置进行逆运动学求解...")
-    sol = robot.ikine_LM(
+    sol = ets.ikine_LM(
         Tep=T_goal,
         q0=q0,
-        ilimit=2000, 
-        slimit=200,
-        tol=1e-3,
+        ilimit=100, slimit=5, tol=1e-3,
         mask=np.array([1, 1, 1, 1, 1, 0]),  
-        k=0.1, 
-        method="sugihara"
+        k=0.1, method="sugihara",
+        kq=0.0, km=0.0 
     )
 
 
@@ -128,7 +163,7 @@ def main():
     print("目标关节角度 q(rad) =", np.round(sol.q, 4))
     
     # FK 验证
-    T_fk = robot.ets.fkine(sol.q)
+    T_fk = ets.fkine(sol.q).A
     print("\n验证正运动学结果:")
     print(np.round(T_fk, 3))
     print(f"FK位置: x={T_fk[0,3]:.4f}, y={T_fk[1,3]:.4f}, z={T_fk[2,3]:.4f}")
@@ -138,7 +173,7 @@ def main():
     print(f"位置误差: {pos_error*1000:.2f} mm")
 
     # 4.6 角度 → 步数映射（只映射 5 个 IK 关节）
-    joint5 = robot.joint_names
+    joint5 = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
 
 
 

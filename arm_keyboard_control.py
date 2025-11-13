@@ -1,7 +1,7 @@
 from pynput import keyboard
 import threading
 import time
-from ftservo_controller import ServoController
+from driver.ftservo_controller import ServoController
 
 
 class ArmKeyboardController:

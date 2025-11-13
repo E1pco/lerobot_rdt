@@ -1,25 +1,32 @@
 import json
 import time
-from ftservo_driver import FTServo  # 底层类保持不变
+import os
+import sys
+import numpy as np
+# 添加父目录到路径以支持相对导入
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-home_pose = {
-    "shoulder_pan": 2070,
-    "shoulder_lift": 2062,
-    "elbow_flex": 1949,
-    "wrist_flex": 2000,
-    "wrist_roll": 2088,
-    "gripper": 2050,
-}
+# 相对导入
+from .ftservo_driver import FTServo
+
+
 
 
 class ServoController:
-    def __init__(self, port, baudrate, config_path):
+    def __init__(self, port="/dev/ttyACM0", baudrate=1_000_000, config_path="./servo_config.json"):
         self.servo = FTServo(port, baudrate)
         with open(config_path, "r", encoding="utf-8") as f:
             self.config = json.load(f)
 
         self.id_map = {v["id"]: name for name, v in self.config.items()}
-        self.home_pose = home_pose
+        self.home_pose =  {
+            "shoulder_pan": 2070,
+            "shoulder_lift": 2062,
+            "elbow_flex": 1949,
+            "wrist_flex": 2000,
+            "wrist_roll": 2088,
+            "gripper": 2050,
+        }
 
         print("✅ 已加载舵机配置:")
         for name, cfg in self.config.items():
@@ -41,17 +48,7 @@ class ServoController:
         return limited
 
     def get_home_position(self, name):
-        """计算舵机的实际中位寄存器值（考虑偏移）"""
-        cfg = self.config[name]
-        # gripper 特殊处理：home 为 range_min（闭合状态）
-        if name == "gripper":
-            home = cfg["range_min"]
-        else:
-            range_center = (cfg["range_min"] + cfg["range_max"]) // 2
-            home = range_center
-        
-        home = self.limit_position(name, home)
-        return home
+        return self.home_pose[name]
 
 
     # -------------------------
@@ -139,7 +136,7 @@ class ServoController:
             for name, cfg in self.config.items():
                 sid = cfg["id"]
                 start = current_pos[name]
-                end = home_pose[name]
+                end = self.home_pose[name]
                 interp = int(start + (end - start) * (step / step_count))
                 servo_data[sid] = [
                     interp & 0xFF, (interp >> 8) & 0xFF,
@@ -200,47 +197,6 @@ class ServoController:
 
         print("✅ 目标姿态已平滑到位")
 
-    def q_to_servo_targets(self, q_rad, joint_names, home_map, 
-                          counts_per_rev=4096, gear_ratio=None, gear_sign=None):
-        """
-        将关节角度（弧度）转换为舵机目标步数
-        
-        Parameters
-        ----------
-        q_rad : array-like
-            关节角度数组（弧度）
-        joint_names : list of str
-            关节名称列表
-        home_map : dict
-            各关节的中位步数 {"joint_name": home_position}
-        counts_per_rev : int
-            每转编码器计数（默认4096）
-        gear_ratio : dict, optional
-            齿轮比 {"joint_name": ratio}
-        gear_sign : dict, optional
-            方向符号 {"joint_name": +1 or -1}
-        
-        Returns
-        -------
-        targets : dict
-            舵机目标位置 {"joint_name": target_steps}
-        """
-        if gear_ratio is None:
-            gear_ratio = {name: 1.0 for name in joint_names}
-        if gear_sign is None:
-            gear_sign = {name: +1 for name in joint_names}
-        
-        counts_per_rad = counts_per_rev / (2 * 3.141592653589793)  # 2*pi
-        targets = {}
-        
-        for i, name in enumerate(joint_names):
-            steps = int(round(
-                home_map[name] + 
-                gear_sign[name] * gear_ratio[name] * q_rad[i] * counts_per_rad
-            ))
-            targets[name] = steps
-        
-        return targets
 
     def fast_move_to_pose(self, target_dict, speed=1000):
         """
@@ -278,6 +234,65 @@ class ServoController:
         self.servo.sync_write(0x2A, 6, servo_data)
         print(f"🚀 Fast move ({'per-joint' if isinstance(speed, dict) else 'global'}) speed mode")
 
+    # -------------------------
+    # 读取舵机状态
+    # -------------------------
+    def read_servo_positions(self, joint_names=None, verbose=False):
+        """
+        读取指定关节的舵机步数
+        
+        Parameters
+        ----------
+        joint_names : list of str, optional
+            要读取的关节名称列表。如果为 None，则读取所有配置的关节
+        verbose : bool
+            是否打印详细信息（默认 False）
+        
+        Returns
+        -------
+        positions : dict
+            舵机步数字典 {"joint_name": position_steps}
+        """
+        if joint_names is None:
+            joint_names = list(self.config.keys())
+        
+        # 获取所有关节的 ID
+        ids = [self.config[name]["id"] for name in joint_names]
+        
+        # 同步读取舵机位置
+        resp = self.servo.sync_read(0x38, 2, ids)
+        
+        positions = {}
+        if verbose:
+            print("\n📡 舵机步数：")
+        
+        for name in joint_names:
+            sid = self.config[name]["id"]
+            cur_pos = resp.get(sid, [0, 0])
+            current = cur_pos[0] + (cur_pos[1] << 8)
+            positions[name] = current
+            
+            if verbose:
+                print(f"  {name:15s}: {current:4d}")
+        
+        return positions
+    
+    def read_single_position(self, name):
+        """
+        读取单个舵机的步数
+        
+        Parameters
+        ----------
+        name : str
+            关节名称
+        
+        Returns
+        -------
+        int
+            舵机步数
+        """
+        positions = self.read_servo_positions([name])
+        return positions[name]
 
     # -------------------------
     # 监控功能

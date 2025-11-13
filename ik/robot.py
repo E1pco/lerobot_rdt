@@ -5,7 +5,8 @@
 import numpy as np
 import math
 from scipy.spatial.transform import Rotation as R
-
+from driver.ftservo_controller import ServoController
+from driver.ftservo_driver import FTServo
 # 支持直接运行和模块导入
 try:
     from .et import ET, ETS
@@ -90,9 +91,156 @@ class Robot:
         self.gear_sign = gear_sign or {name: +1 for name in self.joint_names}
         self.gear_ratio = gear_ratio or {name: 1.0 for name in self.joint_names}
         
+        # 延迟初始化 ServoController（仅在需要时）
+        self._servo = None
+        
         # 将 qlim 设置到 ETS 对象上（IK solver 会从 ets.qlim 读取）
         if qlim is not None:
             self.ets.qlim = qlim
+    
+    def set_servo_controller(self, controller):
+        """
+        手动设置 ServoController 实例
+        
+        Parameters
+        ----------
+        controller : ServoController
+            舵机控制器实例
+        """
+        self._servo = controller
+    
+    @property
+    def servo(self):
+        """懒加载 ServoController"""
+        if self._servo is None:
+            try:
+                # 寻找 servo_config.json 的正确路径
+                import os
+                config_paths = [
+                    "servo_config.json",
+                    "driver/servo_config.json",
+                    os.path.join(os.path.dirname(__file__), "..", "driver", "servo_config.json"),
+                    os.path.join(os.path.dirname(__file__), "..", "servo_config.json"),
+                ]
+                
+                config_path = None
+                for path in config_paths:
+                    if os.path.exists(path):
+                        config_path = path
+                        break
+                
+                if config_path is None:
+                    print(f"⚠️ 无法找到 servo_config.json，尝试的路径: {config_paths}")
+                    return None
+                
+                self._servo = ServoController(
+                    port="/dev/ttyACM0",
+                    baudrate=1_000_000,
+                    config_path=config_path
+                )
+            except Exception as e:
+                print(f"⚠️ 无法初始化 ServoController: {e}")
+                self._servo = None
+        return self._servo
+
+    def q_to_servo_targets(self, q_rad, joint_names=None, home_pose=None, 
+                            counts_per_rev=4096, gear_ratio=None, gear_sign=None):
+        """
+        将关节角度（弧度）转换为舵机目标步数
+        
+        Parameters
+        ----------
+        q_rad : array-like
+            关节角度数组（弧度）
+        joint_names : list of str
+            关节名称列表
+        home_pose : dict, optional
+            各关节的中位步数 {"joint_name": home_position}
+            若为 None，则使用 self.servo.home_pose
+        counts_per_rev : int
+            每转编码器计数（默认4096）
+        gear_ratio : dict, optional
+            齿轮比 {"joint_name": ratio}
+        gear_sign : dict, optional
+            方向符号 {"joint_name": +1 or -1}
+        
+        Returns
+        -------
+        targets : dict
+            舵机目标位置 {"joint_name": target_steps}
+        """
+        # 如果未提供 home_pose，从 servo 获取
+        if home_pose is None:
+            if self.servo is None:
+                raise ValueError("home_pose 必须提供，或者 ServoController 必须可用")
+            home_pose = self.servo.home_pose
+        
+        if gear_ratio is None:
+            gear_ratio = self.gear_ratio
+        if gear_sign is None:
+            gear_sign = self.gear_sign
+        if joint_names is None:
+            joint_names = self.joint_names
+        counts_per_rad = counts_per_rev / (2 * 3.141592653589793)  # 2*pi
+        targets = {}
+        
+        for i, name in enumerate(joint_names):
+            steps = int(round(
+                home_pose[name] + 
+                gear_sign[name] * gear_ratio[name] * q_rad[i] * counts_per_rad
+            ))
+            targets[name] = steps
+        
+        return targets
+    def read_joint_angles(self, joint_names=None, home_pose=None, gear_sign=None, verbose=True):
+        """
+        读取舵机实际位置并计算关节角度
+        
+        Parameters
+        ----------
+        joint_names : list of str
+            关节名称列表
+        home_pose : dict, optional
+            各关节的中位步数 {"joint_name": home_position}
+            若为 None，则使用 self.servo.home_pose
+        gear_sign : dict, optional
+            方向符号 {"joint_name": +1 or -1}，默认为 self.gear_sign
+        verbose : bool
+            是否打印详细信息（默认 True）
+        
+        Returns
+        -------
+        q : np.ndarray
+            关节角度数组（弧度）
+        """
+        if self.servo is None:
+            raise RuntimeError("ServoController 不可用，无法读取舵机位置")
+        
+        # 如果未提供，使用默认值
+        if joint_names is None:
+            joint_names = self.joint_names
+        if gear_sign is None:
+            gear_sign = self.gear_sign
+        if home_pose is None:
+            home_pose = self.servo.home_pose
+        positions = self.servo.read_servo_positions(joint_names=joint_names, verbose=False)
+        q = np.zeros(len(joint_names))
+        counts_per_rad = 4096 / (2 * np.pi)
+        
+        if verbose:
+            print("\n📡 读取关节角度:")
+        
+        for i, name in enumerate(joint_names):
+            current = positions[name]
+            delta = current - home_pose[name]
+            q[i] = gear_sign[name] * delta / counts_per_rad
+            
+            if verbose:
+                print(f" {name:15s} : 步数={current:4d}, Δ={delta:+5d} → q={q[i]:+.4f} rad ")
+        
+        return q
+
+
     
     def fkine(self, q):
         """
@@ -396,6 +544,8 @@ def smooth_joint_motion(q_now, q_new, robot, max_joint_change=0.1):
         q_smoothed[i] = q_now[i] + delta
     
     return q_smoothed
+
+
 if __name__ == "__main__":
     robot = create_so101_5dof()
     qpos_data = np.array([0.0, -0.5, 0.5, 0.0, 0.0])

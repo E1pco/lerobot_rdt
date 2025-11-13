@@ -6,13 +6,12 @@ import time
 import argparse
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-
 # Import JoyCon controller
 from joyconrobotics import JoyconRobotics
 
 # Import IK solver and servo controller
 
-from ftservo_controller import ServoController
+from driver.ftservo_controller import ServoController
 from ik.robot import create_so101_5dof
 
 
@@ -65,15 +64,7 @@ class JoyConIKController:
         print(f"✓ Servo controller connected")
         
         # Home position map
-        home_pose = {
-            "shoulder_pan": 2070,
-            "shoulder_lift": 2062,
-            "elbow_flex": 1949,
-            "wrist_flex": 2000,
-            "wrist_roll": 2088,
-            "gripper": 2050,
-        }
-        self.home_pose = home_pose
+        self.home_pose = self.controller.home_pose
         
         # Initialize robot model
         print(f"\n[2/5] Building robot kinematic model...")
@@ -136,26 +127,18 @@ class JoyConIKController:
     def _update_current_joints(self):
         """Read current joint angles from servos and calculate pose"""
         # ✅ 从舵机读取当前位置
-        ids = [self.controller.config[name]["id"] for name in self.joint_names]
-        resp = self.controller.servo.sync_read(0x38, 2, ids)
+        self.current_q = self.robot.read_joint_angles(
+            joint_names=self.joint_names,
+            home_pose=self.home_pose,
+            gear_sign=self.gear_sign,
+            verbose=True
+        )
         
-        self.current_q = np.zeros(5)
-        counts_per_rad = 4096 / (2 * np.pi)
-        
-        print("\n📡 读取当前舵机位置：")
-        for i, name in enumerate(self.joint_names):
-            sid = self.controller.config[name]["id"]
-            cur_pos = resp.get(sid, [self.home_pose[name] & 0xFF, 
-                                     self.home_pose[name] >> 8])
-            current = cur_pos[0] + (cur_pos[1] << 8)
-            delta = current - self.home_pose[name]
-            self.current_q[i] = self.gear_sign[name] * delta / counts_per_rad
-            print(f"  {name:15s}: {current:4d} (Δ={delta:+d}) → {self.current_q[i]:+.4f} rad")
-        
-        # ✅ 使用纯 Python FK 计算末端位姿（Robot.fk 返回 [x,y,z,roll,pitch,yaw]）
-        pose = self.robot.fk(self.current_q)
-        self.current_pos = pose[:3]  # [x, y, z]
-        self.current_rpy = pose[3:]  # [roll, pitch, yaw]
+        pose = self.robot.fkine(self.current_q)
+        self.current_pos = pose[:3, 3]  # [x, y, z]
+        # 使用 scipy Rotation 从矩阵转换为 RPY 角度
+
+        self.current_rpy = R.from_matrix(pose[:3, :3]).as_euler('xyz')  # [roll, pitch, yaw]
 
         print(f"\n✅ 已同步当前机械臂姿态")
         print(f"   pos={np.round(self.current_pos, 3)}, rpy(deg)={np.round(np.degrees(self.current_rpy), 1)}")
@@ -305,29 +288,25 @@ class JoyConIKController:
                 if sol.success:
                     # 更新当前关节角度
                     self.current_q = sol.q
-                    
-                    # 使用 ServoController 的方法转换为舵机目标位置
-                    servo_targets = self.controller.q_to_servo_targets(
+                    servo_targets = self.robot.q_to_servo_targets(
                         self.current_q,
                         self.joint_names,
                         self.home_pose,
                         gear_ratio=self.gear_ratio,
                         gear_sign=self.gear_sign
                     )
-                    
                     # 限位检查
                     for k in self.joint_names:
                         servo_targets[k] = self.controller.limit_position(k, servo_targets[k])
-                    
                     # 一次性发送所有舵机指令
                     self.controller.fast_move_to_pose(servo_targets, speed=self.speed)
+                
                     
-                    # 打印状态
                     print(f"\r→ pos={pos.round(3)}, rpy(deg)={np.rad2deg(rpy).round(1)}, speed={self.speed}", end='')
                 else:
                     print(f"\r❌ IK失败，跳过", end='')
                 
-                time.sleep(0.04)  # 与参考代码一致的更新频率
+                time.sleep(0.04) 
                 
         except KeyboardInterrupt:
             print("\n\n⚠ Keyboard interrupt detected")
@@ -396,7 +375,7 @@ def main():
     parser.add_argument(
         '--config', '-c',
         type=str,
-        default='servo_config.json',
+        default='./driver/servo_config.json',
         help='Path to servo configuration file (default: servo_config.json)'
     )
     
