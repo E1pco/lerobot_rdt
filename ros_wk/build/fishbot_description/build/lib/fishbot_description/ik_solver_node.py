@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-SO-101 机械臂 IK 求解器 ROS2 节点
+SO-101 机械臂 IK 求解器 ROS2 节点（改进版）
 在 ros_wk 工作空间中运行
 - 订阅目标位姿话题
 - 运行 IK 求解
 - 发布关节状态和可视化标记到 RViz
+- 提供服务和命令行交互允许用户输入目标位姿
 """
 import rclpy
 from rclpy.node import Node
@@ -16,6 +17,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 import sys
 import os
+import threading
 
 # 添加 lerobot_rdt 到路径
 sys.path.insert(0, '/home/elpco/code/lerobot/lerobot_rdt')
@@ -55,15 +57,23 @@ class SO101IKSolverNode(Node):
         # 定时器：定期发布可视化
         self.timer = self.create_timer(0.1, self.publish_visualization)
         
+        # 启动用户交互线程
+        self.user_input_thread = threading.Thread(target=self.user_input_loop, daemon=True)
+        self.user_input_thread.start()
+        
         self.get_logger().info('🚀 IK 求解器节点已启动')
         self.get_logger().info('   订阅话题: /target_pose (geometry_msgs/PoseStamped)')
         self.get_logger().info('   发布话题: /joint_states_ik (sensor_msgs/JointState)')
         self.get_logger().info('   发布话题: /visualization_marker_array (visualization_msgs/MarkerArray)')
         self.get_logger().info('')
-        self.get_logger().info('   使用方法:')
-        self.get_logger().info('   ros2 topic pub /target_pose geometry_msgs/PoseStamped ')
-        self.get_logger().info('     "{header: {frame_id: base_link}, pose: {position: {x: 0.0, y: -0.3, z: 0.15}, ')
-        self.get_logger().info('     orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}"')
+        self.get_logger().info('   使用方法（3种）:')
+        self.get_logger().info('   1. ROS2 话题发布 (自动):')
+        self.get_logger().info('      ros2 topic pub /target_pose geometry_msgs/PoseStamped ')
+        self.get_logger().info('        "{header: {frame_id: base_link}, pose: {position: {x: 0.0, y: -0.3, z: 0.15}, ')
+        self.get_logger().info('        orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}"')
+        self.get_logger().info('   2. 命令行交互 (输入 \'i\' 或 \'help\'):')
+        self.get_logger().info('   3. 预定义位姿 (输入 \'p\'):')
+        self.get_logger().info('')
     
     def target_pose_callback(self, msg):
         """接收目标位姿并求解 IK"""
@@ -289,6 +299,214 @@ class SO101IKSolverNode(Node):
             markers.markers.append(marker_axis)
         
         self.pub_markers.publish(markers)
+    
+    def user_input_loop(self):
+        """用户交互线程：处理命令行输入"""
+        print("\n" + "="*70)
+        print("SO-101 IK 求解器 - 交互模式")
+        print("="*70)
+        print("输入 'help' 显示帮助信息")
+        print("="*70 + "\n")
+        
+        while True:
+            try:
+                # 读取用户输入
+                cmd = input("请输入命令 (help/i/p/q): ").strip().lower()
+                
+                if cmd in ['help', 'h', '?']:
+                    self.show_help()
+                
+                elif cmd in ['input', 'i']:
+                    self.input_target_pose()
+                
+                elif cmd in ['preset', 'p']:
+                    self.show_presets()
+                
+                elif cmd in ['quit', 'q', 'exit']:
+                    print("👋 退出程序...")
+                    break
+                
+                elif cmd == '':
+                    continue
+                
+                else:
+                    print(f"❌ 未知命令: '{cmd}'，输入 'help' 查看帮助")
+                    
+            except KeyboardInterrupt:
+                print("\n👋 收到退出信号，正在关闭...")
+                break
+            except Exception as e:
+                print(f"❌ 错误: {e}")
+    
+    def show_help(self):
+        """显示帮助信息"""
+        print("\n" + "="*70)
+        print("📖 帮助信息")
+        print("="*70)
+        print("命令列表:")
+        print("  help, h, ?     - 显示此帮助信息")
+        print("  input, i       - 手动输入目标位姿 (x, y, z, roll, pitch, yaw)")
+        print("  preset, p      - 从预定义位姿列表中选择")
+        print("  quit, q, exit  - 退出程序")
+        print("\n位姿单位:")
+        print("  位置 (x, y, z): 米 (m)")
+        print("  姿态 (roll, pitch, yaw): 度 (°)")
+        print("\n示例:")
+        print("  输入目标位置: x=-0.1, y=-0.3, z=0.1")
+        print("  输入欧拉角: roll=45, pitch=-30, yaw=0")
+        print("="*70 + "\n")
+    
+    def input_target_pose(self):
+        """交互式输入目标位姿"""
+        print("\n" + "="*70)
+        print("📍 手动输入目标位姿")
+        print("="*70)
+        
+        try:
+            # 输入位置
+            print("\n📌 输入末端位置 (单位: 米)")
+            x = float(input("  x = "))
+            y = float(input("  y = "))
+            z = float(input("  z = "))
+            
+            # 输入姿态
+            print("\n🔄 输入欧拉角 (单位: 度)")
+            roll = float(input("  roll (°) = "))
+            pitch = float(input("  pitch (°) = "))
+            yaw = float(input("  yaw (°) = "))
+            
+            # 转换为弧度
+            roll_rad = np.radians(roll)
+            pitch_rad = np.radians(pitch)
+            yaw_rad = np.radians(yaw)
+            
+            # 构建目标位姿
+            r = R.from_euler('xyz', [roll_rad, pitch_rad, yaw_rad], degrees=False)
+            T_goal = np.eye(4)
+            T_goal[:3, :3] = r.as_matrix()
+            T_goal[:3, 3] = [x, y, z]
+            
+            # 显示输入的位姿
+            print(f"\n✅ 已输入目标位姿:")
+            print(f"   位置: ({x:.4f}, {y:.4f}, {z:.4f}) m")
+            print(f"   姿态: roll={roll:.2f}°, pitch={pitch:.2f}°, yaw={yaw:.2f}°")
+            
+            # 立即执行 IK 求解
+            self.solve_ik(T_goal)
+            
+        except ValueError as e:
+            print(f"❌ 输入错误: {e}，请输入有效的数字")
+        except Exception as e:
+            print(f"❌ 异常: {e}")
+    
+    def show_presets(self):
+        """显示预定义位姿"""
+        presets = {
+            '1': {
+                'name': '初始位置 (Home)',
+                'x': 0.0, 'y': -0.25, 'z': 0.25,
+                'roll': 0, 'pitch': 0, 'yaw': 0
+            },
+            '2': {
+                'name': '左前方',
+                'x': -0.1, 'y': -0.3, 'z': 0.1,
+                'roll': 45, 'pitch': -30, 'yaw': 45
+            },
+            '3': {
+                'name': '右前方',
+                'x': 0.1, 'y': -0.2, 'z': 0.2,
+                'roll': -45, 'pitch': 30, 'yaw': -45
+            },
+            '4': {
+                'name': '正上方',
+                'x': 0.0, 'y': -0.25, 'z': 0.35,
+                'roll': 0, 'pitch': -90, 'yaw': 0
+            },
+            '5': {
+                'name': '侧面',
+                'x': 0.3, 'y': 0.0, 'z': 0.2,
+                'roll': 0, 'pitch': 0, 'yaw': 90
+            }
+        }
+        
+        print("\n" + "="*70)
+        print("🎯 预定义位姿")
+        print("="*70)
+        for key, pose in presets.items():
+            print(f"\n{key}. {pose['name']}")
+            print(f"   位置: ({pose['x']:.2f}, {pose['y']:.2f}, {pose['z']:.2f}) m")
+            print(f"   姿态: R={pose['roll']:.0f}°, P={pose['pitch']:.0f}°, Y={pose['yaw']:.0f}°")
+        
+        choice = input("\n请选择 (1-5): ").strip()
+        
+        if choice in presets:
+            pose = presets[choice]
+            print(f"\n✅ 已选择: {pose['name']}")
+            
+            # 构建目标位姿
+            roll_rad = np.radians(pose['roll'])
+            pitch_rad = np.radians(pose['pitch'])
+            yaw_rad = np.radians(pose['yaw'])
+            
+            r = R.from_euler('xyz', [roll_rad, pitch_rad, yaw_rad], degrees=False)
+            T_goal = np.eye(4)
+            T_goal[:3, :3] = r.as_matrix()
+            T_goal[:3, 3] = [pose['x'], pose['y'], pose['z']]
+            
+            # 执行 IK 求解
+            self.solve_ik(T_goal)
+        else:
+            print(f"❌ 无效选择: {choice}")
+    
+    def solve_ik(self, T_target):
+        """执行 IK 求解并发布结果"""
+        try:
+            self.T_target = T_target
+            
+            roll, pitch, yaw = R.from_matrix(T_target[:3, :3]).as_euler('xyz')
+            self.get_logger().info(f'📍 开始求解 IK:')
+            self.get_logger().info(f'   位置: X={T_target[0,3]:.4f}, Y={T_target[1,3]:.4f}, Z={T_target[2,3]:.4f} m')
+            self.get_logger().info(f'   姿态: R={np.degrees(roll):.2f}°, P={np.degrees(pitch):.2f}°, Y={np.degrees(yaw):.2f}°')
+            self.get_logger().info('🔄 运行 IK 求解...')
+            
+            sol = self.robot.ikine_LM(
+                Tep=T_target,
+                q0=self.q_current,
+                ilimit=3000,
+                slimit=150,
+                tol=1e-5,
+                mask=np.array([1, 1, 1, 0, 0, 0]),
+                k=0.1,
+                method="sugihara"
+            )
+            
+            if sol.success:
+                self.q_current = sol.q
+                self.T_current = self.robot.fkine(self.q_current)
+                
+                pos_error = np.linalg.norm(self.T_current[:3, 3] - T_target[:3, 3])
+                
+                self.get_logger().info(f'✅ IK 求解成功!')
+                self.get_logger().info(f'   关节角(°): {np.round(np.degrees(self.q_current), 2)}')
+                self.get_logger().info(f'   末端误差: {pos_error*1000:.2f} mm')
+                
+                print(f"\n✅ IK 求解成功!")
+                print(f"   关节角(°): {np.round(np.degrees(self.q_current), 2)}")
+                print(f"   末端误差: {pos_error*1000:.2f} mm\n")
+                
+                self.trajectory_points.append(self.T_current[:3, 3].copy())
+                if len(self.trajectory_points) > 100:
+                    self.trajectory_points.pop(0)
+                
+                self.publish_joint_states()
+                self.publish_visualization()
+            else:
+                self.get_logger().warn(f'❌ IK 求解失败: {sol.reason}')
+                print(f"❌ IK 求解失败: {sol.reason}\n")
+                
+        except Exception as e:
+            self.get_logger().error(f'❌ 求解出错: {str(e)}')
+            print(f"❌ 求解出错: {e}\n")
 
 
 def main(args=None):

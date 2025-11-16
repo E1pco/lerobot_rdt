@@ -12,6 +12,7 @@ config/so101_ik.rviz
 fishbot_description/__init__.py
 fishbot_description/ik_solver_node.py
 fishbot_description/joint_state_publisher.py
+fishbot_description/target_pose_input.py
 fishbot_description/target_pose_publisher.py
 launch/display_rviz2.launch.py
 launch/so101_ik_solver.launch.py

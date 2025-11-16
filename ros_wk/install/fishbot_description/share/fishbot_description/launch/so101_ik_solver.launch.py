@@ -20,7 +20,7 @@ def generate_launch_description():
     # 确保 URDF 文件存在
     if not os.path.exists(urdf_path):
         # 使用备用路径
-        urdf_path = '/home/elpco/code/lerobot/lerobot_rdt/sim/so101_new_calib.urdf'
+        urdf_path = '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description/urdf/fishbot_base.urdf'
     
     print(f"[Launch] URDF: {urdf_path}")
     print(f"[Launch] RViz: {rviz_config_path}")

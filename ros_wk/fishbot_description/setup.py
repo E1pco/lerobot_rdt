@@ -28,6 +28,7 @@ setup(
         'console_scripts': [
             'ik_solver_node = fishbot_description.ik_solver_node:main',
             'target_pose_publisher = fishbot_description.target_pose_publisher:main',
+            'target_pose_input = fishbot_description.target_pose_input:main',
         ],
     },
 )

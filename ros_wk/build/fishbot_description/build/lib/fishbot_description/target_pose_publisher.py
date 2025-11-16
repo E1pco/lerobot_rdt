@@ -24,18 +24,7 @@ class TargetPosePublisher(Node):
                 'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0,
                 'duration': 5  # 保持 5 秒
             },
-            {
-                'name': '目标 2',
-                'x': 0.1, 'y': -0.20, 'z': 0.20,
-                'roll': 0.0, 'pitch': np.pi/6, 'yaw': 0.0,
-                'duration': 5
-            },
-            {
-                'name': '目标 3',
-                'x': -0.1, 'y': -0.30, 'z': 0.10,
-                'roll': 0.0, 'pitch': -np.pi/6, 'yaw': np.pi/4,
-                'duration': 5
-            },
+ 
         ]
         
         self.current_target_idx = 0

@@ -93,7 +93,7 @@ class JoyConCapture:
         self.joycon = JoyconRobotics(device='right', without_rest_init=False)
 
         # 相机初始化
-        self.cap = cv2.VideoCapture(2)
+        self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
             raise IOError("❌ 无法打开相机")
 
