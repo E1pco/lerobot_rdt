@@ -434,6 +434,58 @@ def create_stanford_arm() -> DHRobot:
                   joint_type=joint_type, qlim=qlim)
 
 
+def create_so101_5dof() -> DHRobot:
+    """
+    创建 SO-101 5DOF 机械臂模型（从 URDF 提取）
+    
+    关节顺序（旋转轴）：
+    1. shoulder_pan (Rz) - 绕 Z 轴旋转
+    2. shoulder_lift (Ry -> Rz) - 肩部抬升
+    3. elbow_flex (Ry -> Rz) - 肘部弯曲
+    4. wrist_flex (Ry -> Rz) - 腕部弯曲
+    5. wrist_roll (Rx) - 腕部滚转
+    
+    DH 参数从 URDF (so101_new_calib.urdf) 提取，使用标准 DH 约定。
+    
+    Returns
+    -------
+    DHRobot
+        SO-101 5DOF 机器人模型
+        
+    References
+    --------
+    URDF file: so101_new_calib.urdf
+    DH parameters extracted using urdf_to_dh ROS2 package
+    """
+    # DH 参数 [theta, d, r, alpha]（单位：米和弧度）
+    # 从 URDF 提取的参数（前5个旋转关节，排除固定关节和夹爪）
+    dh_params = np.array([
+        # 关节1: shoulder_pan (Rz)
+        [0,        0.0624,  0.038835,  0],
+        # 关节2: shoulder_lift (Ry converted to Rz frame)
+        [0,        0.0542,  0.030399,  -np.pi/2],
+        # 关节3: elbow_flex
+        [0,       -0.018278, 0.116,    0],
+        # 关节4: wrist_flex  
+        [0,        0,        0.135,    0],
+        # 关节5: wrist_roll (Rx)
+        [0,        0.0181,   0,        np.pi/2]
+    ])
+    
+    # 所有关节都是旋转关节
+    joint_type = ['R', 'R', 'R', 'R', 'R']
+    
+    # 关节限位（从 URDF 获取）
+    # 单位：弧度
+    qlim = np.array([
+        [-1.91986, -1.74533, -1.69,     -1.65806, -2.74385],  # 最小值
+        [ 1.91986,  1.74533,  1.69,     1.65806,  2.84121]    # 最大值
+    ])
+    
+    return DHRobot(dh_params, convention='standard', 
+                  joint_type=joint_type, qlim=qlim)
+
+
 if __name__ == "__main__":
     """测试 DH 机器人建模"""
     print("=" * 60)

@@ -29,10 +29,19 @@ def main():
     # 4.1 初始化底层控制
     controller = ServoController(port="/dev/ttyACM0", baudrate=1_000_000, config_path="./driver/servo_config.json")
     robot = create_so101_5dof()
+    
+    # 设置舵机控制器到机器人
+    robot.set_servo_controller(controller)
+    
     q0 = np.zeros(5)
     controller.move_all_home()
     time.sleep(1)
-    q0 = robot.read_joint_angles()
+    
+    # 读取当前关节角度
+    q0 = robot.read_joint_angles(
+        joint_names=robot.joint_names,
+        verbose=True
+    )
     # 计算当前末端位姿
     T_current = robot.fkine(q0)
     print("\n🔍 当前末端位姿矩阵：")
@@ -44,7 +53,7 @@ def main():
     ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.3, y=-0.2, z=0.15, roll=np.pi/4, pitch=0, yaw=0)
+    T_goal = build_target_pose(x=0.25, y=-0, z=0.25, roll=np.pi/4, pitch=-np.pi/6, yaw=0)#z是4号舵机的高度
     print("\n🎯 目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")
@@ -53,9 +62,9 @@ def main():
     sol = robot.ikine_LM(
         Tep=T_goal,
         q0=q0,
-        ilimit=1000, 
-        slimit=50,
-        tol=1e-6,
+        ilimit=5000, 
+        slimit=250,
+        tol=1e-5,
         mask=np.array([1, 1, 1, 0, 0, 0]),  
         k=0.1, 
         method="sugihara"
@@ -68,9 +77,18 @@ def main():
 
     print("\n✅ IK 求解成功")
     print("目标关节角度 q(rad) =", np.round(sol.q, 4))
+    tar_q_rad = sol.q
+    T_tar=robot.fkine(tar_q_rad)
+    print("目标末端位姿\r T =", np.round(T_tar, 3))
+    pos_error = np.linalg.norm(T_tar[:3,3] - T_goal[:3,3])
+    print(f"计算误差: {pos_error*1000:.2f} mm")
 
+    # 获取 home_pose - 需要显式传入
+    home_pose = {}
+    for name in robot.joint_names:
+        home_pose[name] = controller.get_home_position(name)
 
-    servo_targets = robot.q_to_servo_targets(q_rad=sol.q)
+    servo_targets = robot.q_to_servo_targets(q_rad=sol.q, home_pose=home_pose)
 
     # 电子限位保护（用底层 clamp 一次，双保险）
     for k in list(servo_targets.keys()):
@@ -78,11 +96,19 @@ def main():
 
     print("\n📋 即将执行的舵机目标步数：")
     for k in robot.joint_names:
-        print(f"  - {k:15s} : {servo_targets[k]}")
+        print(f"  - {k:15s} : {servo_targets[k]},delta={servo_targets[k]-robot.q_to_servo_targets(q0, home_pose=home_pose)[k]}")
 
     input("\n按 Enter 开始平滑执行到目标位姿...")
     controller.soft_move_to_pose(servo_targets, step_count=5, interval=0.08)
-    q0 = robot.read_joint_angles()
+    
+    # 等待舵机执行完毕
+    time.sleep(1)
+    
+    # 读取执行后的实际关节角度
+    q0 = robot.read_joint_angles(
+        joint_names=robot.joint_names,
+        verbose=True
+    )
     # 计算当前末端位姿
     T_current = robot.fkine(q0)
     print("\n🔍 当前末端位姿矩阵：")
@@ -95,9 +121,18 @@ def main():
 
     print("\n✅ 动作完成，开始监控（Ctrl+C 退出）")
     try:
-        controller.monitor_positions(ids=[cfg["id"] for cfg in controller.config.values()], interval=0.3)
+        while True:
+            q_m=robot.read_joint_angles()
+            T_m=robot.fkine(q_m)
+            print("\r当前位置: x={:.4f}, y={:.4f}, z={:.4f}".format(
+                T_m[0,3],T_m[1,3],T_m[2,3]
+            ),end='')
+            time.sleep(2)
+    except KeyboardInterrupt:
+        print("\n🛑 退出监控")
     finally:
         controller.close()
+        print("舵机已关闭")
 
 
 if __name__ == "__main__":

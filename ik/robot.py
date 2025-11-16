@@ -5,8 +5,15 @@
 import numpy as np
 import math
 from scipy.spatial.transform import Rotation as R
-from driver.ftservo_controller import ServoController
-from driver.ftservo_driver import FTServo
+
+# 硬件驱动是可选的（仅在实际控制硬件时需要）
+try:
+    from driver.ftservo_controller import ServoController
+    from driver.ftservo_driver import FTServo
+except ImportError:
+    ServoController = None
+    FTServo = None
+
 # 支持直接运行和模块导入
 try:
     from .et import ET, ETS
@@ -428,45 +435,74 @@ class Robot:
 
 def create_so101_5dof():
     """
-    创建 SO-101 5自由度机械臂模型
-    
-    Returns
-    -------
-    Robot
-        封装后的机器人对象，具有 .fkine() 和 .ikine_*() 方法
-        
-    Attributes
-    -------
-    robot.joint_names : list
-        关节名称列表
-    robot.gear_sign : dict
-        各关节的方向符号
-    robot.gear_ratio : dict
-        各关节的减速比
+    SO-101 五自由度机械臂（基于 URDF 简化结构）ET 建模
+    包含关节限位（通过 ERobot.qlim 设置）
     """
-    E1 = ET.Rz()      # shoulder_pan
-    E2 = ET.tx(0.0612)
-    E3 = ET.tz(0.0598)
+
+    # ---------------------------
+    # 1) URDF 同步的关节限位
+    # ---------------------------
+    qlim = np.array([
+        [-1.91986, -1.74533, -1.69,    -1.65806, -2.74385],
+        [ 1.91986,  1.74533,  1.69,     1.65806,  2.84121]
+    ])
+
+
+    # E1 = ET.tx(0.002798)
+    # E2 = ET.tz(0.05031)
+    # E3 = ET.Rz()
+    
+    # # to joint 2
+    # E4 = ET.tx(0.02957)
+    # E5 = ET.tz(0.11590)
+    # E6 = ET.Ry()
+    
+    # # to joint 3
+    # E7 = ET.tx(0.11323)
+    # E8 = ET.tz(0.00500)
+    # E9 = ET.Ry()
+
+    # # to joint 4
+    # E10 = ET.tx(0.0650)
+    # E11 = ET.tz(0.00519)
+    # E12 = ET.Ry()
+    
+    # # to joint 5
+    # E13 = ET.tx(0.02413)
+    # E14 = ET.tz(0)
+    # E15 = ET.Rx()  
+    
+    # E17 = ET.tx(0.07440)
+        # to joint 1
+    E1 = ET.tx(0.0612)
+    E2 = ET.tz(0.0598)
+    E3 = ET.Rz()
+    
+    # to joint 2
     E4 = ET.tx(0.02943)
     E5 = ET.tz(0.05504)
-    E6 = ET.Ry()      # shoulder_lift
+    E6 = ET.Ry()
+    
+    # to joint 3
     E7 = ET.tz(0.1127)
     E8 = ET.tx(0.02798)
-    E9 = ET.Ry()      # elbow_flex
-    E10 = ET.tx(0.13504)
+    E9 = ET.Ry()
+
+    # to joint 4
+    E10 = ET.tx(0.15504)
     E11 = ET.tz(0.00519)
-    E12 = ET.Ry()     # wrist_flex
+    E12 = ET.Ry()
+    
+    # to joint 5
     E13 = ET.tx(0.0593)
     E14 = ET.tz(0.00996)
-    E15 = ET.Rx()     # wrist_roll
+    E15 = ET.Rx()  
+    
+    #E17 = ET.tx(0.09538)
+    # to gripper
 
-    ets = E1 * E2 * E3 * E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15
+    ets = E1 * E2 * E3 *E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 
 
-    # 自动同步URDF中的限位
-    qlim = np.array([
-        [-1.91986, -1.74533, -1.69, -1.65806, -2.74385],
-        [ 1.91986,  1.74533,  1.69,  1.65806,  2.84121]
-    ])
     
     # 关节名称
     joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
@@ -491,6 +527,58 @@ def create_so101_5dof():
     
     return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
 
+def create_so101():
+    # to joint 1
+    E1 = ET.tx(0.0612)
+    E2 = ET.tz(0.0598)
+    E3 = ET.Rz()
+    
+    # to joint 2
+    E4 = ET.tx(0.02943)
+    E5 = ET.tz(0.05504)
+    E6 = ET.Ry()
+    
+    # to joint 3
+    E7 = ET.tz(0.1127)
+    E8 = ET.tx(0.02798)
+    E9 = ET.Ry()
+
+    # to joint 4
+    E10 = ET.tx(0.13504)
+    E11 = ET.tz(0.00519)
+    E12 = ET.Ry()
+    
+    # to joint 5
+    E13 = ET.tx(0.0593)
+    E14 = ET.tz(0.00996)
+    E15 = ET.Rx()  
+    
+    E17 = ET.tx(0.09538)
+    # to gripper
+   
+    ets = E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 # E1 * E2 * E3 * E17 
+    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
+    # Set joint limits
+    qlim = [[-1.57, -1.57, -1.5, -3.14158], 
+                  [ 1.57,  1.57,  1.5,  3.14158]]
+    gear_sign = {
+        "shoulder_pan": -1,
+        "shoulder_lift": +1,
+        "elbow_flex":   +1,
+        "wrist_flex":   -1,
+        "wrist_roll":   +1,
+    }
+    
+    # 各关节的减速比
+    gear_ratio = {
+        "shoulder_pan": 1.0,
+        "shoulder_lift": 1.0,
+        "elbow_flex":   1.0,
+        "wrist_flex":   1.0,
+        "wrist_roll":   1.0,
+    }
+    
+    return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
 
 
 

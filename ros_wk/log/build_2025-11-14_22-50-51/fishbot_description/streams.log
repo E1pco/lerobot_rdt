@@ -1,0 +1,34 @@
+[0.284s] Invoking command in '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/fishbot_description build --build-base /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build install --record /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log --single-version-externally-managed install_data
+[0.398s] running egg_info
+[0.398s] writing ../build/fishbot_description/fishbot_description.egg-info/PKG-INFO
+[0.398s] writing dependency_links to ../build/fishbot_description/fishbot_description.egg-info/dependency_links.txt
+[0.398s] writing entry points to ../build/fishbot_description/fishbot_description.egg-info/entry_points.txt
+[0.398s] writing requirements to ../build/fishbot_description/fishbot_description.egg-info/requires.txt
+[0.398s] writing top-level names to ../build/fishbot_description/fishbot_description.egg-info/top_level.txt
+[0.399s] reading manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.400s] writing manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.400s] running build
+[0.400s] running build_py
+[0.400s] copying fishbot_description/target_pose_publisher.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description
+[0.400s] copying fishbot_description/ik_solver_node.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description
+[0.400s] copying fishbot_description/joint_state_publisher.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description
+[0.400s] running install
+[0.400s] running install_lib
+[0.401s] copying /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description/target_pose_publisher.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description
+[0.401s] copying /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description/ik_solver_node.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description
+[0.401s] copying /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description/joint_state_publisher.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description
+[0.401s] byte-compiling /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description/target_pose_publisher.py to target_pose_publisher.cpython-310.pyc
+[0.401s] byte-compiling /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description/ik_solver_node.py to ik_solver_node.cpython-310.pyc
+[0.403s] byte-compiling /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description/joint_state_publisher.py to joint_state_publisher.cpython-310.pyc
+[0.403s] running install_data
+[0.403s] copying launch/so101_ik_solver.launch.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/launch
+[0.404s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/config
+[0.404s] copying config/so101_ik.rviz -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/config
+[0.404s] running install_egg_info
+[0.405s] removing '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description-0.0.0-py3.10.egg-info' (and everything under it)
+[0.405s] Copying ../build/fishbot_description/fishbot_description.egg-info to /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description-0.0.0-py3.10.egg-info
+[0.405s] running install_scripts
+[0.416s] Installing ik_solver_node script to /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/fishbot_description
+[0.416s] Installing target_pose_publisher script to /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/fishbot_description
+[0.417s] writing list of installed files to '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log'
+[0.430s] Invoked command in '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/fishbot_description build --build-base /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build install --record /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log --single-version-externally-managed install_data

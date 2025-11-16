@@ -10,7 +10,7 @@ file_prefix = "img_"            # 文件名前缀
 cam_id = 0                      # 摄像头ID（USB相机一般为0，多个相机可改1,2...）
 img_format = ".jpg"             # 图片格式
 img_width, img_height = 1280, 720   # 图像分辨率
-max_images = 20                 # 拍照张数上限（可修改）
+max_images = 10                # 拍照张数上限（可修改）
 preview_scale = 0.7             # 预览缩放比例
 
 # -------------------------------

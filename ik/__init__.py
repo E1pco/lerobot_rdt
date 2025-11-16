@@ -14,7 +14,7 @@
 from .et import ET, ETS, SE3_to_xyzrpy, xyzrpy_to_SE3
 
 # DH 参数建模
-from .DH import DHRobot, create_dh_robot, create_puma560, create_stanford_arm
+from .DH import DHRobot, create_dh_robot, create_puma560, create_stanford_arm, create_so101_5dof
 
 # IK 基类和解
 from .base import IKSolution, IKSolver
@@ -48,6 +48,7 @@ __all__ = [
     "create_dh_robot",
     "create_puma560",
     "create_stanford_arm",
+    "create_so101_5dof",
     
     # IK 基类
     "IKSolution",

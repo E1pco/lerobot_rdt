@@ -12,7 +12,7 @@ sys.path.insert(0, '/home/elpco/code/lerobot/joycon_robotics')
 from joyconrobotics import JoyconRobotics
 
 # Import IK solver and servo controller
-from ftservo_controller import ServoController
+from driver.ftservo_controller import ServoController
 from lerobot_kinematics.ET import ET
 
 
@@ -328,7 +328,7 @@ class JoyConIKController:
                 else:
                     print(f"\r❌ IK失败，跳过", end='')
                 
-                time.sleep(0.04)  # 与参考代码一致的更新频率
+                time.sleep(0.04)  
                 
         except KeyboardInterrupt:
             print("\n\n⚠ Keyboard interrupt detected")
@@ -397,7 +397,7 @@ def main():
     parser.add_argument(
         '--config', '-c',
         type=str,
-        default='servo_config.json',
+        default='./driver/servo_config.json',
         help='Path to servo configuration file (default: servo_config.json)'
     )
     

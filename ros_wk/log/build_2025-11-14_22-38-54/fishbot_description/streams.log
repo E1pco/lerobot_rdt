@@ -1,0 +1,48 @@
+[0.279s] Invoking command in '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/fishbot_description build --build-base /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build install --record /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log --single-version-externally-managed install_data
+[0.390s] running egg_info
+[0.390s] writing ../build/fishbot_description/fishbot_description.egg-info/PKG-INFO
+[0.390s] writing dependency_links to ../build/fishbot_description/fishbot_description.egg-info/dependency_links.txt
+[0.390s] writing entry points to ../build/fishbot_description/fishbot_description.egg-info/entry_points.txt
+[0.390s] writing requirements to ../build/fishbot_description/fishbot_description.egg-info/requires.txt
+[0.390s] writing top-level names to ../build/fishbot_description/fishbot_description.egg-info/top_level.txt
+[0.391s] reading manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.392s] writing manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.392s] running build
+[0.392s] running build_py
+[0.392s] running install
+[0.392s] running install_lib
+[0.393s] running install_data
+[0.393s] copying urdf/fishbot_base.urdf -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/urdf
+[0.393s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.393s] copying meshes/under_arm_so101_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.393s] copying meshes/sts3215_03a_no_horn_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.393s] copying meshes/sts3215_03a_no_horn_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.394s] copying meshes/moving_jaw_so101_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.395s] copying meshes/waveshare_mounting_plate_so101_v2.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.395s] copying meshes/base_so101_v2.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.395s] copying meshes/base_motor_holder_so101_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.395s] copying meshes/moving_jaw_so101_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.395s] copying meshes/base_so101_v2.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.396s] copying meshes/waveshare_mounting_plate_so101_v2.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.396s] copying meshes/sts3215_03a_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.396s] copying meshes/sts3215_03a_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.397s] copying meshes/upper_arm_so101_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.397s] copying meshes/wrist_roll_follower_so101_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.397s] copying meshes/motor_holder_so101_base_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.397s] copying meshes/base_motor_holder_so101_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.399s] copying meshes/motor_holder_so101_wrist_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.399s] copying meshes/wrist_roll_pitch_so101_v2.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.400s] copying meshes/rotation_pitch_so101_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.401s] copying meshes/wrist_roll_follower_so101_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.401s] copying meshes/wrist_roll_pitch_so101_v2.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.402s] copying meshes/motor_holder_so101_wrist_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.402s] copying meshes/under_arm_so101_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.403s] copying meshes/rotation_pitch_so101_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.404s] copying meshes/motor_holder_so101_base_v1.stl -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.405s] copying meshes/upper_arm_so101_v1.part -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/meshes
+[0.405s] running install_egg_info
+[0.406s] removing '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description-0.0.0-py3.10.egg-info' (and everything under it)
+[0.406s] Copying ../build/fishbot_description/fishbot_description.egg-info to /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description-0.0.0-py3.10.egg-info
+[0.407s] running install_scripts
+[0.418s] writing list of installed files to '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log'
+[0.429s] Invoked command in '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/fishbot_description build --build-base /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build install --record /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log --single-version-externally-managed install_data

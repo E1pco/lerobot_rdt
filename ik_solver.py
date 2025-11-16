@@ -116,7 +116,7 @@ def main():
     resp = controller.servo.sync_read(0x38, 2, ids)
 
     q0 = np.zeros(5)
-    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_roll", "wrist_flex"]
+    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
 
     print("\n📊 当前关节状态:")
     for i, name in enumerate(joint_names):
@@ -138,7 +138,7 @@ def main():
     ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.15, y=-0.15, z=0.15, roll=np.pi/6, pitch=0, yaw=0)
+    T_goal = build_target_pose(x=0, y=-0.3, z=0.1, roll=np.pi/4, pitch=0, yaw=0)
     print("\n🎯 目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")

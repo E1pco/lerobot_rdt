@@ -1,0 +1,33 @@
+[0.302s] Invoking command in '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/fishbot_description build --build-base /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build install --record /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log --single-version-externally-managed install_data
+[0.416s] running egg_info
+[0.417s] creating ../build/fishbot_description/fishbot_description.egg-info
+[0.417s] writing ../build/fishbot_description/fishbot_description.egg-info/PKG-INFO
+[0.417s] writing dependency_links to ../build/fishbot_description/fishbot_description.egg-info/dependency_links.txt
+[0.417s] writing entry points to ../build/fishbot_description/fishbot_description.egg-info/entry_points.txt
+[0.417s] writing requirements to ../build/fishbot_description/fishbot_description.egg-info/requires.txt
+[0.417s] writing top-level names to ../build/fishbot_description/fishbot_description.egg-info/top_level.txt
+[0.417s] writing manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.418s] reading manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.418s] writing manifest file '../build/fishbot_description/fishbot_description.egg-info/SOURCES.txt'
+[0.419s] running build
+[0.419s] running build_py
+[0.419s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build
+[0.419s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib
+[0.419s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description
+[0.419s] copying fishbot_description/__init__.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description
+[0.419s] running install
+[0.419s] running install_lib
+[0.419s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description
+[0.419s] copying /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build/lib/fishbot_description/__init__.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description
+[0.420s] byte-compiling /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages/fishbot_description/__init__.py to __init__.cpython-310.pyc
+[0.420s] running install_data
+[0.420s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/ament_index
+[0.420s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/ament_index/resource_index
+[0.420s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/ament_index/resource_index/packages
+[0.420s] copying resource/fishbot_description -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/ament_index/resource_index/packages
+[0.420s] copying package.xml -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description
+[0.420s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/launch
+[0.420s] copying launch/display_rviz2.launch.py -> /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/launch
+[0.420s] creating /home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/share/fishbot_description/urdf
+[0.420s] error: can't copy 'urdf/assets': doesn't exist or not a regular file
+[0.431s] Invoked command in '/home/elpco/code/lerobot/lerobot_rdt/ros_wk/fishbot_description' returned '1': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/elpco/code/lerobot/lerobot_rdt/ros_wk/install/fishbot_description/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/fishbot_description build --build-base /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/build install --record /home/elpco/code/lerobot/lerobot_rdt/ros_wk/build/fishbot_description/install.log --single-version-externally-managed install_data

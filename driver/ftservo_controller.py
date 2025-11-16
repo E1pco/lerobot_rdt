@@ -19,18 +19,21 @@ class ServoController:
             self.config = json.load(f)
 
         self.id_map = {v["id"]: name for name, v in self.config.items()}
-        self.home_pose =  {
-            "shoulder_pan": 2070,
-            "shoulder_lift": 2062,
-            "elbow_flex": 1949,
-            "wrist_flex": 2000,
-            "wrist_roll": 2088,
-            "gripper": 2050,
-        }
+        # home_pose 是舵机活动范围的中点：(range_max + range_min) / 2
+        # 这是舵机的零位参考点，用于 IK 计算：q = gear_sign * (steps - home_pose) / counts_per_rad
+        # homing_offset 仅用于机械臂的校准和零位定义，不影响 IK 计算
+        self.home_pose = {}
+        for name, cfg in self.config.items():
+            if name == "gripper":
+                home_position = cfg.get("range_min", 0)
+            else:
+                home_position = (cfg["range_max"] + cfg["range_min"]) // 2
+            
+            self.home_pose[name] = home_position
 
         print("✅ 已加载舵机配置:")
         for name, cfg in self.config.items():
-            print(f"  {cfg['id']}: {name} (range={cfg['range_min']}~{cfg['range_max']})")
+            print(f"  {cfg['id']}: {name} (home_pose={self.home_pose[name]}, range={cfg['range_min']}~{cfg['range_max']})")
 
     # -------------------------
     # 基础功能
