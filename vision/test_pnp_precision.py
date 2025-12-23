@@ -26,7 +26,7 @@ from datetime import datetime
 
 
 class ChessboardPnPTester:
-    def __init__(self, square_size_mm=25):
+    def __init__(self, square_size_mm=20.73):
         """
         初始化棋盘格 PnP 测试工具
         
@@ -388,7 +388,7 @@ class ChessboardPnPTester:
 
 
 def main():
-    tester = ChessboardPnPTester(square_size_mm=25)
+    tester = ChessboardPnPTester(square_size_mm=20.73)
     tester.run()
 
 

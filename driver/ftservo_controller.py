@@ -8,10 +8,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 # 相对导入
 from .ftservo_driver import FTServo
-
-
-
-
 class ServoController:
     def __init__(self, port="/dev/ttyACM0", baudrate=1_000_000, config_path="./servo_config.json"):
         self.servo = FTServo(port, baudrate)
@@ -321,7 +317,7 @@ class ServoController:
     def close(self):
         self.servo.close()
 if __name__ == "__main__":
-    controller = ServoController("/dev/ttyACM0", 1000000, "left_arm.json")
+    controller = ServoController("/dev/ttyACM0", 1000000, "right_arm.json")
 
     # 1️⃣ 平滑移动到指定目标姿态
     target_pose = {

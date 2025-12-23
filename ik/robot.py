@@ -432,7 +432,6 @@ class Robot:
         sol = solver.solve(self.ets, Tep, q0=q0, mask=mask)
         return IKResult(sol.success, sol.q, sol.reason)
 
-
 def create_so101_5dof():
     """
     SO-101 五自由度机械臂（基于 URDF 简化结构）ET 建模
@@ -512,8 +511,8 @@ def create_so101_5dof():
         "shoulder_pan": -1,
         "shoulder_lift": +1,
         "elbow_flex":   +1,
-        "wrist_flex":   -1,
-        "wrist_roll":   +1,
+        "wrist_flex":   +1,
+        "wrist_roll":   -1,
     }
     
     # 各关节的减速比
@@ -526,11 +525,10 @@ def create_so101_5dof():
     }
     
     return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
+
+
+
 def create_so101_5dof_gripper():
-    """
-
-    """
-
     # ---------------------------
     # 1) URDF 同步的关节限位
     # ---------------------------
@@ -604,8 +602,8 @@ def create_so101_5dof_gripper():
         "shoulder_pan": -1,
         "shoulder_lift": +1,
         "elbow_flex":   +1,
-        "wrist_flex":   -1,
-        "wrist_roll":   +1,
+        "wrist_flex":   +1,
+        "wrist_roll":   -1,
     }
     
     # 各关节的减速比
