@@ -116,7 +116,7 @@ class HandEyeCalibrator:
         
         # 焦距修正 - 根据实际测量结果修正
         # 原始测量 647mm，实际 600mm，修正系数 = 600/647
-        correction_factor = 600 / 647
+        correction_factor = 67/70
         K_original_fx = self.K[0, 0]
         K_original_fy = self.K[1, 1]
         self.K[0, 0] *= correction_factor  # fx

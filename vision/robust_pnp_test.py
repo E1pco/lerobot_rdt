@@ -33,12 +33,6 @@ class RobustPnPTester:
         # 加载相机内参
         if intrinsics_file:
             self.load_intrinsics(intrinsics_file)
-        else:
-            # 默认参数 (需要根据实际相机调整)
-            self.K = np.array([[550, 0, 553],
-                               [0, 553, 308],
-                               [0, 0, 1]], dtype=np.float64)
-            self.dist = np.array([-0.376, 0.178, 0.003, 0.012, -0.054])
         
         # 生成棋盘格3D点
         self.objp = np.zeros((board_size[0] * board_size[1], 3), dtype=np.float32)

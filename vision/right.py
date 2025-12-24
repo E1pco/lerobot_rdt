@@ -12,7 +12,7 @@ print(f"标定的原始内参: fx={K_original[0,0]:.1f}, fy={K_original[1,1]:.1f
 
 # 根据测量结果计算修正系数
 # 原始测量 647mm，实际 600mm，修正系数 = 600/647 ≈ 0.927
-correction_factor = 600 / 647
+correction_factor = 650 / 700.0
 
 # 修正后的内参矩阵
 K_corrected = K_original.copy()
