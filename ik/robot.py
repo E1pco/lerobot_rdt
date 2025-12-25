@@ -17,14 +17,14 @@ except ImportError:
 # 支持直接运行和模块导入
 try:
     from .et import ET, ETS
-    from .solvers import IK_LM, IK_GN, IK_NR, IK_QP
+    from .solver import IKResult, ikine_LM as _ikine_LM, ikine_GN as _ikine_GN, ikine_NR as _ikine_NR, ikine_QP as _ikine_QP
 except ImportError:
     # 直接运行时使用绝对导入
     import sys
     import os
     sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
     from ik.et import ET, ETS
-    from ik.solvers import IK_LM, IK_GN, IK_NR, IK_QP
+    from ik.solver import IKResult, ikine_LM as _ikine_LM, ikine_GN as _ikine_GN, ikine_NR as _ikine_NR, ikine_QP as _ikine_QP
 
 
 def atan2(first, second):
@@ -246,8 +246,21 @@ class Robot:
                 print(f" {name:15s} : 步数={current:4d}, Δ={delta:+5d} → q={q[i]:+.4f} rad ")
         
         return q
-
-
+    def fkine(self, q):
+        """
+        正运动学计算
+        
+        Parameters
+        ----------
+        q : array_like
+            关节角度
+            
+        Returns
+        -------
+        np.ndarray
+            4x4 齐次变换矩阵
+        """
+        return self.ets.fkine(q)
     def fk(self, qpos_data, joint_indices=None):
         """
         并返回末端执行器位姿向量 [X, Y, Z, Roll, Pitch, Yaw]
@@ -331,21 +344,7 @@ class Robot:
         IKResult
             求解结果，包含 .success, .q, .reason 属性
         """
-        if q0 is None:
-            q0 = np.zeros(self.n)
-        
-        solver = IK_LM(ilimit=ilimit, slimit=slimit, tol=tol, k=k, method=method)
-        
-        # 构建默认 mask
-        if mask is None:
-            mask = np.ones(6)
-        else:
-            mask = np.asarray(mask)
-        
-        # 求解
-        sol = solver.solve(self.ets, Tep, q0=q0, mask=mask)
-
-        return IKResult(sol.success, sol.q, sol.reason)
+        return _ikine_LM(self.ets, Tep, q0, ilimit, slimit, tol, mask, k, method)
     
     def ikine_GN(self, Tep, q0=None, ilimit=50, tol=1e-3, mask=None, pinv=False):
         """
@@ -371,49 +370,21 @@ class Robot:
         IKResult
             求解结果
         """
-        if q0 is None:
-            q0 = np.zeros(self.n)
-        
-        solver = IK_GN(ilimit=ilimit, tol=tol, pinv=pinv)
-        
-        if mask is None:
-            mask = np.ones(6)
-        else:
-            mask = np.asarray(mask)
-        
-        sol = solver.solve(self.ets, Tep, q0=q0, mask=mask)
-        return IKResult(sol.success, sol.q, sol.reason)
+        return _ikine_GN(self.ets, Tep, q0, ilimit, tol, mask, pinv)
     
     def ikine_NR(self, Tep, q0=None, ilimit=50, tol=1e-3, mask=None, pinv=False):
         """使用 Newton-Raphson 方法求解逆运动学"""
-        if q0 is None:
-            q0 = np.zeros(self.n)
-        
-        solver = IK_NR(ilimit=ilimit, tol=tol, pinv=pinv)
-        
-        if mask is None:
-            mask = np.ones(6)
-        else:
-            mask = np.asarray(mask)
-        
-        sol = solver.solve(self.ets, Tep, q0=q0, mask=mask)
-        return IKResult(sol.success, sol.q, sol.reason)
+        return _ikine_NR(self.ets, Tep, q0, ilimit, tol, mask, pinv)
     
     def ikine_QP(self, Tep, q0=None, ilimit=50, tol=1e-3, mask=None, 
                  kj=0.01, ks=1.0):
-        """使用二次规划方法求解逆运动学"""
-        if q0 is None:
-            q0 = np.zeros(self.n)
+        """
+        使用二次规划方法求解逆运动学
         
-        solver = IK_QP(ilimit=ilimit, tol=tol, kj=kj, ks=ks)
-        
-        if mask is None:
-            mask = np.ones(6)
-        else:
-            mask = np.asarray(mask)
-        
-        sol = solver.solve(self.ets, Tep, q0=q0, mask=mask)
-        return IKResult(sol.success, sol.q, sol.reason)
+        kj: 关节正则化系数
+        ks: 步长缩放系数
+        """
+        return _ikine_QP(self.ets, Tep, q0, ilimit, tol, mask, kj, ks)
 
 def create_so101_5dof():
     """
