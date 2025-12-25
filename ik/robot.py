@@ -248,23 +248,6 @@ class Robot:
         return q
 
 
-    
-    def fkine(self, q):
-        """
-        正运动学计算
-        
-        Parameters
-        ----------
-        q : array_like
-            关节角度
-            
-        Returns
-        -------
-        np.ndarray
-            4x4 齐次变换矩阵
-        """
-        return self.ets.fkine(q)
-
     def fk(self, qpos_data, joint_indices=None):
         """
         并返回末端执行器位姿向量 [X, Y, Z, Roll, Pitch, Yaw]
@@ -529,41 +512,6 @@ def create_so101_5dof():
 
 
 def create_so101_5dof_gripper():
-    # ---------------------------
-    # 1) URDF 同步的关节限位
-    # ---------------------------
-    qlim = np.array([
-        [-1.91986, -1.74533, -1.69,    -1.65806, -2.74385],
-        [ 1.91986,  1.74533,  1.69,     1.65806,  2.84121]
-    ])
-
-
-    # E1 = ET.tx(0.002798)
-    # E2 = ET.tz(0.05031)
-    # E3 = ET.Rz()
-    
-    # # to joint 2
-    # E4 = ET.tx(0.02957)
-    # E5 = ET.tz(0.11590)
-    # E6 = ET.Ry()
-    
-    # # to joint 3
-    # E7 = ET.tx(0.11323)
-    # E8 = ET.tz(0.00500)
-    # E9 = ET.Ry()
-
-    # # to joint 4
-    # E10 = ET.tx(0.0650)
-    # E11 = ET.tz(0.00519)
-    # E12 = ET.Ry()
-    
-    # # to joint 5
-    # E13 = ET.tx(0.02413)
-    # E14 = ET.tz(0)
-    # E15 = ET.Rx()  
-    
-    # E17 = ET.tx(0.07440)
-        # to joint 1
     E1 = ET.tx(0.0612)
     E2 = ET.tz(0.0598)
     E3 = ET.Rz()
@@ -579,7 +527,7 @@ def create_so101_5dof_gripper():
     E9 = ET.Ry()
 
     # to joint 4
-    E10 = ET.tx(0.15504)
+    E10 = ET.tx(0.13504)
     E11 = ET.tz(0.00519)
     E12 = ET.Ry()
     
@@ -588,22 +536,20 @@ def create_so101_5dof_gripper():
     E14 = ET.tz(0.00996)
     E15 = ET.Rx()  
     
-    E17 = ET.tx(0.1)
+    E17 = ET.tx(0.09538)
     # to gripper
-
-    ets = E1 * E2 * E3 *E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 * E17
-
-    
-    # 关节名称
+   
+    ets = E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 # E1 * E2 * E3 * E17 
     joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
-    
-    # 各关节的方向符号 (+1/-1)
+    # Set joint limits
+    qlim = [[-1.57, -1.57, -1.5, -3.14158], 
+                  [ 1.57,  1.57,  1.5,  3.14158]]
     gear_sign = {
         "shoulder_pan": -1,
         "shoulder_lift": +1,
         "elbow_flex":   +1,
-        "wrist_flex":   +1,
-        "wrist_roll":   -1,
+        "wrist_flex":   -1,
+        "wrist_roll":   +1,
     }
     
     # 各关节的减速比

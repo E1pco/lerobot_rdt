@@ -116,7 +116,7 @@ class HandEyeCalibrator:
         
         # 焦距修正 - 根据实际测量结果修正
         # 原始测量 647mm，实际 600mm，修正系数 = 600/647
-        correction_factor = 67/70
+        correction_factor = 1
         K_original_fx = self.K[0, 0]
         K_original_fy = self.K[1, 1]
         self.K[0, 0] *= correction_factor  # fx
@@ -158,7 +158,7 @@ class HandEyeCalibrator:
             baudrate=baudrate, 
             config_path=os.path.join(os.path.dirname(__file__), "../driver/servo_config.json")
         )
-        self.robot = create_so101_5dof_gripper()
+        self.robot = create_so101_5dof()
         self.robot.set_servo_controller(self.controller)
         
         print("✅ 机器人初始化完成")
@@ -428,6 +428,11 @@ class HandEyeCalibrator:
     def collect_data_interactive(self, cam_id=0):
         """
         交互式采集标定数据 (增强版 - 带PnP稳定性检测)
+        
+        Parameters
+        ----------
+        cam_id : int
+            相机ID (默认 0)
         
         按键:
           SPACE - 采集当前位姿
@@ -824,6 +829,7 @@ def main():
     parser.add_argument('--intrinsic', default='camera_intrinsics.yaml', help='相机内参文件')
     parser.add_argument('--square-size', type=float, default=20.73, help='棋盘格方格大小(mm)')
     parser.add_argument('--port', default='/dev/ttyACM0', help='串口')
+    parser.add_argument('--camera', type=int, default=0, help='相机ID (默认 0)')
     
     args = parser.parse_args()
     
@@ -842,7 +848,7 @@ def main():
             # 回中
             print("\n🏠 机械臂回中...")
             # 采集数据
-            calibrator.collect_data_interactive()
+            calibrator.collect_data_interactive(cam_id=args.camera)
         
         if args.calibrate or args.all or (not args.collect and not args.all):
             # 加载数据

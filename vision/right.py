@@ -12,7 +12,7 @@ print(f"标定的原始内参: fx={K_original[0,0]:.1f}, fy={K_original[1,1]:.1f
 
 # 根据测量结果计算修正系数
 # 原始测量 647mm，实际 600mm，修正系数 = 600/647 ≈ 0.927
-correction_factor = 650 / 700.0
+correction_factor = 1
 
 # 修正后的内参矩阵
 K_corrected = K_original.copy()
@@ -25,7 +25,7 @@ board_size = (11, 8)
 square_size = 0.02073
 
 # 打开相机测试
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 

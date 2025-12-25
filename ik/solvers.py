@@ -230,7 +230,7 @@ class IK_GN(IKSolver):
         return E, q
 
 
-class IK_LM(IKSolver):
+class IK_LM(IKSoldver):
     """
     Levenberg-Marquardt 数值逆运动学求解器
     
@@ -260,12 +260,6 @@ class IK_LM(IKSolver):
         零空间运动的影响角度/距离
     **kwargs
         传递给 IKSolver 的其他参数
-        
-    Examples
-    --------
-    >>> from ik import IK_LM
-    >>> solver = IK_LM(k=1.0, method='chan')
-    >>> solution = solver.solve(robot.ets(), Tep, q0)
     """
     
     def __init__(

@@ -27,7 +27,7 @@ def build_target_pose(x=0.5, y=0, z=0.1, roll=0.0, pitch=np.pi/4, yaw=0.0):
 # -----------------------------
 def main():
     # 4.1 初始化底层控制
-    controller = ServoController(port="/dev/ttyACM0", baudrate=1_000_000, config_path="./driver/servo_config.json")
+    controller = ServoController(port="/dev/left_arm", baudrate=1_000_000, config_path="./driver/servo_config.json")
     robot = create_so101_5dof()
     
     # 设置舵机控制器到机器人

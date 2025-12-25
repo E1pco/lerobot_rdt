@@ -31,8 +31,8 @@ class CameraCalibrator:
     def __init__(self, 
                  board_size=(11, 8),
                  square_size=0.02073,  # 20.73mm - 已校准
-                 image_folder="./calib_images",
-                 output_prefix="camera_intrinsics"):
+                 image_folder="./calib_images_video2",
+                 output_prefix="camera_intrinsics_2"):
         """
         Parameters
         ----------
@@ -81,7 +81,7 @@ class CameraCalibrator:
         
         os.makedirs(image_folder, exist_ok=True)
     
-    def capture_images(self, cam_id=0, min_images=15, max_images=30):
+    def capture_images(self, cam_id=2, min_images=15, max_images=30):
         """
         交互式采集标定图像
         
@@ -580,7 +580,7 @@ def main():
     parser.add_argument('--board-cols', type=int, default=11, help='棋盘格列数')
     parser.add_argument('--board-rows', type=int, default=8, help='棋盘格行数')
     parser.add_argument('--square-size', type=float, default=20.73, help='方格大小(mm)')
-    parser.add_argument('--image-folder', default='./calib_images', help='图像文件夹')
+    parser.add_argument('--image-folder', default='./calib_images_2', help='图像文件夹')
     
     args = parser.parse_args()
     

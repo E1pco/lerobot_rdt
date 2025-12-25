@@ -55,7 +55,7 @@ class BlueCircleTracker:
         
         # HSV 蓝色范围
         self.hsv_lower1 = np.array([100, 80, 80])
-        self.hsv_upper1 = np.array([130, 255, 255])
+        self.hsv_upper1 = np.array([120, 255, 255])
         self.hsv_lower2 = None
         self.hsv_upper2 = None
         
@@ -93,7 +93,7 @@ class BlueCircleTracker:
             self.T_cam_gripper = np.load(calib_file)
             print("✅ 已加载手眼标定参数")
     
-    def init_robot(self, port="/dev/ttyACM0", baudrate=1_000_000):
+    def init_robot(self, port="/dev/right_arm", baudrate=1_000_000):
         """初始化机器人"""
         print("\n🤖 初始化机器人...")
         
@@ -138,16 +138,16 @@ class BlueCircleTracker:
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
         
-        # 方法1: 霍夫圆检测（更宽松的参数）
+        # 方法1: 霍夫圆检测（使用更严格参数）
         blurred = cv2.GaussianBlur(mask, (9, 9), 2)
         circles = cv2.HoughCircles(
             blurred,
             cv2.HOUGH_GRADIENT,
-            dp=1.2,          # 稍微降低分辨率
+            dp=1,
             minDist=50,
             param1=50,
-            param2=25,       # 降低阈值，更容易检测
-            minRadius=15,    # 允许更小的圆
+            param2=30,       # 提高阈值，只检测明显的圆
+            minRadius=15,
             maxRadius=250
         )
         
@@ -158,7 +158,7 @@ class BlueCircleTracker:
             radius = best_circle[2]
             return True, center, radius, mask
         
-        # 方法2: 轮廓检测 + 椭圆/最小外接圆（处理形变）
+        # 方法2: 严格的轮廓拟合圆形
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         if not contours:
@@ -168,8 +168,8 @@ class BlueCircleTracker:
         largest_contour = max(contours, key=cv2.contourArea)
         area = cv2.contourArea(largest_contour)
         
-        # 面积过滤
-        if area < 500:  # 太小忽略
+        # 面积过滤（更严格）
+        if area < 800:  # 增加最小面积要求
             return False, None, None, mask
         
         # 计算圆度（判断是否接近圆形）
@@ -179,24 +179,26 @@ class BlueCircleTracker:
         else:
             circularity = 0
         
-        # 即使形变也尝试检测（圆度阈值放宽到0.3）
-        if circularity > 0.5:
-            # 尝试椭圆拟合（需要至少5个点）
+        # 更严格的圆度要求（0.7 表示接近圆形）
+        if circularity > 0.7:
+            # 尝试圆拟合（而不是椭圆）
             if len(largest_contour) >= 5:
-                ellipse = cv2.fitEllipse(largest_contour)
-                center = (int(ellipse[0][0]), int(ellipse[0][1]))
-                # 取椭圆长短轴平均作为半径
-                radius = int((ellipse[1][0] + ellipse[1][1]) / 4)
-                return True, center, radius, mask
+                # 使用最小二乘法拟合圆
+                (cx, cy), radius = cv2.minEnclosingCircle(largest_contour)
+                center = (int(cx), int(cy))
+                radius = int(radius)
+                
+                # 验证拟合质量：计算轮廓点到圆的距离偏差
+                points = largest_contour.reshape(-1, 2).astype(np.float32)
+                distances = np.abs(np.linalg.norm(points - np.array([cx, cy]), axis=1) - radius)
+                mean_error = np.mean(distances)
+                std_error = np.std(distances)
+                
+                # 只有当拟合误差较小时才接受
+                if mean_error < radius * 0.15 and std_error < radius * 0.2:  # 误差在15%以内
+                    return True, center, radius, mask
         
-        # 最后备选：最小外接圆
-        (cx, cy), radius = cv2.minEnclosingCircle(largest_contour)
-        center = (int(cx), int(cy))
-        radius = int(radius)
-        
-        if radius > 15:  # 半径合理
-            return True, center, radius, mask
-        
+        # 不符合严格条件，拒绝
         return False, None, None, mask
     
     def estimate_pose_from_circle(self, center, radius_px):
@@ -335,7 +337,7 @@ class BlueCircleTracker:
                         ik_res = self.robot.ikine_LM(
                             T_gripper_base_des, 
                             q0=q_curr,
-                            ilimit=300,
+                            ilimit=100,
                             slimit=3,
                             tol=1e-3,
                             mask=np.array([1, 1, 1, 0.5, 0.5, 0]),

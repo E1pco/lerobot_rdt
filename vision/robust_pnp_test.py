@@ -196,7 +196,7 @@ class RobustPnPTester:
             'r_std_xyz': r_std
         }
     
-    def run(self, cam_id=0):
+    def run(self, cam_id=2):
         """运行测试"""
         cap = cv2.VideoCapture(cam_id)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
@@ -348,7 +348,7 @@ class RobustPnPTester:
 
 def main():
     parser = argparse.ArgumentParser(description='PnP鲁棒性测试')
-    parser.add_argument('--camera', type=int, default=0, help='相机ID')
+    parser.add_argument('--camera', type=int, default=2, help='相机ID')
     parser.add_argument('--square-size', type=float, default=20.73, help='棋盘格方格边长(mm)')
     parser.add_argument('--intrinsics', type=str, default=None, help='相机内参文件路径')
     parser.add_argument('--board-cols', type=int, default=11, help='棋盘格内角点列数')
@@ -360,7 +360,7 @@ def main():
     intrinsics_file = args.intrinsics
     if intrinsics_file is None:
         import os
-        default_path = os.path.join(os.path.dirname(__file__), 'camera_intrinsics.yaml')
+        default_path = os.path.join(os.path.dirname(__file__), 'camera_intrinsics_2.yaml')
         if os.path.exists(default_path):
             intrinsics_file = default_path
     

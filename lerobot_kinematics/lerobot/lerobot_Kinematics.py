@@ -155,7 +155,7 @@ def lerobot_IK(q_now, target_pose, robot):
         # If IK solution is successful, 
         q = sol.q
         q = smooth_joint_motion(q_now, q, robot)
-        # print(f'{q=}')
+        print(f'{q=}')
         return q, True
     else:
         # If the target position is unreachable, IK fails
@@ -174,3 +174,12 @@ def smooth_joint_motion(q_now, q_new, robot):
     
     robot.q = q_new
     return q_new
+if __name__ == "__main__":
+    robot = get_robot("so101")
+    q_now = [0, 0, 0, 0]
+    target_pose = [0.2, 0.1, 0.1, 0, 0, 0]
+    q_new, success = lerobot_IK(q_now, target_pose, robot)
+    if success:
+        print(f"IK Solution: {q_new}")
+        fk_pose = lerobot_FK(q_new, robot)
+        print(f"FK Pose from IK Solution: {fk_pose}")
