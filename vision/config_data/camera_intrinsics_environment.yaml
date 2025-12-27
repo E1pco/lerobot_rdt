@@ -1,0 +1,22 @@
+%YAML:1.0
+---
+K: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 310.74679144786842, 0., 591.26352751691479, 0.,
+       319.25087660246561, 440.527749690593, 0., 0., 1. ]
+distCoeffs: !!opencv-matrix
+   rows: 1
+   cols: 5
+   dt: d
+   data: [ -0.16312432367075422, 0.050976899864376958,
+       -0.027651075174268253, -0.0038147070624681189,
+       -0.0062606002589939425 ]
+image_width: 1280
+image_height: 720
+board_size_cols: 4
+board_size_rows: 4
+square_size: 0.0098300000000000002
+calibration_date: "2025-12-28 02:25:12"
+mean_reprojection_error: 0.82528455970215986

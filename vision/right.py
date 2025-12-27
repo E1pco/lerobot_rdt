@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # 加载新标定的相机内参
-fs = cv2.FileStorage('camera_intrinsics.yaml', cv2.FILE_STORAGE_READ)
+fs = cv2.FileStorage('config_data/camera_intrinsics_environment.yaml', cv2.FILE_STORAGE_READ)
 K_original = fs.getNode('K').mat()
 dist_original = fs.getNode('distCoeffs').mat().flatten()
 fs.release()
@@ -21,8 +21,8 @@ K_corrected[1, 1] *= correction_factor  # fy
 
 print(f"修正后的内参: fx={K_corrected[0,0]:.1f}, fy={K_corrected[1,1]:.1f}")
 
-board_size = (11, 8)
-square_size = 0.02073
+board_size = (4, 4)
+square_size = 0.00983
 
 # 打开相机测试
 cap = cv2.VideoCapture(2)

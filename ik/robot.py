@@ -199,7 +199,7 @@ class Robot:
             targets[name] = steps
         
         return targets
-    def read_joint_angles(self, joint_names=None, home_pose=None, gear_sign=None, verbose=True):
+    def read_joint_angles(self, joint_names=None, home_pose=None, gear_sign=None, gear_ratio=None, verbose=True):
         """
         读取舵机实际位置并计算关节角度
         
@@ -212,6 +212,8 @@ class Robot:
             若为 None，则使用 self.servo.home_pose
         gear_sign : dict, optional
             方向符号 {"joint_name": +1 or -1}，默认为 self.gear_sign
+        gear_ratio : dict, optional
+            齿轮比 {"joint_name": ratio}，默认为 self.gear_ratio
         verbose : bool
             是否打印详细信息（默认 True）
         
@@ -228,6 +230,8 @@ class Robot:
             joint_names = self.joint_names
         if gear_sign is None:
             gear_sign = self.gear_sign
+        if gear_ratio is None:
+            gear_ratio = self.gear_ratio
         if home_pose is None:
             home_pose = self.servo.home_pose
         positions = self.servo.read_servo_positions(joint_names=joint_names, verbose=False)
@@ -240,7 +244,7 @@ class Robot:
         for i, name in enumerate(joint_names):
             current = positions[name]
             delta = current - home_pose[name]
-            q[i] = gear_sign[name] * delta / counts_per_rad
+            q[i] = gear_sign[name] * delta / (counts_per_rad * gear_ratio[name])
             
             if verbose:
                 print(f" {name:15s} : 步数={current:4d}, Δ={delta:+5d} → q={q[i]:+.4f} rad ")
@@ -442,7 +446,7 @@ def create_so101_5dof():
     E9 = ET.Ry()
 
     # to joint 4
-    E10 = ET.tx(0.15504)
+    E10 = ET.tx(0.13504)
     E11 = ET.tz(0.00519)
     E12 = ET.Ry()
     
@@ -483,58 +487,6 @@ def create_so101_5dof():
 
 
 def create_so101_5dof_gripper():
-    E1 = ET.tx(0.0612)
-    E2 = ET.tz(0.0598)
-    E3 = ET.Rz()
-    
-    # to joint 2
-    E4 = ET.tx(0.02943)
-    E5 = ET.tz(0.05504)
-    E6 = ET.Ry()
-    
-    # to joint 3
-    E7 = ET.tz(0.1127)
-    E8 = ET.tx(0.02798)
-    E9 = ET.Ry()
-
-    # to joint 4
-    E10 = ET.tx(0.13504)
-    E11 = ET.tz(0.00519)
-    E12 = ET.Ry()
-    
-    # to joint 5
-    E13 = ET.tx(0.0593)
-    E14 = ET.tz(0.00996)
-    E15 = ET.Rx()  
-    
-    E17 = ET.tx(0.09538)
-    # to gripper
-   
-    ets = E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 # E1 * E2 * E3 * E17 
-    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
-    # Set joint limits
-    qlim = [[-1.57, -1.57, -1.5, -3.14158], 
-                  [ 1.57,  1.57,  1.5,  3.14158]]
-    gear_sign = {
-        "shoulder_pan": -1,
-        "shoulder_lift": +1,
-        "elbow_flex":   +1,
-        "wrist_flex":   -1,
-        "wrist_roll":   +1,
-    }
-    
-    # 各关节的减速比
-    gear_ratio = {
-        "shoulder_pan": 1.0,
-        "shoulder_lift": 1.0,
-        "elbow_flex":   1.0,
-        "wrist_flex":   1.0,
-        "wrist_roll":   1.0,
-    }
-    
-    return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
-
-def create_so101():
     # to joint 1
     E1 = ET.tx(0.0612)
     E2 = ET.tz(0.0598)
@@ -563,15 +515,107 @@ def create_so101():
     E17 = ET.tx(0.09538)
     # to gripper
    
-    ets = E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 # E1 * E2 * E3 * E17 
+    ets = E1*E2*E3*E4 * E5 * E6 * E7 * E8 * E9 * E10 * E11 * E12 * E13 * E14 * E15 *E17# E1 * E2 * E3 * E17 
     joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"]
     # Set joint limits
-    qlim = [[-1.57, -1.57, -1.5, -3.14158], 
-                  [ 1.57,  1.57,  1.5,  3.14158]]
+    qlim = np.array([
+        [-1.91986, -1.74533, -1.69,    -1.65806, -2.74385],
+        [ 1.91986,  1.74533,  1.69,     1.65806,  2.84121]
+    ])
     gear_sign = {
         "shoulder_pan": -1,
         "shoulder_lift": +1,
         "elbow_flex":   +1,
+        "wrist_flex":   +1,
+        "wrist_roll":   -1,
+    }
+    
+    # 各关节的减速比
+    gear_ratio = {
+        "shoulder_pan": 1.0,
+        "shoulder_lift": 1.0,
+        "elbow_flex":   1.0,
+        "wrist_flex":   1.0,
+        "wrist_roll":   1.0,
+    }
+    
+    return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
+
+def create_so101():
+    """
+    基于 DH 参数的 SO-101 机械臂建模
+    严格按照给定的 DH 参数构建 ETS 链
+    """
+    import math
+    pi = math.pi
+    
+    # 基于 DH 参数构建 ETS 链
+    # ETS = Rz(q1 - 1e-5) * Tz(0.0624) * Tx(0.038835) *
+    #       Rz(q2 + 0.00038) * Tz(0.0542) * Tx(0.030399) * Rx(-pi/2) *
+    #       Rz(q3 - 1.3279) * Tz(-0.018278) * Tx(0.116) *
+    #       Rz(q4 + 1.2889) * Tx(0.135) *
+    #       Rz(q5 - 1.5325) * Tz(0.0181) * Rx(pi/2) *
+    #       Rz(q6 - 2.78913) * Tz(-0.0845) * Tx(0.0202) * Rx(pi/2)
+    
+    # Joint 1 (q1)
+    E1 = ET.Rz()  # q1 joint
+    E2 = ET.Rz(-1e-5)  # offset
+    E3 = ET.tz(0.0624)
+    E4 = ET.tx(0.038835)
+    
+    # Joint 2 (q2)  
+    E5 = ET.Rz()  # q2 joint
+    E6 = ET.Rz(0.00038)  # offset
+    E7 = ET.tz(0.0542)
+    E8 = ET.tx(0.030399)
+    E9 = ET.Rx(-pi/2)
+    
+    # Joint 3 (q3)
+    E10 = ET.Rz()  # q3 joint
+    E11 = ET.Rz(-1.3279)  # offset
+    E12 = ET.tz(-0.018278)
+    E13 = ET.tx(0.116)
+    
+    # Joint 4 (q4)
+    E14 = ET.Rz()  # q4 joint
+    E15 = ET.Rz(1.2889)  # offset
+    E16 = ET.tx(0.135)
+    
+    # Joint 5 (q5)
+    E17 = ET.Rz()  # q5 joint
+    E18 = ET.Rz(-1.5325)  # offset
+    E19 = ET.tz(0.0181)
+    E20 = ET.Rx(pi/2)
+    
+    # Joint 6 (q6) - gripper
+    # E21 = ET.Rz()  # q6 joint (gripper)
+    E22 = ET.Rz(-2.78913)  # offset
+    E23 = ET.tz(-0.0845)
+    E24 = ET.tx(0.0202)
+    E25 = ET.Rx(pi/2)
+    
+    # 构建完整的 ETS 链
+    ets = (E1 * E2 * E3 * E4 * 
+           E5 * E6 * E7 * E8 * E9 *
+           E10 * E11 * E12 * E13 *
+           E14 * E15 * E16 *
+           E17 * E18 * E19 * E20 *
+           E22 * E23 * E24 * E25)
+    
+    # 关节名称 (6个关节)
+    joint_names = ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll", "gripper"]
+    
+    # 关节限位 (6个关节)
+    qlim = np.array([
+        [-1.91986, -1.74533, -1.69, -1.65806, -2.74385], 
+        [ 1.91986,  1.74533,  1.69,  1.65806,  2.84121]
+    ])
+    
+    # 各关节的方向符号
+    gear_sign = {
+        "shoulder_pan": -1,
+        "shoulder_lift": -1,
+        "elbow_flex":   -1,
         "wrist_flex":   -1,
         "wrist_roll":   +1,
     }
@@ -585,7 +629,7 @@ def create_so101():
         "wrist_roll":   1.0,
     }
     
-    return Robot(ets, qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
+    return Robot(ets, qlim=qlim, joint_names=joint_names, gear_sign=gear_sign, gear_ratio=gear_ratio)
 
 
 
