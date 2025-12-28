@@ -29,9 +29,9 @@ class CameraCalibrator:
     """改进的相机标定器"""
     
     def __init__(self, 
-                 board_size=(4, 4),
-                 square_size=0.00983, 
-                 image_folder="./calib_images_environment"):
+                 board_size=(11, 8),
+                 square_size=0.02073,  # 20.73mm
+                 image_folder="./calib_images_right"):
         """
         Parameters
         ----------
@@ -593,8 +593,8 @@ def main():
     parser.add_argument('--capture',                                                action='store_true', help='采集标定图像')
     parser.add_argument('--calibrate', action='store_true', help='执行标定')
     parser.add_argument('--all', action='store_true', help='采集+标定')
-    parser.add_argument('--camera-id', type=int, default=0, help='相机ID')
-    parser.add_argument('--image-folder', default='./calib_images_environment', help='图像文件夹')
+    parser.add_argument('--camid', type=int, default=0, help='相机ID')
+    parser.add_argument('--image-folder', default='./calib_images_right', help='图像文件夹')
     
     args = parser.parse_args()
     
@@ -603,7 +603,7 @@ def main():
     )
     
     if args.capture or args.all:
-        calibrator.capture_images(cam_id=args.camera_id)
+        calibrator.capture_images(cam_id=args.camid)
     
     if args.calibrate or args.all or (not args.capture and not args.all):
         if calibrator.load_images():

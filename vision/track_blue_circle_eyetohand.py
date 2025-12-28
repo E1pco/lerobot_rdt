@@ -18,7 +18,6 @@ import os
 import cv2
 import numpy as np
 import time
-import yaml
 
 # 添加父目录到路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -43,11 +42,15 @@ class BlueCircleTrackerEyeToHand:
         # 路径配置
         self.config_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config_data')
         self.intrinsic_file = os.path.join(self.config_dir, 'camera_intrinsics_environment.yaml')
-        self.extrinsic_file = os.path.join(self.config_dir, 'handeye_result_envir.npy')
+        # 手眼标定结果优先使用 handeye_result_envir.npy（新流程产物），回退 camera_extrinsics.npy（旧命名，内容可能是 T_cam_base）
+        self.handeye_candidates = [
+            os.path.join(self.config_dir, 'handeye_result_envir.npy'),
+            os.path.join(self.config_dir, 'camera_extrinsics.npy'),
+        ]
         
         # 加载参数
         self.load_camera_intrinsics(self.intrinsic_file)
-        self.load_handeye_calibration(self.extrinsic_file)
+        self.load_handeye_calibration(self.handeye_candidates)
         
         # 初始化机器人
         self.robot = None
@@ -56,6 +59,9 @@ class BlueCircleTrackerEyeToHand:
         # HSV 蓝色范围
         self.hsv_lower1 = np.array([100, 80, 80])
         self.hsv_upper1 = np.array([120, 255, 255])
+
+        # 运行时状态
+        self._k_scaled = False
         
         print("="*60)
         print("🔵 蓝色圆形抓取系统 (Eye-to-Hand)")
@@ -84,29 +90,76 @@ class BlueCircleTrackerEyeToHand:
             
             self.K = camera_matrix_node.mat()
             self.dist = dist_coeffs_node.mat().flatten()
+
+            # 记录标定分辨率（若yaml里有）
+            w_node = fs.getNode('image_width')
+            h_node = fs.getNode('image_height')
+            self.intrinsic_width = int(w_node.real()) if not w_node.empty() else None
+            self.intrinsic_height = int(h_node.real()) if not h_node.empty() else None
+
+            self.K0 = self.K.copy()
             fs.release()
             
             print(f"📷 已加载相机内参: {os.path.basename(yaml_path)}")
             print(f"   fx={self.K[0,0]:.1f}, fy={self.K[1,1]:.1f}")
+            if self.intrinsic_width and self.intrinsic_height:
+                print(f"   标定分辨率: {self.intrinsic_width}x{self.intrinsic_height}")
             
         except Exception as e:
             print(f"❌ 加载相机内参失败: {e}")
             raise
     
     def load_handeye_calibration(self, npy_path):
-        """加载手眼标定结果 (T_cam_base)"""
-        if not os.path.exists(npy_path):
-            print(f"⚠️ 未找到手眼标定文件: {npy_path}")
-            print("   将无法进行坐标转换")
-            self.T_cam_base = None
-        else:
-            try:
-                self.T_cam_base = np.load(npy_path)
-                print(f"✅ 已加载手眼标定参数: {os.path.basename(npy_path)}")
-                print(f"   T_cam_base:\n{self.T_cam_base}")
-            except Exception as e:
-                print(f"❌ 加载手眼标定参数失败: {e}")
-                self.T_cam_base = None
+        """加载手眼标定结果 (T_cam_base)
+
+        Parameters
+        ----------
+        npy_path : str | list[str]
+            单个路径或候选路径列表（按顺序尝试）。
+        """
+        candidates = npy_path if isinstance(npy_path, (list, tuple)) else [npy_path]
+
+        self.T_cam_base = None
+        self.handeye_path = None
+
+        for path in candidates:
+            if path and os.path.exists(path):
+                try:
+                    self.T_cam_base = np.load(path)
+                    self.handeye_path = path
+                    print(f"✅ 已加载手眼标定: {os.path.basename(path)}")
+                    break
+                except Exception as e:
+                    print(f"❌ 加载手眼标定参数失败: {path} ({e})")
+
+        if self.T_cam_base is None:
+            print("⚠️ 未找到可用的手眼标定文件，将无法进行坐标转换")
+
+    def _maybe_scale_K_to_frame(self, frame):
+        """若相机实际分辨率与标定分辨率不同，按比例缩放 K。"""
+        if self._k_scaled:
+            return
+        if frame is None:
+            return
+        h, w = frame.shape[:2]
+        if not self.intrinsic_width or not self.intrinsic_height:
+            print(f"ℹ️  当前相机分辨率: {w}x{h} (yaml未提供标定分辨率，跳过K缩放)")
+            self._k_scaled = True
+            return
+        print(f"ℹ️  当前相机分辨率: {w}x{h}")
+        if (w, h) == (self.intrinsic_width, self.intrinsic_height):
+            self._k_scaled = True
+            return
+        sx = w / float(self.intrinsic_width)
+        sy = h / float(self.intrinsic_height)
+        K = self.K0.copy()
+        K[0, 0] *= sx
+        K[1, 1] *= sy
+        K[0, 2] *= sx
+        K[1, 2] *= sy
+        self.K = K
+        self._k_scaled = True
+        print(f"⚠️  分辨率不一致，已缩放K: sx={sx:.4f}, sy={sy:.4f}")
     
     def init_robot(self, port="/dev/left_arm", baudrate=1_000_000):
         """初始化机器人"""
@@ -175,20 +228,19 @@ class BlueCircleTrackerEyeToHand:
     
     def estimate_pose_from_circle(self, center, radius_px):
         """从圆形的像素坐标和半径估算3D位置 (相机坐标系)"""
-        fx = self.K[0, 0]
-        fy = self.K[1, 1]
-        cx = self.K[0, 2]
-        cy = self.K[1, 2]
-        
+        fx = float(self.K[0, 0])
+        fy = float(self.K[1, 1])
         # 估算深度 Z = f * R / r
-        f = (fx + fy) / 2
-        Z = f * self.circle_radius / radius_px
-        
-        # 反投影
-        u, v = center
-        X = (u - cx) * Z / fx
-        Y = (v - cy) * Z / fy
-        
+        f = (fx + fy) / 2.0
+        Z = f * self.circle_radius / float(radius_px)
+
+        # 去畸变反投影：undistortPoints 输出归一化坐标 (x, y)，使 X=x*Z, Y=y*Z
+        u, v = float(center[0]), float(center[1])
+        pts = np.array([[[u, v]]], dtype=np.float32)
+        und = cv2.undistortPoints(pts, self.K, self.dist)  # (1,1,2), normalized
+        x_n, y_n = float(und[0, 0, 0]), float(und[0, 0, 1])
+        X = x_n * Z
+        Y = y_n * Z
         return np.array([X, Y, Z])
     
     def read_robot_pose(self, verbose=False):
@@ -216,6 +268,11 @@ class BlueCircleTrackerEyeToHand:
 
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
+        # 用首帧做一次K缩放/诊断
+        ret0, frame0 = cap.read()
+        if ret0:
+            self._maybe_scale_K_to_frame(frame0)
         
         print("\n🎮 控制说明:")
         print("  'f' - 开启/关闭 跟随模式")
@@ -226,6 +283,9 @@ class BlueCircleTrackerEyeToHand:
         following = False
         gain = 0.8
         step_limit = 0.080
+
+        last_print_t = 0.0
+        print_interval_s = 0.2
         
         try:
             while True:
@@ -246,22 +306,25 @@ class BlueCircleTrackerEyeToHand:
                     # 1. 计算相机坐标系下的位置
                     pos_cam = self.estimate_pose_from_circle(center, radius_px)
                     pos_cam_mm = pos_cam * 1000
-                    
-                    # 打印 PnP 结果
-                    print(f"PnP (Cam): [{pos_cam_mm[0]:6.1f}, {pos_cam_mm[1]:6.1f}, {pos_cam_mm[2]:6.1f}] mm")
+
+                    now = time.time()
+                    do_print = (now - last_print_t) >= print_interval_s
+                    if do_print:
+                        last_print_t = now
+                        print(f"Cam:  [{pos_cam_mm[0]:7.1f}, {pos_cam_mm[1]:7.1f}, {pos_cam_mm[2]:7.1f}] mm")
                     
                     cv2.putText(display, f"PnP(Cam): [{pos_cam_mm[0]:.0f}, {pos_cam_mm[1]:.0f}, {pos_cam_mm[2]:.0f}]", 
                                (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
                     
                     # 2. 转换到基座坐标系 (Eye-to-Hand)
                     if self.T_cam_base is not None:
-                        # P_base = T_cam_base @ P_cam
+                        # P_base = T_handeye @ P_cam
                         pos_cam_homo = np.append(pos_cam, 1.0)
                         pos_target_base = (self.T_cam_base @ pos_cam_homo)[:3]
                         pos_target_mm = pos_target_base * 1000
-                        
-                        # 打印目标位姿
-                        print(f"Target (Base): [{pos_target_mm[0]:6.1f}, {pos_target_mm[1]:6.1f}, {pos_target_mm[2]:6.1f}] mm")
+
+                        if do_print:
+                            print(f"Base: [{pos_target_mm[0]:7.1f}, {pos_target_mm[1]:7.1f}, {pos_target_mm[2]:7.1f}] mm")
                         
                         cv2.putText(display, f"Target(Base): [{pos_target_mm[0]:.0f}, {pos_target_mm[1]:.0f}, {pos_target_mm[2]:.0f}]", 
                                    (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)

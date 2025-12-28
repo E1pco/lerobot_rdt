@@ -49,7 +49,7 @@ class HandEyeCalibrator:
     def __init__(self, 
                  board_size=(11, 8),
                  square_size=0.02073,  # 20.73mm
-                 intrinsic_file='./config_data/camera_intrinsics_environment.yaml',  # 默认使用脚本目录下的文件
+                 intrinsic_file='camera_intrinsics.yaml',
                  output_dir='./handeye_data'):
         """
         Parameters
@@ -59,7 +59,7 @@ class HandEyeCalibrator:
         square_size : float
             棋盘格方格大小 (米)
         intrinsic_file : str
-            相机内参文件路径，默认使用脚本目录下的 camera_intrinsics.yaml
+            相机内参文件路径
         output_dir : str
             数据保存目录
         """
@@ -69,11 +69,6 @@ class HandEyeCalibrator:
         
         # 创建输出目录
         os.makedirs(output_dir, exist_ok=True)
-        
-        # 如果未指定内参文件，使用脚本所在目录的文件
-        if intrinsic_file is None:
-            script_dir = os.path.dirname(os.path.abspath(__file__))
-            intrinsic_file = os.path.join(script_dir, 'camera_intrinsics.yaml')
         
         # 加载相机内参
         self.load_camera_intrinsics(intrinsic_file)
@@ -106,46 +101,26 @@ class HandEyeCalibrator:
         print("="*70)
     
     def load_camera_intrinsics(self, yaml_path):
-        """加载相机内参"""
+        """加载相机内参 - 仅读取K和distCoeffs,棋盘格参数由脚本设定"""
         if not os.path.exists(yaml_path):
             raise FileNotFoundError(f"未找到相机内参文件: {yaml_path}")
         
         fs = cv2.FileStorage(yaml_path, cv2.FILE_STORAGE_READ)
         self.K = fs.getNode('K').mat()
         self.dist = fs.getNode('distCoeffs').mat().flatten()
-        
-        correction_factor = 1
-        K_original_fx = self.K[0, 0]
-        K_original_fy = self.K[1, 1]
-        self.K[0, 0] *= correction_factor  # fx
-        self.K[1, 1] *= correction_factor  # fy
-        
-        print(f"\n📷 焦距修正:")
-        print(f"   原始: fx={K_original_fx:.1f}, fy={K_original_fy:.1f}")
-        print(f"   修正系数: {correction_factor:.4f} (600/647)")
-        print(f"   修正后: fx={self.K[0,0]:.1f}, fy={self.K[1,1]:.1f}")
-        
-        # 尝试读取文件中保存的方格大小
-        square_size_node = fs.getNode('square_size')
-        if not square_size_node.empty():
-            file_square_size = square_size_node.real()
-            if abs(file_square_size - self.square_size) > 0.0001:
-                print(f"\n⚠️  警告: 方格大小不一致!")
-                print(f"   内参文件中: {file_square_size*1000:.2f} mm")
-                print(f"   当前设置: {self.square_size*1000:.2f} mm")
-                print(f"   使用内参文件中的值...")
-                self.square_size = file_square_size
-                # 重新构造objp
-                self.objp = np.zeros((self.board_size[0] * self.board_size[1], 3), np.float32)
-                self.objp[:, :2] = np.mgrid[0:self.board_size[0], 0:self.board_size[1]].T.reshape(-1, 2)
-                self.objp *= self.square_size
-        
         fs.release()
         
-        print(f"\n📷 已加载相机内参: {os.path.abspath(yaml_path)}")
+        print(f"\n📷 已加载相机内参: {yaml_path}")
         print(f"   fx={self.K[0,0]:.1f}, fy={self.K[1,1]:.1f}")
         print(f"   cx={self.K[0,2]:.1f}, cy={self.K[1,2]:.1f}")
-        print(f"   方格大小: {self.square_size*1000:.2f} mm")
+        print(f"   棋盘格尺寸: {self.board_size} (由脚本设定)")
+        print(f"   方格大小: {self.square_size*1000:.2f} mm (由脚本设定)")
+        
+        # 验证内参是否是校正后的值
+        if self.K[0,0] > 700:
+            print(f"\n⚠️  警告: 焦距偏大 (fx={self.K[0,0]:.1f})!")
+            print(f"   可能是未校正的内参，PnP结果可能不准确!")
+            print(f"   正确的焦距应该约为 fx=550, fy=553")
     
     def init_robot(self, port="/dev/ttyACM0", baudrate=1_000_000):
         """初始化机器人和控制器"""
@@ -191,18 +166,18 @@ class HandEyeCalibrator:
         
         return T_gripper_base, q
     
-    def detect_chessboard(self, frame, refine_pose=True):
+    def detect_chessboard(self, frame, use_ransac=True, refine_pose=True):
         """
-        检测棋盘格并计算其在相机坐标系下的位姿 (使用RANSAC PnP方法)
-        
-        经过测试验证，RANSAC PnP方法在稳定性和精度上表现最佳。
+        检测棋盘格并计算其在相机坐标系下的位姿 (增强鲁棒性版本)
         
         Parameters
         ----------
         frame : np.ndarray
             输入图像
+        use_ransac : bool
+            是否使用RANSAC提高鲁棒性
         refine_pose : bool
-            是否使用LM优化精化位姿
+            是否使用迭代优化精化位姿
         
         Returns
         -------
@@ -230,64 +205,42 @@ class HandEyeCalibrator:
         criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.00001)
         corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
         
-        # PnP求解 - 使用多种方法，选择最佳结果
+        # PnP求解
         imgp = corners.reshape(-1, 2).astype(np.float32)
         
-        best_result = None
-        best_reproj_error = float('inf')
+        if use_ransac:
+            # 使用RANSAC提高鲁棒性
+            success, rvec, tvec, inliers = cv2.solvePnPRansac(
+                self.objp, imgp, self.K, self.dist,
+                iterationsCount=1000,
+                reprojectionError=2.0,
+                flags=cv2.SOLVEPNP_ITERATIVE
+            )
+            if inliers is not None and len(inliers) < len(self.objp) * 0.8:
+                # 如果内点太少，结果不可靠
+                return False, None, corners, float('inf')
+        else:
+            success, rvec, tvec = cv2.solvePnP(
+                self.objp, imgp, self.K, self.dist, 
+                flags=cv2.SOLVEPNP_ITERATIVE
+            )
         
-        # 尝试多种PnP方法
-        pnp_methods = [
-            ('RANSAC', None),
-            ('ITERATIVE', cv2.SOLVEPNP_ITERATIVE),
-            ('EPNP', cv2.SOLVEPNP_EPNP),
-            ('IPPE', cv2.SOLVEPNP_IPPE),
-            ('SQPNP', cv2.SOLVEPNP_SQPNP),
-        ]
-        
-        for method_name, method_flag in pnp_methods:
-            try:
-                if method_name == 'RANSAC':
-                    success, rvec, tvec, inliers = cv2.solvePnPRansac(
-                        self.objp, imgp, self.K, self.dist,
-                        iterationsCount=1000,
-                        reprojectionError=2.0,
-                        flags=cv2.SOLVEPNP_ITERATIVE
-                    )
-                else:
-                    success, rvec, tvec = cv2.solvePnP(
-                        self.objp, imgp, self.K, self.dist, flags=method_flag
-                    )
-                
-                if not success:
-                    continue
-                
-                # LM优化精化位姿
-                if refine_pose:
-                    try:
-                        rvec, tvec = cv2.solvePnPRefineLM(
-                            self.objp, imgp, self.K, self.dist, rvec, tvec
-                        )
-                    except:
-                        pass
-                
-                # 计算重投影误差
-                reproj_pts, _ = cv2.projectPoints(self.objp, rvec, tvec, self.K, self.dist)
-                reproj_error = np.sqrt(np.mean(np.sum((imgp - reproj_pts.reshape(-1, 2))**2, axis=1)))
-                
-                # 选择重投影误差最小的结果
-                if reproj_error < best_reproj_error:
-                    best_reproj_error = reproj_error
-                    best_result = (rvec.copy(), tvec.copy())
-                    
-            except Exception as e:
-                continue
-        
-        # 如果没有成功的结果
-        if best_result is None:
+        if not success:
             return False, None, corners, float('inf')
         
-        rvec, tvec = best_result
+        # 使用LM优化精化位姿
+        if refine_pose:
+            rvec, tvec = cv2.solvePnPRefineLM(
+                self.objp, imgp, self.K, self.dist, rvec, tvec
+            )
+        
+        # 计算重投影误差
+        reproj_pts, _ = cv2.projectPoints(self.objp, rvec, tvec, self.K, self.dist)
+        reproj_error = np.sqrt(np.mean(np.sum((imgp - reproj_pts.reshape(-1, 2))**2, axis=1)))
+        
+        # 如果重投影误差太大，认为结果不可靠
+        if reproj_error > 2.0:
+            return False, None, corners, reproj_error
         
         # 构造4x4变换矩阵
         R_mat, _ = cv2.Rodrigues(rvec)
@@ -295,7 +248,7 @@ class HandEyeCalibrator:
         T_target_cam[:3, :3] = R_mat
         T_target_cam[:3, 3] = tvec.squeeze()
         
-        return True, T_target_cam, corners, best_reproj_error
+        return True, T_target_cam, corners, reproj_error
     
     def get_stable_pose(self, frame, num_samples=5, max_std_trans=5.0, max_std_rot=2.0):
         """
@@ -427,11 +380,6 @@ class HandEyeCalibrator:
         """
         交互式采集标定数据 (增强版 - 带PnP稳定性检测)
         
-        Parameters
-        ----------
-        cam_id : int
-            相机ID (默认 0)
-        
         按键:
           SPACE - 采集当前位姿
           'h'   - 机械臂回中
@@ -501,33 +449,6 @@ class HandEyeCalibrator:
                 
                 # 显示标定板距离
                 distance = np.linalg.norm(T_target_cam[:3, 3]) * 1000
-                
-                # 绘制坐标轴
-                axis_points = np.array([
-                    [0, 0, 0],
-                    [0.05, 0, 0],  # X轴 - 红色
-                    [0, 0.05, 0],  # Y轴 - 绿色
-                    [0, 0, -0.05]  # Z轴 - 蓝色
-                ], dtype=np.float32)
-                
-                axis_2d, _ = cv2.projectPoints(
-                    axis_points, 
-                    T_target_cam[:3, :3], # Rotation matrix (Rodrigues not needed if passing matrix to projectPoints? No, projectPoints expects rvec or matrix depending on version, but usually rvec. Let's check cv2.projectPoints signature. It takes rvec, tvec. So we need to convert R to rvec)
-                    T_target_cam[:3, 3],
-                    self.K, 
-                    self.dist
-                )
-                
-                # Convert rotation matrix to rvec for projectPoints
-                rvec, _ = cv2.Rodrigues(T_target_cam[:3, :3])
-                axis_2d, _ = cv2.projectPoints(axis_points, rvec, T_target_cam[:3, 3], self.K, self.dist)
-                
-                axis_2d = axis_2d.reshape(-1, 2).astype(int)
-                origin = tuple(axis_2d[0])
-                
-                cv2.arrowedLine(display, origin, tuple(axis_2d[1]), (0, 0, 255), 3)  # X - 红
-                cv2.arrowedLine(display, origin, tuple(axis_2d[2]), (0, 255, 0), 3)  # Y - 绿
-                cv2.arrowedLine(display, origin, tuple(axis_2d[3]), (255, 0, 0), 3)  # Z - 蓝
                 
                 # 根据稳定性选择颜色
                 color = (0, 255, 0) if is_stable else (0, 255, 255)
@@ -610,11 +531,6 @@ class HandEyeCalibrator:
                     os.path.join(self.output_dir, f"image_{sample_count:02d}_{timestamp}.jpg"),
                     frame
                 )
-                # 保存可视化图
-                cv2.imwrite(
-                    os.path.join(self.output_dir, f"vis_{sample_count:02d}_{timestamp}.jpg"),
-                    display
-                )
                 
                 print(f"✅ 已保存数据 #{sample_count}")
                 print(f"   标定板距离: {np.linalg.norm(T_to_save[:3,3])*1000:.1f} mm")
@@ -648,29 +564,17 @@ class HandEyeCalibrator:
         self.T_target_cam_list = []
         self.T_gripper_base_list = []
         
-        # 临时创建机器人模型用于重算FK
-        temp_robot = create_so101_5dof_gripper()
-        
         print(f"\n📂 加载标定数据...")
         for f in pose_files:
             data = np.load(f)
             self.T_target_cam_list.append(data['T_target_cam'])
-            
-            # 如果有保存关节角度，重新计算FK (以防运动学参数有更新)
-            if 'q' in data:
-                q = data['q']
-                T_gb = temp_robot.fkine(q)
-                self.T_gripper_base_list.append(T_gb)
-                # print(f"   ✅ {os.path.basename(f)} (Re-computed FK)")
-            else:
-                self.T_gripper_base_list.append(data['T_gripper_base'])
-                # print(f"   ✅ {os.path.basename(f)}")
+            self.T_gripper_base_list.append(data['T_gripper_base'])
             print(f"   ✅ {os.path.basename(f)}")
         
         print(f"\n共加载 {len(self.T_target_cam_list)} 组数据")
         return True
     
-    def calibrate(self, method=cv2.CALIB_HAND_EYE_PARK):
+    def calibrate(self, method=cv2.CALIB_HAND_EYE_TSAI):
         """
         执行手眼标定
         
@@ -678,8 +582,8 @@ class HandEyeCalibrator:
         ----------
         method : int
             手眼标定方法，可选:
-            - cv2.CALIB_HAND_EYE_TSAI
-            - cv2.CALIB_HAND_EYE_PARK (默认)
+            - cv2.CALIB_HAND_EYE_TSAI (默认)
+            - cv2.CALIB_HAND_EYE_PARK
             - cv2.CALIB_HAND_EYE_HORAUD
             - cv2.CALIB_HAND_EYE_ANDREFF
             - cv2.CALIB_HAND_EYE_DANIILIDIS
@@ -696,69 +600,24 @@ class HandEyeCalibrator:
         print("\n🔄 开始手眼标定...")
         print(f"   数据组数: {len(self.T_target_cam_list)}")
         
-        # 数据质量检查
-        print("\n🔍 检查数据质量...")
-        valid_data = []
-        for i, (T_gb, T_tc) in enumerate(zip(self.T_gripper_base_list, self.T_target_cam_list)):
-            # 检查是否包含 NaN 或 Inf
-            if (np.any(np.isnan(T_gb)) or np.any(np.isinf(T_gb)) or
-                np.any(np.isnan(T_tc)) or np.any(np.isinf(T_tc))):
-                print(f"   ⚠️  数据组 {i+1} 包含无效值，跳过")
-                continue
-            
-            # 检查旋转矩阵有效性
-            det_gb = np.linalg.det(T_gb[:3, :3])
-            det_tc = np.linalg.det(T_tc[:3, :3])
-            if abs(det_gb - 1.0) > 0.1 or abs(det_tc - 1.0) > 0.1:
-                print(f"   ⚠️  数据组 {i+1} 旋转矩阵异常，跳过")
-                continue
-                
-            valid_data.append((T_gb, T_tc))
-        
-        if len(valid_data) < 3:
-            print(f"❌ 有效数据不足: {len(valid_data)}/3，无法进行标定")
-            return None
-        
-        print(f"   ✅ 有效数据组: {len(valid_data)}/{len(self.T_target_cam_list)}")
-        
         # 准备数据
         R_gripper2base = []
         t_gripper2base = []
         R_target2cam = []
         t_target2cam = []
         
-        for T_gb, T_tc in valid_data:
+        for T_gb, T_tc in zip(self.T_gripper_base_list, self.T_target_cam_list):
             R_gripper2base.append(T_gb[:3, :3])
             t_gripper2base.append(T_gb[:3, 3].reshape(3, 1))
             R_target2cam.append(T_tc[:3, :3])
             t_target2cam.append(T_tc[:3, 3].reshape(3, 1))
         
         # 执行手眼标定
-        try:
-            R_cam2gripper, t_cam2gripper = cv2.calibrateHandEye(
-                R_gripper2base, t_gripper2base,
-                R_target2cam, t_target2cam,
-                method=method
-            )
-        except Exception as e:
-            print(f"❌ 手眼标定失败: {e}")
-            return None
-        
-        # 检查结果是否包含 NaN 或无效值
-        if (np.any(np.isnan(R_cam2gripper)) or np.any(np.isnan(t_cam2gripper)) or
-            np.any(np.isinf(R_cam2gripper)) or np.any(np.isinf(t_cam2gripper))):
-            print("❌ 标定结果包含无效值 (NaN/Inf)，可能数据质量不佳")
-            print("💡 建议:")
-            print("   - 增加更多标定姿态")
-            print("   - 确保姿态变化足够大")
-            print("   - 检查标定板检测准确性")
-            return None
-        
-        # 验证旋转矩阵的有效性
-        det_R = np.linalg.det(R_cam2gripper)
-        if abs(det_R - 1.0) > 0.1:
-            print(f"⚠️  旋转矩阵行列式异常: {det_R:.4f} (应接近1.0)")
-            print("   数据质量可能不佳，建议重新采集")
+        R_cam2gripper, t_cam2gripper = cv2.calibrateHandEye(
+            R_gripper2base, t_gripper2base,
+            R_target2cam, t_target2cam,
+            method=method
+        )
         
         # 构造4x4变换矩阵
         T_cam_gripper = np.eye(4)
@@ -776,36 +635,15 @@ class HandEyeCalibrator:
         print(f"   ty = {t[1]:8.2f}")
         print(f"   tz = {t[2]:8.2f}")
         
-        # 安全地处理旋转矩阵
-        try:
-            # 先检查旋转矩阵是否有效
-            U, S, Vt = np.linalg.svd(R_cam2gripper)
-            if np.any(S < 1e-6):
-                print("⚠️  旋转矩阵奇异，使用正交化修正")
-                R_cam2gripper = U @ Vt  # 最近的正交矩阵
-            
-            euler = R.from_matrix(R_cam2gripper).as_euler('xyz', degrees=True)
-            quat = R.from_matrix(R_cam2gripper).as_quat()
-            
-            print(f"\n旋转 (欧拉角, 度):")
-            print(f"   roll  = {euler[0]:8.2f}")
-            print(f"   pitch = {euler[1]:8.2f}")
-            print(f"   yaw   = {euler[2]:8.2f}")
-            print(f"\n四元数 (x, y, z, w):")
-            print(f"   {quat}")
-            
-        except (np.linalg.LinAlgError, ValueError) as e:
-            print(f"⚠️  旋转矩阵转换失败: {e}")
-            print("   使用单位矩阵作为默认值")
-            R_cam2gripper = np.eye(3)
-            T_cam_gripper[:3, :3] = R_cam2gripper
-            euler = np.zeros(3)
-            quat = np.array([0, 0, 0, 1])
-            
-            print(f"\n旋转 (欧拉角, 度): [默认值]")
-            print(f"   roll  = {euler[0]:8.2f}")
-            print(f"   pitch = {euler[1]:8.2f}")
-            print(f"   yaw   = {euler[2]:8.2f}")
+        # 旋转
+        euler = R.from_matrix(R_cam2gripper).as_euler('xyz', degrees=True)
+        quat = R.from_matrix(R_cam2gripper).as_quat()
+        print(f"\n旋转 (欧拉角, 度):")
+        print(f"   roll  = {euler[0]:8.2f}")
+        print(f"   pitch = {euler[1]:8.2f}")
+        print(f"   yaw   = {euler[2]:8.2f}")
+        print(f"\n四元数 (x, y, z, w):")
+        print(f"   {quat}")
         
         print("-"*70)
         
@@ -822,34 +660,33 @@ class HandEyeCalibrator:
         errors = []
         
         # 计算AX=XB的一致性误差
-        for i in range(len(self.T_gripper_base_list)):
-            for j in range(i + 1, len(self.T_gripper_base_list)):
-                # 相邻两帧的相对运动
-                T_gb1 = self.T_gripper_base_list[i]
-                T_gb2 = self.T_gripper_base_list[j]
-                T_tc1 = self.T_target_cam_list[i]
-                T_tc2 = self.T_target_cam_list[j]
-                
-                # A = T_g2_g1 = inv(T_b_g2) * T_b_g1 (在Gripper坐标系下的相对运动)
-                A = np.linalg.inv(T_gb2) @ T_gb1
-                
-                # B = T_c2_c1 = T_c2_t * T_t_c1 = T_c_t2 * inv(T_c_t1) (在Camera坐标系下的相对运动)
-                B = T_tc2 @ np.linalg.inv(T_tc1)
-                
-                # AX 和 XB 应该相等
-                AX = A @ T_cam_gripper
-                XB = T_cam_gripper @ B
-                
-                # 计算误差
-                error_T = AX @ np.linalg.inv(XB)
-                error_trans = np.linalg.norm(error_T[:3, 3]) * 1000  # mm
-                error_rot = np.linalg.norm(R.from_matrix(error_T[:3, :3]).as_rotvec()) * 180 / np.pi  # deg
-                
-                errors.append({
-                    'pair': (i, j),
-                    'trans_error': error_trans,
-                    'rot_error': error_rot
-                })
+        for i in range(len(self.T_gripper_base_list) - 1):
+            # 相邻两帧的相对运动
+            T_gb1 = self.T_gripper_base_list[i]
+            T_gb2 = self.T_gripper_base_list[i + 1]
+            T_tc1 = self.T_target_cam_list[i]
+            T_tc2 = self.T_target_cam_list[i + 1]
+            
+            # A = T_gb2 @ inv(T_gb1) (末端相对运动)
+            A = T_gb2 @ np.linalg.inv(T_gb1)
+            
+            # B = inv(T_tc2) @ T_tc1 (标定板在相机坐标系中的相对运动)
+            B = np.linalg.inv(T_tc2) @ T_tc1
+            
+            # AX 和 XB 应该相等
+            AX = A @ T_cam_gripper
+            XB = T_cam_gripper @ B
+            
+            # 计算误差
+            error_T = AX @ np.linalg.inv(XB)
+            error_trans = np.linalg.norm(error_T[:3, 3]) * 1000  # mm
+            error_rot = np.linalg.norm(R.from_matrix(error_T[:3, :3]).as_rotvec()) * 180 / np.pi  # deg
+            
+            errors.append({
+                'pair': (i, i+1),
+                'trans_error': error_trans,
+                'rot_error': error_rot
+            })
         
         # 统计
         trans_errors = [e['trans_error'] for e in errors]
@@ -860,9 +697,9 @@ class HandEyeCalibrator:
         print(f"   旋转误差: 平均={np.mean(rot_errors):.2f}°, 最大={np.max(rot_errors):.2f}°")
         
         # 质量评估
-        if np.mean(trans_errors) < 30 and np.mean(rot_errors) < 5:
+        if np.mean(trans_errors) < 5 and np.mean(rot_errors) < 2:
             print("\n   ✅ 标定质量: 优秀")
-        elif np.mean(trans_errors) < 50 and np.mean(rot_errors) < 10:
+        elif np.mean(trans_errors) < 10 and np.mean(rot_errors) < 5:
             print("\n   ⚠️  标定质量: 一般")
         else:
             print("\n   ❌ 标定质量: 较差，建议重新采集数据")
@@ -921,12 +758,11 @@ def main():
     parser.add_argument('--collect', action='store_true', help='采集标定数据')
     parser.add_argument('--calibrate', action='store_true', help='执行标定计算')
     parser.add_argument('--all', action='store_true', help='采集+标定')
-    parser.add_argument('--output-dir', default='./handeye_data', help='数据保存目录')
-    parser.add_argument('--intrinsic', default='camera_intrinsics.yaml', help='相机内参文件')
+    parser.add_argument('--output-dir', default='./handeye_data_right', help='数据保存目录')
+    parser.add_argument('--intrinsic', default='./config_data/camera_intrinsics_right.yaml', help='相机内参文件')
     parser.add_argument('--square-size', type=float, default=20.73, help='棋盘格方格大小(mm)')
     parser.add_argument('--port', default='/dev/ttyACM0', help='串口')
-    parser.add_argument('--camera', type=int, default=0, help='相机ID (默认 0)')
-    
+    parser.add_argument('--video', type=int, default=0, help='视频设备ID')
     args = parser.parse_args()
     
     calibrator = HandEyeCalibrator(
@@ -944,7 +780,7 @@ def main():
             # 回中
             print("\n🏠 机械臂回中...")
             # 采集数据
-            calibrator.collect_data_interactive(cam_id=args.camera)
+            calibrator.collect_data_interactive(cam_id=args.video)
         
         if args.calibrate or args.all or (not args.collect and not args.all):
             # 加载数据

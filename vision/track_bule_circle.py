@@ -85,7 +85,7 @@ class BlueCircleTracker:
     
     def load_handeye_calibration(self):
         """加载手眼标定结果"""
-        calib_file = os.path.join(os.path.dirname(__file__), 'config_data/handeye_result_right.npy')
+        calib_file = os.path.join(os.path.dirname(__file__), 'config_data/handeye_result.npy')
         if not os.path.exists(calib_file):
             print("⚠️ 未找到手眼标定文件，将只显示检测结果")
             self.T_cam_gripper = None
@@ -250,7 +250,7 @@ class BlueCircleTracker:
         if not self.init_robot():
             return
         
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(2)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         

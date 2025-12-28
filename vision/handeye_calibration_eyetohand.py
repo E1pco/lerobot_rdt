@@ -33,7 +33,6 @@ import sys
 import cv2
 import numpy as np
 import time
-import yaml
 import argparse
 from datetime import datetime
 from scipy.spatial.transform import Rotation as R
@@ -42,649 +41,589 @@ from scipy.spatial.transform import Rotation as R
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from driver.ftservo_controller import ServoController
-from ik.robot import create_so101_5dof, create_so101_5dof_gripper
+from ik.robot import create_so101_5dof_gripper
 
 
 class EyeToHandCalibrator:
-    """眼在手外手眼标定器"""
-    
-    def __init__(self, 
-                 board_size=(4, 4),
-                 square_size=0.00983,  # 25mm
-                 camera_id=0,
-                 port="/dev/left_arm",
-                 camera_params_file="./config_data/camera_intrinsics_environment.yaml",
-                 output_dir="./handeye_data_environment"):
-        """
-        Parameters
-        ----------
-        board_size : tuple
-            棋盘格内角点数量 (cols-1, rows-1)
-        square_size : float
-            棋盘格方格边长 (米)
-        camera_id : int
-            相机设备ID
-        port : str
-            机械臂串口路径
-        camera_params_file : str
-            相机内外参文件路径 (OpenCV YAML格式)
-        output_dir : str
-            数据保存目录
-        """
+    """眼在手外 (Eye-to-Hand) 手眼标定器
+
+    结构对齐 `handeye_calibration_eyeinhand.py`：
+    - __init__ 仅负责参数/内参/棋盘点准备
+    - init_robot/collect_data_interactive 负责硬件与采集
+    - load_collected_data/calibrate/evaluate/save_result 提供离线流程
+    """
+
+    def __init__(
+        self,
+        board_size=(7, 5),
+        square_size=0.018,  # meters
+        intrinsic_file="./config_data/camera_intrinsics_environment.yaml",
+        output_dir="./handeye_data_environment",
+    ):
         self.board_size = board_size
         self.square_size = square_size
-        self.camera_id = camera_id
-        self.port = port
         self.output_dir = output_dir
-        
-        # 创建输出目录
         os.makedirs(output_dir, exist_ok=True)
-        
-        # 初始化相机
-        self.cap = cv2.VideoCapture(camera_id)
-        if not self.cap.isOpened():
-            raise RuntimeError(f"无法打开相机 {camera_id}")
-        
-        # 设置相机分辨率
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        
-        # 初始化机械臂
-        print(f"连接机械臂: {port}")
+
+        # 相机内参
+        self.K = None
+        self.dist = None
+        self.load_camera_intrinsics(intrinsic_file)
+
+        # 棋盘格 3D 点
+        self.objp = np.zeros((board_size[0] * board_size[1], 3), np.float32)
+        self.objp[:, :2] = np.mgrid[0:board_size[0], 0:board_size[1]].T.reshape(-1, 2)
+        self.objp *= square_size
+
+        # 机器人
+        self.robot = None
+        self.controller = None
+
+        # 采集数据
+        self.T_target_cam_list = []
+        self.T_gripper_base_list = []
+        self.images = []
+
+        # PnP 稳定性
+        self.pose_buffer = []
+        self.pose_buffer_size = 5
+
+        print("=" * 70)
+        print("🤖 眼在手外 (Eye-to-Hand) 手眼标定工具")
+        print("=" * 70)
+        print("\n棋盘格参数:")
+        print(f"  内角点: {board_size[0]} × {board_size[1]}")
+        print(f"  方格大小: {square_size * 1000:.2f} mm")
+        print(f"\n数据保存目录: {os.path.abspath(output_dir)}")
+        print("=" * 70)
+    
+    def load_camera_intrinsics(self, yaml_path):
+        """加载相机内参 - 仅读取 K 与 distCoeffs (与 Eye-in-Hand 对齐)"""
+        if not os.path.exists(yaml_path):
+            raise FileNotFoundError(f"未找到相机内参文件: {yaml_path}")
+
+        fs = cv2.FileStorage(yaml_path, cv2.FILE_STORAGE_READ)
+        if not fs.isOpened():
+            raise RuntimeError(f"无法打开相机内参文件: {yaml_path}")
+
+        K_node = fs.getNode("K")
+        if K_node.empty():
+            K_node = fs.getNode("camera_matrix")
+
+        dist_node = fs.getNode("distCoeffs")
+        if dist_node.empty():
+            dist_node = fs.getNode("distortion_coefficients")
+
+        self.K = None if K_node.empty() else K_node.mat()
+        self.dist = None if dist_node.empty() else dist_node.mat().flatten()
+        fs.release()
+
+        if self.K is None or self.dist is None:
+            raise ValueError(f"相机内参文件缺少 K/distCoeffs: {yaml_path}")
+
+        print(f"\n📷 已加载相机内参: {yaml_path}")
+        print(f"   fx={self.K[0, 0]:.1f}, fy={self.K[1, 1]:.1f}")
+        print(f"   cx={self.K[0, 2]:.1f}, cy={self.K[1, 2]:.1f}")
+        print(f"   棋盘格尺寸: {self.board_size} (由脚本设定)")
+        print(f"   方格大小: {self.square_size * 1000:.2f} mm (由脚本设定)")
+
+    def init_robot(self, port="/dev/left_arm", baudrate=1_000_000):
+        """初始化机器人和控制器"""
+        print("\n🤖 初始化机器人...")
         self.controller = ServoController(
             port=port,
-            baudrate=1_000_000,
-            config_path="../driver/servo_config.json"
+            baudrate=baudrate,
+            config_path=os.path.join(os.path.dirname(__file__), "../driver/servo_config.json"),
         )
-        
-        # 创建机器人模型
         self.robot = create_so101_5dof_gripper()
         self.robot.set_servo_controller(self.controller)
-        
-        # 加载相机参数
-        self.camera_matrix = None
-        self.dist_coeffs = None
-        self.camera_extrinsics = None
-        
-        if camera_params_file:
-            self.load_camera_params(camera_params_file)
-        
-        # 生成棋盘格3D点
-        self.generate_board_corners()
-        
-        # 数据存储
-        self.robot_poses = []       # T_gripper_base
-        self.target_poses = []      # T_target_cam
-        self.images = []
-        
-        print(f"✅ 眼在手外标定器初始化完成")
-        print(f"   棋盘格尺寸: {board_size}")
-        print(f"   方格大小: {square_size*1000:.1f}mm")
-        print(f"   相机ID: {camera_id}")
-        print(f"   机械臂: {port}")
-        print(f"   输出目录: {output_dir}")
-    
-    def load_camera_params(self, camera_params_file):
-        """加载相机内外参数 (OpenCV YAML格式)"""
-        try:
-            if not os.path.exists(camera_params_file):
-                print(f"❌ 相机参数文件不存在: {camera_params_file}")
-                return
+        print("✅ 机器人初始化完成")
+        return True
 
-            fs = cv2.FileStorage(camera_params_file, cv2.FILE_STORAGE_READ)
-            
-            if not fs.isOpened():
-                print(f"❌ 无法打开相机参数文件: {camera_params_file}")
-                return
+    def read_robot_pose(self, verbose=True):
+        """读取机器人当前末端位姿"""
+        q = self.robot.read_joint_angles(joint_names=self.robot.joint_names, verbose=verbose)
+        T_gripper_base = self.robot.fkine(q)
 
-            # 1. 加载内参矩阵 K
-            camera_matrix_node = fs.getNode('K')
-            if camera_matrix_node.empty():
-                camera_matrix_node = fs.getNode('camera_matrix')
-            
-            if not camera_matrix_node.empty():
-                self.camera_matrix = camera_matrix_node.mat()
-            
-            # 2. 加载畸变系数 distCoeffs
-            dist_coeffs_node = fs.getNode('distCoeffs')
-            if dist_coeffs_node.empty():
-                dist_coeffs_node = fs.getNode('distortion_coefficients')
-            
-            if not dist_coeffs_node.empty():
-                self.dist_coeffs = dist_coeffs_node.mat().flatten()
+        if verbose:
+            pos = T_gripper_base[:3, 3]
+            euler = R.from_matrix(T_gripper_base[:3, :3]).as_euler("xyz", degrees=True)
+            print("\n📍 末端位姿:")
+            print(
+                f"   位置: x={pos[0] * 1000:.1f}mm, y={pos[1] * 1000:.1f}mm, z={pos[2] * 1000:.1f}mm"
+            )
+            print(
+                f"   姿态: roll={euler[0]:.1f}°, pitch={euler[1]:.1f}°, yaw={euler[2]:.1f}°"
+            )
 
-            # 3. 尝试加载棋盘格参数 (如果文件中有)
-            square_size_node = fs.getNode('square_size')
-            if not square_size_node.empty():
-                file_square_size = square_size_node.real()
-                if abs(file_square_size - self.square_size) > 1e-6:
-                    print(f"ℹ️  使用文件中的方格大小: {file_square_size*1000:.2f}mm (原设置: {self.square_size*1000:.2f}mm)")
-                    self.square_size = file_square_size
-                    # 重新生成棋盘格3D点
-                    self.generate_board_corners()
+        return T_gripper_base, q
+    
+    def detect_chessboard(self, frame, use_ransac=True, refine_pose=True):
+        """检测棋盘格并计算其在相机坐标系下的位姿 (与 Eye-in-Hand 对齐的鲁棒版本)"""
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-            cols_node = fs.getNode('board_size_cols')
-            rows_node = fs.getNode('board_size_rows')
-            if not cols_node.empty() and not rows_node.empty():
-                cols = int(cols_node.real())
-                rows = int(rows_node.real())
-                if (cols, rows) != self.board_size and (rows, cols) != self.board_size:
-                     print(f"ℹ️  使用文件中的棋盘格尺寸: {cols}x{rows} (原设置: {self.board_size})")
-                     self.board_size = (cols, rows)
-                     self.generate_board_corners()
+        flags = cv2.CALIB_CB_ADAPTIVE_THRESH + cv2.CALIB_CB_NORMALIZE_IMAGE + cv2.CALIB_CB_FAST_CHECK
+        found, corners = cv2.findChessboardCorners(gray, self.board_size, flags)
+        if not found:
+            return False, None, None, float("inf")
 
-            # 尝试加载外参 (可选)
-            extrinsics_node = fs.getNode('camera_extrinsics')
-            if not extrinsics_node.empty():
-                self.camera_extrinsics = extrinsics_node.mat()
-            
-            fs.release()
-            
-            print(f"✅ 加载相机参数: {camera_params_file}")
-            if self.camera_matrix is not None:
-                print(f"   相机矩阵:\\n{self.camera_matrix}")
-            if self.dist_coeffs is not None:
-                print(f"   畸变系数: {self.dist_coeffs}")
-            if self.camera_extrinsics is not None:
-                print(f"   外参矩阵:\\n{self.camera_extrinsics}")
-                
-        except Exception as e:
-            print(f"❌ 无法加载相机参数: {e}")
-            print("   将使用自动标定或默认参数")
-    
-    def load_camera_intrinsics(self, intrinsic_file):
-        """加载相机内参 (兼容性方法)"""
-        try:
-            if intrinsic_file.endswith('.yaml') or intrinsic_file.endswith('.yml'):
-                # OpenCV YAML格式
-                fs = cv2.FileStorage(intrinsic_file, cv2.FILE_STORAGE_READ)
-                self.camera_matrix = fs.getNode('camera_matrix').mat()
-                self.dist_coeffs = fs.getNode('distortion_coefficients').mat().flatten()
-                fs.release()
-            else:
-                # NumPy格式
-                data = np.load(intrinsic_file, allow_pickle=True).item()
-                self.camera_matrix = data['camera_matrix']
-                self.dist_coeffs = data['dist_coeffs']
-            
-            print(f"✅ 加载相机内参: {intrinsic_file}")
-            print(f"   相机矩阵:\\n{self.camera_matrix}")
-            print(f"   畸变系数: {self.dist_coeffs}")
-            
-        except Exception as e:
-            print(f"❌ 无法加载相机内参: {e}")
-            print("   将使用自动标定或默认参数")
-    
-    def load_camera_extrinsics(self, extrinsic_file):
-        """加载相机外参 (兼容性方法)"""
-        try:
-            if extrinsic_file.endswith('.yaml') or extrinsic_file.endswith('.yml'):
-                with open(extrinsic_file, 'r') as f:
-                    data = yaml.safe_load(f)
-                self.camera_extrinsics = np.array(data['camera_extrinsics']).reshape(4, 4)
-            else:
-                self.camera_extrinsics = np.load(extrinsic_file)
-            
-            print(f"✅ 加载相机外参: {extrinsic_file}")
-            print(f"   外参矩阵:\\n{self.camera_extrinsics}")
-            
-        except Exception as e:
-            print(f"❌ 无法加载相机外参: {e}")
-    
-    def generate_board_corners(self):
-        """生成棋盘格3D角点"""
-        self.board_corners = np.zeros((self.board_size[0] * self.board_size[1], 3), np.float32)
-        self.board_corners[:, :2] = np.mgrid[0:self.board_size[0], 0:self.board_size[1]].T.reshape(-1, 2)
-        self.board_corners *= self.square_size
-    
-    def detect_chessboard(self, image):
-        """检测棋盘格"""
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        
-        # 检测角点
-        ret, corners = cv2.findChessboardCorners(
-            gray, self.board_size, 
-            cv2.CALIB_CB_ADAPTIVE_THRESH + cv2.CALIB_CB_NORMALIZE_IMAGE
-        )
-        
-        if ret:
-            # 亚像素精度优化
-            criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
-            corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-            
-            return True, corners.reshape(-1, 2)
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 0.00001)
+        corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+        imgp = corners.reshape(-1, 2).astype(np.float32)
+
+        if use_ransac:
+            success, rvec, tvec, inliers = cv2.solvePnPRansac(
+                self.objp,
+                imgp,
+                self.K,
+                self.dist,
+                iterationsCount=1000,
+                reprojectionError=2.0,
+                flags=cv2.SOLVEPNP_ITERATIVE,
+            )
+            if inliers is not None and len(inliers) < len(self.objp) * 0.8:
+                return False, None, corners, float("inf")
         else:
-            return False, None
-    
-    def calculate_target_pose(self, corners):
-        """使用PnP计算标定板在相机坐标系下的位姿"""
-        if self.camera_matrix is None:
-            print("❌ 相机内参未加载，无法计算目标位姿")
-            return None
-        
-        # 解PnP
-        success, rvec, tvec = cv2.solvePnP(
-            self.board_corners, corners, 
-            self.camera_matrix, self.dist_coeffs
+            success, rvec, tvec = cv2.solvePnP(
+                self.objp,
+                imgp,
+                self.K,
+                self.dist,
+                flags=cv2.SOLVEPNP_ITERATIVE,
+            )
+
+        if not success:
+            return False, None, corners, float("inf")
+
+        if refine_pose:
+            rvec, tvec = cv2.solvePnPRefineLM(self.objp, imgp, self.K, self.dist, rvec, tvec)
+
+        reproj_pts, _ = cv2.projectPoints(self.objp, rvec, tvec, self.K, self.dist)
+        reproj_error = np.sqrt(
+            np.mean(np.sum((imgp - reproj_pts.reshape(-1, 2)) ** 2, axis=1))
         )
-        
-        if success:
-            # 转换为变换矩阵
-            rotation_matrix, _ = cv2.Rodrigues(rvec)
-            transform = np.eye(4)
-            transform[:3, :3] = rotation_matrix
-            transform[:3, 3] = tvec.flatten()
-            
-            return transform
-        else:
+        if reproj_error > 2.0:
+            return False, None, corners, reproj_error
+
+        R_mat, _ = cv2.Rodrigues(rvec)
+        T_target_cam = np.eye(4)
+        T_target_cam[:3, :3] = R_mat
+        T_target_cam[:3, 3] = tvec.squeeze()
+        return True, T_target_cam, corners, reproj_error
+
+    def update_pose_buffer(self, T):
+        self.pose_buffer.append(T.copy())
+        if len(self.pose_buffer) > self.pose_buffer_size:
+            self.pose_buffer.pop(0)
+
+    def get_averaged_pose(self):
+        if len(self.pose_buffer) < 3:
             return None
+
+        translations = np.array([T[:3, 3] for T in self.pose_buffer])
+        t_avg = np.mean(translations, axis=0)
+
+        quats = np.array([R.from_matrix(T[:3, :3]).as_quat() for T in self.pose_buffer])
+        q_avg = np.mean(quats, axis=0)
+        q_avg /= np.linalg.norm(q_avg)
+        R_avg = R.from_quat(q_avg).as_matrix()
+
+        T_avg = np.eye(4)
+        T_avg[:3, :3] = R_avg
+        T_avg[:3, 3] = t_avg
+        return T_avg
     
-    def get_robot_pose(self):
-        """获取机器人末端位姿"""
-        try:
-            # 读取当前关节角度
-            current_q = self.robot.read_joint_angles(verbose=False)
-            
-            # 计算正运动学
-            T_gripper_base = self.robot.fkine(current_q)
-            
-            return T_gripper_base
-            
-        except Exception as e:
-            print(f"❌ 获取机器人位姿失败: {e}")
-            return None
-    
-    def capture_calibration_data(self):
-        """采集标定数据"""
-        print("🎯 开始采集手眼标定数据")
-        print("操作说明:")
-        print("  空格键 - 采集当前位姿的数据")
-        print("  r键 - 删除最后一个数据点")
-        print("  s键 - 保存数据")
-        print("  q键 - 退出采集")
-        print("  h键 - 机械臂回到初始位置")
-        print()
-        print("请移动机械臂到不同位置，确保相机能看到标定板...")
-        
-        # 创建本次采集的会话目录
+    def collect_data_interactive(self, cam_id=0, width=1280, height=720):
+        """交互式采集标定数据 (与 Eye-in-Hand 对齐)
+
+        按键:
+          SPACE - 采集当前位姿
+          'h'   - 机械臂回中
+          's'   - 显示/隐藏稳定性信息
+          'q'   - 退出采集
+        """
+
+        # 每次采集创建一个新的 session 目录（与旧版一致）
         session_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         session_dir = os.path.join(self.output_dir, f"session_{session_timestamp}")
         os.makedirs(session_dir, exist_ok=True)
-        print(f"📂 数据将实时保存到: {session_dir}")
-        
-        pose_count = 0
-        
-        try:
-            while True:
-                # 读取图像
-                ret, frame = self.cap.read()
-                if not ret:
-                    print("❌ 相机读取失败")
-                    break
-                
-                # 检测棋盘格
-                found, corners = self.detect_chessboard(frame)
-                
-                # 可视化
-                display_frame = frame.copy()
-                
-                if found:
-                    # 绘制检测到的角点
-                    cv2.drawChessboardCorners(display_frame, self.board_size, corners, found)
-                    
-                    # 如果有相机内参，计算并显示坐标轴
-                    if self.camera_matrix is not None:
-                        target_pose = self.calculate_target_pose(corners)
-                        if target_pose is not None:
-                            # 绘制坐标轴
-                            axis_points = np.array([
-                                [0, 0, 0],
-                                [0.05, 0, 0],  # X轴 - 红色
-                                [0, 0.05, 0],  # Y轴 - 绿色
-                                [0, 0, -0.05]  # Z轴 - 蓝色
-                            ], dtype=np.float32)
-                            
-                            axis_2d, _ = cv2.projectPoints(
-                                axis_points, 
-                                cv2.Rodrigues(target_pose[:3, :3])[0],
-                                target_pose[:3, 3],
-                                self.camera_matrix, 
-                                self.dist_coeffs
-                            )
-                            
-                            # 转换为整数坐标并绘制坐标轴
-                            axis_2d = axis_2d.reshape(-1, 2)
-                            pts = np.int32(axis_2d).reshape(-1, 2)
-                            origin = tuple(pts[0].tolist())
-                            pt_x = tuple(pts[1].tolist())
-                            pt_y = tuple(pts[2].tolist())
-                            pt_z = tuple(pts[3].tolist())
-                            
-                            # 使用line代替arrowedLine以避免类型问题
-                            cv2.line(display_frame, origin, pt_x, (0, 0, 255), 3)  # X - 红
-                            cv2.line(display_frame, origin, pt_y, (0, 255, 0), 3)  # Y - 绿
-                            cv2.line(display_frame, origin, pt_z, (255, 0, 0), 3)  # Z - 蓝
-                    
-                    # 显示状态
-                    cv2.putText(display_frame, f"Chessboard: FOUND", (10, 30),
-                               cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-                else:
-                    cv2.putText(display_frame, "Chessboard: NOT FOUND", (10, 30),
-                               cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-                
-                # 显示已采集的数据点数量
-                cv2.putText(display_frame, f"Poses: {pose_count}", (10, 60),
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-                
-                cv2.imshow('Hand-Eye Calibration (Eye-to-Hand)', display_frame)
-                
-                # 键盘控制
-                key = cv2.waitKey(1) & 0xFF
-                
-                if key == ord(' '):  # 空格 - 采集数据
-                    if found and self.camera_matrix is not None:
-                        # 计算标定板位姿
-                        target_pose = self.calculate_target_pose(corners)
-                        robot_pose = self.get_robot_pose()
-                        
-                        if target_pose is not None and robot_pose is not None:
-                            # 保存数据到内存
-                            self.target_poses.append(target_pose)
-                            self.robot_poses.append(robot_pose)
-                            self.images.append(frame.copy())
-                            
-                            # 立即保存到磁盘
-                            img_filename = os.path.join(session_dir, f"image_{pose_count:03d}.jpg")
-                            
-                            # 保存带有坐标轴的图像 (可选，如果用户想要保存带轴的图)
-                            # 但通常标定需要原始图。用户说"在采集的时候都在图像加上三维坐标轴"，可能是指显示，也可能是指保存。
-                            # 如果是指保存，我们应该保存 display_frame。
-                            # 但为了标定准确性，原始图像必须是干净的。
-                            # 也许用户只是想在界面上看到。
-                            # 既然界面上已经有了，那可能是用户觉得不够明显或者没看到？
-                            # 或者用户希望保存下来的图片也有坐标轴用于检查？
-                            # 让我们保存一份带坐标轴的副本用于调试。
-                            
-                            cv2.imwrite(img_filename, frame) # 保存原始图用于标定
-                            cv2.imwrite(os.path.join(session_dir, f"vis_{pose_count:03d}.jpg"), display_frame) # 保存可视化图
-                            
-                            pose_filename = os.path.join(session_dir, f"pose_{pose_count:03d}.npz")
-                            np.savez(pose_filename, 
-                                     robot_pose=robot_pose, 
-                                     target_pose=target_pose)
-                            
-                            pose_count += 1
-                            
-                            # 计算欧拉角以便显示
-                            r_robot = R.from_matrix(robot_pose[:3, :3])
-                            euler_robot = r_robot.as_euler('xyz', degrees=True)
-                            
-                            print(f"✅ 采集位姿 {pose_count}")
-                            print(f"   机器人位置: {robot_pose[:3, 3]}")
-                            print(f"   机器人姿态(Euler XYZ): {euler_robot}")
-                            print(f"   标定板位姿: {target_pose[:3, 3]}")
-                            print(f"   已保存: {img_filename}")
-                        else:
-                            print("❌ 位姿计算失败")
-                    else:
-                        if not found:
-                            print("❌ 未检测到棋盘格")
-                        if self.camera_matrix is None:
-                            print("❌ 相机内参未加载")
-                
-                elif key == ord('r'):  # r - 删除最后一个数据点
-                    if pose_count > 0:
-                        self.target_poses.pop()
-                        self.robot_poses.pop()
-                        self.images.pop()
-                        pose_count -= 1
-                        print(f"🗑️  删除最后一个数据点，剩余: {pose_count}")
-                    else:
-                        print("❌ 没有数据点可删除")
-                
-                elif key == ord('s'):  # s - 保存数据
-                    if pose_count > 0:
-                        self.save_calibration_data()
-                        print(f"💾 已保存 {pose_count} 个数据点")
-                    else:
-                        print("❌ 没有数据可保存")
-                
-                elif key == ord('h'):  # h - 回到初始位置
-                    print("🏠 机械臂回到初始位置...")
-                    self.controller.move_all_home()
-                    time.sleep(2)
-                
-                elif key == ord('q'):  # q - 退出
-                    print("🛑 退出采集")
-                    break
-        
-        except KeyboardInterrupt:
-            print("\\n🛑 用户中断")
-        
-        finally:
-            cv2.destroyAllWindows()
-        
-        print(f"📊 采集完成，共获得 {pose_count} 个有效数据点")
-        return pose_count > 0
-    
-    def save_calibration_data(self):
-        """保存标定数据"""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
-        # 保存位姿数据
-        poses_file = os.path.join(self.output_dir, f"calibration_poses_{timestamp}.npz")
-        np.savez(poses_file,
-                robot_poses=np.array(self.robot_poses),
-                target_poses=np.array(self.target_poses))
-        
-        # 保存图像
-        images_dir = os.path.join(self.output_dir, f"images_{timestamp}")
-        os.makedirs(images_dir, exist_ok=True)
-        
-        for i, img in enumerate(self.images):
-            img_file = os.path.join(images_dir, f"image_{i:03d}.jpg")
-            cv2.imwrite(img_file, img)
-        
-        print(f"💾 数据已保存到:")
-        print(f"   位姿数据: {poses_file}")
-        print(f"   图像数据: {images_dir}")
-    
-    def load_calibration_data(self, poses_file):
-        """加载标定数据"""
-        try:
-            data = np.load(poses_file)
-            self.robot_poses = data['robot_poses'].tolist()
-            self.target_poses = data['target_poses'].tolist()
-            
-            print(f"✅ 加载标定数据: {poses_file}")
-            print(f"   数据点数量: {len(self.robot_poses)}")
-            return True
-            
-        except Exception as e:
-            print(f"❌ 加载标定数据失败: {e}")
+        self.session_dir = session_dir
+
+        print(f"📂 本次采集 session: {os.path.abspath(session_dir)}")
+
+        cap = cv2.VideoCapture(cam_id)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, int(width))
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, int(height))
+        if not cap.isOpened():
+            print("❌ 无法打开相机")
             return False
-    
-    def calibrate_eye_to_hand(self):
-        """执行眼在手外标定"""
-        if len(self.robot_poses) < 3:
-            print("❌ 数据点不足，至少需要3个位姿")
-            return None
-        
-        print(f"🔧 开始眼在手外标定，数据点数量: {len(self.robot_poses)}")
-        
-        try:
-            # 准备数据
-            R_gripper2base = []
-            t_gripper2base = []
-            R_target2cam = []
-            t_target2cam = []
-            
-            R_base2gripper = []
-            t_base2gripper = []
-            
-            R_cam2target = []
-            t_cam2target = []
-            
-            for i in range(len(self.robot_poses)):
-                # 1. 机器人末端到基座 (Standard FK)
-                T_gripper_base = self.robot_poses[i]
-                R_gripper2base.append(T_gripper_base[:3, :3])
-                t_gripper2base.append(T_gripper_base[:3, 3])
-                
-                # 2. 基座到机器人末端 (Inverted FK)
-                T_base_gripper = np.linalg.inv(T_gripper_base)
-                R_base2gripper.append(T_base_gripper[:3, :3])
-                t_base2gripper.append(T_base_gripper[:3, 3])
-                
-                # 3. 标定板到相机 (Standard PnP)
-                T_target_cam = self.target_poses[i]
-                R_target2cam.append(T_target_cam[:3, :3])
-                t_target2cam.append(T_target_cam[:3, 3])
-                
-                # 4. 相机到标定板 (Inverted PnP)
-                T_cam_target = np.linalg.inv(T_target_cam)
-                R_cam2target.append(T_cam_target[:3, :3])
-                t_cam2target.append(T_cam_target[:3, 3])
-            
-            # 数据质量检查
-            print("\\n📊 数据质量检查:")
-            self.analyze_data_quality(R_gripper2base, t_gripper2base, R_target2cam, t_target2cam)
-            
-            # 定义不同的输入组合策略
-            strategies = [
-                {
-                    "name": "Strategy 1: Base2Gripper + Target2Cam",
-                    "R_gripper": R_base2gripper, "t_gripper": t_base2gripper,
-                    "R_target": R_target2cam, "t_target": t_target2cam
-                },
-                {
-                    "name": "Strategy 2: Gripper2Base + Cam2Target",
-                    "R_gripper": R_gripper2base, "t_gripper": t_gripper2base,
-                    "R_target": R_cam2target, "t_target": t_cam2target
-                },
-                {
-                    "name": "Strategy 3: Target2Cam (as Robot) + Gripper2Base (as Target)",
-                    "R_gripper": R_target2cam, "t_gripper": t_target2cam,
-                    "R_target": R_gripper2base, "t_target": t_gripper2base
-                }
-            ]
-            
-            methods = [
-                (cv2.CALIB_HAND_EYE_TSAI, "Tsai-Lenz"),
-                (cv2.CALIB_HAND_EYE_PARK, "Park"),
-                (cv2.CALIB_HAND_EYE_HORAUD, "Horaud"),
-                (cv2.CALIB_HAND_EYE_ANDREFF, "Andreff"),
-                (cv2.CALIB_HAND_EYE_DANIILIDIS, "Daniilidis")
-            ]
-            
-            best_result = None
-            best_score = float('inf')
-            
-            for strategy in strategies:
-                print(f"\\n🔄 尝试策略: {strategy['name']}")
-                
-                for method, method_name in methods:
-                    try:
-                        # 执行标定
-                        R_calib, t_calib = cv2.calibrateHandEye(
-                            strategy["R_gripper"], strategy["t_gripper"],
-                            strategy["R_target"], strategy["t_target"],
-                            method=method
-                        )
-                        
-                        # 验证结果
-                        error = self.evaluate_calibration(R_calib, t_calib, 
-                                                        R_gripper2base, t_gripper2base,
-                                                        R_target2cam, t_target2cam)
-                        
-                        print(f"   {method_name}: {error:.6f} mm")
-                        
-                        if error < best_score and not (np.isnan(error) or np.isinf(error)):
-                            best_score = error
-                            best_result = (R_calib, t_calib, method_name, strategy['name'])
-                        
-                    except Exception as e:
-                        print(f"   {method_name} 失败: {e}")
-                        continue
-            
-            # 尝试非线性优化
-            if best_result is not None:
-                print(f"\\n🔄 尝试非线性优化 (基于 {best_result[2]})...")
-                try:
-                    R_opt, t_opt, error_opt = self.optimize_calibration(
-                        best_result[0], best_result[1],
-                        R_gripper2base, t_gripper2base,
-                        R_target2cam, t_target2cam
+
+        print("\n📸 开始交互式数据采集")
+        print("=" * 70)
+        print("\n⌨️  快捷键:")
+        print("   SPACE - 采集当前位姿数据")
+        print("   'h'   - 机械臂回中位")
+        print("   's'   - 显示/隐藏稳定性信息")
+        print("   'q'   - 退出采集")
+        print("\n📖 采集指南:")
+        print("   1. 手动移动机械臂到不同位姿")
+        print("   2. 确保棋盘格在相机视野内")
+        print("   3. 等待位姿稳定(绿色)后按SPACE采集")
+        print("   4. 建议采集 10-20 组数据")
+        print("   5. 尽量让机械臂姿态多样化")
+        print("=" * 70 + "\n")
+
+        sample_count = 0
+        show_stability = True
+        self.pose_buffer = []
+
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            display = frame.copy()
+            success, T_target_cam, corners, reproj_error = self.detect_chessboard(frame)
+
+            is_stable = False
+            stability_info = ""
+
+            if success and corners is not None:
+                cv2.drawChessboardCorners(display, self.board_size, corners, True)
+
+                self.update_pose_buffer(T_target_cam)
+                if len(self.pose_buffer) >= 3:
+                    translations = np.array([T[:3, 3] for T in self.pose_buffer])
+                    t_std = np.std(translations, axis=0) * 1000
+                    t_std_norm = np.linalg.norm(t_std)
+                    is_stable = t_std_norm < 3.0 and reproj_error < 1.0
+                    if show_stability:
+                        stability_info = f"Std: {t_std_norm:.1f}mm, ReprojErr: {reproj_error:.2f}px"
+
+                distance = np.linalg.norm(T_target_cam[:3, 3]) * 1000
+                color = (0, 255, 0) if is_stable else (0, 255, 255)
+                status_text = "STABLE - Press SPACE" if is_stable else "Detecting..."
+                cv2.putText(
+                    display,
+                    f"Distance: {distance:.0f}mm",
+                    (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    color,
+                    2,
+                )
+                cv2.putText(
+                    display,
+                    status_text,
+                    (10, 60),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.7,
+                    color,
+                    2,
+                )
+                if show_stability and stability_info:
+                    cv2.putText(
+                        display,
+                        stability_info,
+                        (10, 90),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.6,
+                        (255, 255, 255),
+                        2,
                     )
-                    print(f"   Optimization: {error_opt:.6f} mm")
-                    
-                    if error_opt < best_score:
-                        best_score = error_opt
-                        best_result = (R_opt, t_opt, "Optimization", "Non-linear Least Squares")
-                except Exception as e:
-                    print(f"   优化失败: {e}")
-
-            if best_result is None:
-                print("❌ 所有标定算法都失败了")
-                return None
-            
-            R_cam2base, t_cam2base, best_method, best_strategy = best_result
-            
-            # 构建变换矩阵
-            T_cam2base = np.eye(4)
-            T_cam2base[:3, :3] = R_cam2base
-            T_cam2base[:3, 3] = t_cam2base.flatten()
-
-            # 有些输入组合/文献定义会返回“逆”的外参（例如得到 T_base_cam 而不是 T_cam_base）。
-            # 这里用数据一致性自动判别：选择能让 T_target_gripper 更稳定的那个方向。
-            try:
-                score_direct = self.evaluate_calibration(
-                    T_cam2base[:3, :3],
-                    T_cam2base[:3, 3].reshape(3, 1),
-                    R_gripper2base, t_gripper2base,
-                    R_target2cam, t_target2cam,
+            else:
+                cv2.putText(
+                    display,
+                    "Chessboard NOT FOUND",
+                    (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    (0, 0, 255),
+                    2,
                 )
-                T_inv = np.linalg.inv(T_cam2base)
-                score_inv = self.evaluate_calibration(
-                    T_inv[:3, :3],
-                    T_inv[:3, 3].reshape(3, 1),
-                    R_gripper2base, t_gripper2base,
-                    R_target2cam, t_target2cam,
-                )
-                if np.isfinite(score_inv) and (score_inv + 1e-9) < score_direct:
-                    print(f"\nℹ️  检测到结果可能为逆变换：一致性 {score_direct:.6f} -> {score_inv:.6f} mm，已自动取逆")
-                    T_cam2base = T_inv
-                    best_strategy = f"{best_strategy} (auto-inverted)"
-                    best_score = score_inv
+                self.pose_buffer = []
+
+            cv2.putText(
+                display,
+                f"Samples: {sample_count}",
+                (display.shape[1] - 180, 30),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.8,
+                (255, 255, 255),
+                2,
+            )
+
+            cv2.imshow("Hand-Eye Calibration (Eye-to-Hand)", display)
+            key = cv2.waitKey(1) & 0xFF
+
+            if key == ord("q"):
+                print("\n👋 退出采集")
+                break
+            if key == ord("h"):
+                print("\n🏠 机械臂回中...")
+                self.controller.move_all_home()
+                time.sleep(1)
+                continue
+            if key == ord("s"):
+                show_stability = not show_stability
+                print(f"{'显示' if show_stability else '隐藏'}稳定性信息")
+                continue
+            if key == ord(" "):
+                if not success:
+                    print("⚠️  未检测到棋盘格，无法采集")
+                    continue
+                if not is_stable:
+                    print("⚠️  位姿不稳定，建议等待稳定后再采集")
+
+                T_avg = self.get_averaged_pose()
+                if T_avg is not None:
+                    T_to_save = T_avg
+                    print("   使用平均位姿")
                 else:
-                    best_score = score_direct
-            except Exception as _e:
-                # 若评估失败，不阻断主流程
-                pass
-            
-            print(f"\\n✅ 眼在手外标定完成")
-            print(f"   最佳策略: {best_strategy}")
-            print(f"   最佳算法: {best_method}")
-            print(f"   一致性误差: {best_score:.6f} mm")
-            print(f"\\n🎯 相机到基座变换矩阵 (T_cam_base):")
-            print(T_cam2base)
-            
-            # 分析结果
-            self.analyze_calibration_result(T_cam2base)
-            
-            # 一致性评估
-            self.evaluate_calibration_consistency(T_cam2base)
-            
-            # 保存结果
-            self.save_calibration_result(T_cam2base, best_method, best_score)
-            
-            return T_cam2base
-            
-        except Exception as e:
-            print(f"❌ 标定失败: {e}")
-            import traceback
-            traceback.print_exc()
+                    T_to_save = T_target_cam
+                    print("   使用单帧位姿")
+
+                sample_count += 1
+                print(f"\n📸 采集数据 #{sample_count}")
+                T_gripper_base, q = self.read_robot_pose(verbose=True)
+
+                self.T_target_cam_list.append(T_to_save.copy())
+                self.T_gripper_base_list.append(T_gripper_base.copy())
+                self.images.append(frame.copy())
+
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                np.savez(
+                    os.path.join(session_dir, f"pose_{sample_count:03d}.npz"),
+                    T_target_cam=T_to_save,
+                    T_gripper_base=T_gripper_base,
+                    q=q,
+                    reproj_error=reproj_error,
+                )
+                cv2.imwrite(
+                    os.path.join(session_dir, f"image_{sample_count:03d}.jpg"),
+                    frame,
+                )
+
+                # 同时保存可视化图，便于回看
+                cv2.imwrite(
+                    os.path.join(session_dir, f"vis_{sample_count:03d}.jpg"),
+                    display,
+                )
+
+                print(f"✅ 已保存数据 #{sample_count}")
+                print(f"   标定板距离: {np.linalg.norm(T_to_save[:3, 3]) * 1000:.1f} mm")
+                print(f"   重投影误差: {reproj_error:.2f} px")
+
+                self.pose_buffer = []
+
+        cap.release()
+        cv2.destroyAllWindows()
+        print(f"\n📊 共采集 {sample_count} 组数据")
+        return sample_count >= 3
+    
+    def load_collected_data(self, session_dir=None):
+        """从文件加载已采集的数据 (优先最新 session_*/pose_*.npz)
+
+        Parameters
+        ----------
+        session_dir : str | None
+            指定 session 目录；为 None 时自动选择最新 session_*/，若不存在则回退 output_dir 根目录。
+        """
+        import glob
+
+        base_dir = self.output_dir
+        if session_dir is None:
+            session_dirs = sorted(glob.glob(os.path.join(self.output_dir, "session_*")))
+            if session_dirs:
+                base_dir = session_dirs[-1]
+        else:
+            base_dir = session_dir
+
+        pose_files = sorted(glob.glob(os.path.join(base_dir, "pose_*.npz")))
+        if not pose_files:
+            print(f"❌ 未找到标定数据: {base_dir}")
+            return False
+
+        self.T_target_cam_list = []
+        self.T_gripper_base_list = []
+
+        print(f"\n📂 加载标定数据: {base_dir}")
+        for f in pose_files:
+            data = np.load(f)
+            self.T_target_cam_list.append(data["T_target_cam"])
+            self.T_gripper_base_list.append(data["T_gripper_base"])
+            print(f"   ✅ {os.path.basename(f)}")
+
+        print(f"\n共加载 {len(self.T_target_cam_list)} 组数据")
+        return True
+    
+    def calibrate(self):
+        """执行眼在手外标定，返回 T_cam_base"""
+        if len(self.T_gripper_base_list) < 3 or len(self.T_target_cam_list) < 3:
+            print("❌ 数据不足，至少需要 3 组数据")
             return None
+
+        print("\n🔧 开始眼在手外标定...")
+        print(f"   数据组数: {len(self.T_gripper_base_list)}")
+
+        # 准备数据
+        R_gripper2base = []
+        t_gripper2base = []
+        R_base2gripper = []
+        t_base2gripper = []
+
+        R_target2cam = []
+        t_target2cam = []
+        R_cam2target = []
+        t_cam2target = []
+
+        for T_gb, T_tc in zip(self.T_gripper_base_list, self.T_target_cam_list):
+            R_gripper2base.append(T_gb[:3, :3])
+            t_gripper2base.append(T_gb[:3, 3])
+            T_bg = np.linalg.inv(T_gb)
+            R_base2gripper.append(T_bg[:3, :3])
+            t_base2gripper.append(T_bg[:3, 3])
+
+            R_target2cam.append(T_tc[:3, :3])
+            t_target2cam.append(T_tc[:3, 3])
+            T_ct = np.linalg.inv(T_tc)
+            R_cam2target.append(T_ct[:3, :3])
+            t_cam2target.append(T_ct[:3, 3])
+
+        print("\n📊 数据质量检查:")
+        self.analyze_data_quality(R_gripper2base, t_gripper2base, R_target2cam, t_target2cam)
+
+        strategies = [
+            {
+                "name": "Strategy 1: Base2Gripper + Target2Cam",
+                "R_gripper": R_base2gripper,
+                "t_gripper": t_base2gripper,
+                "R_target": R_target2cam,
+                "t_target": t_target2cam,
+            },
+            {
+                "name": "Strategy 2: Gripper2Base + Cam2Target",
+                "R_gripper": R_gripper2base,
+                "t_gripper": t_gripper2base,
+                "R_target": R_cam2target,
+                "t_target": t_cam2target,
+            },
+            {
+                "name": "Strategy 3: Target2Cam (as Robot) + Gripper2Base (as Target)",
+                "R_gripper": R_target2cam,
+                "t_gripper": t_target2cam,
+                "R_target": R_gripper2base,
+                "t_target": t_gripper2base,
+            },
+        ]
+
+        methods = [
+            (cv2.CALIB_HAND_EYE_TSAI, "Tsai-Lenz"),
+            (cv2.CALIB_HAND_EYE_PARK, "Park"),
+            (cv2.CALIB_HAND_EYE_HORAUD, "Horaud"),
+            (cv2.CALIB_HAND_EYE_ANDREFF, "Andreff"),
+            (cv2.CALIB_HAND_EYE_DANIILIDIS, "Daniilidis"),
+        ]
+
+        best_result = None
+        best_score = float("inf")
+
+        for strategy in strategies:
+            print(f"\n🔄 尝试策略: {strategy['name']}")
+            for method, method_name in methods:
+                try:
+                    R_calib, t_calib = cv2.calibrateHandEye(
+                        strategy["R_gripper"],
+                        strategy["t_gripper"],
+                        strategy["R_target"],
+                        strategy["t_target"],
+                        method=method,
+                    )
+
+                    error = self.evaluate_calibration(
+                        R_calib,
+                        t_calib,
+                        R_gripper2base,
+                        t_gripper2base,
+                        R_target2cam,
+                        t_target2cam,
+                    )
+                    print(f"   {method_name}: {error:.6f} mm")
+
+                    if error < best_score and not (np.isnan(error) or np.isinf(error)):
+                        best_score = error
+                        best_result = (R_calib, t_calib, method_name, strategy["name"])
+
+                except Exception as e:
+                    print(f"   {method_name} 失败: {e}")
+
+        if best_result is None:
+            print("❌ 所有标定算法都失败了")
+            return None
+
+        print(f"\n🔄 尝试非线性优化 (基于 {best_result[2]})...")
+        try:
+            R_opt, t_opt, error_opt = self.optimize_calibration(
+                best_result[0],
+                best_result[1],
+                R_gripper2base,
+                t_gripper2base,
+                R_target2cam,
+                t_target2cam,
+            )
+            print(f"   Optimization: {error_opt:.6f} mm")
+            if error_opt < best_score:
+                best_score = error_opt
+                best_result = (R_opt, t_opt, "Optimization", "Non-linear Least Squares")
+        except Exception as e:
+            print(f"   优化失败: {e}")
+
+        R_cam2base, t_cam2base, best_method, best_strategy = best_result
+        T_cam2base = np.eye(4)
+        T_cam2base[:3, :3] = R_cam2base
+        T_cam2base[:3, 3] = t_cam2base.flatten()
+
+        # 自动判别是否需要取逆
+        try:
+            score_direct = self.evaluate_calibration(
+                T_cam2base[:3, :3],
+                T_cam2base[:3, 3].reshape(3, 1),
+                R_gripper2base,
+                t_gripper2base,
+                R_target2cam,
+                t_target2cam,
+            )
+            T_inv = np.linalg.inv(T_cam2base)
+            score_inv = self.evaluate_calibration(
+                T_inv[:3, :3],
+                T_inv[:3, 3].reshape(3, 1),
+                R_gripper2base,
+                t_gripper2base,
+                R_target2cam,
+                t_target2cam,
+            )
+            if np.isfinite(score_inv) and (score_inv + 1e-9) < score_direct:
+                print(
+                    f"\nℹ️  检测到结果可能为逆变换：一致性 {score_direct:.6f} -> {score_inv:.6f} mm，已自动取逆"
+                )
+                T_cam2base = T_inv
+                best_strategy = f"{best_strategy} (auto-inverted)"
+                best_score = score_inv
+            else:
+                best_score = score_direct
+        except Exception:
+            pass
+
+        print("\n✅ 眼在手外标定完成!")
+        print(f"   最佳策略: {best_strategy}")
+        print(f"   最佳算法: {best_method}")
+        print(f"   一致性误差: {best_score:.6f} mm")
+        print("\n🎯 相机到基座变换矩阵 (T_cam_base):")
+        print("-" * 70)
+        print(T_cam2base)
+        print("-" * 70)
+
+        return T_cam2base
 
     def optimize_calibration(self, R_init, t_init, R_gripper2base, t_gripper2base, R_target2cam, t_target2cam):
         """使用非线性最小二乘优化标定结果"""
@@ -845,50 +784,33 @@ class EyeToHandCalibrator:
         
         return mean_std_dev
     
-    def analyze_calibration_result(self, T_cam2base):
-        """分析标定结果"""
-        print("\\n📋 标定结果分析:")
-        
-        # 相机位置
-        cam_pos = T_cam2base[:3, 3]
-        print(f"   相机位置: [{cam_pos[0]:.3f}, {cam_pos[1]:.3f}, {cam_pos[2]:.3f}] m")
-        
-        # 相机姿态
-        r = R.from_matrix(T_cam2base[:3, :3])
-        cam_euler = r.as_euler('xyz', degrees=True)
-        print(f"   相机姿态: Roll={cam_euler[0]:.1f}°, Pitch={cam_euler[1]:.1f}°, Yaw={cam_euler[2]:.1f}°")
-        
-        # 与预期的比较 (如果有外参参考)
-        if self.camera_extrinsics is not None:
-            pos_diff = np.linalg.norm(cam_pos - self.camera_extrinsics[:3, 3])
-            print(f"   与参考外参位置差异: {pos_diff*1000:.1f}mm")
-    
-    def save_calibration_result(self, T_cam2base, method, error):
-        """保存标定结果"""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
-        # 保存numpy格式
-        result_file = os.path.join(self.output_dir, f"camera_extrinsics_{timestamp}.npy")
-        np.save(result_file, T_cam2base)
-        
-        # 保存YAML格式
-        yaml_file = os.path.join(self.output_dir, f"camera_extrinsics_{timestamp}.yaml")
-        result_data = {
-            'calibration_info': {
-                'method': method,
-                'error': float(error),
-                'timestamp': timestamp,
-                'n_poses': len(self.robot_poses)
-            },
-            'camera_extrinsics': T_cam2base.tolist()
-        }
-        
-        with open(yaml_file, 'w') as f:
-            yaml.dump(result_data, f, default_flow_style=False)
-        
-        print(f"\\n💾 标定结果已保存:")
-        print(f"   {result_file}")
-        print(f"   {yaml_file}")
+    def save_result(self, T_cam_base, filename="handeye_result_envir.yaml"):
+        """保存标定结果 (与 Eye-in-Hand 风格对齐)"""
+        if T_cam_base is None:
+            return
+
+        filepath = os.path.join(self.output_dir, filename)
+        fs = cv2.FileStorage(filepath, cv2.FILE_STORAGE_WRITE)
+        fs.write("T_cam_base", T_cam_base)
+
+        R_mat = T_cam_base[:3, :3]
+        t_vec = T_cam_base[:3, 3]
+        euler = R.from_matrix(R_mat).as_euler("xyz", degrees=True)
+        quat = R.from_matrix(R_mat).as_quat()
+
+        fs.write("rotation_matrix", R_mat)
+        fs.write("translation_vector", t_vec.reshape(3, 1))
+        fs.write("euler_angles_deg", np.array(euler).reshape(3, 1))
+        fs.write("quaternion_xyzw", np.array(quat).reshape(4, 1))
+        fs.write("calibration_date", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        fs.write("num_samples", len(self.T_target_cam_list))
+        fs.release()
+
+        print(f"\n💾 标定结果已保存: {filepath}")
+
+        npy_path = os.path.join(self.output_dir, "handeye_result_envir.npy")
+        np.save(npy_path, T_cam_base)
+        print(f"💾 标定结果已保存: {npy_path}")
     
     def evaluate_calibration_consistency(self, T_cam_base):
         """评估标定结果的一致性 (仿照 Eye-in-Hand)"""
@@ -905,10 +827,11 @@ class EyeToHandCalibrator:
         # T_target_gripper = inv(T_gripper_base) * T_cam_base * T_target_cam
         
         T_target_grippers = []
-        
-        for i in range(len(self.robot_poses)):
-            T_gb = self.robot_poses[i]
-            T_tc = self.target_poses[i]
+
+        n = min(len(self.T_gripper_base_list), len(self.T_target_cam_list))
+        for i in range(n):
+            T_gb = self.T_gripper_base_list[i]
+            T_tc = self.T_target_cam_list[i]
             
             # 计算 T_target_gripper
             T_tg = np.linalg.inv(T_gb) @ T_cam_base @ T_tc
@@ -980,121 +903,75 @@ class EyeToHandCalibrator:
             print(f"❌ 加载会话数据失败: {e}")
             return False
 
-    def run_calibration_workflow(self, mode="all"):
-        """运行完整的标定流程"""
-        if mode in ["collect", "all"]:
-            print("🎬 步骤1: 采集标定数据")
-            success = self.capture_calibration_data()
-            if not success:
-                print("❌ 数据采集失败")
-                return False
-        
-        if mode in ["calibrate", "all"]:
-            print("\\n🎬 步骤2: 执行标定计算")
-            
-            # 如果是仅标定模式，尝试加载最新的数据
-            if mode == "calibrate" and not self.robot_poses:
-                # 查找最新的数据文件
-                import glob
-                
-                # 1. 尝试查找聚合文件 (旧格式)
-                pose_files = glob.glob(os.path.join(self.output_dir, "calibration_poses_*.npz"))
-                
-                # 2. 尝试查找会话目录 (新格式)
-                session_dirs = sorted(glob.glob(os.path.join(self.output_dir, "session_*")))
-                
-                if pose_files:
-                    latest_file = max(pose_files, key=os.path.getctime)
-                    print(f"ℹ️  发现聚合数据文件: {latest_file}")
-                    if not self.load_calibration_data(latest_file):
-                        print("❌ 无法加载标定数据")
-                        return False
-                elif session_dirs:
-                    latest_session = session_dirs[-1]
-                    print(f"ℹ️  发现最新会话目录: {latest_session}")
-                    if not self.load_session_data(latest_session):
-                        print("❌ 无法加载会话数据")
-                        return False
-                else:
-                    print("❌ 未找到标定数据文件 (既无聚合文件也无会话目录)")
-                    return False
-            
-            result = self.calibrate_eye_to_hand()
-            if result is None:
-                print("❌ 标定计算失败")
-                return False
-            
-            print("\\n✅ 眼在手外标定完成!")
-        
-        return True
-    
-    def __del__(self):
-        """清理资源"""
-        if hasattr(self, 'cap') and self.cap is not None:
-            self.cap.release()
-        if hasattr(self, 'controller'):
+    def close(self):
+        """关闭控制器"""
+        if self.controller:
             self.controller.close()
-        cv2.destroyAllWindows()
+            print("🔌 控制器已关闭")
 
 
 def main():
-    """主函数"""
-    parser = argparse.ArgumentParser(description="眼在手外手眼标定")
-    
-    # 运行模式
-    parser.add_argument("--collect", action="store_true", help="仅采集数据")
-    parser.add_argument("--calibrate", action="store_true", help="仅执行标定")
-    parser.add_argument("--all", action="store_true", help="采集数据+执行标定")
-    
-    # 硬件配置
-    parser.add_argument("--camera", type=int, default=0, help="相机设备ID")
-    parser.add_argument("--port", default="/dev/left_arm", help="机械臂串口")
-    parser.add_argument("--output-dir", default="./handeye_data_environment", help="输出目录")
-    # 文件配置
-    parser.add_argument("--camera-params", default="./config_data/camera_intrinsics_environment.yaml", help="相机内外参文件 (OpenCV YAML格式)")
+    parser = argparse.ArgumentParser(description="眼在手外手眼标定工具")
+    parser.add_argument("--collect", action="store_true", help="采集标定数据")
+    parser.add_argument("--calibrate", action="store_true", help="执行标定计算")
+    parser.add_argument("--all", action="store_true", help="采集+标定")
+
+    parser.add_argument("--output-dir", default="./handeye_data_environment", help="数据保存目录")
+    parser.add_argument(
+        "--intrinsic",
+        default="./config_data/camera_intrinsics_environment.yaml",
+        help="相机内参文件 (OpenCV YAML, 仅读 K/distCoeffs)",
+    )
+    parser.add_argument("--square-size", type=float, default=18.0, help="棋盘格方格大小(mm)")
+    parser.add_argument("--port", default="/dev/left_arm", help="串口")
+    parser.add_argument("--video", type=int, default=0, help="视频设备ID")
+    parser.add_argument("--width", type=int, default=1280, help="相机采集宽度")
+    parser.add_argument("--height", type=int, default=720, help="相机采集高度")
+
+    # 兼容旧参数
+    parser.add_argument("--camera", type=int, help="(兼容) 相机设备ID，等同于 --video")
+    parser.add_argument(
+        "--camera-params",
+        help="(兼容) 相机参数文件，等同于 --intrinsic (本脚本仅读取内参)",
+    )
 
     args = parser.parse_args()
-    
-    # 确定运行模式
-    if not any([args.collect, args.calibrate, args.all]):
-        args.all = True  # 默认运行完整流程
-    
-    if args.collect:
-        mode = "collect"
-    elif args.calibrate:
-        mode = "calibrate"
-    else:
-        mode = "all"
-    
+
+    if args.camera is not None:
+        args.video = args.camera
+    if args.camera_params is not None:
+        args.intrinsic = args.camera_params
+
+    calibrator = EyeToHandCalibrator(
+        board_size=(7, 5),
+        square_size=args.square_size / 1000.0,
+        intrinsic_file=args.intrinsic,
+        output_dir=args.output_dir,
+    )
+
     try:
-        # 创建标定器
-        calibrator = EyeToHandCalibrator(
-            camera_id=args.camera,
-            port=args.port,
-            camera_params_file=args.camera_params,
-            output_dir=args.output_dir
-        )
-        
-        # 运行标定流程
-        success = calibrator.run_calibration_workflow(mode)
-        
-        if success:
-            print("\\n🎉 眼在手外标定成功完成!")
-        else:
-            print("\\n❌ 眼在手外标定失败!")
-            return 1
-    
+        if args.collect or args.all:
+            calibrator.init_robot(port=args.port)
+            print("\n🏠 机械臂回中...")
+            calibrator.controller.move_all_home()
+            time.sleep(1)
+            calibrator.collect_data_interactive(cam_id=args.video, width=args.width, height=args.height)
+
+        if args.calibrate or args.all or (not args.collect and not args.all):
+            if not calibrator.T_target_cam_list:
+                calibrator.load_collected_data()
+
+            if calibrator.T_target_cam_list:
+                T_cam_base = calibrator.calibrate()
+                if T_cam_base is not None:
+                    calibrator.evaluate_calibration_consistency(T_cam_base)
+                    calibrator.save_result(T_cam_base)
+
     except KeyboardInterrupt:
-        print("\\n🛑 用户中断")
-        return 1
-    except Exception as e:
-        print(f"\\n❌ 程序错误: {e}")
-        import traceback
-        traceback.print_exc()
-        return 1
-    
-    return 0
+        print("\n🛑 用户中断")
+    finally:
+        calibrator.close()
 
 
 if __name__ == "__main__":
-    exit(main())
+    main()

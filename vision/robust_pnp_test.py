@@ -348,11 +348,11 @@ class RobustPnPTester:
 
 def main():
     parser = argparse.ArgumentParser(description='PnP鲁棒性测试')
-    parser.add_argument('--camera', type=int, default=0, help='相机ID')
-    parser.add_argument('--square-size', type=float, default=9.83, help='棋盘格方格边长(mm)')
+    parser.add_argument('--camera', type=int, default=2, help='相机ID')
+    parser.add_argument('--square-size', type=float, default=20.73, help='棋盘格方格边长(mm)')
     parser.add_argument('--intrinsics', type=str, default=None, help='相机内参文件路径')
-    parser.add_argument('--board-cols', type=int, default=4, help='棋盘格内角点列数')
-    parser.add_argument('--board-rows', type=int, default=4, help='棋盘格内角点行数')
+    parser.add_argument('--board-cols', type=int, default=11, help='棋盘格内角点列数')
+    parser.add_argument('--board-rows', type=int, default=8, help='棋盘格内角点行数')
     
     args = parser.parse_args()
     
@@ -360,7 +360,7 @@ def main():
     intrinsics_file = args.intrinsics
     if intrinsics_file is None:
         import os
-        default_path = os.path.join(os.path.dirname(__file__), 'config_data/camera_intrinsics_environment.yaml')
+        default_path = os.path.join(os.path.dirname(__file__), 'config_data/camera_intrinsics_right.yaml')
         if os.path.exists(default_path):
             intrinsics_file = default_path
     
