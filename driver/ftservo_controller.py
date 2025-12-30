@@ -84,8 +84,6 @@ class ServoController:
                 0xE8, 0x03  # speed = 1000
             ]
         self.servo.sync_write(0x2A, 6, servo_data)
-        print(f"🚀 同步移动 {len(targets_dict)} 个舵机完成")
-
     # -------------------------
     # 中位与缓动控制
     # -------------------------
@@ -145,8 +143,6 @@ class ServoController:
             self.servo.sync_write(0x2A, 6, servo_data)
             print(f"  Step {step}/{step_count}")
             time.sleep(interval)
-
-        print("✅ 所有舵机已平滑回中位")
     def soft_move_to_pose(self, target_dict, step_count=15, interval=0.15):
         """
         平滑移动到指定目标姿态
@@ -194,8 +190,6 @@ class ServoController:
             print(f"  Step {step}/{step_count}")
             time.sleep(interval)
 
-        print("✅ 目标姿态已平滑到位")
-
 
     def fast_move_to_pose(self, target_dict, speed=1000):
         """
@@ -231,7 +225,6 @@ class ServoController:
             ]
 
         self.servo.sync_write(0x2A, 6, servo_data)
-        print(f"🚀 Fast move ({'per-joint' if isinstance(speed, dict) else 'global'}) speed mode")
 
     # -------------------------
     # 读取舵机状态

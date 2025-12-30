@@ -27,7 +27,7 @@ def build_target_pose(x=0.5, y=0, z=0.1, roll=0.0, pitch=np.pi/4, yaw=0.0):
 # -----------------------------
 def main():
     # 4.1 初始化底层控制
-    controller = ServoController(port="/dev/left_arm", baudrate=1_000_000, config_path="./driver/servo_config.json")
+    controller = ServoController(port="/dev/left_arm", baudrate=1_000_000, config_path="./driver/left_arm.json")
     robot = create_so101_5dof_gripper()
     
     # 设置舵机控制器到机器人
@@ -53,7 +53,7 @@ def main():
     ))
 
     # 目标末端位姿（可自行调整）
-    T_goal = build_target_pose(x=0.35, y=0, z=0.23, roll=-1, pitch=1, yaw=0)#z是4号舵机的高度
+    T_goal = build_target_pose(x=0.2, y=-.1, z=0.23, roll=1, pitch=1, yaw=0)#z是4号舵机的高度
     print("\n🎯 目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")

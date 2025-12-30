@@ -207,7 +207,7 @@ def ikine_NR(ets, Tep, q0=None, ilimit=50, tol=1e-3, mask=None, pinv=False):
 def ikine_QP(ets, Tep, q0=None, ilimit=50, tol=1e-3, mask=None, 
              kj=0.01, ks=1.0):
     """
-    使用二次规划方法求解逆运动学 (简化版)
+    使用二次规划方法求解逆运动学 
     
     本方法在简化版中退化为带关节正则化的 GN 方法
     

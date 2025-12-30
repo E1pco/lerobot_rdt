@@ -12,7 +12,7 @@ from joyconrobotics import JoyconRobotics
 # Import IK solver and servo controller
 
 from driver.ftservo_controller import ServoController
-from ik.robot import create_so101_5dof
+from ik.robot import create_so101_5dof_gripper
 
 
 def build_target_pose(x, y, z, roll, pitch, yaw):
@@ -34,7 +34,7 @@ class JoyConIKController:
     Main controller class that integrates Joy-Con input with IK solver
     """
     
-    def __init__(self, device='right', port='/dev/ttyACM0', baudrate=1_000_000,
+    def __init__(self, device='left', port='/dev/left_arm', baudrate=1_000_000,
                  config_path='left_arm.json'):
         """
         Initialize JoyCon-IK controller
@@ -68,7 +68,7 @@ class JoyConIKController:
         
         # Initialize robot model
         print(f"\n[2/5] Building robot kinematic model...")
-        self.robot = create_so101_5dof()
+        self.robot = create_so101_5dof_gripper()
         print(f"✓ Robot model created (5 DOF)")
         
         # 从 robot 对象获取关节配置
@@ -257,7 +257,7 @@ class JoyConIKController:
                 # 获取 Joy-Con 姿态数据（偏移量）
                 pose, gripper_status, _ = self.joycon.get_control()
                 joycon_offset_pos = np.array([pose[0], pose[1], pose[2]])
-                joycon_offset_rpy = np.array([pose[3], pose[4], pose[5]])
+                joycon_offset_rpy = np.array([-pose[3], -pose[4], pose[5]])
                 
                 # 添加 Z 轴手动调整
                 joycon_offset_pos[2] += self.z_offset
@@ -277,12 +277,12 @@ class JoyConIKController:
                 sol = self.robot.ikine_LM(
                     Tep=T_goal,
                     q0=self.current_q,
-                    ilimit=500,
-                    slimit=50,
+                    ilimit=50,
+                    slimit=3,
                     tol=1e-3,
                     mask=[1, 1, 1, 0.8, 0.8, 0],
                     k=0.1,
-                    method="sugihara"
+                    method="chan"
                 )
 
                 if sol.success:
@@ -354,15 +354,15 @@ def main():
         '--device', '-d',
         type=str,
         choices=['right', 'left'],
-        default='right',
-        help='Select Joy-Con device (default: right)'
+        default='left',
+        help='Select Joy-Con device (default: left)'
     )
     
     parser.add_argument(
         '--port', '-p',
         type=str,
-        default='/dev/ttyACM0',
-        help='Serial port for servo controller (default: /dev/ttyACM0)'
+        default='/dev/left_arm',
+        help='Serial port for servo controller (default: /dev/left_arm)'
     )
     
     parser.add_argument(
@@ -375,8 +375,8 @@ def main():
     parser.add_argument(
         '--config', '-c',
         type=str,
-        default='./driver/servo_config.json',
-        help='Path to servo configuration file (default: servo_config.json)'
+        default='./driver/left_arm.json',
+        help='Path to servo configuration file (default: left_arm.json)'
     )
     
     args = parser.parse_args()
