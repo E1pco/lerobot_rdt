@@ -1,30 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""JoyCon teleop + RDT (ICLR'25) fine-tuning dataset collector.
-
-Paper alignment (2410.07864v2):
-- o_t := (X_{t-1:t}, z_t, c)
-- 3-view RGB order: exterior, right-wrist, left-wrist; missing views padded.
-- Pad to square, resize 384x384.
-- z_t and a_t embedded into 128-dim unified space (Table 4), with availability mask.
-- Fine-tuning storage: HDF5.
-
-Controls (default, right JoyCon):
-- Y: toggle recording on/off
-- A: start a new episode (closes previous if recording)
-- X: exit
-- Home: robot home + JoyCon reconnect (same as joycon_ik_control_py.py)
-
-Robot motion controls keep the original mapping:
-- Move Joy-Con: Cartesian pose offset (position + RPY)
-- ZR/R: gripper tighten/loosen (servo steps)
-- +/-: speed
-"""
-
 from __future__ import annotations
 
 import argparse
+import csv
+import json
 import sys
 import time
 from collections import deque
@@ -68,6 +49,159 @@ from rdt_hdf5 import (
     LEFT_GRIPPER_POS,
     LEFT_GRIPPER_VEL,
 )
+
+
+class RawEpisodeWriter:
+    """Raw episode writer: saves CSV + JPG for easy human inspection.
+
+    Layout:
+      episode_XXXXXX/
+        meta.json
+        proprio.csv
+        proprio_mask.csv
+        action.csv
+        action_mask.csv
+        timestamps_unix_s.csv
+        control_frequency_hz.csv
+        ik_success.csv
+        images/step_000000_timg0_exterior.jpg
+        ... (step × Timg=2 × view=3)
+
+    Notes:
+    - Images are saved as JPG in RGB->BGR conversion.
+    - CSV files are append-only; header written once.
+    """
+
+    def __init__(
+        self,
+        episode_dir: Path,
+        *,
+        instruction: str,
+        control_hz: float,
+        image_size: int,
+        timg: int = 2,
+        ncam: int = 3,
+        ta: int = 64,
+        jpg_quality: int = 95,
+    ) -> None:
+        self.episode_dir = Path(episode_dir)
+        self.episode_dir.mkdir(parents=True, exist_ok=True)
+        self.images_dir = self.episode_dir / "images"
+        self.images_dir.mkdir(parents=True, exist_ok=True)
+
+        self.timg = int(timg)
+        self.ncam = int(ncam)
+        self.image_size = int(image_size)
+        self.ta = int(ta)
+        self.instruction = str(instruction)
+        self.control_hz = float(control_hz)
+        self.jpg_quality = int(jpg_quality)
+        self._t = 0
+
+        meta = {
+            "instruction": self.instruction,
+            "timg": self.timg,
+            "ncam": self.ncam,
+            "image_size": self.image_size,
+            "action_dim": 128,
+            "proprio_dim": 128,
+            "ta": self.ta,
+            "control_hz": self.control_hz,
+            "created_unix_s": float(time.time()),
+        }
+        (self.episode_dir / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+        self._fh_proprio = open(self.episode_dir / "proprio.csv", "w", newline="", encoding="utf-8")
+        self._fh_proprio_mask = open(self.episode_dir / "proprio_mask.csv", "w", newline="", encoding="utf-8")
+        self._fh_action = open(self.episode_dir / "action.csv", "w", newline="", encoding="utf-8")
+        self._fh_action_mask = open(self.episode_dir / "action_mask.csv", "w", newline="", encoding="utf-8")
+        self._fh_ts = open(self.episode_dir / "timestamps_unix_s.csv", "w", newline="", encoding="utf-8")
+        self._fh_hz = open(self.episode_dir / "control_frequency_hz.csv", "w", newline="", encoding="utf-8")
+        self._fh_ik = open(self.episode_dir / "ik_success.csv", "w", newline="", encoding="utf-8")
+
+        self._w_proprio = csv.writer(self._fh_proprio)
+        self._w_proprio_mask = csv.writer(self._fh_proprio_mask)
+        self._w_action = csv.writer(self._fh_action)
+        self._w_action_mask = csv.writer(self._fh_action_mask)
+        self._w_ts = csv.writer(self._fh_ts)
+        self._w_hz = csv.writer(self._fh_hz)
+        self._w_ik = csv.writer(self._fh_ik)
+
+        header_128 = [f"d{i}" for i in range(128)]
+        self._w_proprio.writerow(header_128)
+        self._w_proprio_mask.writerow(header_128)
+        self._w_action.writerow(header_128)
+        self._w_action_mask.writerow(header_128)
+        self._w_ts.writerow(["timestamp_unix_s"])
+        self._w_hz.writerow(["control_frequency_hz"])
+        self._w_ik.writerow(["ik_success"])
+
+        self._jpg_params = [int(cv2.IMWRITE_JPEG_QUALITY), self.jpg_quality]
+        self._views = ["exterior", "right_wrist", "left_wrist"]
+
+    @property
+    def length(self) -> int:
+        return int(self._t)
+
+    def append_step(
+        self,
+        *,
+        images_timg_ncam: np.ndarray,
+        proprio: UnifiedVector,
+        action: UnifiedVector,
+        timestamp_unix_s: Optional[float] = None,
+        control_hz: Optional[float] = None,
+        ik_success: bool = True,
+    ) -> None:
+        images = np.asarray(images_timg_ncam, dtype=np.uint8)
+        expected = (self.timg, self.ncam, self.image_size, self.image_size, 3)
+        if images.shape != expected:
+            raise ValueError(f"images must have shape {expected}, got {images.shape}")
+
+        t = self._t
+        # Save images as JPG
+        for ti in range(self.timg):
+            for ci in range(self.ncam):
+                rgb = images[ti, ci]
+                bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+                out = self.images_dir / f"step_{t:06d}_timg{ti}_{self._views[ci]}.jpg"
+                ok = cv2.imwrite(str(out), bgr, self._jpg_params)
+                if not ok:
+                    raise RuntimeError(f"Failed to write image: {out}")
+
+        p = np.asarray(proprio.value, dtype=np.float32).reshape(128)
+        pm = np.asarray(proprio.mask, dtype=np.uint8).reshape(128)
+        a = np.asarray(action.value, dtype=np.float32).reshape(128)
+        am = np.asarray(action.mask, dtype=np.uint8).reshape(128)
+
+        self._w_proprio.writerow([f"{x:.9g}" for x in p.tolist()])
+        self._w_proprio_mask.writerow([str(int(x)) for x in pm.tolist()])
+        self._w_action.writerow([f"{x:.9g}" for x in a.tolist()])
+        self._w_action_mask.writerow([str(int(x)) for x in am.tolist()])
+
+        ts = float(time.time() if timestamp_unix_s is None else timestamp_unix_s)
+        hz = float(self.control_hz if control_hz is None else control_hz)
+        self._w_ts.writerow([f"{ts:.9f}"])
+        self._w_hz.writerow([f"{hz:.6g}"])
+        self._w_ik.writerow(["1" if ik_success else "0"])
+
+        self._t += 1
+
+    def close(self) -> None:
+        for fh in (
+            self._fh_proprio,
+            self._fh_proprio_mask,
+            self._fh_action,
+            self._fh_action_mask,
+            self._fh_ts,
+            self._fh_hz,
+            self._fh_ik,
+        ):
+            try:
+                fh.flush()
+                fh.close()
+            except Exception:
+                pass
 
 
 @dataclass
@@ -194,6 +328,7 @@ class JoyConRDTCollector:
         control_arm: str,
         out_dir: Path,
         instruction: str,
+        save_format: str,
         control_hz: float,
         ta: int,
         image_size: int,
@@ -211,6 +346,9 @@ class JoyConRDTCollector:
         self.out_dir.mkdir(parents=True, exist_ok=True)
 
         self.instruction = instruction
+        self.save_format = save_format
+        if self.save_format not in ("raw", "hdf5"):
+            raise ValueError("save_format must be 'raw' or 'hdf5'")
         self.control_hz = float(control_hz)
         self.dt = 1.0 / self.control_hz if self.control_hz > 0 else 0.04
         self.ta = int(ta)
@@ -299,7 +437,7 @@ class JoyConRDTCollector:
                 self.hist[k].append(dummy)
                 self.hist[k].append(dummy)
 
-        self.writer: Optional[RDTHDF5EpisodeWriter] = None
+        self.writer: Optional[object] = None
 
     def _init_arm(self, *, name: str, port: str, baudrate: int, config_path: str, no_home: bool) -> ArmRig:
         # In no-robot mode, create a dummy rig.
@@ -405,16 +543,28 @@ class JoyConRDTCollector:
             self.writer.close()
             self.writer = None
         self.episode_idx += 1
-        ep_path = self.out_dir / f"episode_{self.episode_idx:06d}.hdf5"
-        self.writer = RDTHDF5EpisodeWriter(
-            ep_path,
-            timg=2,
-            ncam=3,
-            image_size=self.image_size,
-            ta=self.ta,
-            instruction=self.instruction,
-            control_hz=self.control_hz,
-        )
+        if self.save_format == "hdf5":
+            ep_path = self.out_dir / f"episode_{self.episode_idx:06d}.hdf5"
+            self.writer = RDTHDF5EpisodeWriter(
+                ep_path,
+                timg=2,
+                ncam=3,
+                image_size=self.image_size,
+                ta=self.ta,
+                instruction=self.instruction,
+                control_hz=self.control_hz,
+            )
+        else:
+            ep_dir = self.out_dir / f"episode_{self.episode_idx:06d}"
+            self.writer = RawEpisodeWriter(
+                ep_dir,
+                timg=2,
+                ncam=3,
+                image_size=self.image_size,
+                ta=self.ta,
+                instruction=self.instruction,
+                control_hz=self.control_hz,
+            )
 
     def _toggle_recording(self) -> None:
         if not self.recording:
@@ -758,6 +908,7 @@ def main() -> int:
     ap.add_argument("--control-hz", type=float, default=25.0)
     ap.add_argument("--ta", type=int, default=64, help="Action chunk horizon Ta (saved on finalize)")
     ap.add_argument("--image-size", type=int, default=384)
+    ap.add_argument("--save-format", choices=["raw", "hdf5"], default="raw", help="Save raw CSV+JPG first, or directly save HDF5")
 
     ap.add_argument("--device", choices=["right", "left"], default="right")
     ap.add_argument("--control-arm", choices=["right", "left"], default="right", help="Which arm the JoyCon controls")
@@ -797,20 +948,40 @@ def main() -> int:
     if args.dry_run:
         out = args.out_dir
         out.mkdir(parents=True, exist_ok=True)
-        ep_path = out / "episode_000001.hdf5"
-        with RDTHDF5EpisodeWriter(
-            ep_path,
-            instruction=args.instruction,
-            control_hz=args.control_hz,
-            image_size=args.image_size,
-            ta=args.ta,
-        ) as w:
-            images = np.zeros((2, 3, args.image_size, args.image_size, 3), dtype=np.uint8)
-            for _ in range(int(args.dry_run_steps)):
-                proprio = make_unified_vector()
-                action = make_unified_vector()
-                w.append_step(images_timg_ncam=images, proprio=proprio, action=action, control_hz=args.control_hz)
-        print(f"Wrote dummy episode: {ep_path}")
+        images = np.zeros((2, 3, args.image_size, args.image_size, 3), dtype=np.uint8)
+        if args.save_format == "hdf5":
+            ep_path = out / "episode_000001.hdf5"
+            with RDTHDF5EpisodeWriter(
+                ep_path,
+                instruction=args.instruction,
+                control_hz=args.control_hz,
+                image_size=args.image_size,
+                ta=args.ta,
+            ) as w:
+                for _ in range(int(args.dry_run_steps)):
+                    proprio = make_unified_vector()
+                    action = make_unified_vector()
+                    w.append_step(images_timg_ncam=images, proprio=proprio, action=action, control_hz=args.control_hz)
+            print(f"Wrote dummy episode: {ep_path}")
+        else:
+            ep_dir = out / "episode_000001"
+            w = RawEpisodeWriter(
+                ep_dir,
+                instruction=args.instruction,
+                control_hz=args.control_hz,
+                image_size=args.image_size,
+                ta=args.ta,
+                timg=2,
+                ncam=3,
+            )
+            try:
+                for _ in range(int(args.dry_run_steps)):
+                    proprio = make_unified_vector()
+                    action = make_unified_vector()
+                    w.append_step(images_timg_ncam=images, proprio=proprio, action=action, control_hz=args.control_hz)
+            finally:
+                w.close()
+            print(f"Wrote dummy raw episode: {ep_dir}")
         return 0
 
     collector = JoyConRDTCollector(
@@ -823,6 +994,7 @@ def main() -> int:
         left_config_path=args.left_config,
         out_dir=args.out_dir,
         instruction=args.instruction,
+        save_format=args.save_format,
         control_hz=args.control_hz,
         ta=args.ta,
         image_size=args.image_size,

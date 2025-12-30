@@ -1,0 +1,11 @@
+{
+  "instruction": "your task here",
+  "timg": 2,
+  "ncam": 3,
+  "image_size": 384,
+  "action_dim": 128,
+  "proprio_dim": 128,
+  "ta": 64,
+  "control_hz": 25.0,
+  "created_unix_s": 1767135682.065119
+}
