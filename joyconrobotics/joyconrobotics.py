@@ -170,7 +170,22 @@ class JoyconRobotics:
         elif device == "left":
             self.joycon_id = get_L_id()
         else:
-            print("get a wrong device name of joycon")
+            raise ValueError(f"Invalid JoyCon device='{device}', expected 'right' or 'left'")
+
+        # get_R_id/get_L_id returns (None, None, None) if not found.
+        if (
+            self.joycon_id is None
+            or len(self.joycon_id) < 3
+            or self.joycon_id[0] is None
+            or self.joycon_id[1] is None
+            or self.joycon_id[2] is None
+        ):
+            raise RuntimeError(
+                f"No {device} Joy-Con found (hid.enumerate returned none). "
+                "Make sure the Joy-Con is paired/connected, press the sync button, "
+                "and ensure your user has permission to access hidraw devices."
+            )
+
         device_serial = self.joycon_id[2][:6]
         
         # init joycon

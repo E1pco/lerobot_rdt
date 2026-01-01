@@ -17,7 +17,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Tuple
 
-import h5py
+try:
+    import h5py  # type: ignore
+except Exception:  # pragma: no cover
+    h5py = None  # type: ignore
 import numpy as np
 
 
@@ -95,6 +98,9 @@ class RDTHDF5EpisodeWriter:
         compression: Optional[str] = "gzip",
         compression_level: int = 4,
     ) -> None:
+        if h5py is None:
+            raise RuntimeError("RDTHDF5EpisodeWriter requires h5py. Install it (pip install h5py).")
+
         self.file_path = Path(file_path)
         self.file_path.parent.mkdir(parents=True, exist_ok=True)
 

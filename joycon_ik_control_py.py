@@ -354,15 +354,15 @@ def main():
         '--device', '-d',
         type=str,
         choices=['right', 'left'],
-        default='left',
-        help='Select Joy-Con device (default: left)'
+        default='right',
+        help='Select Joy-Con device (default: right)'
     )
     
     parser.add_argument(
         '--port', '-p',
         type=str,
-        default='/dev/left_arm',
-        help='Serial port for servo controller (default: /dev/left_arm)'
+        default='/dev/right_arm',
+        help='Serial port for servo controller (default: /dev/right_arm)'
     )
     
     parser.add_argument(
@@ -375,8 +375,8 @@ def main():
     parser.add_argument(
         '--config', '-c',
         type=str,
-        default='./driver/left_arm.json',
-        help='Path to servo configuration file (default: left_arm.json)'
+        default='./driver/right_arm.json',
+        help='Path to servo configuration file (default: right_arm.json)'
     )
     
     args = parser.parse_args()

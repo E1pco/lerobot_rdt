@@ -18,13 +18,26 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-import cv2
+try:
+    import cv2  # type: ignore
+except Exception:  # pragma: no cover
+    cv2 = None  # type: ignore
 import numpy as np
 from scipy.spatial.transform import Rotation as R
 
-from driver.ftservo_controller import ServoController
+_SERVO_IMPORT_ERROR: Optional[str] = None
+try:
+    from driver.ftservo_controller import ServoController  # type: ignore
+except Exception as e:  # pragma: no cover
+    ServoController = None  # type: ignore
+    _SERVO_IMPORT_ERROR = f"{type(e).__name__}: {e}"
 from ik.robot import create_so101_5dof
-from joyconrobotics import JoyconRobotics
+_JOYCON_IMPORT_ERROR: Optional[str] = None
+try:
+    from joyconrobotics import JoyconRobotics  # type: ignore
+except Exception as e:  # pragma: no cover
+    JoyconRobotics = None  # type: ignore
+    _JOYCON_IMPORT_ERROR = f"{type(e).__name__}: {e}"
 
 from rdt_hdf5 import (
     RDTHDF5EpisodeWriter,
@@ -84,6 +97,9 @@ class RawEpisodeWriter:
         ta: int = 64,
         jpg_quality: int = 95,
     ) -> None:
+        if cv2 is None:
+            raise RuntimeError("RawEpisodeWriter requires OpenCV (cv2). Install opencv-python or use --save-format hdf5.")
+
         self.episode_dir = Path(episode_dir)
         self.episode_dir.mkdir(parents=True, exist_ok=True)
         self.images_dir = self.episode_dir / "images"
@@ -207,7 +223,7 @@ class RawEpisodeWriter:
 @dataclass
 class ArmRig:
     name: str  # "right" | "left"
-    controller: Optional[ServoController]
+    controller: Optional[object]
     robot: object
     joint_names: Tuple[str, ...]
     gear_sign: dict
@@ -238,6 +254,8 @@ def pad_to_square_and_resize_rgb(
     out_size: int,
     pad_bgr: Tuple[int, int, int],
 ) -> np.ndarray:
+    if cv2 is None:
+        raise RuntimeError("OpenCV (cv2) is required for camera/image processing. Install opencv-python.")
     if frame_bgr is None:
         raise ValueError("frame_bgr is None")
 
@@ -263,22 +281,53 @@ class MultiViewCamera:
         left_wrist: Optional[str],
         width: int,
         height: int,
+        backend: str = "auto",
+        fourcc: Optional[str] = "MJPG",
+        buffersize: int = 1,
     ) -> None:
-        self._caps: Dict[str, Optional[cv2.VideoCapture]] = {
+        if cv2 is None:
+            raise RuntimeError("MultiViewCamera requires OpenCV (cv2). Install opencv-python or run with --no-camera.")
+        self._backend = str(backend)
+        self._fourcc = None if fourcc is None else str(fourcc)
+        self._buffersize = int(buffersize)
+
+        if self._backend not in ("auto", "v4l2", "gstreamer"):
+            raise ValueError("backend must be one of: auto|v4l2|gstreamer")
+
+        self._caps: Dict[str, Optional[object]] = {
             "exterior": self._open(exterior, width, height),
             "right_wrist": self._open(right_wrist, width, height),
             "left_wrist": self._open(left_wrist, width, height),
         }
 
-    @staticmethod
-    def _open(source: Optional[str], width: int, height: int) -> Optional[cv2.VideoCapture]:
+    def _open(self, source: Optional[str], width: int, height: int) -> Optional[object]:
         if source is None:
             return None
+
         try:
             idx = int(source)
-            cap = cv2.VideoCapture(idx)
+            if self._backend == "v4l2":
+                cap = cv2.VideoCapture(idx, cv2.CAP_V4L2)
+            elif self._backend == "gstreamer":
+                cap = cv2.VideoCapture(idx, cv2.CAP_GSTREAMER)
+            else:
+                cap = cv2.VideoCapture(idx)
         except ValueError:
             cap = cv2.VideoCapture(source)
+
+        # Reduce latency / memory where supported.
+        try:
+            if self._buffersize >= 0:
+                cap.set(cv2.CAP_PROP_BUFFERSIZE, self._buffersize)
+        except Exception:
+            pass
+
+        # Prefer MJPG for USB cameras to reduce bandwidth/memory pressure.
+        if self._fourcc:
+            try:
+                cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*self._fourcc))
+            except Exception:
+                pass
 
         if width > 0:
             cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
@@ -319,7 +368,10 @@ class JoyConRDTCollector:
     def __init__(
         self,
         *,
+        joycon_mode: str,
         device: str,
+        device_right: str,
+        device_left: str,
         right_port: str,
         left_port: str,
         baudrate: int,
@@ -337,6 +389,11 @@ class JoyConRDTCollector:
         cam_left_wrist: Optional[str],
         cam_width: int,
         cam_height: int,
+        cam_backend: str,
+        cam_fourcc: Optional[str],
+        cam_buffersize: int,
+        preview: bool,
+        preview_scale: float,
         pad_bgr: Tuple[int, int, int],
         no_robot: bool,
         no_camera: bool,
@@ -358,10 +415,29 @@ class JoyConRDTCollector:
         self.no_robot = no_robot
         self.no_camera = no_camera
 
+        self.preview = bool(preview)
+        self.preview_scale = float(preview_scale)
+        if self.preview_scale <= 0:
+            raise ValueError("preview_scale must be > 0")
+
+        if self.preview and cv2 is None:
+            raise RuntimeError("--preview requires OpenCV (cv2). Install opencv-python.")
+        if self.preview and self.no_camera:
+            raise RuntimeError("--preview requires cameras; remove --no-camera.")
+
+        if (not self.no_camera) and cv2 is None:
+            raise RuntimeError("OpenCV (cv2) is required for camera capture. Install opencv-python or pass --no-camera.")
+        if self.save_format == "raw" and cv2 is None:
+            raise RuntimeError("--save-format raw requires OpenCV (cv2). Install opencv-python or use --save-format hdf5.")
+
         self.speed = 800
         self.running = True
         self.recording = False
         self.episode_idx = 0
+
+        self.joycon_mode = joycon_mode
+        if self.joycon_mode not in ("single", "dual"):
+            raise ValueError("joycon_mode must be 'single' or 'dual'")
 
         self.control_arm = control_arm
         if self.control_arm not in ("right", "left"):
@@ -414,7 +490,28 @@ class JoyConRDTCollector:
             self._refresh_base_poses()
 
         self.joycon_device = device
-        self.joycon = JoyconRobotics(device=device, without_rest_init=False, common_rad=True, lerobot=False)
+        self.joycon_device_right = device_right
+        self.joycon_device_left = device_left
+
+        if JoyconRobotics is None:
+            raise RuntimeError(
+                "JoyCon control dependencies missing; failed to import joyconrobotics: "
+                + str(_JOYCON_IMPORT_ERROR or "unknown error")
+            )
+
+        self.joycon: Optional[object] = None
+        self.joycon_right: Optional[object] = None
+        self.joycon_left: Optional[object] = None
+
+        if self.joycon_mode == "single":
+            self.joycon = JoyconRobotics(device=device, without_rest_init=False, common_rad=True, lerobot=False)
+        else:
+            self.joycon_right = JoyconRobotics(
+                device=self.joycon_device_right, without_rest_init=False, common_rad=True, lerobot=False
+            )
+            self.joycon_left = JoyconRobotics(
+                device=self.joycon_device_left, without_rest_init=False, common_rad=True, lerobot=False
+            )
 
         self.cams = None if self.no_camera else MultiViewCamera(
             exterior=cam_exterior,
@@ -422,6 +519,9 @@ class JoyConRDTCollector:
             left_wrist=cam_left_wrist,
             width=cam_width,
             height=cam_height,
+            backend=cam_backend,
+            fourcc=cam_fourcc,
+            buffersize=cam_buffersize,
         )
 
         # Per-view history buffers of processed RGB frames
@@ -438,6 +538,132 @@ class JoyConRDTCollector:
                 self.hist[k].append(dummy)
 
         self.writer: Optional[object] = None
+
+        self._preview_window = "RDT Cameras"
+        self._last_preview_bgr: Optional[np.ndarray] = None
+
+    def _render_preview(
+        self,
+        *,
+        images_timg_ncam_rgb: np.ndarray,
+        ik_success: bool,
+        now_s: float,
+        q_target_right: Optional[np.ndarray] = None,
+        q_target_left: Optional[np.ndarray] = None,
+    ) -> None:
+        if not self.preview:
+            return
+        if cv2 is None:
+            return
+
+        imgs = np.asarray(images_timg_ncam_rgb, dtype=np.uint8)
+        if imgs.shape[-1] != 3:
+            return
+
+        # Expect (Timg=2, Ncam=3, H, W, 3) RGB
+        if imgs.ndim != 5 or imgs.shape[0] != 2 or imgs.shape[1] != 3:
+            return
+
+        timg, ncam, h, w, _ = imgs.shape
+
+        # Convert to BGR and tile into a 2x3 grid.
+        tiles = []
+        for ti in range(timg):
+            row = []
+            for ci in range(ncam):
+                bgr = cv2.cvtColor(imgs[ti, ci], cv2.COLOR_RGB2BGR)
+                row.append(bgr)
+            tiles.append(np.concatenate(row, axis=1))
+        canvas = np.concatenate(tiles, axis=0)
+
+        # Optional scale for display performance.
+        if self.preview_scale != 1.0:
+            canvas = cv2.resize(
+                canvas,
+                (int(canvas.shape[1] * self.preview_scale), int(canvas.shape[0] * self.preview_scale)),
+                interpolation=cv2.INTER_AREA,
+            )
+
+        def fmt_vec(x: np.ndarray, prec: int = 3) -> str:
+            arr = np.asarray(x).reshape(-1)
+            return "[" + ",".join(f"{v:.{prec}f}" for v in arr.tolist()) + "]"
+
+        def put(line: str, y: int, color=(255, 255, 255), scale: float = 0.55) -> None:
+            cv2.putText(canvas, line, (10, y), cv2.FONT_HERSHEY_SIMPLEX, scale, (0, 0, 0), 3, cv2.LINE_AA)
+            cv2.putText(canvas, line, (10, y), cv2.FONT_HERSHEY_SIMPLEX, scale, color, 1, cv2.LINE_AA)
+
+        # Overlay global info.
+        step_idx = int(getattr(self.writer, "length", 0) or 0)
+        put(f"rec={int(self.recording)} ep={self.episode_idx:06d} step={step_idx}", 22, (255, 255, 255), 0.6)
+        put(f"speed={self.speed} z_offset={self.z_offset:.4f} ik={int(bool(ik_success))}", 44)
+        put(f"save={self.save_format} hz={self.control_hz:.3g} time={now_s:.3f}", 66)
+
+        # Pose info (same semantics as dataset fields; readable subset).
+        y = 90
+        try:
+            # Right arm
+            pose_r = self.right_arm.robot.fkine(np.asarray(self.right_arm.current_q, dtype=np.float32).reshape(-1))
+            eef_pos_r = pose_r[:3, 3].astype(np.float32)
+            eef_rpy_r = R.from_matrix(pose_r[:3, :3]).as_euler("xyz").astype(np.float32)
+            put(
+                "R cur_q=" + fmt_vec(self.right_arm.current_q, 3)
+                + f" grip={self.right_arm.gripper_pos_steps}",
+                y,
+                (200, 255, 200),
+                0.5,
+            )
+            y += 18
+            if q_target_right is not None:
+                put("R tgt_q=" + fmt_vec(q_target_right, 3), y, (200, 255, 200), 0.5)
+                y += 18
+            put(
+                "R eef_pos=" + fmt_vec(eef_pos_r, 3) + " eef_rpy=" + fmt_vec(eef_rpy_r, 3),
+                y,
+                (200, 255, 200),
+                0.5,
+            )
+            y += 20
+
+            # Left arm
+            pose_l = self.left_arm.robot.fkine(np.asarray(self.left_arm.current_q, dtype=np.float32).reshape(-1))
+            eef_pos_l = pose_l[:3, 3].astype(np.float32)
+            eef_rpy_l = R.from_matrix(pose_l[:3, :3]).as_euler("xyz").astype(np.float32)
+            put(
+                "L cur_q=" + fmt_vec(self.left_arm.current_q, 3)
+                + f" grip={self.left_arm.gripper_pos_steps}",
+                y,
+                (200, 200, 255),
+                0.5,
+            )
+            y += 18
+            if q_target_left is not None:
+                put("L tgt_q=" + fmt_vec(q_target_left, 3), y, (200, 200, 255), 0.5)
+                y += 18
+            put(
+                "L eef_pos=" + fmt_vec(eef_pos_l, 3) + " eef_rpy=" + fmt_vec(eef_rpy_l, 3),
+                y,
+                (200, 200, 255),
+                0.5,
+            )
+        except Exception:
+            # Don't crash preview due to pose formatting.
+            pass
+
+        # Per-tile labels.
+        view_names = ["exterior", "right_wrist", "left_wrist"]
+        tile_w = canvas.shape[1] // 3
+        tile_h = canvas.shape[0] // 2
+        for ti in range(2):
+            for ci in range(3):
+                label = f"timg{ti} {view_names[ci]}"
+                x0 = ci * tile_w + 10
+                y0 = ti * tile_h + 20
+                cv2.putText(canvas, label, (x0, y0), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 0), 3, cv2.LINE_AA)
+                cv2.putText(canvas, label, (x0, y0), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 255), 1, cv2.LINE_AA)
+
+        self._last_preview_bgr = canvas
+        cv2.imshow(self._preview_window, canvas)
+        cv2.waitKey(1)
 
     def _init_arm(self, *, name: str, port: str, baudrate: int, config_path: str, no_home: bool) -> ArmRig:
         # In no-robot mode, create a dummy rig.
@@ -462,6 +688,12 @@ class JoyConRDTCollector:
                 gripper_min=1200,
                 gripper_max=2800,
                 gripper_step=50,
+            )
+
+        if ServoController is None:
+            raise RuntimeError(
+                "Robot control dependencies missing; failed to import ServoController: "
+                + str(_SERVO_IMPORT_ERROR or "unknown error")
             )
 
         controller = ServoController(port=port, baudrate=baudrate, config_path=config_path)
@@ -527,16 +759,44 @@ class JoyConRDTCollector:
     def _controlled_arm(self) -> ArmRig:
         return self.right_arm if self.control_arm == "right" else self.left_arm
 
-    def _reconnect_joycon(self) -> None:
-        try:
-            self.joycon.disconnnect()
-            time.sleep(0.5)
-        except Exception:
-            pass
-        self.joycon = JoyconRobotics(device=self.joycon_device, without_rest_init=False, common_rad=True, lerobot=False)
+    def _reconnect_joycons(self) -> None:
+        for jc in (self.joycon, self.joycon_right, self.joycon_left):
+            if jc is None:
+                continue
+            try:
+                jc.disconnnect()
+                time.sleep(0.2)
+            except Exception:
+                pass
+
+        if self.joycon_mode == "single":
+            self.joycon = JoyconRobotics(device=self.joycon_device, without_rest_init=False, common_rad=True, lerobot=False)
+        else:
+            self.joycon_right = JoyconRobotics(
+                device=self.joycon_device_right, without_rest_init=False, common_rad=True, lerobot=False
+            )
+            self.joycon_left = JoyconRobotics(
+                device=self.joycon_device_left, without_rest_init=False, common_rad=True, lerobot=False
+            )
 
         if not self.no_robot:
             self._refresh_base_poses()
+
+    @staticmethod
+    def _btn(jc: Optional[object], name: str) -> int:
+        if jc is None:
+            return 0
+        try:
+            return int(getattr(jc.button, name, 0) or 0)
+        except Exception:
+            return 0
+
+    def _any_btn(self, name: str) -> bool:
+        return bool(
+            self._btn(self.joycon, name)
+            or self._btn(self.joycon_right, name)
+            or self._btn(self.joycon_left, name)
+        )
 
     def _start_new_episode(self) -> None:
         if self.writer is not None:
@@ -580,25 +840,25 @@ class JoyConRDTCollector:
 
     def _process_buttons(self) -> None:
         # Exit
-        if getattr(self.joycon.button, "x", 0) == 1:
+        if self._any_btn("x"):
             self.running = False
             return
 
         # Toggle recording
-        if getattr(self.joycon.button, "y", 0) == 1:
+        if self._any_btn("y"):
             self._toggle_recording()
             time.sleep(0.2)
 
         # New episode
-        if getattr(self.joycon.button, "a", 0) == 1:
+        if self._any_btn("a"):
             self._start_new_episode()
             self.recording = True
             print(f"\n● New episode started: {self.episode_idx:06d}")
             time.sleep(0.2)
 
         # Home (both arms)
-        if getattr(self.joycon.button, "home", 0) == 1 and not self.no_robot:
-            print("\n🏠 Homing both arms + reconnect JoyCon...")
+        if self._any_btn("home") and not self.no_robot:
+            print("\nHoming both arms + reconnect JoyCon...")
             if self.right_arm.controller is not None:
                 self.right_arm.controller.move_all_home()
             if self.left_arm.controller is not None:
@@ -622,34 +882,99 @@ class JoyConRDTCollector:
             )
             self.left_arm.prev_q = self.left_arm.current_q.copy()
 
-            self._reconnect_joycon()
+            self._reconnect_joycons()
             time.sleep(0.2)
 
         # Speed
-        if getattr(self.joycon.button, "plus", 0) == 1:
+        if self._any_btn("plus"):
             self.speed = min(self.speed + 100, 2000)
             time.sleep(0.15)
-        if getattr(self.joycon.button, "minus", 0) == 1:
+        if self._any_btn("minus"):
             self.speed = max(self.speed - 100, 200)
             time.sleep(0.15)
 
-        # Gripper (controlled arm)
-        arm = self._controlled_arm()
-        if getattr(self.joycon.button, "zr", 0) == 1:
-            arm.gripper_pos_steps = max(arm.gripper_pos_steps - arm.gripper_step, arm.gripper_min)
-            if not self.no_robot and arm.controller is not None:
-                arm.controller.move_servo("gripper", arm.gripper_pos_steps, self.speed)
-            time.sleep(0.05)
-        if getattr(self.joycon.button, "r", 0) == 1:
-            arm.gripper_pos_steps = min(arm.gripper_pos_steps + arm.gripper_step, arm.gripper_max)
-            if not self.no_robot and arm.controller is not None:
-                arm.controller.move_servo("gripper", arm.gripper_pos_steps, self.speed)
-            time.sleep(0.05)
+        # Gripper
+        if self.joycon_mode == "single":
+            arm = self._controlled_arm()
+            if self._btn(self.joycon, "zr") == 1:
+                arm.gripper_pos_steps = max(arm.gripper_pos_steps - arm.gripper_step, arm.gripper_min)
+                if not self.no_robot and arm.controller is not None:
+                    arm.controller.move_servo("gripper", arm.gripper_pos_steps, self.speed)
+                time.sleep(0.05)
+            if self._btn(self.joycon, "r") == 1:
+                arm.gripper_pos_steps = min(arm.gripper_pos_steps + arm.gripper_step, arm.gripper_max)
+                if not self.no_robot and arm.controller is not None:
+                    arm.controller.move_servo("gripper", arm.gripper_pos_steps, self.speed)
+                time.sleep(0.05)
+        else:
+            if self._btn(self.joycon_right, "zr") == 1:
+                self.right_arm.gripper_pos_steps = max(
+                    self.right_arm.gripper_pos_steps - self.right_arm.gripper_step, self.right_arm.gripper_min
+                )
+                if not self.no_robot and self.right_arm.controller is not None:
+                    self.right_arm.controller.move_servo("gripper", self.right_arm.gripper_pos_steps, self.speed)
+                time.sleep(0.05)
+            if self._btn(self.joycon_right, "r") == 1:
+                self.right_arm.gripper_pos_steps = min(
+                    self.right_arm.gripper_pos_steps + self.right_arm.gripper_step, self.right_arm.gripper_max
+                )
+                if not self.no_robot and self.right_arm.controller is not None:
+                    self.right_arm.controller.move_servo("gripper", self.right_arm.gripper_pos_steps, self.speed)
+                time.sleep(0.05)
+
+            if self._btn(self.joycon_left, "zl") == 1:
+                self.left_arm.gripper_pos_steps = max(
+                    self.left_arm.gripper_pos_steps - self.left_arm.gripper_step, self.left_arm.gripper_min
+                )
+                if not self.no_robot and self.left_arm.controller is not None:
+                    self.left_arm.controller.move_servo("gripper", self.left_arm.gripper_pos_steps, self.speed)
+                time.sleep(0.05)
+            if self._btn(self.joycon_left, "l") == 1:
+                self.left_arm.gripper_pos_steps = min(
+                    self.left_arm.gripper_pos_steps + self.left_arm.gripper_step, self.left_arm.gripper_max
+                )
+                if not self.no_robot and self.left_arm.controller is not None:
+                    self.left_arm.controller.move_servo("gripper", self.left_arm.gripper_pos_steps, self.speed)
+                time.sleep(0.05)
 
         # Manual Z
-        if getattr(self.joycon.button, "b", 0) == 1:
+        if self._any_btn("b"):
             self.z_offset += self.z_step
             time.sleep(0.05)
+
+    def _solve_and_send(self, arm: ArmRig, T_goal: np.ndarray) -> bool:
+        if self.no_robot:
+            return True
+
+        sol = arm.robot.ikine_LM(
+            Tep=T_goal,
+            q0=arm.current_q,
+            ilimit=50,
+            slimit=3,
+            tol=1e-3,
+            mask=[1, 1, 1, 0.8, 0.8, 0],
+            k=0.1,
+            method="sugihara",
+        )
+
+        if not sol.success:
+            return False
+
+        arm.current_q = sol.q
+        if arm.controller is not None:
+            servo_targets = arm.robot.q_to_servo_targets(
+                arm.current_q,
+                arm.joint_names,
+                arm.home_pose,
+                gear_ratio=arm.gear_ratio,
+                gear_sign=arm.gear_sign,
+            )
+            for k in arm.joint_names:
+                servo_targets[k] = arm.controller.limit_position(k, servo_targets[k])
+            servo_targets["gripper"] = arm.gripper_pos_steps
+            arm.controller.fast_move_to_pose(servo_targets, speed=self.speed)
+
+        return True
 
     def _update_image_history(self) -> np.ndarray:
         assert self.cams is not None
@@ -773,6 +1098,8 @@ class JoyConRDTCollector:
         print("RDT Teleop Dataset Collector")
         print("=" * 70)
         print("Controls: Y=record toggle, A=new episode, X=exit")
+        if self.joycon_mode == "dual":
+            print("Dual JoyCon: right->right arm, left->left arm")
         print(f"Output: {self.out_dir}")
 
         try:
@@ -783,55 +1110,56 @@ class JoyConRDTCollector:
                     break
 
                 # JoyCon control
-                pose, _gripper_status, _ = self.joycon.get_control()
-                joycon_offset_pos = np.array([pose[0], pose[1], pose[2]], dtype=np.float32)
-                # Keep consistent with `joycon_ik_control_py.py`:
-                # roll/pitch are inverted for this robot's coordinate convention.
-                joycon_offset_rpy = np.array([-pose[3], -pose[4], pose[5]], dtype=np.float32)
-                joycon_offset_pos[2] += float(self.z_offset)
+                ik_success_right = True
+                ik_success_left = True
 
-                controlled = self._controlled_arm()
-                target_pos = controlled.base_pos + joycon_offset_pos
-                target_rpy = controlled.base_rpy + joycon_offset_rpy
-                T_goal = build_target_pose(*target_pos, *target_rpy)
+                if self.joycon_mode == "single":
+                    assert self.joycon is not None
+                    pose, _gripper_status, _ = self.joycon.get_control()
+                    joycon_offset_pos = np.array([pose[0], pose[1], pose[2]], dtype=np.float32)
+                    # Keep consistent with `joycon_ik_control_py.py`:
+                    # roll/pitch are inverted for this robot's coordinate convention.
+                    joycon_offset_rpy = np.array([-pose[3], -pose[4], pose[5]], dtype=np.float32)
+                    joycon_offset_pos[2] += float(self.z_offset)
 
-                ik_success = True
+                    controlled = self._controlled_arm()
+                    target_pos = controlled.base_pos + joycon_offset_pos
+                    target_rpy = controlled.base_rpy + joycon_offset_rpy
+                    T_goal = build_target_pose(*target_pos, *target_rpy)
+
+                    ok = self._solve_and_send(controlled, T_goal)
+                    if controlled.name == "right":
+                        ik_success_right = ok
+                    else:
+                        ik_success_left = ok
+                else:
+                    assert self.joycon_right is not None and self.joycon_left is not None
+
+                    pose_r, _gripper_status_r, _ = self.joycon_right.get_control()
+                    pose_l, _gripper_status_l, _ = self.joycon_left.get_control()
+
+                    off_pos_r = np.array([pose_r[0], pose_r[1], pose_r[2]], dtype=np.float32)
+                    off_rpy_r = np.array([-pose_r[3], -pose_r[4], pose_r[5]], dtype=np.float32)
+                    off_pos_l = np.array([pose_l[0], pose_l[1], pose_l[2]], dtype=np.float32)
+                    off_rpy_l = np.array([-pose_l[3], -pose_l[4], pose_l[5]], dtype=np.float32)
+
+                    off_pos_r[2] += float(self.z_offset)
+                    off_pos_l[2] += float(self.z_offset)
+
+                    target_pos_r = self.right_arm.base_pos + off_pos_r
+                    target_rpy_r = self.right_arm.base_rpy + off_rpy_r
+                    T_goal_r = build_target_pose(*target_pos_r, *target_rpy_r)
+
+                    target_pos_l = self.left_arm.base_pos + off_pos_l
+                    target_rpy_l = self.left_arm.base_rpy + off_rpy_l
+                    T_goal_l = build_target_pose(*target_pos_l, *target_rpy_l)
+
+                    ik_success_right = self._solve_and_send(self.right_arm, T_goal_r)
+                    ik_success_left = self._solve_and_send(self.left_arm, T_goal_l)
+
+                ik_success = bool(ik_success_right and ik_success_left)
                 q_target_right = self.right_arm.current_q
                 q_target_left = self.left_arm.current_q
-
-                if not self.no_robot:
-                    sol = controlled.robot.ikine_LM(
-                        Tep=T_goal,
-                        q0=controlled.current_q,
-                        ilimit=50,
-                        slimit=3,
-                        tol=1e-3,
-                        mask=[1, 1, 1, 0.8, 0.8, 0],
-                        k=0.1,
-                        method="sugihara",
-                    )
-
-                    if sol.success:
-                        controlled.current_q = sol.q
-                        if controlled.name == "right":
-                            q_target_right = sol.q
-                        else:
-                            q_target_left = sol.q
-
-                        if controlled.controller is not None:
-                            servo_targets = controlled.robot.q_to_servo_targets(
-                                controlled.current_q,
-                                controlled.joint_names,
-                                controlled.home_pose,
-                                gear_ratio=controlled.gear_ratio,
-                                gear_sign=controlled.gear_sign,
-                            )
-                            for k in controlled.joint_names:
-                                servo_targets[k] = controlled.controller.limit_position(k, servo_targets[k])
-                            servo_targets["gripper"] = controlled.gripper_pos_steps
-                            controlled.controller.fast_move_to_pose(servo_targets, speed=self.speed)
-                    else:
-                        ik_success = False
 
                 now = time.time()
                 dt = max(1e-6, now - last_t)
@@ -855,6 +1183,21 @@ class JoyConRDTCollector:
                         ik_success=ik_success,
                     )
 
+                # Preview (show live even when not recording)
+                if self.preview and not self.no_camera:
+                    try:
+                        images_prev = self._update_image_history()
+                        self._render_preview(
+                            images_timg_ncam_rgb=images_prev,
+                            ik_success=ik_success,
+                            now_s=now,
+                            q_target_right=q_target_right,
+                            q_target_left=q_target_left,
+                        )
+                    except Exception:
+                        # Don't crash the control loop due to preview.
+                        pass
+
                 time.sleep(self.dt)
 
         except KeyboardInterrupt:
@@ -872,13 +1215,22 @@ class JoyConRDTCollector:
         except Exception:
             pass
 
-        try:
-            self.joycon.disconnnect()
-        except Exception:
-            pass
+        for jc in (self.joycon, self.joycon_right, self.joycon_left):
+            if jc is None:
+                continue
+            try:
+                jc.disconnnect()
+            except Exception:
+                pass
 
         if self.cams is not None:
             self.cams.close()
+
+        if self.preview and cv2 is not None:
+            try:
+                cv2.destroyWindow(self._preview_window)
+            except Exception:
+                pass
 
         if not self.no_robot:
             for arm in (self.right_arm, self.left_arm):
@@ -910,8 +1262,11 @@ def main() -> int:
     ap.add_argument("--image-size", type=int, default=384)
     ap.add_argument("--save-format", choices=["raw", "hdf5"], default="raw", help="Save raw CSV+JPG first, or directly save HDF5")
 
-    ap.add_argument("--device", choices=["right", "left"], default="right")
-    ap.add_argument("--control-arm", choices=["right", "left"], default="right", help="Which arm the JoyCon controls")
+    ap.add_argument("--joycon-mode", choices=["single", "dual"], default="dual")
+    ap.add_argument("--device", choices=["right", "left"], default="right", help="[single] JoyCon side")
+    ap.add_argument("--device-right", choices=["right", "left"], default="right", help="[dual] Right JoyCon side")
+    ap.add_argument("--device-left", choices=["right", "left"], default="left", help="[dual] Left JoyCon side")
+    ap.add_argument("--control-arm", choices=["right", "left"], default="right", help="[single] Which arm the JoyCon controls")
     ap.add_argument("--right-port", type=str, default="/dev/right_arm")
     ap.add_argument("--left-port", type=str, default="/dev/left_arm")
     ap.add_argument("--baudrate", type=int, default=1_000_000)
@@ -928,6 +1283,36 @@ def main() -> int:
     ap.add_argument("--cam-left-wrist", type=str, default=None)
     ap.add_argument("--cam-width", type=int, default=1280)
     ap.add_argument("--cam-height", type=int, default=720)
+    ap.add_argument(
+        "--cam-backend",
+        choices=["auto", "v4l2", "gstreamer"],
+        default="v4l2",
+        help="Backend for numeric camera indices; v4l2 is usually more stable than gstreamer for /dev/video*",
+    )
+    ap.add_argument(
+        "--cam-fourcc",
+        type=str,
+        default="MJPG",
+        help="FOURCC for numeric camera indices (e.g. MJPG/YUYV). Use 'none' to disable.",
+    )
+    ap.add_argument(
+        "--cam-buffersize",
+        type=int,
+        default=1,
+        help="Capture buffer size (best-effort). Lower reduces latency/memory.",
+    )
+
+    ap.add_argument(
+        "--preview",
+        action="store_true",
+        help="Show a live 2x3 (Timg=2 x Ncam=3) mosaic with overlay text.",
+    )
+    ap.add_argument(
+        "--preview-scale",
+        type=float,
+        default=1.0,
+        help="Scale factor for preview window (e.g. 0.75 for smaller window).",
+    )
     ap.add_argument("--pad-bgr", type=parse_bgr, default=parse_bgr("0,0,0"))
 
     ap.add_argument("--no-robot", action="store_true")
@@ -985,7 +1370,10 @@ def main() -> int:
         return 0
 
     collector = JoyConRDTCollector(
+        joycon_mode=args.joycon_mode,
         device=args.device,
+        device_right=args.device_right,
+        device_left=args.device_left,
         control_arm=args.control_arm,
         right_port=right_port,
         left_port=args.left_port,
@@ -1003,6 +1391,11 @@ def main() -> int:
         cam_left_wrist=args.cam_left_wrist,
         cam_width=args.cam_width,
         cam_height=args.cam_height,
+        cam_backend=args.cam_backend,
+        cam_fourcc=None if str(args.cam_fourcc).lower() == "none" else args.cam_fourcc,
+        cam_buffersize=args.cam_buffersize,
+        preview=args.preview,
+        preview_scale=args.preview_scale,
         pad_bgr=args.pad_bgr,
         no_robot=args.no_robot,
         no_camera=args.no_camera,
