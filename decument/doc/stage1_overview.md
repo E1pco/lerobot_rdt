@@ -31,17 +31,18 @@
 
 ## 3. 推荐执行顺序（最省时间的路径）
 
-1) 先跑通 2.1：
-- 用 `arm_keyboard_control.py` 做关节步进，验证串口/限位/回中位。
-- 再用 `ik_keyboard_realtime.py` 做末端 IK 控制，验证 FK/IK 与步数映射。
+1) 先跑通 2.1（把“关节步数 ↔ 关节角 ↔ 末端位姿”链路打通）：
+- 先用 `arm_keyboard_control.py` 做关节步进，验证串口/限位/回中位与每个关节方向。
+- 再用 `ik_keyboard_realtime.py` 做末端 IK 控制，验证 FK/IK、mask 与步数映射。
 
-2) 再跑通 2.2：
-- 用 `joycon_ik_control_py.py` 做单臂 JoyCon 遥操作，形成可录制演示视频。
+2) 再跑通 2.2（让控制稳定到“可录屏”）：
+- 用 `joycon_ik_control_py.py` 做单臂 JoyCon 遥操作，重点验证：速度档、Home 重置、夹爪开合。
 
-3) 最后跑通 2.3：
-- 先用 `vision/calibrate_camera.py` 得到相机内参。
-- 再做 `vision/handeye_calibration_*` 得到外参/手眼结果，并用 `vision/track_blue_circle_eyetohand.py` 验证闭环。
-- 采集 `RDT/collect_rdt_dataset_teleop.py`，再 raw→hdf5、inspect。
+3) 最后跑通 2.3（先标定，后采集，再校验）：
+- 先做相机内参标定：`vision/calibrate_camera.py`（推荐直接用 `--all`，会在 `session_*/` 下落盘结果）。
+- 再做手眼标定：`vision/handeye_calibration_eyeinhand.py` / `vision/handeye_calibration_eyetohand.py`，并用一致性评估输出误差报告。
+- 用 `vision/track_blue_circle_eyetohand.py` 做闭环验证（这是“标定有效”的最强证据）。
+- 最后采集：`RDT/collect_rdt_dataset_teleop.py` → raw→HDF5（`RDT/build_rdt_hdf5_from_raw.py`）→ inspect（`RDT/inspect_rdt_hdf5.py`）。
 
 ## 4. 验收视频建议（每条视频应包含的“必拍镜头”）
 

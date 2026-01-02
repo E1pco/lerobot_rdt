@@ -6,24 +6,91 @@
 - `RDT/build_rdt_hdf5_from_raw.py`
 - `RDT/inspect_rdt_hdf5.py`
 
-## 1. `RDT/rdt_hdf5.py`
+## 1. `RDT/rdt_hdf5.py` - 数据格式定义与 HDF5 写入核心
 
-### 1.1 `rotmat_to_rot6d(R)`
+**脚本功能**：
+该模块定义了 RDT 数据集的核心数据结构，实现了统一的 128 维向量表示（Unified Vector）和 HDF5 文件的写入逻辑。它是数据采集流程中的格式规范层，确保生成的数据符合 RDT Fine-tuning 的输入要求。
 
-- 输入：$3\times3$ 旋转矩阵
-- 输出：6D 表示（取前两列，按列主序展平）
+### 1.1 `rotmat_to_rot6d(R)` - 旋转矩阵到6D表示的转换
+
+**功能**：将 3×3 旋转矩阵压缩为 6 维连续表示，避免万向锁问题。
+
+**实现原理**：
+- **输入**：$3\times3$ 旋转矩阵 $R$
+- **输出**：6D 向量（取 $R$ 的前两列，按列主序展平）
+- **数学依据**：6D 表示法由 Zhou et al. (CVPR 2019) 提出，通过 Gram-Schmidt 正交化可恢复完整旋转矩阵，且在神经网络训练中比四元数更稳定。
+
+**代码逻辑**：
+```python
+def rotmat_to_rot6d(R):
+    # 取前两列
+    return R[:, :2].T.flatten()  # shape: (6,)
+```
 
 ### 1.2 `UnifiedVector` / `make_unified_vector()` / `fill_slice(vec, sl, data)`
 
-- `UnifiedVector.value`：`float32[128]`
-- `UnifiedVector.mask`：`uint8[128]`
-- `fill_slice`：写入 slice，并把对应 mask 置 1（自动截断到 slice 宽度）
+**功能**：实现统一向量（Unified Vector）的构建与填充，这是 RDT 处理异构机器人数据的关键机制。
 
-### 1.3 `RDTHDF5EpisodeWriter`
+**设计动机**：
+不同机器人的自由度、传感器配置差异很大。Unified Vector 通过 128 维固定长度 + Mask 机制，允许不同配置的机器人共享同一训练管道。
 
-- `append_step(...)`：追加 1 条 step（检查 images shape 必须匹配）
-- `finalize_action_chunks()`：由 `(T,128)` 派生 `action_chunk (T,Ta,128)`
-- `close()`：自动 finalize 并关闭文件
+**核心数据结构**：
+- `UnifiedVector.value`：`float32[128]` - 存储物理量的数值（未使用的维度填 0）
+- `UnifiedVector.mask`：`uint8[128]` - 标记哪些维度有效（1=有效，0=无效）
+
+**方法详解**：
+
+- **`make_unified_vector()`**：创建一个空的 Unified Vector
+  ```python
+  def make_unified_vector():
+      return UnifiedVector(
+          value=np.zeros(128, dtype=np.float32),
+          mask=np.zeros(128, dtype=np.uint8)
+      )
+  ```
+
+- **`fill_slice(vec, sl, data)`**：向指定切片填充数据并自动更新 mask
+  - **参数**：
+    - `vec`：目标 UnifiedVector
+    - `sl`：切片对象（如 `slice(0, 6)` 表示前 6 维）
+    - `data`：要填充的数据（自动截断到切片长度）
+  - **实现**：
+    ```python
+    def fill_slice(vec, sl, data):
+        indices = range(*sl.indices(128))
+        length = len(indices)
+        vec.value[sl] = data[:length]
+        vec.mask[sl] = 1  # 标记为有效
+    ```
+
+### 1.3 `RDTHDF5EpisodeWriter` - HDF5 文件写入器
+
+**功能**：管理单个 Episode 的 HDF5 文件写入，自动处理张量形状、Action Chunk 生成等细节。
+
+**初始化**：
+```python
+writer = RDTHDF5EpisodeWriter(
+    filepath="episode_000001.hdf5",
+    Timg=2,          # 历史图像帧数
+    Ncam=3,          # 相机数量
+    image_size=384,  # 图像分辨率
+    Ta=64            # Action Chunk 长度
+)
+```
+
+**核心方法**：
+
+- **`append_step(...)`**：追加一条时间步数据
+  - **校验**：自动检查 `images` 的 shape 是否为 `(Timg, Ncam, H, W, 3)`
+  - **存储**：将 proprio/action 的 value 和 mask 分别追加到对应 Dataset
+  
+- **`finalize_action_chunks()`**：生成未来动作序列
+  - **原理**：对于时刻 $t$，构造 `action_chunk[t, :, :] = [action[t], action[t+1], ..., action[t+Ta-1]]`
+  - **边界处理**：当 $t+\tau \geq T$ 时，用零填充并将 mask 置 0
+  - **自动调用**：在 `close()` 时自动执行
+
+- **`close()`**：关闭文件并保存元数据
+  - **流程**：finalize action_chunks → 写入 meta 信息 → 关闭 HDF5 文件句柄
 
 ## 2. `RDT/collect_rdt_dataset_teleop.py`
 

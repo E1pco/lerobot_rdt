@@ -11,9 +11,9 @@
 5. 支持多种棋盘格类型
 
 使用方法:
-  python calibrate_camera_improved.py --capture   # 实时拍照采集
-  python calibrate_camera_improved.py --calibrate # 使用已有图像标定
-  python calibrate_camera_improved.py --all       # 采集+标定
+    python vision/calibrate_camera.py --capture   # 实时拍照采集
+    python vision/calibrate_camera.py --calibrate # 使用已有图像标定
+    python vision/calibrate_camera.py --all       # 采集+标定
 """
 
 import cv2
