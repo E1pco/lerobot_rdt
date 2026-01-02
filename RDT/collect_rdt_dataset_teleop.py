@@ -1,11 +1,24 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+cd /home/elpco/code/lerobot/lerobot_rdt
+python3 RDT/collect_rdt_dataset_teleop.py \
+  --joycon-mode dual \
+  --right-port /dev/right_arm --left-port /dev/left_arm \
+  --right-config ./driver/right_arm.json --left-config ./driver/left_arm.json \
+  --cam-exterior 0 --cam-right-wrist 2 --cam-left-wrist 4 \
+  --cam-width 640 --cam-height 480 \
+  --cam-backend v4l2 --cam-fourcc MJPG --cam-buffersize 1 \
+  --save-format raw --out-dir ./rdt_raw \
+  --preview --preview-timg 2
 
+"""
 from __future__ import annotations
 
 import argparse
 import csv
 import json
+import re
 import sys
 import time
 from collections import deque
@@ -18,26 +31,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-try:
-    import cv2  # type: ignore
-except Exception:  # pragma: no cover
-    cv2 = None  # type: ignore
+import cv2  
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-
-_SERVO_IMPORT_ERROR: Optional[str] = None
-try:
-    from driver.ftservo_controller import ServoController  # type: ignore
-except Exception as e:  # pragma: no cover
-    ServoController = None  # type: ignore
-    _SERVO_IMPORT_ERROR = f"{type(e).__name__}: {e}"
 from ik.robot import create_so101_5dof
-_JOYCON_IMPORT_ERROR: Optional[str] = None
-try:
-    from joyconrobotics import JoyconRobotics  # type: ignore
-except Exception as e:  # pragma: no cover
-    JoyconRobotics = None  # type: ignore
-    _JOYCON_IMPORT_ERROR = f"{type(e).__name__}: {e}"
 
 from rdt_hdf5 import (
     RDTHDF5EpisodeWriter,
@@ -364,6 +361,32 @@ def gripper_steps_to_rad(steps: int, home_steps: int) -> float:
     return float((steps - home_steps) / counts_per_rad)
 
 
+def _max_existing_episode_idx(out_dir: Path) -> int:
+    """Return max existing episode index in out_dir, or 0 if none.
+
+    Matches both:
+    - episode_000001/ (raw)
+    - episode_000001.hdf5 (hdf5)
+    """
+    out_dir = Path(out_dir)
+    if not out_dir.exists():
+        return 0
+
+    pat = re.compile(r"^episode_(\d{6})(?:\.hdf5)?$")
+    max_idx = 0
+    for p in out_dir.iterdir():
+        m = pat.match(p.name)
+        if not m:
+            continue
+        try:
+            idx = int(m.group(1))
+        except Exception:
+            continue
+        if idx > max_idx:
+            max_idx = idx
+    return max_idx
+
+
 class JoyConRDTCollector:
     def __init__(
         self,
@@ -394,6 +417,7 @@ class JoyConRDTCollector:
         cam_buffersize: int,
         preview: bool,
         preview_scale: float,
+        preview_timg: int,
         pad_bgr: Tuple[int, int, int],
         no_robot: bool,
         no_camera: bool,
@@ -417,8 +441,11 @@ class JoyConRDTCollector:
 
         self.preview = bool(preview)
         self.preview_scale = float(preview_scale)
+        self.preview_timg = int(preview_timg)
         if self.preview_scale <= 0:
             raise ValueError("preview_scale must be > 0")
+        if self.preview_timg not in (1, 2):
+            raise ValueError("preview_timg must be 1 or 2")
 
         if self.preview and cv2 is None:
             raise RuntimeError("--preview requires OpenCV (cv2). Install opencv-python.")
@@ -433,7 +460,8 @@ class JoyConRDTCollector:
         self.speed = 800
         self.running = True
         self.recording = False
-        self.episode_idx = 0
+        # Continue numbering if out_dir already contains episodes.
+        self.episode_idx = _max_existing_episode_idx(self.out_dir)
 
         self.joycon_mode = joycon_mode
         if self.joycon_mode not in ("single", "dual"):
@@ -493,11 +521,7 @@ class JoyConRDTCollector:
         self.joycon_device_right = device_right
         self.joycon_device_left = device_left
 
-        if JoyconRobotics is None:
-            raise RuntimeError(
-                "JoyCon control dependencies missing; failed to import joyconrobotics: "
-                + str(_JOYCON_IMPORT_ERROR or "unknown error")
-            )
+        from joyconrobotics import JoyconRobotics  # type: ignore
 
         self.joycon: Optional[object] = None
         self.joycon_right: Optional[object] = None
@@ -566,15 +590,24 @@ class JoyConRDTCollector:
 
         timg, ncam, h, w, _ = imgs.shape
 
-        # Convert to BGR and tile into a 2x3 grid.
-        tiles = []
-        for ti in range(timg):
+        # Convert to BGR and tile.
+        # preview_timg=1: show latest frame only -> 1x3
+        # preview_timg=2: show both frames -> 2x3
+        if self.preview_timg == 1:
             row = []
             for ci in range(ncam):
-                bgr = cv2.cvtColor(imgs[ti, ci], cv2.COLOR_RGB2BGR)
+                bgr = cv2.cvtColor(imgs[-1, ci], cv2.COLOR_RGB2BGR)
                 row.append(bgr)
-            tiles.append(np.concatenate(row, axis=1))
-        canvas = np.concatenate(tiles, axis=0)
+            canvas = np.concatenate(row, axis=1)
+        else:
+            tiles = []
+            for ti in range(timg):
+                row = []
+                for ci in range(ncam):
+                    bgr = cv2.cvtColor(imgs[ti, ci], cv2.COLOR_RGB2BGR)
+                    row.append(bgr)
+                tiles.append(np.concatenate(row, axis=1))
+            canvas = np.concatenate(tiles, axis=0)
 
         # Optional scale for display performance.
         if self.preview_scale != 1.0:
@@ -652,10 +685,11 @@ class JoyConRDTCollector:
         # Per-tile labels.
         view_names = ["exterior", "right_wrist", "left_wrist"]
         tile_w = canvas.shape[1] // 3
-        tile_h = canvas.shape[0] // 2
-        for ti in range(2):
+        tile_h = canvas.shape[0] // (2 if self.preview_timg == 2 else 1)
+        rows = 2 if self.preview_timg == 2 else 1
+        for ti in range(rows):
             for ci in range(3):
-                label = f"timg{ti} {view_names[ci]}"
+                label = (f"timg{ti} " if rows == 2 else "") + view_names[ci]
                 x0 = ci * tile_w + 10
                 y0 = ti * tile_h + 20
                 cv2.putText(canvas, label, (x0, y0), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 0), 3, cv2.LINE_AA)
@@ -690,12 +724,7 @@ class JoyConRDTCollector:
                 gripper_step=50,
             )
 
-        if ServoController is None:
-            raise RuntimeError(
-                "Robot control dependencies missing; failed to import ServoController: "
-                + str(_SERVO_IMPORT_ERROR or "unknown error")
-            )
-
+        from driver.ftservo_controller import ServoController  # type: ignore
         controller = ServoController(port=port, baudrate=baudrate, config_path=config_path)
         robot = create_so101_5dof()
         robot.set_servo_controller(controller)
@@ -760,6 +789,8 @@ class JoyConRDTCollector:
         return self.right_arm if self.control_arm == "right" else self.left_arm
 
     def _reconnect_joycons(self) -> None:
+        from joyconrobotics import JoyconRobotics  # type: ignore
+
         for jc in (self.joycon, self.joycon_right, self.joycon_left):
             if jc is None:
                 continue
@@ -805,6 +836,9 @@ class JoyConRDTCollector:
         self.episode_idx += 1
         if self.save_format == "hdf5":
             ep_path = self.out_dir / f"episode_{self.episode_idx:06d}.hdf5"
+            while ep_path.exists():
+                self.episode_idx += 1
+                ep_path = self.out_dir / f"episode_{self.episode_idx:06d}.hdf5"
             self.writer = RDTHDF5EpisodeWriter(
                 ep_path,
                 timg=2,
@@ -816,6 +850,9 @@ class JoyConRDTCollector:
             )
         else:
             ep_dir = self.out_dir / f"episode_{self.episode_idx:06d}"
+            while ep_dir.exists():
+                self.episode_idx += 1
+                ep_dir = self.out_dir / f"episode_{self.episode_idx:06d}"
             self.writer = RawEpisodeWriter(
                 ep_dir,
                 timg=2,
@@ -1313,6 +1350,13 @@ def main() -> int:
         default=1.0,
         help="Scale factor for preview window (e.g. 0.75 for smaller window).",
     )
+    ap.add_argument(
+        "--preview-timg",
+        type=int,
+        choices=[1, 2],
+        default=1,
+        help="Preview temporal frames: 1 shows 3 tiles (latest per camera), 2 shows 6 tiles (Timg=2 x 3).",
+    )
     ap.add_argument("--pad-bgr", type=parse_bgr, default=parse_bgr("0,0,0"))
 
     ap.add_argument("--no-robot", action="store_true")
@@ -1334,8 +1378,12 @@ def main() -> int:
         out = args.out_dir
         out.mkdir(parents=True, exist_ok=True)
         images = np.zeros((2, 3, args.image_size, args.image_size, 3), dtype=np.uint8)
+        ep_idx = _max_existing_episode_idx(out) + 1
         if args.save_format == "hdf5":
-            ep_path = out / "episode_000001.hdf5"
+            ep_path = out / f"episode_{ep_idx:06d}.hdf5"
+            while ep_path.exists():
+                ep_idx += 1
+                ep_path = out / f"episode_{ep_idx:06d}.hdf5"
             with RDTHDF5EpisodeWriter(
                 ep_path,
                 instruction=args.instruction,
@@ -1349,7 +1397,10 @@ def main() -> int:
                     w.append_step(images_timg_ncam=images, proprio=proprio, action=action, control_hz=args.control_hz)
             print(f"Wrote dummy episode: {ep_path}")
         else:
-            ep_dir = out / "episode_000001"
+            ep_dir = out / f"episode_{ep_idx:06d}"
+            while ep_dir.exists():
+                ep_idx += 1
+                ep_dir = out / f"episode_{ep_idx:06d}"
             w = RawEpisodeWriter(
                 ep_dir,
                 instruction=args.instruction,
@@ -1396,6 +1447,7 @@ def main() -> int:
         cam_buffersize=args.cam_buffersize,
         preview=args.preview,
         preview_scale=args.preview_scale,
+        preview_timg=args.preview_timg,
         pad_bgr=args.pad_bgr,
         no_robot=args.no_robot,
         no_camera=args.no_camera,

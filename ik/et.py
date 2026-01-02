@@ -1,10 +1,4 @@
-"""
-纯 Python 实现的 Elementary Transform (ET) 类
 
-提供机器人运动学的基本变换表示：
-- ET: 单个基本变换（平移、旋转）
-- ETS: 基本变换序列，用于构建完整的运动学链
-"""
 
 import numpy as np
 from typing import List, Optional, Union

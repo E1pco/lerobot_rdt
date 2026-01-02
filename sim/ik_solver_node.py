@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-"""
-SO-101 机械臂 IK 求解器 ROS2 节点
-- 订阅目标位姿话题
-- 运行 IK 求解
-- 发布关节状态和可视化标记
-"""
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion

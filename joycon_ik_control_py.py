@@ -15,6 +15,38 @@ from driver.ftservo_controller import ServoController
 from ik.robot import create_so101_5dof_gripper
 
 
+class _ButtonHelper:
+    def __init__(self) -> None:
+        self._prev: dict[str, int] = {}
+        self._cur: dict[str, int] = {}
+        self._last_fire_s: dict[str, float] = {}
+
+    def update(self, button_obj: object) -> None:
+        self._prev = self._cur
+        self._cur = {}
+        for name in ("x", "home", "plus", "minus", "zr", "r", "b"):
+            try:
+                self._cur[name] = int(getattr(button_obj, name, 0) or 0)
+            except Exception:
+                self._cur[name] = 0
+
+    def rising(self, name: str) -> bool:
+        return self._cur.get(name, 0) == 1 and self._prev.get(name, 0) == 0
+
+    def repeat(self, name: str, interval_s: float) -> bool:
+        if self._cur.get(name, 0) != 1:
+            return False
+        now = time.time()
+        if self.rising(name):
+            self._last_fire_s[name] = now
+            return True
+        last = self._last_fire_s.get(name, 0.0)
+        if now - last >= float(interval_s):
+            self._last_fire_s[name] = now
+            return True
+        return False
+
+
 def build_target_pose(x, y, z, roll, pitch, yaw):
     """
     Build 4x4 homogeneous transformation matrix from position and orientation
@@ -102,6 +134,8 @@ class JoyConIKController:
         self.speed = 800  # Default speed
         self.gripper_open = True
         self.running = True
+
+        self._btn = _ButtonHelper()
         
         # Gripper control parameters
         self.gripper_pos = 2037  # 初始夹爪位置
@@ -176,14 +210,16 @@ class JoyConIKController:
     
     def _process_buttons(self):
         """Process Joy-Con button events"""
+        self._btn.update(self.joycon.button)
+
         # Check for exit button (X)
-        if self.joycon.button.x == 1:
+        if self._btn.rising("x"):
             print("\n🛑 X button pressed - Exiting...")
             self.running = False
             return
         
         # Home按钮：复位机械臂到初始位置
-        if self.joycon.button.home == 1:
+        if self._btn.rising("home"):
             print("\n🏠 Home按钮按下 - 机械臂复位中...")
             self.controller.fast_move_to_pose(self.home_pose)
             time.sleep(1.0)  # 等待复位完成
@@ -199,37 +235,32 @@ class JoyConIKController:
             time.sleep(0.5)
         
         # Speed adjustment
-        if self.joycon.button.plus == 1:
+        if self._btn.repeat("plus", 0.2):
             self.speed = min(self.speed + 100, 2000)
             print(f"\n⚡ Speed increased: {self.speed}")
-            time.sleep(0.2)
         
-        if self.joycon.button.minus == 1:
+        if self._btn.repeat("minus", 0.2):
             self.speed = max(self.speed - 100, 200)
             print(f"\n🐌 Speed decreased: {self.speed}")
-            time.sleep(0.2)
         
         # Gripper control (ZR button to tighten, R button to loosen)
-        if self.joycon.button.zr == 1:
+        if self._btn.repeat("zr", 0.1):
             # ZR 按下：夹爪收紧一点
             self.gripper_pos = max(self.gripper_pos - self.gripper_step, self.gripper_min)
             self.controller.move_servo("gripper", self.gripper_pos, self.speed)
             print(f"\n✊ Gripper tightened: {self.gripper_pos}")
-            time.sleep(0.1)
         
-        if self.joycon.button.r == 1:
+        if self._btn.repeat("r", 0.1):
             # R 按下：夹爪松开一点
             self.gripper_pos = min(self.gripper_pos + self.gripper_step, self.gripper_max)
             self.controller.move_servo("gripper", self.gripper_pos, self.speed)
             print(f"\n✋ Gripper loosened: {self.gripper_pos}")
-            time.sleep(0.1)
         
         # Z adjustment buttons
-        if self.joycon.button.b == 1:
+        if self._btn.repeat("b", 0.1):
             # B 按下：增大 z
             self.z_offset += self.z_step
             print(f"\n⬆️  Z increased: {self.z_offset:.4f}")
-            time.sleep(0.1)
     
     def run(self):
         """Main control loop"""

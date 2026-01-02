@@ -1,19 +1,57 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
 import time
 import argparse
 import numpy as np
 from scipy.spatial.transform import Rotation as R
+from pathlib import Path
+
+# Ensure repo-root imports work when running this script directly.
+import sys
+
+REPO_ROOT = Path(__file__).resolve().parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 # Import JoyCon controller
-sys.path.insert(0, '/home/elpco/code/lerobot/joycon_robotics')
 from joyconrobotics import JoyconRobotics
 
 # Import IK solver and servo controller
 from driver.ftservo_controller import ServoController
 from lerobot_kinematics.ET import ET
+
+
+class _ButtonHelper:
+    def __init__(self) -> None:
+        self._prev: dict[str, int] = {}
+        self._cur: dict[str, int] = {}
+        self._last_fire_s: dict[str, float] = {}
+
+    def update(self, button_obj: object) -> None:
+        self._prev = self._cur
+        self._cur = {}
+        for name in ("x", "home", "plus", "minus", "zr"):
+            try:
+                self._cur[name] = int(getattr(button_obj, name, 0) or 0)
+            except Exception:
+                self._cur[name] = 0
+
+    def rising(self, name: str) -> bool:
+        return self._cur.get(name, 0) == 1 and self._prev.get(name, 0) == 0
+
+    def repeat(self, name: str, interval_s: float) -> bool:
+        if self._cur.get(name, 0) != 1:
+            return False
+        now = time.time()
+        if self.rising(name):
+            self._last_fire_s[name] = now
+            return True
+        last = self._last_fire_s.get(name, 0.0)
+        if now - last >= float(interval_s):
+            self._last_fire_s[name] = now
+            return True
+        return False
 
 
 # ============================================================================
@@ -163,6 +201,8 @@ class JoyConIKController:
         self.speed = 800  # Default speed
         self.gripper_open = True
         self.running = True
+
+        self._btn = _ButtonHelper()
         
         # 保存初始位姿作为基准（用于叠加JoyCon偏移）
         self.base_pos = self.current_pos.copy()
@@ -204,14 +244,16 @@ class JoyConIKController:
     
     def _process_buttons(self):
         """Process Joy-Con button events"""
+        self._btn.update(self.joycon.button)
+
         # Check for exit button (X)
-        if self.joycon.button.x == 1:
+        if self._btn.rising("x"):
             print("\n🛑 X button pressed - Exiting...")
             self.running = False
             return
         
         # Home按钮：复位机械臂到初始位置
-        if self.joycon.button.home == 1:
+        if self._btn.rising("home"):
             print("\n🏠 Home按钮按下 - 机械臂复位中...")
             self.controller.fast_move_to_pose(self.home_pose)
             time.sleep(1.0)  # 等待复位完成
@@ -227,24 +269,21 @@ class JoyConIKController:
             time.sleep(0.5)
         
         # Speed adjustment
-        if self.joycon.button.plus == 1:
+        if self._btn.repeat("plus", 0.2):
             self.speed = min(self.speed + 100, 2000)
             print(f"\n⚡ Speed increased: {self.speed}")
-            time.sleep(0.2)
         
-        if self.joycon.button.minus == 1:
+        if self._btn.repeat("minus", 0.2):
             self.speed = max(self.speed - 100, 200)
             print(f"\n🐌 Speed decreased: {self.speed}")
-            time.sleep(0.2)
         
         # Gripper control (ZR button)
-        if self.joycon.button.zr == 1:
+        if self._btn.rising("zr"):
             self.gripper_open = not self.gripper_open
             gripper_pos = 2800 if self.gripper_open else 1200
             self.controller.move_servo("gripper", gripper_pos, self.speed)
             status = "OPEN" if self.gripper_open else "CLOSED"
             print(f"\n🤏 Gripper {status}")
-            time.sleep(0.3)
     
     def run(self):
         """Main control loop"""

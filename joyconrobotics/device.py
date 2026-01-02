@@ -1,39 +1,42 @@
+from __future__ import annotations
+
+from typing import List, Optional, Tuple
+
 import hid
-from .constants import JOYCON_VENDOR_ID, JOYCON_PRODUCT_IDS
-from .constants import JOYCON_L_PRODUCT_ID, JOYCON_R_PRODUCT_ID
+
+from .constants import JOYCON_L_PRODUCT_ID, JOYCON_PRODUCT_IDS, JOYCON_R_PRODUCT_ID, JOYCON_VENDOR_ID
 
 
-def get_device_ids(debug=False):
-    """
-    returns a list of tuples like `(vendor_id, product_id, serial_number)`
+def get_device_ids(debug: bool = False) -> List[Tuple[int, int, Optional[str]]]:
+    """Return Joy-Con HID ids as a list of `(vendor_id, product_id, serial_number)`.
+
+    Notes:
+    - Always returns a list (possibly empty).
+    - `serial_number` can be `None` depending on HID backend / permissions.
     """
     devices = hid.enumerate(0, 0)
 
-    out = []
-    for device in devices:
-        vendor_id      = device["vendor_id"]
-        product_id     = device["product_id"]
-        product_string = device["product_string"]
-        serial = device.get('serial') or device.get("serial_number")
-        
+    out: List[Tuple[int, int, Optional[str]]] = []
+    for dev in devices:
+        vendor_id = int(dev.get("vendor_id", 0) or 0)
+        product_id = int(dev.get("product_id", 0) or 0)
+
         if vendor_id != JOYCON_VENDOR_ID:
             continue
         if product_id not in JOYCON_PRODUCT_IDS:
             continue
-        if not product_string:
-            continue
-        
-        if serial[0:6] != '9c:54:':
-            return (0x057A, product_id, serial)
-        
+
+        product_string = dev.get("product_string")
+        serial = dev.get("serial") or dev.get("serial_number")
+
         out.append((vendor_id, product_id, serial))
 
         if debug:
-            print(product_string)
+            print(product_string or "")
             print(f"\tvendor_id  is {vendor_id!r}")
             print(f"\tproduct_id is {product_id!r}")
             print(f"\tserial     is {serial!r}")
-        
+
     return out
 
 
@@ -77,16 +80,21 @@ def get_L_id(**kw):
     ids = get_L_ids(**kw)
     if not ids:
         return (None, None, None)
-    ...
     return ids[0]
 
 
 if __name__ == "__main__":
-    print("All Joy-Con IDs:")
-    get_device_ids(debug=True)
+    def _print_ids(title: str, ids: List[Tuple[int, int, Optional[str]]]) -> None:
+        print(title)
+        if not ids:
+            print("  (none)")
+            return
+        for vendor_id, product_id, serial in ids:
+            lr = "L" if product_id == JOYCON_L_PRODUCT_ID else ("R" if product_id == JOYCON_R_PRODUCT_ID else "?")
+            print(f"  Joy-Con ({lr}) vendor_id={vendor_id} product_id={product_id} serial={serial!r}")
 
-    print("\nLeft Joy-Con IDs:")
-    get_L_ids(debug=True)
-
-    print("\nRight Joy-Con IDs:")
-    get_R_ids(debug=True)
+    _print_ids("All Joy-Con IDs:", get_device_ids(debug=False))
+    print()
+    _print_ids("Left Joy-Con IDs:", get_L_ids(debug=False))
+    print()
+    _print_ids("Right Joy-Con IDs:", get_R_ids(debug=False))
