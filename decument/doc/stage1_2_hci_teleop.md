@@ -2,8 +2,8 @@
 
 快速跳转：
 
-- 控制映射速查：`stage1_2_2_controls.md`
-- 理论推导（FK/IK/LM）：`stage1_2_1_sdk.md`
+- 控制映射速查：`stage1_2_controls.md`
+- 理论推导（FK/IK/LM）：`stage1_1_sdk.md`
 
 对应 `decument/task.txt` 的 2. 产出物：
 
@@ -22,7 +22,7 @@
 4) LM-IK：求 $q_{t+1}$ 使 $T(q_{t+1})\approx T^*_{t+1}$
 5) 角度→步数，下发并做限位裁剪
 
-相关推导（误差定义、mask、LM 更新）集中在：`stage1_2_1_sdk.md`。
+相关推导（误差定义、mask、LM 更新）集中在：`stage1_1_sdk.md`。
 
 ## 程序设计结构
 
@@ -193,7 +193,7 @@
 6) 限位：`ServoController.limit_position()`
 7) 同步写：`ServoController.fast_move_to_pose()` → `FTServo.sync_write(0x2A, ...)`
 
-其中 IK 的误差定义（angle-axis）与 LM 更新公式见：`stage1_2_1_sdk.md`。
+其中 IK 的误差定义（angle-axis）与 LM 更新公式见：`stage1_1_sdk.md`。
 
 ### 4.1 误差来源
 

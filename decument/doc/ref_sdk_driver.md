@@ -1,8 +1,24 @@
 # 函数解析：舵机驱动与控制（`driver/`）
 
-本章聚焦 2.1 SDK 的“硬件通信层 + 控制抽象层”，对应源码：
+本章聚焦 1. SDK 的“硬件通信层 + 控制抽象层”，对应源码：
+
 - `driver/ftservo_driver.py`
 - `driver/ftservo_controller.py`
+
+## 程序设计结构
+
+- `FTServo`：协议与串口封装（组包、校验、收发、同步读写）
+- `ServoController`：面向关节名的控制抽象（加载配置、软限位、回中、同步下发）
+
+## 脚本作用
+
+- `arm_keyboard_control.py`：直接使用 `ServoController` 做步数级控制与回中。
+- `ik_keyboard_realtime.py` / `joycon_ik_control_py.py`：在 IK 之后用 `ServoController` 下发目标并读回当前位置。
+- `RDT/collect_rdt_dataset_teleop.py`：采集时读 proprio/下发 action，同样依赖控制层稳定。
+
+## 方法作用
+
+下文按类/方法逐个解释职责、输入输出与常见失败模式。
 
 ## 1. `driver.ftservo_driver.FTServo`
 
@@ -24,6 +40,7 @@
 
 $$
 \text{chk}=\sim(\sum data)\ \&\ 0xFF
+
 $$
 
 ### 1.4 `send_packet(packet)`
@@ -46,6 +63,7 @@ $$
 - `sync_read(start_addr, data_len, ids)`：广播同步读（逐个收应答）
 
 工程上，本项目主要用到的寄存器地址：
+
 - `0x2A`：写入「位置(2B)+时间(2B)+速度(2B)」
 - `0x38`：读取当前位置（2B）
 
@@ -92,7 +110,7 @@ $$
 - 底层：`FTServo.sync_read(0x38, 2, ids)`
 - 输出：`{joint_name: position_steps}`
 
-## 3. 推荐的最小调用链（SDK 验收角度）
+## 3. 最小调用链
 
 - 回中位：`ServoController.move_all_home()`
 - 读实际位置：`ServoController.read_servo_positions()`

@@ -1,18 +1,42 @@
 # 函数解析：运动学与 IK（`ik/`）
 
-本章对应 2.1/2.2 的“算法层 SDK”，主要文件：
+本章对应 1./2. 的“算法层 SDK”，主要文件：
+
 - `ik/robot.py`
 - `ik/solver.py`
+
+运动学/IK 层要解决的是：
+
+- **正运动学**：给定关节角 $q$，计算末端位姿 $T(q)$
+- **逆运动学**：给定目标末端位姿 $T^*$，求一个关节角解 $q$ 使 $T(q)\approx T^*$
+- **工程闭环**：把 $q$ 与舵机步数互相转换，保证 IK 输出能真正驱动硬件并能从硬件读回更新状态
+
+## 程序设计结构
+
+- `ik.robot.Robot`：面向工程使用的封装（FK/IK 调用 + 角度↔步数转换）
+- `ik.solver`：数值法 IK 求解器（LM/GN/NR/QP 等）
+- SO101 模型构建：`create_so101_*` 把 ETS 参数、限位、符号约定组合成可用模型
+
+## 脚本作用
+
+- `ik_keyboard_realtime.py`：末端 IK 控制的最小验证脚本。
+- `joycon_ik_control_py.py`：遥操作脚本（需要 IK 在实时循环内收敛）。
+- `RDT/collect_rdt_dataset_teleop.py`：采集时会持续读回关节角/末端状态写入 unified vector。
+
+## 方法作用
+
+下文按类/函数解释各方法在“读状态→构造目标→求解→下发”的链路中承担的职责。
 
 ## 1. `ik.robot.Robot`
 
 ### 1.1 `q_to_servo_targets(q_rad, ..., counts_per_rev=4096, gear_ratio, gear_sign)`
 
 - 作用：关节角（rad）→ 舵机目标步数（steps）
-- 公式见：`theory_kinematics_ik.md`
+- 公式见：`stage1_1_sdk.md`
 - 关键依赖：`home_pose`（若未传入则从 `ServoController.home_pose` 取）
 
 常见错误：
+
 - 未传 `home_pose` 且 `ServoController` 未能初始化 → 抛 `ValueError`
 
 ### 1.2 `read_joint_angles(joint_names=None, home_pose=None, gear_sign=None, gear_ratio=None)`
@@ -62,6 +86,7 @@
 - 后续随机初始化重试
 
 失败模式：
+
 - 矩阵奇异（`LinAlgError`）导致中断当前搜索
 - 迭代耗尽：返回 `IKResult(False, q, 'iteration limit reached')`
 
@@ -71,4 +96,5 @@
 - `create_so101_5dof_gripper()`：在 5DOF 末端后额外增加固定平移段（工具长度）
 
 工程建议：
+
 - 控制脚本优先使用 `create_so101_5dof_gripper()`（末端位置更贴近实际夹爪）。

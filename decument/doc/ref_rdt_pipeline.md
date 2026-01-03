@@ -1,10 +1,31 @@
 # 函数解析：RDT 数据采集与落盘（`RDT/`）
 
-本章对应 2.3 的“数据集采集源代码 + 格式说明”，关键文件：
+本章对应 3. 的“数据集采集源代码 + 格式说明”，关键文件：
+
 - `RDT/collect_rdt_dataset_teleop.py`
 - `RDT/rdt_hdf5.py`
 - `RDT/build_rdt_hdf5_from_raw.py`
 - `RDT/inspect_rdt_hdf5.py`
+
+
+RDT 采集链路的理论目标是：把多模态时间序列（图像、proprio、action、时间戳）组织成**固定 shape 且可解释**的数据集，使下游 fine-tuning 可以直接消费。核心约束是 `unified 128 + mask + action_chunk`（详见 `theory_rdt_format.md`）。
+
+## 程序设计结构
+
+- `collect_rdt_dataset_teleop.py`：实时采集与“写 step”（raw 或直接 HDF5）
+- `rdt_hdf5.py`：格式规范层（UnifiedVector + HDF5 writer）
+- `build_rdt_hdf5_from_raw.py`：离线重建（raw→HDF5）
+- `inspect_rdt_hdf5.py`：验收与排错（shape/抽样可视化）
+
+## 脚本作用
+
+- 采集：用 `collect_rdt_dataset_teleop.py` 录一段 raw/hdf5 episode。
+- 转换：用 `build_rdt_hdf5_from_raw.py` 把 raw 整理成标准 HDF5。
+- 检查：用 `inspect_rdt_hdf5.py` 确认张量 shape、mask、抽样帧正常。
+
+## 方法作用
+
+下文按“格式定义 → 采集写入 → 转换与检查”的顺序解释关键方法在管线中的职责。
 
 ## 1. `RDT/rdt_hdf5.py` - 数据格式定义与 HDF5 写入核心
 
@@ -16,11 +37,13 @@
 **功能**：将 3×3 旋转矩阵压缩为 6 维连续表示，避免万向锁问题。
 
 **实现原理**：
+
 - **输入**：$3\times3$ 旋转矩阵 $R$
 - **输出**：6D 向量（取 $R$ 的前两列，按列主序展平）
 - **数学依据**：6D 表示法由 Zhou et al. (CVPR 2019) 提出，通过 Gram-Schmidt 正交化可恢复完整旋转矩阵，且在神经网络训练中比四元数更稳定。
 
 **代码逻辑**：
+
 ```python
 def rotmat_to_rot6d(R):
     # 取前两列
@@ -35,12 +58,14 @@ def rotmat_to_rot6d(R):
 不同机器人的自由度、传感器配置差异很大。Unified Vector 通过 128 维固定长度 + Mask 机制，允许不同配置的机器人共享同一训练管道。
 
 **核心数据结构**：
+
 - `UnifiedVector.value`：`float32[128]` - 存储物理量的数值（未使用的维度填 0）
 - `UnifiedVector.mask`：`uint8[128]` - 标记哪些维度有效（1=有效，0=无效）
 
 **方法详解**：
 
 - **`make_unified_vector()`**：创建一个空的 Unified Vector
+
   ```python
   def make_unified_vector():
       return UnifiedVector(
@@ -48,8 +73,8 @@ def rotmat_to_rot6d(R):
           mask=np.zeros(128, dtype=np.uint8)
       )
   ```
-
 - **`fill_slice(vec, sl, data)`**：向指定切片填充数据并自动更新 mask
+
   - **参数**：
     - `vec`：目标 UnifiedVector
     - `sl`：切片对象（如 `slice(0, 6)` 表示前 6 维）
@@ -68,6 +93,7 @@ def rotmat_to_rot6d(R):
 **功能**：管理单个 Episode 的 HDF5 文件写入，自动处理张量形状、Action Chunk 生成等细节。
 
 **初始化**：
+
 ```python
 writer = RDTHDF5EpisodeWriter(
     filepath="episode_000001.hdf5",
@@ -81,15 +107,16 @@ writer = RDTHDF5EpisodeWriter(
 **核心方法**：
 
 - **`append_step(...)`**：追加一条时间步数据
+
   - **校验**：自动检查 `images` 的 shape 是否为 `(Timg, Ncam, H, W, 3)`
   - **存储**：将 proprio/action 的 value 和 mask 分别追加到对应 Dataset
-  
 - **`finalize_action_chunks()`**：生成未来动作序列
+
   - **原理**：对于时刻 $t$，构造 `action_chunk[t, :, :] = [action[t], action[t+1], ..., action[t+Ta-1]]`
   - **边界处理**：当 $t+\tau \geq T$ 时，用零填充并将 mask 置 0
   - **自动调用**：在 `close()` 时自动执行
-
 - **`close()`**：关闭文件并保存元数据
+
   - **流程**：finalize action_chunks → 写入 meta 信息 → 关闭 HDF5 文件句柄
 
 ## 2. `RDT/collect_rdt_dataset_teleop.py`

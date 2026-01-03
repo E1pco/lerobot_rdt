@@ -1,0 +1,16 @@
+{
+  "plugins": [
+    "highlight",
+    "search",
+    "lunr",
+    "sharing",
+    "fontsettings",
+    "theme-default",
+    "mathjax"
+  ],
+  "pluginsConfig": {
+    "mathjax": {
+      "forceSVG": false
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 快速跳转：
 
-- API 速查：`stage1_2_1_sdk_api.md`
+- API 速查：`stage1_1_sdk_api.md`
 - 函数解析（driver）：`ref_sdk_driver.md`
 - 函数解析（ik）：`ref_ik_robot_solver.md`
 

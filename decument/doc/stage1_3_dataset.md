@@ -2,8 +2,8 @@
 
 快速跳转：
 
-- 相机与手眼标定：`stage1_2_3_calibration.md`
-- 时序同步说明：`stage1_2_3_timesync.md`
+- 相机与手眼标定：`stage1_3_calibration.md`
+- 时序同步说明：`stage1_3_timesync.md`
 - 理论：手眼标定：`theory_handeye.md`
 - 理论：RDT 数据格式：`theory_rdt_format.md`
 - 函数解析：RDT 采集链路：`ref_rdt_pipeline.md`
@@ -17,8 +17,8 @@
 
 标定与同步属于 3. 的必要前置条件，但其详细流程独立成文：
 
-- 相机/手眼标定：`stage1_2_3_calibration.md`
-- 时序同步说明：`stage1_2_3_timesync.md`
+- 相机/手眼标定：`stage1_3_calibration.md`
+- 时序同步说明：`stage1_3_timesync.md`
 
 
 ### 1. 理论背景
@@ -229,8 +229,8 @@ python RDT/inspect_rdt_hdf5.py ./rdt_raw/episode_000001.hdf5
 
 ## 5. 时序同步与标定
 
-- 时序同步：实现与限制见 `stage1_2_3_timesync.md`
-- 相机/手眼标定：流程与验收见 `stage1_2_3_calibration.md`
+- 时序同步：实现与限制见 `stage1_3_timesync.md`
+- 相机/手眼标定：流程与验收见 `stage1_3_calibration.md`
 
 ## 6. 理论补充
 
@@ -256,4 +256,4 @@ $$
 
 实现对应：`RDT/rdt_hdf5.py::RDTHDF5EpisodeWriter.finalize_action_chunks()`。
 
-与同步相关的实现细节与限制请直接引用：`stage1_2_3_timesync.md`（避免在多处重复导致不一致）。
+与同步相关的实现细节与限制请直接引用：`stage1_3_timesync.md`（避免在多处重复导致不一致）。
