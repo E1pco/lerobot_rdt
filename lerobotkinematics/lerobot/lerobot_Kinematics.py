@@ -4,7 +4,7 @@ import numpy as np
 import math
 from math import sqrt as sqrt
 from spatialmath import SE3, SO3
-from lerobot_kinematics.ET import ET
+from lerobotkinematics.ET import ET
 from scipy.spatial.transform import Rotation as R
 
 # Retain 15 decimal places and round off after the 15th place

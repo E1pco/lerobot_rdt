@@ -62,7 +62,7 @@ from rdt_hdf5 import (
 
 
 class RawEpisodeWriter:
-    """Raw episode writer: saves CSV + JPG for easy human inspection.
+    """
 
     Layout:
       episode_XXXXXX/
@@ -151,6 +151,28 @@ class RawEpisodeWriter:
 
         self._jpg_params = [int(cv2.IMWRITE_JPEG_QUALITY), self.jpg_quality]
         self._views = ["exterior", "right_wrist", "left_wrist"]
+
+
+def _override_controller_home_pose_by_id(controller: object, *, home_by_id: Dict[int, int]) -> None:
+    """Override ServoController.home_pose using servo IDs.
+
+    The driver builds home_pose from config ranges by default. For calibrated robots,
+    we sometimes want to force a measured home step per-servo.
+    """
+
+    # ServoController.config is a dict: {joint_name: {"id": int, ...}, ...}
+    config = getattr(controller, "config", None)
+    home_pose = getattr(controller, "home_pose", None)
+    if not isinstance(config, dict) or not isinstance(home_pose, dict):
+        raise TypeError("controller must have dict attributes: config and home_pose")
+
+    for joint_name, cfg in config.items():
+        try:
+            sid = int(cfg.get("id"))
+        except Exception:
+            continue
+        if sid in home_by_id:
+            home_pose[joint_name] = int(home_by_id[sid])
 
     @property
     def length(self) -> int:
@@ -565,6 +587,15 @@ class JoyConRDTCollector:
 
         self._preview_window = "RDT Cameras"
         self._last_preview_bgr: Optional[np.ndarray] = None
+        # IK telemetry for quick health checks without flooding stdout
+        self._ik_stats = {
+            "right": {"attempts": 0, "failures": 0},
+            "left": {"attempts": 0, "failures": 0},
+        }
+        self._last_ik_log_ts = 0.0
+        self._ik_log_interval_s = 2.0
+        self._last_pose_log_ts = {"right": 0.0, "left": 0.0}
+        self._pose_log_interval_s = 0.5
 
     def _render_preview(
         self,
@@ -726,6 +757,18 @@ class JoyConRDTCollector:
 
         from driver.ftservo_controller import ServoController  # type: ignore
         controller = ServoController(port=port, baudrate=baudrate, config_path=config_path)
+
+        # Force calibrated home steps (by servo ID) for consistent IK/teleop.
+        if name == "left":
+            _override_controller_home_pose_by_id(
+                controller,
+                home_by_id={1: 1988, 2: 1020, 3: 2951, 4: 1988, 5: 2017, 6: 2036},
+            )
+        elif name == "right":
+            _override_controller_home_pose_by_id(
+                controller,
+                home_by_id={1: 2049, 2: 1061, 3: 3019, 4: 1983, 5: 2088, 6: 2036},
+            )
         robot = create_so101_5dof()
         robot.set_servo_controller(controller)
 
@@ -978,23 +1021,146 @@ class JoyConRDTCollector:
         if self._any_btn("b"):
             self.z_offset += self.z_step
             time.sleep(0.05)
+        if self._any_btn("down"):
+            self.z_offset -= self.z_step
+            time.sleep(0.05)
+
+    def _log_ik_result(
+        self,
+        *,
+        arm_name: str,
+        success: bool,
+        elapsed_s: float,
+        goal_pos: np.ndarray,
+        goal_rpy: np.ndarray,
+        cur_pos: np.ndarray,
+        cur_rpy: np.ndarray,
+        residual: Optional[float],
+        fallback_used: bool,
+    ) -> None:
+        stats = self._ik_stats[arm_name]
+        stats["attempts"] += 1
+        if not success:
+            stats["failures"] += 1
+
+        now = time.time()
+        should_log = (not success) or (now - self._last_ik_log_ts >= self._ik_log_interval_s)
+        if not should_log:
+            return
+
+        rate = 1.0 - (stats["failures"] / max(1, stats["attempts"]))
+        res_str = "" if residual is None else f" res={residual:.3g}"
+        fallback_str = " (fallback)" if fallback_used else ""
+        print(
+            f"[IK] {arm_name} {'OK' if success else 'FAIL'}{fallback_str} "
+            f"rate={rate:.2%} took={elapsed_s*1e3:.1f}ms{res_str} "
+            f"pos={np.asarray(goal_pos).round(4).tolist()} rpy={np.asarray(goal_rpy).round(4).tolist()}"
+        )
+        self._last_ik_log_ts = now
+
+        # Throttled pose delta log for both arms to see responsiveness
+        last_pose_ts = self._last_pose_log_ts.get(arm_name, 0.0)
+        if now - last_pose_ts >= self._pose_log_interval_s:
+            dpos = goal_pos - cur_pos
+            drot = goal_rpy - cur_rpy
+            print(
+                f"[IKPOSE] {arm_name} cur_pos={np.asarray(cur_pos).round(4).tolist()} "
+                f"tgt_pos={np.asarray(goal_pos).round(4).tolist()} dpos={np.asarray(dpos).round(4).tolist()} "
+                f"cur_rpy={np.asarray(cur_rpy).round(4).tolist()} tgt_rpy={np.asarray(goal_rpy).round(4).tolist()} "
+                f"drot={np.asarray(drot).round(4).tolist()}"
+            )
+            self._last_pose_log_ts[arm_name] = now
 
     def _solve_and_send(self, arm: ArmRig, T_goal: np.ndarray) -> bool:
         if self.no_robot:
             return True
 
+        # Pre-filter: clamp workspace, limit per-step delta to help IK converge fast.
+        goal_pos = T_goal[:3, 3].astype(np.float32)
+        goal_rpy = R.from_matrix(T_goal[:3, :3]).as_euler("xyz").astype(np.float32)
+
+        # Position clamp relative to base to stay inside reachable workspace.
+        delta = goal_pos - arm.base_pos
+        r_xy = float(np.linalg.norm(delta[:2]))
+        r_xy_max = 0.82  # looser radial clamp to allow bigger sweeps
+        if r_xy > r_xy_max and r_xy > 1e-6:
+            delta[:2] *= r_xy_max / r_xy
+        delta[2] = float(np.clip(delta[2], -0.08, 0.40))
+        goal_pos = arm.base_pos + delta
+
+        # Orientation clamp to avoid extreme angles that hurt convergence.
+        goal_rpy = np.clip(goal_rpy, [-1.6, -1.6, -1.9], [1.6, 1.6, 1.9])
+
+        # Limit per-step change vs current pose to reduce IK jumps.
+        cur_pose = arm.robot.fkine(arm.current_q)
+        cur_pos = cur_pose[:3, 3].astype(np.float32)
+        cur_rpy = R.from_matrix(cur_pose[:3, :3]).as_euler("xyz").astype(np.float32)
+        dpos = goal_pos - cur_pos
+        drot = goal_rpy - cur_rpy
+        max_step_pos = 0.2  # allow larger translational moves per cycle
+        max_step_rot = 0.55  # allow larger rotational moves per cycle
+        dpos_norm = float(np.linalg.norm(dpos))
+        if dpos_norm > max_step_pos and dpos_norm > 1e-6:
+            dpos *= max_step_pos / dpos_norm
+        for i in range(3):
+            if abs(drot[i]) > max_step_rot:
+                drot[i] = np.sign(drot[i]) * max_step_rot
+        goal_pos = cur_pos + dpos
+        goal_rpy = cur_rpy + drot
+
+        T_goal[:3, 3] = goal_pos
+        T_goal[:3, :3] = R.from_euler("xyz", goal_rpy).as_matrix()
+        start = time.time()
         sol = arm.robot.ikine_LM(
             Tep=T_goal,
             q0=arm.current_q,
-            ilimit=50,
-            slimit=3,
-            tol=1e-3,
-            mask=[1, 1, 1, 0.8, 0.8, 0],
-            k=0.1,
-            method="sugihara",
+            ilimit=70,
+            slimit=2,
+            tol=5e-3,
+            mask=[1, 1, 1, 0.5, 0.5, 0],
+            k=0.14,
+            method="wampler",
         )
 
-        if not sol.success:
+        success = bool(getattr(sol, "success", False))
+        fallback_used = False
+        if not success:
+            # Second pass: fast position-priority solve (orientation dropped) to avoid long stalls
+            sol = arm.robot.ikine_LM(
+                Tep=T_goal,
+                q0=arm.current_q,
+                ilimit=50,
+                slimit=2,
+                tol=8e-3,
+                mask=[1, 1, 1, 0, 0, 0],
+                k=0.1,
+                method="wampler",
+            )
+            fallback_used = True
+            success = bool(getattr(sol, "success", False))
+
+        residual_raw = getattr(sol, "residual", None)
+        residual = None
+        try:
+            if residual_raw is not None:
+                residual = float(np.linalg.norm(residual_raw))
+        except Exception:
+            residual = None
+
+        elapsed = time.time() - start
+        self._log_ik_result(
+            arm_name=arm.name,
+            success=success,
+            elapsed_s=elapsed,
+            goal_pos=goal_pos,
+            goal_rpy=goal_rpy,
+            cur_pos=cur_pos,
+            cur_rpy=cur_rpy,
+            residual=residual,
+            fallback_used=fallback_used,
+        )
+
+        if not success:
             return False
 
         arm.current_q = sol.q

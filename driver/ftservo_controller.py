@@ -42,8 +42,6 @@ class ServoController:
         cfg = self.config[name]
         minv, maxv = cfg["range_min"], cfg["range_max"]
         limited = max(min(target_pos, maxv), minv)
-        if limited != target_pos:
-            print(f"⚠️ {name} 超出限位 {minv}~{maxv}，修正为 {limited}")
         return limited
 
     def get_home_position(self, name):

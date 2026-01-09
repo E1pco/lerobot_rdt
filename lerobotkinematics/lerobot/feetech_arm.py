@@ -1,7 +1,7 @@
 # code by Boxjod 2025.1.13 Box2AI-Robotics copyright 盒桥智能 版权所有
 
 # For Feetech Motors
-from lerobot_kinematics.lerobot.feetech import FeetechMotorsBus
+from lerobotkinematics.lerobot.feetech import FeetechMotorsBus
 import json
 import numpy as np
 

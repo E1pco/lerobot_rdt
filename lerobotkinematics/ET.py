@@ -10,8 +10,8 @@ import numpy as np
 from numpy.random import uniform
 from numpy.linalg import inv, det, cond, svd
 from spatialmath import SE3, SE2
-from lerobot_kinematics.params import get_param
-from lerobot_kinematics.IK import IK_GN, IK_LM, IK_NR, IK_QP
+from lerobotkinematics.params import get_param
+from lerobotkinematics.IK import IK_GN, IK_LM, IK_NR, IK_QP
 from lerobot_kinematics.fknm import (
     ETS_init,
     ETS_fkine,
@@ -53,7 +53,7 @@ from typing import Optional, Callable, Union, TYPE_CHECKING, overload, List, Set
 from typing_extensions import Literal as L
 
 # from spatialmath.base.types import ArrayLike
-from lerobot_kinematics.types import ArrayLike, NDArray
+from lerobotkinematics.types import ArrayLike, NDArray
 
 if TYPE_CHECKING:  # pragma: nocover
     import sympy

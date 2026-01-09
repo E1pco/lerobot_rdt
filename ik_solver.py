@@ -11,7 +11,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 
 from driver.ftservo_controller import ServoController
-from lerobot_kinematics.ET import ET
+from lerobotkinematics.ET import ET
 
 # -----------------------------
 # 1) 构建 SO-101 (5DOF) 的 ET 模型

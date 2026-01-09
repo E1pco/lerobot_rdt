@@ -19,7 +19,7 @@ from joyconrobotics import JoyconRobotics
 
 # Import IK solver and servo controller
 from driver.ftservo_controller import ServoController
-from lerobot_kinematics.ET import ET
+from lerobotkinematics.ET import ET
 
 
 class _ButtonHelper:

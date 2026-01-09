@@ -148,7 +148,7 @@ class FTServo:
 # 主函数测试：监控1~6舵机位置
 # ------------------------------
 if __name__ == "__main__":
-    servo = FTServo("/dev/ttyACM0", 1000000)
+    servo = FTServo("/dev/right_arm", 1000000)
 
     print("==== 测试 PING ====")
     for i in range(1, 7):
