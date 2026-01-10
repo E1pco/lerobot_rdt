@@ -308,22 +308,7 @@ class ServoController:
     def close(self):
         self.servo.close()
 if __name__ == "__main__":
-    controller = ServoController("/dev/ttyACM0", 1000000, "right_arm.json")
+    controller = ServoController("/dev/right_arm", 1000000, "./right_arm.json")
+    while True:
+        controller.monitor_positions([1, 2, 3, 4, 5, 6])
 
-    # 1️⃣ 平滑移动到指定目标姿态
-    target_pose = {
-        "shoulder_pan": 2096,
-        "shoulder_lift": 1983,
-        "elbow_flex": 2100,
-        "wrist_flex": 1954,
-        "wrist_roll": 2048,
-        "gripper": 2037
-    }
-
-    # controller.soft_move_to_pose(target_pose, step_count=10, interval=0.1)
-    controller.move_all_home()
-    # 2️⃣ 完成后实时监控
-    time.sleep(1)
-    controller.monitor_positions([1, 2, 3, 4, 5, 6])
-
-    controller.close()

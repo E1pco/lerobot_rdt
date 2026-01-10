@@ -64,21 +64,21 @@
 
 ### 2.1 `_angle_axis(Te, Tep)`
 
-- 输入：当前位姿 $T_e$ 与目标位姿 $T_{ep}$
+- 输入：当前位姿 $T\_e$ 与目标位姿 $T\_{ep}$
 - 输出：6D 误差 $e=[\Delta p,\ \Delta R]$
   - $\Delta p = p^*-p$
-  - $\Delta R$ 用 $R_{err}=R^*R^T$ 转为轴角向量
+  - $\Delta R$ 用 $R\_{err}=R^*R^T$ 转为轴角向量
 
 ### 2.2 代价函数与权重
 
-- `mask` → $W_e=\mathrm{diag}(mask)$
-- 代价：$E=\frac12 e^T W_e e$
+- `mask` → $W\_e=\mathrm{diag}(mask)$
+- 代价：$E=\frac12 e^T W\_e e$
 
 ### 2.3 LM 更新
 
 - 雅可比：`J = ets.jacob0(q)`
 - 阻尼：`Wn` 随 `method` 不同而不同（chan/wampler/sugihara）
-- 更新：$q \leftarrow q + (J^T W_e J + W_n)^{-1} J^T W_e e$
+- 更新：$q \leftarrow q + (J^T W\_e J + W\_n)^{-1} J^T W\_e e$
 
 ### 2.4 多次搜索（slimit）
 

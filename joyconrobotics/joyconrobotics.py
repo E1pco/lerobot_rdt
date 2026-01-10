@@ -27,8 +27,8 @@ class LowPassFilter:
     
 class AttitudeEstimator:
     def __init__(self, 
-                pitch_Threhold = math.pi/2.0, 
-                roll_Threhold = math.pi/2.02, 
+                pitch_Threhold = -1, 
+                roll_Threhold = -1, 
                 yaw_Threhold = -1, 
                 common_rad = True,
                 lerobot = False,
@@ -148,8 +148,8 @@ class JoyconRobotics:
                  horizontal_stick_mode: str = "y",
                  close_y: bool = False,
                  limit_dof: bool = False,
-                 glimit: list = [[0.125, -0.4,  0.046, -3.1, -1.5, -1.57], 
-                                 [0.380,  0.4,  0.23,  3.1,  1.5,  1.57]],
+                 glimit: list = [[0.125, -0.4,  0.046, -1.57, -1.5, -1.57], 
+                                 [0.380,  0.4,  0.23,  1.57,  1.5,  1.57]],
                  offset_position_m: list = [0.0, 0.0, 0.0], # just use the position and yaw
                  offset_euler_rad: list = [0.0, 0.0, 0.0], # adjust the orientation
                  euler_reverse: list = [1, 1, 1], # -1 reverse
@@ -160,9 +160,11 @@ class JoyconRobotics:
                  lerobot: bool = False,
                  pitch_down_double: bool = False,
                  without_rest_init: bool = False,
-                 pure_xz: bool = True,
+                 pure_z: bool = True,
                  change_down_to_gripper: bool = False, # ZR to toggle gripper state is common for lerobot, ARX ARM and VixperX. But for UR, Sawyer and panda you could try this. ZR to go down and stick button to toggle gripper
                  lowpassfilter_alpha_rate = 0.05,
+                 pure_dx = True,
+                 all_button_return = False
                  ):
         
         if device == "right":
@@ -170,22 +172,7 @@ class JoyconRobotics:
         elif device == "left":
             self.joycon_id = get_L_id()
         else:
-            raise ValueError(f"Invalid JoyCon device='{device}', expected 'right' or 'left'")
-
-        # get_R_id/get_L_id returns (None, None, None) if not found.
-        if (
-            self.joycon_id is None
-            or len(self.joycon_id) < 3
-            or self.joycon_id[0] is None
-            or self.joycon_id[1] is None
-            or self.joycon_id[2] is None
-        ):
-            raise RuntimeError(
-                f"No {device} Joy-Con found (hid.enumerate returned none). "
-                "Make sure the Joy-Con is paired/connected, press the sync button, "
-                "and ensure your user has permission to access hidraw devices."
-            )
-
+            print("get a wrong device name of joycon")
         device_serial = self.joycon_id[2][:6]
         
         # init joycon
@@ -195,7 +182,7 @@ class JoyconRobotics:
         self.lerobot = lerobot
         self.pitch_down_double = pitch_down_double
         self.rotation_filter_alpha_rate = rotation_filter_alpha_rate
-        self.orientation_sensor = AttitudeEstimator(common_rad=common_rad, lerobot=self.lerobot, pitch_down_double = self.pitch_down_double, lowpassfilter_alpha_rate = self.rotation_filter_alpha_rate)
+        self.orientation_sensor = AttitudeEstimator(common_rad=common_rad, lerobot=self.lerobot, pitch_down_double = self.pitch_down_double, lowpassfilter_alpha_rate = self.rotation_filter_alpha_rate, ) # roll_Threhold=glimit[0][3], pitch_Threhold=glimit[0][4], yaw_Threhold=glimit[0][5] 
         self.button = ButtonEventJoyCon(*self.joycon_id, track_sticks=True)
         self.without_rest_init = without_rest_init
         # print(f"connect to {device} joycon successful.")
@@ -226,7 +213,8 @@ class JoyconRobotics:
         self.glimit = glimit
         self.offset_euler_rad = offset_euler_rad
         self.euler_reverse = euler_reverse
-        self.pure_xz = pure_xz
+        self.pure_z = pure_z
+        self.pure_dx = pure_dx
         self.direction_reverse = direction_reverse
         self.change_down_to_gripper = change_down_to_gripper
         self.gripper_toggle_button = 0
@@ -235,10 +223,12 @@ class JoyconRobotics:
         self.reset_button = 0
         self.next_episode_button = 0
         self.restart_episode_button = 0
+        self.joycon_button_sl = 0
+        self.joycon_button_sr = 0
+        self.joycon_button_zrl = 0
+        self.all_button_return = all_button_return
+        
         self.button_control = 0
-
-        self._prev_home = 0
-        self._prev_x = 0
         
         if device_serial != JOYCON_SERIAL_SUPPORT and self.joycon_id != None:
             raise IOError("There is no joycon for robotics")
@@ -271,63 +261,115 @@ class JoyconRobotics:
             self.orientation_rad[i] = self.glimit[0][3+i] if self.orientation_rad[i] < self.glimit[0][3+i] else (self.glimit[1][3+i] if self.orientation_rad[i] > self.glimit[1][3+i] else self.orientation_rad[i])
     
     def common_update(self):
-        # Stick mapping:
-        # - vertical   => X axis
-        # - horizontal => Y axis
+        # Forward and Backward movement
         joycon_stick_v = self.joycon.get_stick_right_vertical() if self.joycon.is_right() else self.joycon.get_stick_left_vertical()
         if joycon_stick_v > 4000:
-            self.position[0] += 0.001 * self.dof_speed[0]
+            self.position[0] += 0.001 * self.direction_vector[0] * self.dof_speed[0] * self.direction_reverse[0]
+            self.position[2] += 0.001 * self.direction_vector[2] * self.dof_speed[2] * self.direction_reverse[2]
+            if not self.if_close_y: # recommend for lerobot SO100
+                self.position[1] += 0.001 * self.direction_vector[1] * self.dof_speed[1] * self.direction_reverse[1]
         elif joycon_stick_v < 1000:
-            self.position[0] -= 0.001 * self.dof_speed[0]
-
+            self.position[0] -= 0.001 * self.direction_vector[0] * self.dof_speed[0] * self.direction_reverse[0]
+            self.position[2] -= 0.001 * self.direction_vector[2] * self.dof_speed[2] * self.direction_reverse[2]
+            if not self.if_close_y: # recommend for lerobot SO100
+                self.position[1] -= 0.001 * self.direction_vector[1] * self.dof_speed[1] * self.direction_reverse[1]
+        
+        # Left and right movement
         joycon_stick_h = self.joycon.get_stick_right_horizontal() if self.joycon.is_right() else self.joycon.get_stick_left_horizontal()
-        if self.horizontal_stick_mode == "yaw_diff":  # keep legacy mode
+        if self.horizontal_stick_mode == "y":
+            if joycon_stick_h > 4000:
+                self.position[0] -= 0.001 * self.direction_vector_right[0] * self.dof_speed[0] * self.direction_reverse[0]
+                self.position[1] -= 0.001 * self.direction_vector_right[1] * self.dof_speed[1] * self.direction_reverse[1]
+                self.position[2] -= 0.001 * self.direction_vector_right[2] * self.dof_speed[2] * self.direction_reverse[2]
+            elif joycon_stick_h < 1000:
+                self.position[0] += 0.001 * self.direction_vector_right[0] * self.dof_speed[0] * self.direction_reverse[0]
+                self.position[1] += 0.001 * self.direction_vector_right[1] * self.dof_speed[1] * self.direction_reverse[1]
+                self.position[2] += 0.001 * self.direction_vector_right[2] * self.dof_speed[2] * self.direction_reverse[2]
+        elif self.horizontal_stick_mode == "yaw_diff": # for lerobot SO100
             if joycon_stick_h > 4000:
                 if self.yaw_diff < self.glimit[1][5] / 2.0:
-                    self.yaw_diff += 0.02 * self.dof_speed[5] / 2.0
+                    self.yaw_diff +=0.02 * self.dof_speed[5] / 2.0
                     self.orientation_sensor.set_yaw_diff(self.yaw_diff)
             elif joycon_stick_h < 1000:
                 if self.yaw_diff > self.glimit[0][5] / 2.0:
-                    self.yaw_diff -= 0.02 * self.dof_speed[5] / 2.0
+                    self.yaw_diff -=0.02 * self.dof_speed[5]  / 2.0
                     self.orientation_sensor.set_yaw_diff(self.yaw_diff)
+        
+        # Up and down movement
+        joycon_button_up = self.joycon.get_button_r() if self.joycon.is_right() else self.joycon.get_button_l()
+        if joycon_button_up == 1:
+            if self.pure_z:
+                self.position[2] += 0.001 * self.dof_speed[2]
+            else:
+                self.position[0] += 0.001 * self.direction_vector_up[0] * self.dof_speed[0] * self.direction_reverse[0]
+                self.position[1] += 0.001 * self.direction_vector_up[1] * self.dof_speed[1] * self.direction_reverse[1]
+                self.position[2] += 0.001 * self.direction_vector_up[2] * self.dof_speed[2] * self.direction_reverse[2]
+        
+        if not self.change_down_to_gripper:
+            joycon_button_down = self.joycon.get_button_r_stick() if self.joycon.is_right() else self.joycon.get_button_l_stick()
         else:
-            if joycon_stick_h > 4000:
-                self.position[1] += 0.001 * self.dof_speed[1]
-            elif joycon_stick_h < 1000:
-                self.position[1] -= 0.001 * self.dof_speed[1]
+            joycon_button_down = self.joycon.get_button_zr() if self.joycon.is_right() else self.joycon.get_button_zl
+                        
+        if joycon_button_down == 1:
+            if self.pure_z:
+                self.position[2] -= 0.001 * self.dof_speed[2]
+            else:
+                self.position[0] -= 0.001 * self.direction_vector_up[0] * self.dof_speed[0] * self.direction_reverse[0]
+                self.position[1] -= 0.001 * self.direction_vector_up[1] * self.dof_speed[1] * self.direction_reverse[1]
+                self.position[2] -= 0.001 * self.direction_vector_up[2] * self.dof_speed[2] * self.direction_reverse[2]
 
-        # Buttons mapping:
-        # - stick press => Z down
-        # - B => Z up
-        # - Home => recenter
-        # - X => exit
-        joycon_button_stick = self.joycon.get_button_r_stick() if self.joycon.is_right() else self.joycon.get_button_l_stick()
-        if joycon_button_stick == 1:
-            self.position[2] -= 0.001 * self.dof_speed[2]
-
-        joycon_button_b = self.joycon.get_button_b() if self.joycon.is_right() else self.joycon.get_button_down()
-        if joycon_button_b == 1:
-            self.position[2] += 0.001 * self.dof_speed[2]
-
+        # Common buttons
+        self.joycon_button_xup = self.joycon.get_button_x() if self.joycon.is_right() else self.joycon.get_button_up()
+        self.joycon_button_bback = self.joycon.get_button_b() if self.joycon.is_right() else self.joycon.get_button_down()
+        if self.pure_dx:
+            if self.joycon_button_xup == 1:
+                self.position[0] += 0.001 * self.dof_speed[0]
+                
+            elif self.joycon_button_bback == 1:
+                self.position[0] -= 0.001 * self.dof_speed[0]
+        
         joycon_button_home = self.joycon.get_button_home() if self.joycon.is_right() else self.joycon.get_button_capture()
-        if joycon_button_home == 1 and self._prev_home == 0:
-            self.position = self.offset_position_m.copy()
-            self.yaw_diff = 0.0
+        if joycon_button_home == 1:
+            
+            if self.position[0] > self.offset_position_m[0] + 0.002: 
+                self.position[0] = self.position[0] - 0.001 * self.dof_speed[0] * 2.0
+            elif self.position[0] < self.offset_position_m[0] - 0.002:
+                self.position[0] = self.position[0] + 0.001 * self.dof_speed[0] * 2.0
+            else:
+                self.position[0] = self.position[0]
+            
+            if self.position[1] > self.offset_position_m[1] + 0.002: 
+                self.position[1] = self.position[1] - 0.001 * self.dof_speed[1] * 2.0
+            elif self.position[1] < self.offset_position_m[1] - 0.002:
+                self.position[1] = self.position[1] + 0.001 * self.dof_speed[1] * 2.0
+            else:
+                self.position[1] = self.position[1]
+            
+            if self.position[2] > self.offset_position_m[2] + 0.002: 
+                self.position[2] = self.position[2] - 0.001 * self.dof_speed[2] * 2.0
+            elif self.position[2] < self.offset_position_m[2] - 0.002:
+                self.position[2] = self.position[2] + 0.001 * self.dof_speed[2] * 2.0
+            else:
+                self.position[2] = self.position[2]
+            
+            if self.orientation_rad[2] > self.offset_euler_rad[2] + 0.02 : # * self.dof_speed[5]:
+                self.yaw_diff = self.yaw_diff + (0.01 * self.dof_speed[5])  
+            elif self.orientation_rad[2] < self.offset_euler_rad[2] - 0.02 : # * self.dof_speed[5]:
+                self.yaw_diff = self.yaw_diff - (0.01 * self.dof_speed[5])  
+            else:
+                self.yaw_diff = self.yaw_diff
+                
+            # print(f'{self.yaw_diff=}')
             self.orientation_sensor.set_yaw_diff(self.yaw_diff)
-            self.orientation_sensor.reset_yaw()
-        self._prev_home = joycon_button_home
-
-        joycon_button_x = self.joycon.get_button_x() if self.joycon.is_right() else 0
-        if joycon_button_x == 1 and self._prev_x == 0:
-            self.running = False
-            try:
-                self.disconnnect()
-            except Exception:
-                pass
-        self._prev_x = joycon_button_x
+            
+            # print(f'{self.orientation_rad[2]=}')
+            if self.orientation_rad[2] < (0.02 * self.dof_speed[5]) and self.orientation_rad[2] > (-0.02* self.dof_speed[5]):
+                self.orientation_sensor.reset_yaw()# gyro.reset_orientation()
+                self.yaw_diff = 0.0
+                self.orientation_sensor.set_yaw_diff(self.yaw_diff)
 
         
-        # gripper 
+        # gripper and button detection
         for event_type, status in self.button.events():
             if (self.joycon.is_right() and event_type == 'plus' and status == 1) or (self.joycon.is_left() and event_type == 'minus' and status == 1):
                 self.reset_button = 1
@@ -336,39 +378,56 @@ class JoyconRobotics:
                 self.next_episode_button = status
             elif self.joycon.is_right() and event_type == 'y':
                 self.restart_episode_button = status
+            elif event_type == 'right_sr' or event_type == 'left_sr':
+                self.joycon_button_sl = status    
+            elif event_type == 'right_sl' or event_type == 'left_sl':
+                self.joycon_button_sr = status    
             elif ((self.joycon.is_right() and event_type == 'zr') or (self.joycon.is_left() and event_type == 'zl')) and not self.change_down_to_gripper:
                 self.gripper_toggle_button = status
+                self.joycon_button_zrl = status
             elif ((self.joycon.is_right() and event_type == 'stick_r_btn') or (self.joycon.is_left() and event_type == 'stick_l_btn')) and self.change_down_to_gripper:
                 self.gripper_toggle_button = status
             # print(f'{event_type=}, {status=}')
             else: 
                 self.reset_button = 0
+
+        # record and botton
+        if self.joycon.is_right():
+            if self.next_episode_button == 1:
+                self.button_control = 1
+            elif self.restart_episode_button == 1:
+                self.button_control = -1
+            else:
+                self.button_control = 0
             
+            if self.all_button_return == True:    
+                if self.joycon_button_bback == 1:
+                    self.button_control = 2
+                elif self.joycon_button_xup == 1:
+                    self.button_control = 3
+                elif self.joycon_button_sl == 1:
+                    self.button_control = 4
+                elif self.joycon_button_sr == 1:
+                    self.button_control = 5
+                elif self.joycon_button_zrl == 1:
+                    self.button_control = 6    
+                elif self.reset_button == 1:
+                    self.button_control = 8
+                
         if self.gripper_toggle_button == 1 :
             if self.gripper_state == self.gripper_open:
                 self.gripper_state = self.gripper_close
             else:
                 self.gripper_state = self.gripper_open
             self.gripper_toggle_button = 0
-
-        # record
-        if self.joycon.is_right():
-            if self.next_episode_button == 1:
-                self.button_control = 1
-            elif self.restart_episode_button == 1:
-                self.button_control = -1
-            elif self.reset_button == 1:
-                self.button_control = 8
-            else:
-                self.button_control = 0
-        
+            
         return self.position, self.gripper_state, self.button_control
                         
                         
     def get_orientation(self): # euler_rad, euler_deg, quaternion,
         self.orientation_rad = self.orientation_sensor.update(self.gyro.gyro_in_rad[0], self.gyro.accel_in_g[0])
         
-        # roll, pitch, yaw = self.orientation_rad
+        roll, pitch, yaw = self.orientation_rad
         # self.direction_vector_right = vec3(math.cos(roll) * math.cos(yaw + math.pi/2 * self.euler_reverse[2]), math.cos(roll) * math.sin(yaw + math.pi/2 * self.euler_reverse[2]), math.sin(roll))
         # self.direction_vector_up = vec3(math.cos(-roll + math.pi/2 * self.euler_reverse[0]) * math.cos(pitch + math.pi/2 * self.euler_reverse[2]), 
         #                                 math.cos(-roll + math.pi/2 * self.euler_reverse[0]) * math.sin(pitch + math.pi/2 * self.euler_reverse[2]), 

@@ -140,7 +140,7 @@ writer = RDTHDF5EpisodeWriter(
 
 ### 2.4 速度估计：`compute_ang_vel_rad_s(R_prev, R_cur, dt)`
 
-- 通过 $dR=R_{prev}^T R_{cur}$ 的旋转向量除以 dt 估计角速度
+- 通过 $dR=R\_{prev}^T R\_{cur}$ 的旋转向量除以 dt 估计角速度
 
 ### 2.5 episode 编号：`_max_existing_episode_idx(out_dir)`
 

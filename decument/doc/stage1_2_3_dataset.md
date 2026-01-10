@@ -25,7 +25,7 @@
 
 RDT fine-tuning 期望输入是固定维度的向量与图像序列，因此本项目把所有 proprio/action 统一映射到 `float32[128]`，并用 `uint8[128] mask` 标注“哪些维度真实有效”。
 
-同时，为了训练时的未来动作监督，数据中还会构造 `action_chunk`（默认 $T_a=64$），即从当前时刻起未来若干步的动作序列（越界部分做 padding，并把 mask 置 0）。
+同时，为了训练时的未来动作监督，数据中还会构造 `action_chunk`（默认 $T\_a=64$），即从当前时刻起未来若干步的动作序列（越界部分做 padding，并把 mask 置 0）。
 
 理论与张量形状的完整说明见：`theory_rdt_format.md`。
 

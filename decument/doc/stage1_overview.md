@@ -4,13 +4,14 @@
 
 ## 程序设计结构
 
-按模块分层，可以把仓库拆成 5 块：
+按模块分层，可以把仓库拆成 6 块：
 
 - **驱动层**（协议与串口）：`driver/ftservo_driver.py`
-- **控制层**（面向“关节名”的动作接口）：`driver/ftservo_controller.py` + `driver/*.json`
+- **控制层**（面向"关节名"的动作接口）：`driver/ftservo_controller.py` + `driver/*.json`
 - **运动学层**（FK/IK 与角度↔步数映射）：`ik/robot.py`（及 `ik/`）
 - **交互层**（键盘/JoyCon 输入到控制命令）：根目录控制脚本 + `joyconrobotics/`
 - **数据/标定层**（采集、格式、标定、验证）：`RDT/` + `vision/`
+- **硬件加速层**（FPGA 逆解加速）：外部仓库 `Hardware-Accelerated_System_for_IK_Solution_Based_on_LeRobot/`
 
 ## 脚本作用（按交付顺序）
 
@@ -31,7 +32,11 @@
 - `RDT/collect_rdt_dataset_teleop.py`：采集 raw episode。
 - `RDT/build_rdt_hdf5_from_raw.py`：raw→HDF5。
 - `RDT/inspect_rdt_hdf5.py`：检查张量形状/抽样可视化。
+### 5. FPGA 硬件加速（IK 求解性能优化）
 
+- `notebook/SO101_Hardware_IK_Demo.ipynb`：FPGA 硬件加速逆解演示（需 PYNQ-Z2 板）。
+- `notebook/SO101_IK_HW_vs_Python.ipynb`：硬件加速与纯 Python 软件的性能对比。
+- `notebook/LM_SingleStep_Benchmark.ipynb`：单步 LM 迭代性能基准测试。
 ## 方法作用（理解“脚本是怎么连起来的”）
 
 下面的方法是各脚本最核心的“搭积木接口”，理解它们基本就能读懂上层脚本：
@@ -61,7 +66,7 @@
   - **细节**：输入关节角 $q$（弧度），通过 ETS（Elementary Transform Sequence）链式乘法，计算出末端执行器相对于基座的齐次变换矩阵 $T$（包含位置与姿态）。
 - **`ik.robot.Robot.ikine_LM(Tep, q0, mask, ...)`**
   - **作用**：逆运动学求解（Levenberg-Marquardt 数值法）。
-  - **细节**：输入目标位姿 $T_{ep}$ 和初值 $q_0$。算法通过迭代最小化误差 $E = ||T(q) - T_{ep}||^2$ 来寻找最优关节角。`mask` 参数用于指定只关注哪些维度（如只控位置 `[1,1,1,0,0,0]` 或全控 `[1,1,1,1,1,1]`）。
+  - **细节**：输入目标位姿 $T\_{ep}$ 和初值 $q\_0$。算法通过迭代最小化误差 $E = ||T(q) - T\_{ep}||^2$ 来寻找最优关节角。`mask` 参数用于指定只关注哪些维度（如只控位置 `[1,1,1,0,0,0]` 或全控 `[1,1,1,1,1,1]`）。
 - **`ik.robot.Robot.q_to_servo_targets(q)` / `read_joint_angles()`**
   - **作用**：物理空间（弧度）与驱动空间（步数）的双向映射。
   - **细节**：处理减速比、零位偏置和方向符号，是连接 IK 算法与底层驱动的桥梁。

@@ -46,7 +46,7 @@ $$
 其中：
 
 - $X$：图像序列（本项目 `Timg=2`）
-- $z_t$：proprio（统一 128 维）
+- $z\_t$：proprio（统一 128 维）
 - $c$：instruction / 条件（保存在 `meta/instruction`）
 
 HDF5 的关键张量：

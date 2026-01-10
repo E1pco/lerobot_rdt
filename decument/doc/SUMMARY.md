@@ -16,4 +16,5 @@
 	* [函数解析：手眼评估](ref_vision_handeye.md)
 	* [3. 时序同步说明](stage1_3_timesync.md)
 	* [函数解析：RDT 采集链路](ref_rdt_pipeline.md)
+* [5. FPGA 逆解加速](stage1_5_fpga.md)
 

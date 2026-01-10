@@ -139,7 +139,7 @@ def main():
             T_goal = build_target_pose(*pos, *rpy)
             sol = robot.ikine_LM(
                 Tep=T_goal, 
-                q0=q0,
+                q0=q0,    
                 ilimit=50, 
                 tol=1e-3,
                 mask=[1,1,1,0,1,1],

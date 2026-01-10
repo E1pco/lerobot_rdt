@@ -1,14 +1,13 @@
-# 3. 相机与手眼标定（代码 + 流程）
+# 3. 相机与手眼标定
 
 理论推导：`theory_handeye.md`
 
 本章对应 3. 产出物中的“手眼标定、数据时序同步源代码 + 设计手册”的标定部分。
 
-
 手眼标定的核心是把“相机观测到的标定板位姿”（来自 PnP）与“机械臂末端位姿”（来自 FK/编码器）关联起来，求解固定的坐标变换：
 
-- Eye-in-Hand：相机装在末端，求 $T_{CG}$（相机 $\{C\}$ 到夹爪/末端 $\{G\}$）
-- Eye-to-Hand：相机固定在环境，求 $T_{CB}$（相机 $\{C\}$ 到基座 $\{B\}$）
+- Eye-in-Hand：相机装在末端，求 $T\_{CG}$（相机 $\{C\}$ 到夹爪/末端 $\{G\}$）
+- Eye-to-Hand：相机固定在环境，求 $T\_{CB}$（相机 $\{C\}$ 到基座 $\{B\}$）
 
 在采集多组姿态后，通过经典形式 $AX=XB$ 求解 $X$（详见：`theory_handeye.md`）。
 
@@ -19,16 +18,16 @@
 标定链路可以抽象为“内参 → PnP → 手眼（AX=XB）→ 评估 → 验证闭环”：
 
 1) **相机内参**：用棋盘格角点拟合得到 $K$ 与畸变；这是 PnP 与手眼的共同前提
-2) **PnP 位姿**：每次观测把棋盘格/目标在相机坐标系下的位姿估计出来（生成 $T_{TC}$ 或等价量）
-3) **手眼求解**：结合机器人末端位姿 $T_{GB}$ 与观测位姿，解 $AX=XB$ 得到固定外参（Eye-in-Hand 的 $T_{CG}$ 或 Eye-to-Hand 的 $T_{CB}$）
+2) **PnP 位姿**：每次观测把棋盘格/目标在相机坐标系下的位姿估计出来（生成 $T\_{TC}$ 或等价量）
+3) **手眼求解**：结合机器人末端位姿 $T\_{GB}$ 与观测位姿，解 $AX=XB$ 得到固定外参（Eye-in-Hand 的 $T\_{CG}$ 或 Eye-to-Hand 的 $T\_{CB}$）
 4) **一致性评估**：用多组采样对求解结果做平移/旋转误差统计
 5) **闭环验证**：把视觉检测结果通过手眼外参换算到机器人坐标系，驱动机械臂做“看得见→够得着”的动作
 
 ## 脚本作用
 
 - `vision/calibrate_camera.py`：相机内参标定（采集/计算/一键 all），输出 `camera_intrinsics.yaml` 与报告。
-- `vision/handeye_calibration_eyeinhand.py`：Eye-in-Hand 数据采集与解算，输出 `handeye_result.yaml`（含 $T_{CG}$）。
-- `vision/handeye_calibration_eyetohand.py`：Eye-to-Hand 数据采集与解算，输出 `handeye_result.yaml`（含 $T_{CB}$）。
+- `vision/handeye_calibration_eyeinhand.py`：Eye-in-Hand 数据采集与解算，输出 `handeye_result.yaml`（含 $T\_{CG}$）。
+- `vision/handeye_calibration_eyetohand.py`：Eye-to-Hand 数据采集与解算，输出 `handeye_result.yaml`（含 $T\_{CB}$）。
 - `vision/handeye_utils.py`：一致性评估与误差统计（用于把标定质量量化进报告）。
 - `vision/track_blue_circle_eyetohand.py`：闭环验证脚本（用于证明外参“可用且有效”）。
 
@@ -50,13 +49,13 @@
 
 - **`get_board_pose_in_camera(image, K, D)`**
   - **作用**：PnP 位姿估计。
-  - **细节**：检测棋盘格角点，利用已知的棋盘格尺寸和内参，调用 `cv2.solvePnP` 计算标定板相对于相机的位姿 $T_{target}^{cam}$。
+  - **细节**：检测棋盘格角点，利用已知的棋盘格尺寸和内参，调用 `cv2.solvePnP` 计算标定板相对于相机的位姿 $T\_{target}^{cam}$。
 - **`record_sample(robot_pose, image)`**
   - **作用**：采集数据对。
-  - **细节**：同步记录当前的机械臂末端位姿 $T_{end}^{base}$ 和相机图像（或计算出的 $T_{target}^{cam}$），存入列表用于后续解算。
+  - **细节**：同步记录当前的机械臂末端位姿 $T\_{end}^{base}$ 和相机图像（或计算出的 $T\_{target}^{cam}$），存入列表用于后续解算。
 - **`cv2.calibrateHandEye(...)`**
   - **作用**：求解手眼方程 $AX=XB$。
-  - **细节**：输入一系列的 $R_{gripper}^{base}, t_{gripper}^{base}$ 和 $R_{target}^{cam}, t_{target}^{cam}$，输出手眼变换矩阵（Eye-in-Hand 为 $T_{cam}^{gripper}$，Eye-to-Hand 为 $T_{cam}^{base}$）。常用算法为 `CALIB_HAND_EYE_TSAI` 或 `CALIB_HAND_EYE_PARK`。
+  - **细节**：输入一系列的 $R\_{gripper}^{base}, t\_{gripper}^{base}$ 和 $R\_{target}^{cam}, t\_{target}^{cam}$，输出手眼变换矩阵（Eye-in-Hand 为 $T\_{cam}^{gripper}$，Eye-to-Hand 为 $T\_{cam}^{base}$）。
 
 ### 验证与工具 (`handeye_utils.py` / `track_blue_circle.py`)
 
@@ -119,7 +118,7 @@ python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_
 
 - `camera_intrinsics.yaml`：相机内参矩阵 $K$ 与畸变系数
 - `camera_intrinsics_report.txt`：详细报告（含每张图的重投影误差）
-- `extrinsics.yaml` / `extrinsics.npy`：每张标定图对应的 $T_{target}^{cam}$（用于 PnP 精度诊断/复现）
+- `extrinsics.yaml` / `extrinsics.npy`：每张标定图对应的 $T\_{target}^{cam}$（用于 PnP 精度诊断/复现）
 - `undistorted_test.jpg`：去畸变效果对比用
 
 **关键检查点**：
@@ -135,7 +134,7 @@ python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_
 
 ### 2.1 Eye-in-Hand（相机在末端）
 
-**场景**：相机安装在机械臂末端，随机械臂运动。求解 $T_{CG}$。
+**场景**：相机安装在机械臂末端，随机械臂运动。求解 $T\_{CG}$。
 
 **脚本**：`vision/handeye_calibration_eyeinhand.py`
 
@@ -151,7 +150,7 @@ python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_
    *流程*：
 
    - 移动机械臂到不同姿态（保持标定板在视野内）。
-   - 脚本会自动记录：当前机械臂末端位姿 $T_{GB}$ + 当前相机拍摄的标定板位姿 $T_{TC}$（通过 PnP 解算）。
+   - 脚本会自动记录：当前机械臂末端位姿 $T\_{GB}$ + 当前相机拍摄的标定板位姿 $T\_{TC}$（通过 PnP 解算）。
    - 建议采集 10-15 组数据，覆盖不同的旋转角度。
 2. **解算**：
 
@@ -160,11 +159,11 @@ python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_
    python vision/handeye_calibration_eyeinhand.py --calibrate
    ```
 
-   *输出*：`handeye_result.yaml`，包含 $T_{CG}$ 矩阵。
+   *输出*：`handeye_result.yaml`，包含 $T\_{CG}$ 矩阵。
 
 ### 2.2 Eye-to-Hand（相机固定在环境）
 
-**场景**：相机固定不动，拍摄机械臂末端（末端夹持标定板）。求解 $T_{CB}$。
+**场景**：相机固定不动，拍摄机械臂末端（末端夹持标定板）。求解 $T\_{CB}$。
 
 **脚本**：`vision/handeye_calibration_eyetohand.py`
 
@@ -200,8 +199,8 @@ python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_
 
 本章的关键方法集中解决两件事：**把观测变成变换矩阵**、以及**评估这个矩阵是否可信**。
 
-- PnP 位姿估计：把棋盘格角点与内参 $K$ 结合，求每帧的 $T_{target}^{cam}$（实现位于 `vision/` 脚本内部，输出会写到 session/report 里）。
-- 手眼求解（AX=XB）：在采集到多组 $(A_i,B_i)$ 后求解固定外参 $X$，分别对应 Eye-in-Hand 的 $T_{CG}$ 与 Eye-to-Hand 的 $T_{CB}$。
+- PnP 位姿估计：把棋盘格角点与内参 $K$ 结合，求每帧的 $T\_{target}^{cam}$（实现位于 `vision/` 脚本内部，输出会写到 session/report 里）。
+- 手眼求解（AX=XB）：在采集到多组 $(A\_i,B\_i)$ 后求解固定外参 $X$，分别对应 Eye-in-Hand 的 $T\_{CG}$ 与 Eye-to-Hand 的 $T\_{CB}$。
 - 一致性评估：
   - Eye-in-Hand：`evaluate_eye_in_hand_consistency()`
   - Eye-to-Hand：`evaluate_eye_to_hand_consistency()`
@@ -211,7 +210,7 @@ python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_
 
 脚本：`vision/track_blue_circle_eyetohand.py`
 
-- 作用：检测蓝色圆 → PnP 求 $T_{target}^{cam}$ → 用手眼结果换算到基座系 → 驱动机械臂靠近目标。
+- 作用：检测蓝色圆 → PnP 求 $T\_{target}^{cam}$ → 用手眼结果换算到基座系 → 驱动机械臂靠近目标。
 - 运行：
 
 ```bash

@@ -43,7 +43,7 @@
 
 - **图像堆叠 (Image Stacking)**
   - **作用**：构造时序输入。
-  - **细节**：在写入 HDF5 时，对于时刻 $t$，不仅写入当前帧 $I_t$，还可能根据配置（`T_img`）写入历史帧 $I_{t-1}$。若 $t=0$，则复制 $I_0$ 进行 Padding。这在 `RDTHDF5EpisodeWriter` 中处理。
+  - **细节**：在写入 HDF5 时，对于时刻 $t$，不仅写入当前帧 $I\_t$，还可能根据配置（`T_img`）写入历史帧 $I\_{t-1}$。若 $t=0$，则复制 $I\_0$ 进行 Padding。这在 `RDTHDF5EpisodeWriter` 中处理。
 - **`timestamps_unix_s` 字段**
   - **作用**：数据对齐的验证依据。
   - **细节**：在 HDF5 中作为一个独立 Dataset 存储。在多机采集或多模态融合场景下，可以通过比较不同流的 timestamp 来评估同步偏差。

@@ -100,8 +100,8 @@ def main():
         "shoulder_pan": -1,
         "shoulder_lift": +1,
         "elbow_flex":   +1,
-        "wrist_flex":   -1,
-        "wrist_roll":   +1,
+        "wrist_flex":   +1,
+        "wrist_roll":   -1,
     }
     gear_ratio = {
         "shoulder_pan": 1.0,
