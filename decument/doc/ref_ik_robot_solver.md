@@ -94,7 +94,3 @@
 
 - `create_so101_5dof()`：5DOF ETS + `gear_sign/gear_ratio/qlim`
 - `create_so101_5dof_gripper()`：在 5DOF 末端后额外增加固定平移段（工具长度）
-
-工程建议：
-
-- 控制脚本优先使用 `create_so101_5dof_gripper()`（末端位置更贴近实际夹爪）。

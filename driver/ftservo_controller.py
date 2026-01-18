@@ -3,11 +3,14 @@ import time
 import os
 import sys
 import numpy as np
-# 添加父目录到路径以支持相对导入
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-# 相对导入
-from .ftservo_driver import FTServo
+# 允许作为脚本或包入口运行
+_HERE = os.path.dirname(__file__)
+sys.path.insert(0, _HERE)  # 确保同目录模块可被直接导入
+try:
+    from .ftservo_driver import FTServo  # 包内相对导入
+except ImportError:
+    from ftservo_driver import FTServo  # 脚本直接运行时的绝对导入
 class ServoController:
     def __init__(self, port="/dev/ttyACM0", baudrate=1_000_000, config_path="./servo_config.json"):
         self.servo = FTServo(port, baudrate)
@@ -15,22 +18,32 @@ class ServoController:
             self.config = json.load(f)
 
         self.id_map = {v["id"]: name for name, v in self.config.items()}
-        # home_pose 是舵机活动范围的中点：(range_max + range_min) / 2
-        # 这是舵机的零位参考点，用于 IK 计算：q = gear_sign * (steps - home_pose) / counts_per_rad
-        # homing_offset 仅用于机械臂的校准和零位定义，不影响 IK 计算
         self.home_pose = {}
         for name, cfg in self.config.items():
-            if name == "gripper":
-                home_position = cfg.get("range_min", 0)
-            else:
-                home_position = (cfg["range_max"] + cfg["range_min"]) // 2
-            
-            self.home_pose[name] = home_position
+            self.home_pose[name] = self._compute_home(name, cfg)
 
         print("✅ 已加载舵机配置:")
+        
         for name, cfg in self.config.items():
             print(f"  {cfg['id']}: {name} (home_pose={self.home_pose[name]}, range={cfg['range_min']}~{cfg['range_max']})")
+    def _compute_home(self, name, cfg):
+        """
+        计算中位，兼容跨 0° 的角度范围而不破坏原始电子限位。
+        - 对包络范围做 4096 周期的取模，并在该弧长上取中点。
+        - 钳制逻辑保持原始 range_min/range_max，不修改限位配置。
+        """
+        if name == "gripper":
+            return cfg.get("range_min", 0)
 
+        rng_min = cfg["range_min"]
+        rng_max = cfg["range_max"]
+
+        span = (rng_max - rng_min) % 4096  # 弧长，支持跨 0 的区间
+        if span == 0:
+            return rng_min % 4096  # 退化情况，返回最小值模 4096
+
+        home = (rng_min % 4096 + span // 2) % 4096
+        return home
     # -------------------------
     # 基础功能
     # -------------------------
@@ -38,11 +51,25 @@ class ServoController:
         return (~sum(data)) & 0xFF
 
     def limit_position(self, name, target_pos):
-        """限位保护"""
+        """限位保护（兼容跨 0° 的区间，允许非标准化输入）"""
         cfg = self.config[name]
-        minv, maxv = cfg["range_min"], cfg["range_max"]
-        limited = max(min(target_pos, maxv), minv)
-        return limited
+        rng_min = cfg["range_min"] % 4096
+        rng_max = cfg["range_max"] % 4096
+        span = (rng_max - rng_min) % 4096 or 4096
+
+        normalized_target = target_pos % 4096
+        offset = (normalized_target - rng_min) % 4096
+
+        if offset <= span:
+            # 目标在有效范围内，直接返回原始输入（保留圈数信息）
+            return target_pos
+
+        # 目标超出区间，选取最近的端点
+        dist_to_min = (4096 - offset) % 4096
+        dist_to_max = offset - span
+        
+        # 返回最近的标准化端点（注：此时丢失了圈数信息，但限位保护优先）
+        return rng_min if dist_to_min < dist_to_max else rng_max
 
     def get_home_position(self, name):
         return self.home_pose[name]
@@ -308,7 +335,8 @@ class ServoController:
     def close(self):
         self.servo.close()
 if __name__ == "__main__":
-    controller = ServoController("/dev/right_arm", 1000000, "./right_arm.json")
+    controller = ServoController("/dev/right_leader", 1000000, "./right_arm_leader.json")
+    print(controller.home_pose)
     while True:
-        controller.monitor_positions([1, 2, 3, 4, 5, 6])
+        controller.move_all_home()
 

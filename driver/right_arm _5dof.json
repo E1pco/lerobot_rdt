@@ -27,23 +27,15 @@
         "range_min": 876,
         "range_max": 3223
     },
-    "wrist_yaw": {
+    "wrist_roll": {
         "id": 5,
         "drive_mode": 0,
-        "homing_offset": 0,
-        "range_min": 2048,
-        "range_max": 3937
-    },
-    "wrist_roll": {
-        "id": 6,
-        "drive_mode": 0,
         "homing_offset": -788,
-        "range_min": 2384,
-        "range_max": 2102
+        "range_min": 94,
+        "range_max": 3923
     },
-    
     "gripper": {
-        "id": 7,
+        "id": 6,
         "drive_mode": 0,
         "homing_offset": 1256,
         "range_min": 2045,

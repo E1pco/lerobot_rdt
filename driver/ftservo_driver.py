@@ -148,7 +148,7 @@ class FTServo:
 # 主函数测试：监控1~6舵机位置
 # ------------------------------
 if __name__ == "__main__":
-    servo = FTServo("/dev/right_arm", 1000000)
+    servo = FTServo("/dev/left_arm", 1000000)
 
     print("==== 测试 PING ====")
     for i in range(1, 7):
@@ -158,15 +158,32 @@ if __name__ == "__main__":
         else:
             print(f"舵机{i} 无响应")
 
-    print("\n==== 同步读取 1-6 号舵机位置 ====")
+    print("\n==== 同步读取 1-7 号舵机位置 ====")
+    print("提示: 位置范围 0-4095，跨0时从小值变大值（如 10→0→4095→4080）")
     try:
+        prev_pos = {}
         while True:
-            responses = servo.sync_read(0x38, 2, [1, 2, 3, 4, 5, 6])
+            responses = servo.sync_read(0x38, 2, [1, 2, 3, 4, 5, 6, 7])
             if responses:
                 line = []
-                for sid, params in responses.items():
-                    pos = params[0] + (params[1] << 8)
-                    line.append(f"{sid}:{pos:4d}")
+                for sid, params in sorted(responses.items()):
+                    # 解析为无符号16位后取12位有效位，防止超出4095
+                    pos = ((params[0] & 0xFF) | ((params[1] & 0xFF) << 8)) & 0x0FFF
+                    
+                    # 显示变化方向
+                    if sid in prev_pos:
+                        diff = pos - prev_pos[sid]
+                        # 处理跨0的情况：如果差值绝对值大于2048，说明跨0了
+                        if diff > 2048:
+                            diff -= 4096  # 实际是负向跨0
+                        elif diff < -2048:
+                            diff += 4096  # 实际是正向跨0
+                        arrow = "↑" if diff > 0 else ("↓" if diff < 0 else " ")
+                    else:
+                        arrow = " "
+                    prev_pos[sid] = pos
+                    
+                    line.append(f"{sid}:{pos:4d}{arrow}")
                 print(" ".join(line))
             else:
                 print("无同步读响应")
