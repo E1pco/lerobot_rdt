@@ -9,7 +9,7 @@
         --left-leader-config ./driver/left_arm_leader.json --left-follower-config ./driver/left_arm.json \
         --right-leader-port /dev/right_leader --right-follower-port /dev/right_arm \
         --right-leader-config ./driver/right_arm_leader.json --right-follower-config ./driver/right_arm.json \
-        --cam-exterior 4 --cam-right-wrist 2 --cam-left-wrist 0 \
+        --cam-exterior 2 --cam-right-wrist 4 --cam-left-wrist 0 \
         --cam-width 640 --cam-height 480 --cam-backend v4l2 --cam-fourcc MJPG --cam-buffersize 1 \
         --save-format raw --out-dir ./rdt_raw \
         --preview --preview-timg 2
