@@ -38,8 +38,8 @@
         "id": 6,
         "drive_mode": 0,
         "homing_offset": -788,
-        "range_min": 2384,
-        "range_max": 2102
+        "range_min": 161,
+        "range_max": 3985
     },
     
     "gripper": {

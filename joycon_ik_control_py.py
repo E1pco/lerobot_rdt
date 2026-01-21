@@ -12,7 +12,7 @@ from joyconrobotics import JoyconRobotics
 # Import IK solver and servo controller
 
 from driver.ftservo_controller import ServoController
-from ik.robot import create_so101_5dof_gripper
+from ik.robot import create_so101_6dof_gripper
 
 
 class _ButtonHelper:
@@ -100,7 +100,7 @@ class JoyConIKController:
         
         # Initialize robot model
         print(f"\n[2/5] Building robot kinematic model...")
-        self.robot = create_so101_5dof_gripper()
+        self.robot = create_so101_6dof_gripper()
         print(f"✓ Robot model created (5 DOF)")
         
         # 从 robot 对象获取关节配置
@@ -311,7 +311,7 @@ class JoyConIKController:
                     ilimit=50,
                     slimit=3,
                     tol=1e-3,
-                    mask=[1, 1, 1, 0.8, 0.8, 0],
+                    mask=[1, 1, 1, 0.8, 0.8, 0.8],
                     k=0.1,
                     method="chan"
                 )

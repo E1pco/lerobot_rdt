@@ -118,23 +118,14 @@ def run(args: argparse.Namespace) -> None:
                 progress = progress_from_position(unwrapped_leader[name], src_cfg)
                 mapped_pos_0_4096 = position_from_progress(progress, dst_cfg)
 
-                # --- 3. 从臂最短路径逻辑 (Multi-turn Support) ---
-                # 读取从臂当前位置并展开（追踪虚拟圈数）
                 current_raw = follower_pos_raw[name]
                 if name not in unwrapped_follower_current:
                     unwrapped_follower_current[name] = current_raw
                 else:
-                    # 计算从臂自上一帧的增量（用于更新 unwrapped tracking）
-                    # 注意：我们假设从臂实际移动与指令一致，或者我们追踪其反馈
-                    # 这里使用反馈位置来更新追踪器
-                    # 问题：如果从臂还没动，delta是0。如果从臂跳变（例如手动移动），delta正确。
-                    # 但如果从臂跨0，delta计算处理跨0。
                     last_raw = unwrapped_follower_current[name] % 4096
                     delta_feedback = shortest_delta(current_raw, last_raw)
                     unwrapped_follower_current[name] += delta_feedback
 
-                # 目标是在 mapped_pos_0_4096 对应的"最近"位置
-                # 以当前的 unwrapped_follower_current 为基准
                 current_unwrapped = unwrapped_follower_current[name]
                 
                 # 计算从当前虚拟位置到映射目标的最近增量

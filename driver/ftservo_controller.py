@@ -68,7 +68,7 @@ class ServoController:
         dist_to_min = (4096 - offset) % 4096
         dist_to_max = offset - span
         
-        # 返回最近的标准化端点（注：此时丢失了圈数信息，但限位保护优先）
+        # 返回最近的标准化端点
         return rng_min if dist_to_min < dist_to_max else rng_max
 
     def get_home_position(self, name):
@@ -335,7 +335,7 @@ class ServoController:
     def close(self):
         self.servo.close()
 if __name__ == "__main__":
-    controller = ServoController("/dev/right_leader", 1000000, "./right_arm_leader.json")
+    controller = ServoController("/dev/left_arm", 1000000, "./left_arm.json")
     print(controller.home_pose)
     while True:
         controller.move_all_home()

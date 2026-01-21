@@ -9,6 +9,7 @@
 	* [函数解析：ik](ref_ik_robot_solver.md)
 * [2. 人机交互（键盘/JoyCon）](stage1_2_hci_teleop.md)
 	* [2. 控制映射速查](stage1_2_controls.md)
+	* [3. 主从臂遥操](stage1_2_3_leader_follower.md)
 * [3. 数据集构建（RDT）](stage1_3_dataset.md)
 	* [理论：RDT 数据格式](theory_rdt_format.md)
 	* [理论：手眼标定](theory_handeye.md)
