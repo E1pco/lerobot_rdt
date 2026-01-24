@@ -23,4 +23,18 @@ compile_commands.json
 .ninja_*
 
 # Data / recordings
+rdt_raw/
 
+# Large Datasets
+dataset/
+*.hdf5
+
+# 3D Parts
+*.part
+
+# Large Assets
+RoboticsDiffusionTransformer/assets/*.png
+
+# Cache
+__pycache__/
+**/*.pyc
