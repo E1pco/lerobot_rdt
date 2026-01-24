@@ -3,6 +3,13 @@
 
 """Build an RDT fine-tuning HDF5 episode from a raw (CSV + JPG) episode folder.
 
+生成与 RDT 官方 hdf5_vla_dataset.py 兼容的 HDF5 格式：
+  - observations/qpos: (T, 128) 本体感知状态
+  - observations/images/cam_high: 压缩 JPEG 图像列表
+  - observations/images/cam_right_wrist: 压缩 JPEG 图像列表  
+  - observations/images/cam_left_wrist: 压缩 JPEG 图像列表
+  - action: (T, 128) 动作
+
 Raw episode layout (produced by `collect_rdt_dataset_teleop.py --save-format raw`):
   episode_XXXXXX/
     meta.json
@@ -12,11 +19,8 @@ Raw episode layout (produced by `collect_rdt_dataset_teleop.py --save-format raw
     action_mask.csv
     timestamps_unix_s.csv
     control_frequency_hz.csv
-    ik_success.csv
     images/step_000000_timg0_exterior.jpg
     ...
-
-Outputs a single `episode_XXXXXX.hdf5` that matches `RDTHDF5EpisodeWriter` format.
 """
 
 from __future__ import annotations
@@ -24,32 +28,28 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict
 
-import h5py  # noqa: F401  (ensures dependency exists)
+import h5py
 import numpy as np
 
 try:
-    import cv2  # type: ignore
-except Exception as e:  # pragma: no cover
-    raise SystemExit(f"OpenCV (cv2) is required to read JPG images: {e}")
+    import cv2
+except Exception as e:
+    raise SystemExit(f"OpenCV (cv2) is required: {e}")
 
-# Ensure repo-root imports work when running this script directly.
 REPO_ROOT = Path(__file__).resolve().parents[1]
-import sys
 
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
-
-from rdt_hdf5 import RDTHDF5EpisodeWriter, UnifiedVector
+# ============== 配置区域 ==============
+DATASET_NAME = "lerobot"
+INSTRUCTION = "First, use your right hand to place the green cuboid into the black box, then use your left hand to take it out of the brown box."
+# =====================================
 
 
 def _read_csv_matrix(path: Path, *, dtype: np.dtype, expected_cols: int) -> np.ndarray:
     lines = path.read_text(encoding="utf-8").splitlines()
     if not lines:
         return np.zeros((0, expected_cols), dtype=dtype)
-
-    # Expect first row header.
     data = np.loadtxt(path, delimiter=",", skiprows=1, dtype=dtype)
     if data.ndim == 1:
         data = data.reshape(1, -1)
@@ -62,7 +62,6 @@ def _read_csv_vector(path: Path, *, dtype: np.dtype) -> np.ndarray:
     lines = path.read_text(encoding="utf-8").splitlines()
     if not lines:
         return np.zeros((0,), dtype=dtype)
-
     data = np.loadtxt(path, delimiter=",", skiprows=1, dtype=dtype)
     if data.ndim == 0:
         data = data.reshape(1)
@@ -76,102 +75,149 @@ def _load_meta(ep_dir: Path) -> Dict:
     return json.loads(meta_path.read_text(encoding="utf-8"))
 
 
-def _read_rgb_image(path: Path, *, image_size: int) -> np.ndarray:
-    bgr = cv2.imread(str(path), cv2.IMREAD_COLOR)
-    if bgr is None:
+def _read_and_encode_image(path: Path) -> bytes:
+    """读取图像并编码为 JPEG 字节"""
+    img = cv2.imread(str(path), cv2.IMREAD_COLOR)
+    if img is None:
         raise FileNotFoundError(f"failed to read image: {path}")
-    if bgr.shape[0] != image_size or bgr.shape[1] != image_size or bgr.shape[2] != 3:
-        raise ValueError(f"{path.name}: expected {image_size}x{image_size}x3, got {bgr.shape}")
-    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-    return rgb.astype(np.uint8)
+    _, encoded = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, 95])
+    return encoded.tobytes()
 
 
-def _build_images(ep_dir: Path, *, T: int, timg: int, ncam: int, image_size: int) -> np.ndarray:
+def _build_episode_hdf5(ep_dir: Path, out_path: Path) -> None:
+    """构建与 RDT hdf5_vla_dataset.py 兼容的 HDF5 文件"""
+    meta = _load_meta(ep_dir)
+
+    timg = int(meta.get("timg", 2))
+
+    # 读取 CSV 数据
+    proprio = _read_csv_matrix(ep_dir / "proprio.csv", dtype=np.float32, expected_cols=128)
+    action = _read_csv_matrix(ep_dir / "action.csv", dtype=np.float32, expected_cols=128)
+
+    T = int(proprio.shape[0])
+    
+    # 相机视图名称映射
     views = ["exterior", "right_wrist", "left_wrist"]
-    if ncam != 3:
-        raise ValueError("This builder assumes ncam=3")
+    cam_keys = ["cam_high", "cam_right_wrist", "cam_left_wrist"]
+    
+    out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    images = np.zeros((T, timg, ncam, image_size, image_size, 3), dtype=np.uint8)
-    img_dir = ep_dir / "images"
-    for t in range(T):
-        for ti in range(timg):
-            for ci, view in enumerate(views):
-                p = img_dir / f"step_{t:06d}_timg{ti}_{view}.jpg"
-                images[t, ti, ci] = _read_rgb_image(p, image_size=image_size)
-    return images
+    with h5py.File(out_path, 'w') as f:
+        # 创建 observations 组
+        obs = f.create_group('observations')
+        
+        # qpos: 本体感知状态 (T, 128) - RDT 示例中用 qpos 作为字段名
+        obs.create_dataset('qpos', data=proprio, dtype=np.float32)
+        
+        # 创建 images 组
+        images_grp = obs.create_group('images')
+        
+        # 为每个相机创建数据集 (存储压缩 JPEG 字节)
+        img_dir = ep_dir / "images"
+        
+        for cam_idx, (view, cam_key) in enumerate(zip(views, cam_keys)):
+            # 使用可变长度字节数组存储压缩图像
+            dt = h5py.special_dtype(vlen=np.uint8)
+            cam_ds = images_grp.create_dataset(cam_key, shape=(T,), dtype=dt)
+            
+            for t in range(T):
+                # 使用最新的时间图像 (timg-1)
+                img_path = img_dir / f"step_{t:06d}_timg{timg-1}_{view}.jpg"
+                if img_path.exists():
+                    jpg_bytes = _read_and_encode_image(img_path)
+                    cam_ds[t] = np.frombuffer(jpg_bytes, dtype=np.uint8)
+                else:
+                    # 如果图像不存在，尝试 timg0
+                    img_path = img_dir / f"step_{t:06d}_timg0_{view}.jpg"
+                    if img_path.exists():
+                        jpg_bytes = _read_and_encode_image(img_path)
+                        cam_ds[t] = np.frombuffer(jpg_bytes, dtype=np.uint8)
+                    else:
+                        raise FileNotFoundError(f"Image not found: {img_path}")
+        
+        # action: 动作 (T, 128) - 直接放在根级别
+        f.create_dataset('action', data=action, dtype=np.float32)
+    
+    # 在同目录下创建指令 JSON 文件
+    instruction_json = {
+        "instruction": INSTRUCTION,
+        "simplified_instruction": INSTRUCTION,
+        "expanded_instruction": [INSTRUCTION]
+    }
+    instruction_path = out_path.parent / "expanded_instruction_gpt-4-turbo.json"
+    if not instruction_path.exists():
+        instruction_path.write_text(json.dumps(instruction_json, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"Created instruction file: {instruction_path}")
+
+
+def _is_episode_dir(path: Path) -> bool:
+    return (path / "meta.json").exists()
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    ap.add_argument("raw_episode_dir", type=Path, help="episode_XXXXXX raw directory")
-    ap.add_argument("--out", type=Path, default=None, help="output .hdf5 path (default: sibling episode_XXXXXX.hdf5)")
+    ap.add_argument(
+        "raw_path",
+        type=Path,
+        nargs="?",
+        default=REPO_ROOT / "rdt_raw",
+        help="episode_XXXXXX raw directory OR a root containing episode_XXXXXX subfolders",
+    )
+    ap.add_argument(
+        "--out",
+        type=Path,
+        default=None,
+        help="output .hdf5 path (single episode only; default: dataset/episode_XXXXXX.hdf5)",
+    )
+    ap.add_argument(
+        "--out-dir",
+        type=Path,
+        default=REPO_ROOT / "RoboticsDiffusionTransformer" / "data" / "datasets" / DATASET_NAME,
+        help="output directory for batch conversion",
+    )
     args = ap.parse_args()
 
-    ep_dir = args.raw_episode_dir
-    if not ep_dir.exists() or not ep_dir.is_dir():
-        print(f"Not a directory: {ep_dir}")
+    raw_path = args.raw_path
+    if not raw_path.exists() or not raw_path.is_dir():
+        print(f"Not a directory: {raw_path}")
         return 2
 
-    meta = _load_meta(ep_dir)
+    if _is_episode_dir(raw_path):
+        ep_dir = raw_path
+        out_path = args.out if args.out is not None else (args.out_dir / f"{ep_dir.name}.hdf5")
+        _build_episode_hdf5(ep_dir, out_path)
+        print(f"Wrote: {out_path}")
+        return 0
 
-    timg = int(meta.get("timg", 2))
-    ncam = int(meta.get("ncam", 3))
-    image_size = int(meta.get("image_size", 384))
-    ta = int(meta.get("ta", 64))
-    instruction = str(meta.get("instruction", ""))
-    control_hz = float(meta.get("control_hz", 25.0))
+    episode_dirs = sorted(p for p in raw_path.iterdir() if p.is_dir() and p.name.startswith("episode_"))
+    if not episode_dirs:
+        print(f"No episode_XXXXXX folders found in: {raw_path}")
+        return 3
 
-    proprio = _read_csv_matrix(ep_dir / "proprio.csv", dtype=np.float32, expected_cols=128)
-    proprio_mask = _read_csv_matrix(ep_dir / "proprio_mask.csv", dtype=np.uint8, expected_cols=128)
-    action = _read_csv_matrix(ep_dir / "action.csv", dtype=np.float32, expected_cols=128)
-    action_mask = _read_csv_matrix(ep_dir / "action_mask.csv", dtype=np.uint8, expected_cols=128)
+    out_dir = args.out_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
 
-    ts = _read_csv_vector(ep_dir / "timestamps_unix_s.csv", dtype=np.float64)
-    hz = _read_csv_vector(ep_dir / "control_frequency_hz.csv", dtype=np.float32)
-    ik = _read_csv_vector(ep_dir / "ik_success.csv", dtype=np.uint8)
+    converted = 0
+    for ep_dir in episode_dirs:
+        if not _is_episode_dir(ep_dir):
+            continue
+        out_path = out_dir / f"{ep_dir.name}.hdf5"
+        _build_episode_hdf5(ep_dir, out_path)
+        print(f"Wrote: {out_path}")
+        converted += 1
 
-    T = int(proprio.shape[0])
-    for name, arr in [
-        ("proprio_mask", proprio_mask),
-        ("action", action),
-        ("action_mask", action_mask),
-        ("timestamps", ts),
-        ("control_frequency_hz", hz),
-        ("ik_success", ik),
-    ]:
-        if int(arr.shape[0]) != T:
-            raise ValueError(f"length mismatch: T={T} but {name} has {arr.shape[0]}")
+    if converted == 0:
+        print(f"No valid episodes with meta.json found in: {raw_path}")
+        return 4
 
-    images = _build_images(ep_dir, T=T, timg=timg, ncam=ncam, image_size=image_size)
+    print(f"\n转换完成！共转换 {converted} 个 episodes")
+    print(f"输出目录: {out_dir}")
+    print(f"\n接下来需要修改 RDT 配置文件:")
+    print(f"  1. configs/finetune_datasets.json -> [\"{DATASET_NAME}\"]")
+    print(f"  2. configs/finetune_sample_weights.json -> {{\"{DATASET_NAME}\": 1.0}}")
+    print(f"  3. configs/dataset_control_freq.json -> 添加 \"{DATASET_NAME}\": 30.0")
+    print(f"  4. data/hdf5_vla_dataset.py -> 修改 HDF5_DIR 和 DATASET_NAME")
 
-    if args.out is None:
-        out_path = ep_dir.with_suffix(".hdf5")
-    else:
-        out_path = args.out
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-
-    with RDTHDF5EpisodeWriter(
-        out_path,
-        timg=timg,
-        ncam=ncam,
-        image_size=image_size,
-        ta=ta,
-        instruction=instruction,
-        control_hz=control_hz,
-    ) as w:
-        for t in range(T):
-            p = UnifiedVector(value=np.asarray(proprio[t], dtype=np.float32), mask=np.asarray(proprio_mask[t], dtype=np.uint8))
-            a = UnifiedVector(value=np.asarray(action[t], dtype=np.float32), mask=np.asarray(action_mask[t], dtype=np.uint8))
-            w.append_step(
-                images_timg_ncam=images[t],
-                proprio=p,
-                action=a,
-                timestamp_unix_s=float(ts[t]),
-                control_hz=float(hz[t]),
-                ik_success=bool(int(ik[t]) != 0),
-            )
-
-    print(f"Wrote: {out_path}")
     return 0
 
 
