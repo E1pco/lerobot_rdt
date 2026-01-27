@@ -1,0 +1,719 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>3. 数据集构建（RDT） · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="theory_rdt_format.html" />
+    
+    
+    <link rel="prev" href="stage1_2_3_leader_follower.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >3. 数据集构建（RDT）</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="3-&#x57FA;&#x4E8E;&#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x7684;&#x673A;&#x68B0;&#x81C2;&#x6570;&#x636E;&#x96C6;&#x6784;&#x5EFA;&#xFF08;rdt&#xFF09;">3. &#x57FA;&#x4E8E;&#x4EBA;&#x673A;&#x4EA4;&#x4E92;&#x7684;&#x673A;&#x68B0;&#x81C2;&#x6570;&#x636E;&#x96C6;&#x6784;&#x5EFA;&#xFF08;RDT&#xFF09;</h1>
+<p>&#x5FEB;&#x901F;&#x8DF3;&#x8F6C;&#xFF1A;</p>
+<ul>
+<li>&#x76F8;&#x673A;&#x4E0E;&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF1A;<code>stage1_3_calibration.md</code></li>
+<li>&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x8BF4;&#x660E;&#xFF1A;<code>stage1_3_timesync.md</code></li>
+<li>&#x7406;&#x8BBA;&#xFF1A;&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF1A;<code>theory_handeye.md</code></li>
+<li>&#x7406;&#x8BBA;&#xFF1A;RDT &#x6570;&#x636E;&#x683C;&#x5F0F;&#xFF1A;<code>theory_rdt_format.md</code></li>
+<li>&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;RDT &#x91C7;&#x96C6;&#x94FE;&#x8DEF;&#xFF1A;<code>ref_rdt_pipeline.md</code></li>
+<li>&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x624B;&#x773C;&#x8BC4;&#x4F30;&#xFF1A;<code>ref_vision_handeye.md</code></li>
+</ul>
+<p>&#x5BF9;&#x5E94; <code>decument/task.txt</code> &#x7684; 3. &#x4EA7;&#x51FA;&#x7269;&#xFF08;&#x672C;&#x9875;&#x805A;&#x7126;&#x201C;&#x91C7;&#x96C6;&#x4E0E;&#x683C;&#x5F0F;&#x201D;&#xFF09;&#xFF1A;</p>
+<ul>
+<li>&#x6570;&#x636E;&#x96C6;&#xFF1A;<code>RDT/collect_rdt_dataset_teleop.py</code> &#x91C7;&#x96C6;&#x8F93;&#x51FA;&#xFF08;raw/HDF5&#xFF09;</li>
+<li>&#x91C7;&#x96C6;&#x6F14;&#x793A;&#x89C6;&#x9891;&#xFF1A;&#x6309;&#x672C;&#x6587;&#x201C;&#x91C7;&#x96C6;&#x6D41;&#x7A0B;&#x201D;&#x5F55;&#x5236;</li>
+<li>&#x6570;&#x636E;&#x683C;&#x5F0F;&#x8BF4;&#x660E;&#xFF1A;&#x672C;&#x9875; + <code>theory_rdt_format.md</code></li>
+</ul>
+<p>&#x6807;&#x5B9A;&#x4E0E;&#x540C;&#x6B65;&#x5C5E;&#x4E8E; 3. &#x7684;&#x5FC5;&#x8981;&#x524D;&#x7F6E;&#x6761;&#x4EF6;&#xFF0C;&#x4F46;&#x5176;&#x8BE6;&#x7EC6;&#x6D41;&#x7A0B;&#x72EC;&#x7ACB;&#x6210;&#x6587;&#xFF1A;</p>
+<ul>
+<li>&#x76F8;&#x673A;/&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF1A;<code>stage1_3_calibration.md</code></li>
+<li>&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x8BF4;&#x660E;&#xFF1A;<code>stage1_3_timesync.md</code></li>
+</ul>
+<h3 id="1-&#x7406;&#x8BBA;&#x80CC;&#x666F;">1. &#x7406;&#x8BBA;&#x80CC;&#x666F;</h3>
+<p>RDT fine-tuning &#x671F;&#x671B;&#x8F93;&#x5165;&#x662F;&#x56FA;&#x5B9A;&#x7EF4;&#x5EA6;&#x7684;&#x5411;&#x91CF;&#x4E0E;&#x56FE;&#x50CF;&#x5E8F;&#x5217;&#xFF0C;&#x56E0;&#x6B64;&#x672C;&#x9879;&#x76EE;&#x628A;&#x6240;&#x6709; proprio/action &#x7EDF;&#x4E00;&#x6620;&#x5C04;&#x5230; <code>float32[128]</code>&#xFF0C;&#x5E76;&#x7528; <code>uint8[128] mask</code> &#x6807;&#x6CE8;&#x201C;&#x54EA;&#x4E9B;&#x7EF4;&#x5EA6;&#x771F;&#x5B9E;&#x6709;&#x6548;&#x201D;&#x3002;</p>
+<p>&#x540C;&#x65F6;&#xFF0C;&#x4E3A;&#x4E86;&#x8BAD;&#x7EC3;&#x65F6;&#x7684;&#x672A;&#x6765;&#x52A8;&#x4F5C;&#x76D1;&#x7763;&#xFF0C;&#x6570;&#x636E;&#x4E2D;&#x8FD8;&#x4F1A;&#x6784;&#x9020; <code>action_chunk</code>&#xFF08;&#x9ED8;&#x8BA4; $T_a=64$&#xFF09;&#xFF0C;&#x5373;&#x4ECE;&#x5F53;&#x524D;&#x65F6;&#x523B;&#x8D77;&#x672A;&#x6765;&#x82E5;&#x5E72;&#x6B65;&#x7684;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;&#xFF08;&#x8D8A;&#x754C;&#x90E8;&#x5206;&#x505A; padding&#xFF0C;&#x5E76;&#x628A; mask &#x7F6E; 0&#xFF09;&#x3002;</p>
+<p>&#x7406;&#x8BBA;&#x4E0E;&#x5F20;&#x91CF;&#x5F62;&#x72B6;&#x7684;&#x5B8C;&#x6574;&#x8BF4;&#x660E;&#x89C1;&#xFF1A;<code>theory_rdt_format.md</code>&#x3002;</p>
+<h3 id="2-&#x672C;&#x7AE0;&#x76EE;&#x6807;">2. &#x672C;&#x7AE0;&#x76EE;&#x6807;</h3>
+<p>&#x4ECE;&#x201C;&#x53EF;&#x63A7;&#x7684;&#x9065;&#x64CD;&#x4F5C;&#x201D;&#x51FA;&#x53D1;&#xFF0C;&#x91C7;&#x96C6;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A; episode&#xFF0C;&#x5E76;&#x628A; raw &#x6570;&#x636E;&#x7A33;&#x5B9A;&#x8F6C;&#x6362;&#x4E3A;&#x7B26;&#x5408; RDT fine-tuning &#x7EA6;&#x675F;&#x7684; HDF5&#x3002;</p>
+<h3 id="3-&#x6570;&#x636E;&#x683C;&#x5F0F;">3. &#x6570;&#x636E;&#x683C;&#x5F0F;</h3>
+<ul>
+<li>raw&#xFF1A;&#x843D;&#x76D8;&#x76EE;&#x5F55;&#x5B58;&#x5728;&#xFF0C;&#x56FE;&#x7247;&#x4E0E; CSV &#x6570;&#x91CF;&#x5BF9;&#x5F97;&#x4E0A;&#xFF08;&#x8089;&#x773C;&#x53EF;&#x68C0;&#x67E5;&#xFF09;</li>
+<li>HDF5&#xFF1A;&#x80FD;&#x88AB; <code>RDT/inspect_rdt_hdf5.py</code> &#x6B63;&#x786E;&#x8BFB;&#x53D6;&#xFF0C;&#x5F20;&#x91CF; shape/&#x5B57;&#x6BB5;&#x5408;&#x7406;&#xFF0C;&#x5E76;&#x80FD;&#x62BD;&#x6837;&#x53EF;&#x89C6;&#x5316;</li>
+</ul>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>&#x672C;&#x7AE0;&#x6570;&#x636E;&#x7BA1;&#x7EBF;&#x53EF;&#x62BD;&#x8C61;&#x4E3A;&#x201C;&#x91C7;&#x96C6;&#xFF08;raw&#xFF09;&#x2192; &#x7ED3;&#x6784;&#x5316;&#xFF08;HDF5&#xFF09;&#x2192; &#x6821;&#x9A8C;&#xFF08;inspect&#xFF09;&#x201D;&#xFF0C;&#x5E76;&#x901A;&#x8FC7; <code>unified 128 + mask + action_chunk</code> &#x4FDD;&#x8BC1;&#x5F20;&#x91CF;&#x7EF4;&#x5EA6;&#x4E00;&#x81F4;&#x4E14;&#x53EF;&#x89E3;&#x91CA;&#xFF1A;</p>
+<p>1) <strong>&#x91C7;&#x96C6;&#x5C42;</strong>&#xFF1A;&#x4EE5;&#x56FA;&#x5B9A;&#x9891;&#x7387;&#x91C7;&#x6837;&#x673A;&#x5668;&#x4EBA;&#x72B6;&#x6001;&#xFF08;proprio&#xFF09;&#x4E0E;&#x76F8;&#x673A;&#x56FE;&#x50CF;&#xFF08;images&#xFF09;&#xFF0C;&#x5E76;&#x8BB0;&#x5F55;&#x52A8;&#x4F5C;&#xFF08;actions&#xFF09;&#x4E0E;&#x65F6;&#x95F4;&#x6233;
+2) <strong>&#x7EDF;&#x4E00;&#x8868;&#x793A;&#x5C42;</strong>&#xFF1A;&#x628A; proprio/action &#x6620;&#x5C04;&#x5230; <code>float32[128]</code>&#xFF0C;&#x5E76;&#x7528; <code>uint8[128] mask</code> &#x6807;&#x8BB0;&#x6709;&#x6548;&#x7EF4;&#x5EA6;
+3) <strong>&#x5E8F;&#x5217;&#x76D1;&#x7763;&#x5C42;</strong>&#xFF1A;&#x6784;&#x9020; <code>action_chunk (Ta=64)</code> &#x4F5C;&#x4E3A;&#x672A;&#x6765;&#x52A8;&#x4F5C;&#x76D1;&#x7763;&#x4FE1;&#x53F7;&#xFF08;&#x8D8A;&#x754C; padding + mask=0&#xFF09;
+4) <strong>&#x843D;&#x76D8;&#x5C42;</strong>&#xFF1A;raw &#x4FBF;&#x4E8E;&#x4EBA;&#x5DE5;&#x68C0;&#x67E5;&#xFF0C;HDF5 &#x4FBF;&#x4E8E;&#x8BAD;&#x7EC3;&#x4E0E;&#x6279;&#x91CF;&#x8BFB;&#x53D6;</p>
+<p>&#x5BF9;&#x5E94;&#x5B9E;&#x73B0;&#x7D22;&#x5F15;&#xFF1A;&#x683C;&#x5F0F;&#x4E0E;&#x5F20;&#x91CF;&#x5F62;&#x72B6;&#x89C1; <code>theory_rdt_format.md</code>&#xFF0C;&#x4EE3;&#x7801;&#x94FE;&#x8DEF;&#x89E3;&#x6790;&#x89C1; <code>ref_rdt_pipeline.md</code>&#x3002;</p>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<p>&#x672C;&#x6A21;&#x5757;&#x7684;&#x6838;&#x5FC3;&#x76EE;&#x6807;&#x662F;&#x91C7;&#x96C6;&#x7B26;&#x5408; RDT Fine-tuning &#x683C;&#x5F0F;&#x8981;&#x6C42;&#x7684;&#x591A;&#x6A21;&#x6001;&#x6570;&#x636E;&#x3002;</p>
+<ul>
+<li><strong>&#x91C7;&#x96C6;&#x4E3B;&#x7A0B;&#x5E8F;</strong>&#xFF1A;<code>RDT/collect_rdt_dataset_teleop.py</code><ul>
+<li><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x540C;&#x65F6;&#x8FDE;&#x63A5;&#x53CC;&#x81C2;&#xFF08;&#x4E32;&#x53E3;&#xFF09;&#x548C;&#x4E09;&#x8DEF;&#x76F8;&#x673A;&#xFF08;USB&#xFF09;&#xFF0C;&#x4EE5; 30Hz&#xFF08;&#x9ED8;&#x8BA4;&#xFF09;&#x7684;&#x9891;&#x7387;&#x540C;&#x6B65;&#x8BB0;&#x5F55;&#x6570;&#x636E;&#x3002;</li>
+<li><strong>&#x8F93;&#x51FA;</strong>&#xFF1A;Raw &#x683C;&#x5F0F;&#xFF08;CSV + JPG &#x56FE;&#x7247;&#x6587;&#x4EF6;&#x5939;&#xFF09;&#xFF0C;&#x4FBF;&#x4E8E;&#x4EBA;&#x5DE5;&#x68C0;&#x67E5;&#x548C;&#x7B5B;&#x9009;&#x3002;</li>
+</ul>
+</li>
+<li><strong>&#x683C;&#x5F0F;&#x8F6C;&#x6362;&#x5DE5;&#x5177;</strong>&#xFF1A;<code>RDT/build_rdt_hdf5_from_raw.py</code><ul>
+<li><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x5C06; Raw &#x6570;&#x636E;&#x6253;&#x5305;&#x4E3A;&#x9AD8;&#x6548;&#x7684; HDF5 &#x683C;&#x5F0F;&#xFF0C;&#x5E76;&#x8FDB;&#x884C;&#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;&#xFF08;Resize&#x3001;Padding&#xFF09;&#x3002;</li>
+</ul>
+</li>
+<li><strong>&#x6570;&#x636E;&#x68C0;&#x67E5;&#x5DE5;&#x5177;</strong>&#xFF1A;<code>RDT/inspect_rdt_hdf5.py</code><ul>
+<li><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x8BFB;&#x53D6;&#x751F;&#x6210;&#x7684; HDF5 &#x6587;&#x4EF6;&#xFF0C;&#x6253;&#x5370;&#x5F20;&#x91CF;&#x5F62;&#x72B6;&#xFF0C;&#x5E76;&#x53EF;&#x89C6;&#x5316;&#x62BD;&#x6837;&#x5E27;&#xFF0C;&#x786E;&#x4FDD;&#x6570;&#x636E;&#x65E0;&#x8BEF;&#x3002;</li>
+</ul>
+</li>
+<li><strong>&#x683C;&#x5F0F;&#x5B9A;&#x4E49;&#x5E93;</strong>&#xFF1A;<code>RDT/rdt_hdf5.py</code><ul>
+<li><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x5B9A;&#x4E49;&#x4E86; <code>UnifiedVector</code>&#xFF08;&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#xFF09;&#x548C; <code>RDTHDF5EpisodeWriter</code> &#x7C7B;&#xFF0C;&#x5C01;&#x88C5;&#x4E86; HDF5 &#x7684;&#x5199;&#x5165;&#x903B;&#x8F91;&#xFF0C;&#x786E;&#x4FDD;&#x7B26;&#x5408; <code>unified 128 + action_chunk</code> &#x89C4;&#x8303;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<p>&#x91C7;&#x96C6;&#x811A;&#x672C;&#x7684;&#x9ED8;&#x8BA4;&#x5F55;&#x5236;&#x6309;&#x952E;&#x4E0E;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x8BF4;&#x660E;&#xFF0C;&#x89C1;&#xFF1A;<code>RDT/README.md</code>&#x3002;</p>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x56F4;&#x7ED5;&#x201C;unified 128 + mask + action_chunk&#x201D;&#x7684;&#x6700;&#x5173;&#x952E;&#x65B9;&#x6CD5;&#x4E3B;&#x8981;&#x5728; <code>RDT/rdt_hdf5.py</code> &#x4E0E; raw&#x2192;HDF5 &#x811A;&#x672C;&#x91CC;&#xFF1A;</p>
+<h3 id="&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#x6784;&#x9020;-rdtrdthdf5py">&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#x6784;&#x9020; (<code>RDT/rdt_hdf5.py</code>)</h3>
+<ul>
+<li><strong><code>UnifiedVector</code> &#x7C7B;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6570;&#x636E;&#x5BB9;&#x5668;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x7EF4;&#x62A4;&#x4E00;&#x4E2A; <code>float32[128]</code> &#x7684;&#x503C;&#x5411;&#x91CF;&#x548C;&#x4E00;&#x4E2A; <code>uint8[128]</code> &#x7684;&#x63A9;&#x7801;&#x5411;&#x91CF;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>fill_slice(start_idx, end_idx, data)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x586B;&#x5145;&#x6570;&#x636E;&#x7247;&#x6BB5;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5C06;&#x7279;&#x5B9A;&#x6A21;&#x6001;&#xFF08;&#x5982;&#x5173;&#x8282;&#x89D2;&#x3001;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#xFF09;&#x7684;&#x6570;&#x636E;&#x586B;&#x5165; <code>UnifiedVector</code> &#x7684;&#x6307;&#x5B9A;&#x5207;&#x7247;&#x533A;&#x95F4;&#xFF0C;&#x5E76;&#x81EA;&#x52A8;&#x5C06;&#x5BF9;&#x5E94;&#x7684; mask &#x8BBE;&#x4E3A; 1&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>make_unified_vector(q, dq, ...)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5DE5;&#x5382;&#x65B9;&#x6CD5;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x63A5;&#x6536;&#x6240;&#x6709;&#x53EF;&#x80FD;&#x7684;&#x8F93;&#x5165;&#xFF08;&#x5173;&#x8282;&#x89D2;&#x3001;&#x901F;&#x5EA6;&#x3001;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x3001;&#x5939;&#x722A;&#x72B6;&#x6001;&#x7B49;&#xFF09;&#xFF0C;&#x6309;&#x9884;&#x5B9A;&#x4E49;&#x5E03;&#x5C40;&#x7EC4;&#x88C5;&#x6210;&#x5B8C;&#x6574;&#x7684; <code>UnifiedVector</code> &#x5BF9;&#x8C61;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="hdf5-&#x5199;&#x5165;&#x4E0E;-chunking-rdthdf5episodewriter">HDF5 &#x5199;&#x5165;&#x4E0E; Chunking (<code>RDTHDF5EpisodeWriter</code>)</h3>
+<ul>
+<li><strong><code>add_step(proprio, action, images, ...)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5199;&#x5165;&#x5355;&#x6B65;&#x6570;&#x636E;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5C06;&#x5F53;&#x524D;&#x65F6;&#x523B;&#x7684;&#x89C2;&#x6D4B;&#x548C;&#x52A8;&#x4F5C;&#x6682;&#x5B58;&#x5230;&#x5185;&#x5B58; buffer &#x4E2D;&#xFF0C;&#x7B49;&#x5F85; episode &#x7ED3;&#x675F;&#x65F6;&#x7EDF;&#x4E00;&#x5904;&#x7406;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>finalize_action_chunks(chunk_size=64)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6784;&#x9020;&#x52A8;&#x4F5C;&#x5757;&#xFF08;Action Chunking&#xFF09;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8FD9;&#x662F; RDT &#x8BAD;&#x7EC3;&#x7684;&#x5173;&#x952E;&#x3002;&#x5BF9;&#x4E8E;&#x65F6;&#x523B; $t$&#xFF0C;&#x5B83;&#x4ECE; buffer &#x4E2D;&#x63D0;&#x53D6; $t$ &#x5230; $t+chunk_size-1$ &#x7684;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;&#x3002;&#x5982;&#x679C;&#x63A5;&#x8FD1; episode &#x7ED3;&#x5C3E;&#x4E0D;&#x8DB3; 64 &#x6B65;&#xFF0C;&#x5219;&#x7528; 0 &#x586B;&#x5145;&#xFF08;Padding&#xFF09;&#x5E76;&#x5C06;&#x5BF9;&#x5E94;&#x7684; mask &#x7F6E; 0&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>write_to_disk(path)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x843D;&#x76D8; HDF5&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x521B;&#x5EFA; HDF5 &#x6587;&#x4EF6;&#xFF0C;&#x5B9A;&#x4E49;&#x6570;&#x636E;&#x96C6;&#xFF08;Datasets&#xFF09;&#x548C;&#x5C5E;&#x6027;&#xFF08;Attributes&#xFF09;&#xFF0C;&#x5C06;&#x5904;&#x7406;&#x597D;&#x7684; chunked actions&#x3001;images&#xFF08;&#x7ECF;&#x8FC7;&#x538B;&#x7F29;&#x6216; resize&#xFF09;&#x548C; proprio &#x5199;&#x5165;&#x6587;&#x4EF6;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x56FE;&#x50CF;&#x5904;&#x7406;&#x4E0E;&#x68C0;&#x67E5;">&#x56FE;&#x50CF;&#x5904;&#x7406;&#x4E0E;&#x68C0;&#x67E5;</h3>
+<ul>
+<li><strong><code>pad_to_square_and_resize_rgb(image, target_size)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x4E3A;&#x4E86;&#x4FDD;&#x6301;&#x957F;&#x5BBD;&#x6BD4;&#xFF0C;&#x5148;&#x5BF9;&#x77ED;&#x8FB9;&#x8FDB;&#x884C; Padding &#x4F7F;&#x56FE;&#x50CF;&#x53D8;&#x65B9;&#xFF0C;&#x7136;&#x540E; Resize &#x5230;&#x76EE;&#x6807;&#x5C3A;&#x5BF8;&#xFF08;&#x5982; 224x224 &#x6216; 300x300&#xFF09;&#xFF0C;&#x9632;&#x6B62;&#x56FE;&#x50CF;&#x62C9;&#x4F38;&#x53D8;&#x5F62;&#x5F71;&#x54CD;&#x6A21;&#x578B;&#x8BAD;&#x7EC3;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>inspect_rdt_hdf5.py</code> &#x7684;&#x53EF;&#x89C6;&#x5316;&#x903B;&#x8F91;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6570;&#x636E;&#x9A8C;&#x6536;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x968F;&#x673A;&#x62BD;&#x53D6; HDF5 &#x4E2D;&#x7684;&#x4E00;&#x4E2A; step&#xFF0C;&#x89E3;&#x7801;&#x5E76;&#x663E;&#x793A;&#x56FE;&#x50CF;&#xFF0C;&#x6253;&#x5370; proprio &#x548C; action &#x7684;&#x6570;&#x503C;&#x53CA; mask&#xFF0C;&#x7528;&#x4E8E;&#x4EBA;&#x5DE5;&#x786E;&#x8BA4;&#x6570;&#x636E;&#x662F;&#x5426;&#x5BF9;&#x9F50;&#x3001;mask &#x662F;&#x5426;&#x6B63;&#x786E;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-&#x524D;&#x7F6E;&#x6761;&#x4EF6;">2. &#x524D;&#x7F6E;&#x6761;&#x4EF6;</h2>
+<p>1) 1./2. &#x5DF2;&#x8DD1;&#x901A;
+2) &#x8BBE;&#x5907;&#x5C31;&#x7EEA;&#xFF1A;</p>
+<ul>
+<li>&#x673A;&#x68B0;&#x81C2;&#x4E32;&#x53E3;&#xFF1A;<code>/dev/left_arm</code>&#x3001;<code>/dev/right_arm</code>&#xFF08;&#x6216; <code>/dev/ttyACM0</code> &#x7B49;&#xFF09;</li>
+<li>&#x4E09;&#x8DEF;&#x76F8;&#x673A;&#xFF1A;<code>/dev/video*</code></li>
+</ul>
+<p>3) &#x914D;&#x7F6E;&#x6B63;&#x786E;&#xFF1A;</p>
+<ul>
+<li>&#x5DE6;&#x81C2;&#xFF1A;<code>driver/left_arm.json</code></li>
+<li>&#x53F3;&#x81C2;&#xFF1A;<code>driver/right_arm.json</code></li>
+</ul>
+<p>4) &#x6807;&#x5B9A;&#x5B8C;&#x6210;&#xFF08;&#x63A8;&#x8350;&#xFF09;&#xFF1A;</p>
+<ul>
+<li>&#x76F8;&#x673A;&#x5185;&#x53C2;&#xFF1A;&#x7531; <code>vision/calibrate_camera.py</code> &#x751F;&#x6210;</li>
+<li>&#x624B;&#x773C;&#xFF1A;&#x6309; <code>vision/handeye_calibration_eyeinhand</code>&#x548C;<code>vision/handeye_calibration_eyetohand</code>&#x751F;&#x6210;<code>handeye_result.yaml</code></li>
+</ul>
+<h2 id="3-&#x91C7;&#x96C6;&#x6D41;&#x7A0B;">3. &#x91C7;&#x96C6;&#x6D41;&#x7A0B;</h2>
+<h3 id="31-&#x91C7;&#x96C6;-raw&#xFF08;csv--jpg&#xFF0C;&#x4FBF;&#x4E8E;&#x8089;&#x773C;&#x68C0;&#x67E5;&#xFF09;">3.1 &#x91C7;&#x96C6; raw&#xFF08;CSV + JPG&#xFF0C;&#x4FBF;&#x4E8E;&#x8089;&#x773C;&#x68C0;&#x67E5;&#xFF09;</h3>
+<p><strong>&#x6B65;&#x9AA4;&#x8BF4;&#x660E;</strong>&#xFF1A;</p>
+<ol>
+<li><strong>&#x786C;&#x4EF6;&#x8FDE;&#x63A5;</strong>&#xFF1A;&#x786E;&#x4FDD;&#x5DE6;&#x53F3;&#x81C2;&#x4E32;&#x53E3;&#xFF08;<code>/dev/left_arm</code>, <code>/dev/right_arm</code>&#xFF09;&#x548C;&#x4E09;&#x8DEF;&#x76F8;&#x673A;&#xFF08;<code>/dev/video*</code>&#xFF09;&#x5DF2;&#x8FDE;&#x63A5;&#x3002;</li>
+<li><strong>&#x542F;&#x52A8;&#x811A;&#x672C;</strong>&#xFF1A;&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x542F;&#x52A8;&#x91C7;&#x96C6;&#x7A0B;&#x5E8F;&#x3002;</li>
+</ol>
+<p>&#x793A;&#x4F8B;&#xFF08;&#x53CC;&#x81C2; + &#x4E09;&#x76F8;&#x673A;&#xFF09;&#xFF1A;</p>
+<pre><code class="lang-bash">python RDT/collect_rdt_dataset_teleop.py \
+  --device right \
+  --control-arm right \
+  --save-format raw \
+  --right-port /dev/right_arm \
+  --left-port /dev/left_arm \
+  --right-config ./driver/right_arm.json \
+  --left-config ./driver/left_arm.json \
+  --cam-exterior /dev/video0 \
+  --cam-right-wrist /dev/video2 \
+  --cam-left-wrist /dev/video4 \
+  --out-dir ./rdt_raw \
+  --instruction <span class="hljs-string">&quot;pick up the red block&quot;</span>
+</code></pre>
+<p><strong>&#x53C2;&#x6570;&#x8BE6;&#x89E3;</strong>&#xFF1A;</p>
+<ul>
+<li><code>--control-arm</code>: &#x6307;&#x5B9A;&#x4E3B;&#x63A7;&#x81C2;&#xFF08;&#x9065;&#x64CD;&#x4F5C;&#x624B;&#x67C4;&#x63A7;&#x5236;&#x7684;&#x81C2;&#xFF09;&#x3002;</li>
+<li><code>--cam-exterior</code>: &#x7B2C;&#x4E09;&#x4EBA;&#x79F0;&#x89C6;&#x89D2;&#x76F8;&#x673A;&#xFF08;Eye-to-Hand&#xFF09;&#x3002;</li>
+<li><code>--cam-*-wrist</code>: &#x624B;&#x8155;&#x76F8;&#x673A;&#xFF08;Eye-in-Hand&#xFF09;&#x3002;</li>
+<li><code>--instruction</code>: &#x5F53;&#x524D;&#x4EFB;&#x52A1;&#x7684;&#x81EA;&#x7136;&#x8BED;&#x8A00;&#x63CF;&#x8FF0;&#xFF08;&#x5C06;&#x5199;&#x5165; HDF5 &#x5143;&#x6570;&#x636E;&#xFF09;&#x3002;</li>
+<li><code>--save-format raw</code>: &#x4FDD;&#x5B58;&#x4E3A;&#x201C;CSV + JPG&#x201D;&#x7684; raw episode&#xFF08;&#x4FBF;&#x4E8E;&#x4EBA;&#x5DE5;&#x68C0;&#x67E5;&#xFF09;&#x3002;</li>
+<li><code>--out-dir</code>: &#x8F93;&#x51FA;&#x6839;&#x76EE;&#x5F55;&#xFF1B;raw &#x6A21;&#x5F0F;&#x4E0B;&#x4F1A;&#x5728;&#x5176;&#x4E0B;&#x521B;&#x5EFA; <code>episode_000001/</code>&#x3001;<code>episode_000002/</code>&#x2026;</li>
+</ul>
+<blockquote>
+<p>&#x53EF;&#x9009;&#xFF1A;&#x5982;&#x679C;&#x4F60;&#x5E0C;&#x671B;&#x201C;&#x76F4;&#x63A5;&#x751F;&#x6210; HDF5&#xFF08;&#x8DF3;&#x8FC7; raw&#x2192;HDF5&#xFF09;&#x201D;&#xFF0C;&#x628A; <code>--save-format</code> &#x6539;&#x4E3A; <code>hdf5</code> &#x5373;&#x53EF;&#x3002;</p>
+</blockquote>
+<p><strong>&#x8FD0;&#x884C;&#x4EA4;&#x4E92;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x7A0B;&#x5E8F;&#x542F;&#x52A8;&#x540E;&#x4F1A;&#x663E;&#x793A;&#x76F8;&#x673A;&#x753B;&#x9762;&#x9884;&#x89C8;&#x3002;</li>
+<li>&#x6309; <code>Space</code> &#x952E;&#x5F00;&#x59CB;/&#x6682;&#x505C;&#x5F55;&#x5236;&#x3002;</li>
+<li>&#x6309; <code>ESC</code> &#x952E;&#x7ED3;&#x675F;&#x5F53;&#x524D; Episode &#x5E76;&#x4FDD;&#x5B58;&#x3002;</li>
+<li>&#x9ED8;&#x8BA4;&#x8F93;&#x51FA;&#x8DEF;&#x5F84;&#xFF08;raw &#x6A21;&#x5F0F;&#xFF09;&#xFF1A;<code>--out-dir/episode_000001/</code>&#xFF08;&#x6309;&#x5DF2;&#x6709; episode &#x81EA;&#x52A8;&#x7EED;&#x53F7;&#xFF09;&#x3002;</li>
+</ul>
+<p><strong>raw &#x9A8C;&#x6536;&#x70B9;&#xFF08;&#x5EFA;&#x8BAE;&#x5F55;&#x5C4F;/&#x622A;&#x56FE;&#xFF09;</strong>&#xFF1A;</p>
+<ul>
+<li><code>episode_*</code> &#x76EE;&#x5F55;&#x5185;&#x5B58;&#x5728;&#x56FE;&#x50CF;&#x6587;&#x4EF6;&#x5939;&#x4E0E; CSV&#xFF08;&#x6216;&#x7B49;&#x4EF7;&#x65E5;&#x5FD7;&#x6587;&#x4EF6;&#xFF09;&#xFF0C;&#x4E14;&#x6570;&#x91CF;&#x968F;&#x5F55;&#x5236;&#x65F6;&#x957F;&#x589E;&#x957F;</li>
+<li>&#x80FD;&#x8089;&#x773C;&#x56DE;&#x770B;&#x56FE;&#x50CF;&#x5E8F;&#x5217;&#xFF0C;&#x786E;&#x8BA4;&#x76F8;&#x673A;&#x89C6;&#x89D2;&#x6B63;&#x786E;&#x3001;&#x66DD;&#x5149;&#x6B63;&#x5E38;</li>
+</ul>
+<h3 id="32-raw&#x2192;hdf5-&#x5408;&#x6210;">3.2 raw&#x2192;HDF5 &#x5408;&#x6210;</h3>
+<p>&#x91C7;&#x96C6;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x9700;&#x8981;&#x5C06;&#x6563;&#x4E71;&#x7684;&#x56FE;&#x7247;&#x548C; CSV &#x8F6C;&#x6362;&#x4E3A;&#x7D27;&#x51D1;&#x7684; HDF5 &#x6587;&#x4EF6;&#x3002;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x8F6C;&#x6362;&#x5355;&#x4E2A; episode</span>
+python RDT/build_rdt_hdf5_from_raw.py ./rdt_raw/episode_000001
+</code></pre>
+<p><strong>&#x5904;&#x7406;&#x903B;&#x8F91;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x8BFB;&#x53D6; CSV &#x4E2D;&#x7684; <code>proprio</code> &#x548C; <code>action</code> &#x6570;&#x636E;&#x3002;</li>
+<li>&#x8BFB;&#x53D6; <code>images/</code> &#x76EE;&#x5F55;&#x4E0B;&#x7684; JPG &#x56FE;&#x7247;&#x3002;</li>
+<li>&#x8C03;&#x7528; <code>pad_to_square_and_resize_rgb</code> &#x5C06;&#x56FE;&#x7247;&#x7EDF;&#x4E00;&#x8C03;&#x6574;&#x4E3A; 384x384 &#x5206;&#x8FA8;&#x7387;&#x3002;</li>
+<li>&#x751F;&#x6210; <code>action_chunk</code>&#xFF08;&#x672A;&#x6765;&#x52A8;&#x4F5C;&#x5757;&#xFF09;&#x3002;</li>
+<li>&#x5199;&#x5165; HDF5 &#x6587;&#x4EF6;&#x3002;</li>
+</ul>
+<p><strong>&#x8F6C;&#x6362;&#x9A8C;&#x6536;&#x70B9;</strong>&#xFF1A;&#x9ED8;&#x8BA4;&#x4F1A;&#x5728;&#x540C;&#x7EA7;&#x751F;&#x6210; <code>./rdt_raw/episode_000001.hdf5</code>&#xFF0C;&#x4E14;&#x6587;&#x4EF6;&#x5927;&#x5C0F;&#x968F; episode &#x65F6;&#x957F;&#x589E;&#x957F;&#x3002;</p>
+<h3 id="33-&#x68C0;&#x67E5;-hdf5&#xFF08;shape&#x5B57;&#x6BB5;&#x53EF;&#x89C6;&#x5316;&#x62BD;&#x6837;&#xFF09;">3.3 &#x68C0;&#x67E5; HDF5&#xFF08;shape/&#x5B57;&#x6BB5;/&#x53EF;&#x89C6;&#x5316;&#x62BD;&#x6837;&#xFF09;</h3>
+<pre><code class="lang-bash">python RDT/inspect_rdt_hdf5.py ./rdt_raw/episode_000001.hdf5
+</code></pre>
+<p><strong>&#x68C0;&#x67E5;&#x9879;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>Shape</strong>&#xFF1A;&#x786E;&#x8BA4; <code>images</code> &#x662F; <code>(T, 2, 3, 384, 384, 3)</code>&#xFF0C;<code>action</code> &#x662F; <code>(T, 128)</code>&#x3002;</li>
+<li><strong>Mask</strong>&#xFF1A;&#x786E;&#x8BA4; <code>proprio_mask</code> &#x548C; <code>action_mask</code> &#x975E;&#x5168;&#x96F6;&#x3002;</li>
+<li><strong>Visual</strong>&#xFF1A;&#x811A;&#x672C;&#x4F1A;&#x5F39;&#x7A97;&#x663E;&#x793A;&#x968F;&#x673A;&#x62BD;&#x53D6;&#x7684;&#x51E0;&#x5E27;&#x56FE;&#x50CF;&#x548C;&#x5BF9;&#x5E94;&#x7684;&#x52A8;&#x4F5C;&#x503C;&#x3002;</li>
+</ul>
+<p><strong>&#x68C0;&#x67E5;&#x9A8C;&#x6536;&#x70B9;</strong>&#xFF1A;</p>
+<ul>
+<li><code>T</code> &#x4E0E;&#x5F55;&#x5236;&#x957F;&#x5EA6;&#x4E00;&#x81F4;&#x6216;&#x8FD1;&#x4F3C;&#xFF08;&#x5141;&#x8BB8;&#x56E0;&#x4E22;&#x5E27;/&#x8D77;&#x6B62;&#x8FB9;&#x754C;&#x6709;&#x5C11;&#x91CF;&#x5DEE;&#x5F02;&#xFF09;</li>
+<li><code>mask</code> &#x4E0D;&#x5E94;&#x5168; 0&#xFF1B;&#x82E5;&#x5168; 0&#xFF0C;&#x901A;&#x5E38;&#x662F;&#x5B57;&#x6BB5;&#x672A;&#x586B;&#x5145;&#x6216; slice &#x914D;&#x7F6E;&#x9519;&#x8BEF;&#xFF08;&#x4F18;&#x5148;&#x770B; <code>ref_rdt_pipeline.md</code>&#xFF09;</li>
+</ul>
+<h2 id="4-&#x6570;&#x636E;&#x683C;&#x5F0F;&#xFF08;&#x5BF9;&#x9F50;-rdt-fine-tuning&#xFF0C;&#x7B80;&#x8FF0;--&#x7D22;&#x5F15;&#xFF09;">4. &#x6570;&#x636E;&#x683C;&#x5F0F;&#xFF08;&#x5BF9;&#x9F50; RDT fine-tuning&#xFF0C;&#x7B80;&#x8FF0; + &#x7D22;&#x5F15;&#xFF09;</h2>
+<p>&#x4E3A;&#x4E86;&#x9002;&#x914D; RDT &#x6A21;&#x578B;&#x7684;&#x8F93;&#x5165;&#x8981;&#x6C42;&#xFF0C;&#x6211;&#x4EEC;&#x91C7;&#x7528;&#x4E86;&#x7279;&#x5B9A;&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x3002;</p>
+<p>&#x6838;&#x5FC3;&#x7EA6;&#x675F;&#xFF1A;</p>
+<ul>
+<li><strong>&#x7EDF;&#x4E00;&#x5411;&#x91CF; (Unified Vector)</strong>&#xFF1A;&#x6240;&#x6709;&#x7684;&#x7269;&#x7406;&#x91CF;&#xFF08;&#x4F4D;&#x7F6E;&#x3001;&#x901F;&#x5EA6;&#x3001;&#x529B;&#x77E9;&#x7B49;&#xFF09;&#x90FD;&#x88AB;&#x6620;&#x5C04;&#x5230;&#x4E00;&#x4E2A;&#x56FA;&#x5B9A;&#x7684; <code>float32[128]</code> &#x5411;&#x91CF;&#x4E2D;&#x3002;</li>
+<li><strong>Mask &#x673A;&#x5236;</strong>&#xFF1A;&#x914D;&#x5408; <code>uint8[128] mask</code>&#xFF0C;&#x6807;&#x8BB0;&#x54EA;&#x4E9B;&#x7EF4;&#x5EA6;&#x662F;&#x6709;&#x6548;&#x7684;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5982;&#x679C;&#x53EA;&#x63A7;&#x5236;&#x4E86; 6 &#x4E2A;&#x5173;&#x8282;&#xFF0C;&#x5219;&#x53EA;&#x6709;&#x5BF9;&#x5E94;&#x7684; 6 &#x4E2A;&#x4F4D;&#x7F6E;&#x7EF4;&#x5EA6; mask &#x4E3A; 1&#xFF0C;&#x5176;&#x4F59;&#x4E3A; 0&#x3002;</li>
+<li><strong>&#x591A;&#x5E27;&#x8F93;&#x5165;</strong>&#xFF1A;<code>Timg=2</code>&#xFF0C;&#x5373;&#x6A21;&#x578B;&#x8F93;&#x5165;&#x5305;&#x542B;&#x5F53;&#x524D;&#x5E27;&#x548C;&#x4E0A;&#x4E00;&#x5E27;&#x3002;</li>
+<li><strong>Action Chunking</strong>&#xFF1A;&#x91C7;&#x7528; <code>action_chunk</code> &#x673A;&#x5236;&#xFF0C;&#x9884;&#x6D4B;&#x672A;&#x6765; <code>Ta=64</code> &#x6B65;&#x7684;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;&#x3002;</li>
+</ul>
+<p>&#x5173;&#x952E;&#x6570;&#x636E;&#x96C6;&#xFF08;HDF5 &#x5185;&#xFF09;&#xFF1A;</p>
+<ul>
+<li><code>observations/images</code>&#xFF1A;<code>(T, 2, 3, 384, 384, 3)</code> <code>uint8</code>&#x3002;&#x7EF4;&#x5EA6;&#x542B;&#x4E49;&#xFF1A;(&#x65F6;&#x95F4;, &#x5386;&#x53F2;&#x5E27;&#x6570;, &#x76F8;&#x673A;&#x6570;, &#x9AD8;, &#x5BBD;, &#x901A;&#x9053;)&#x3002;</li>
+<li><code>observations/proprio</code> / <code>observations/proprio_mask</code>&#xFF1A;<code>(T, 128)</code>&#x3002;&#x673A;&#x5668;&#x4EBA;&#x672C;&#x4F53;&#x72B6;&#x6001;&#x3002;</li>
+<li><code>actions/action</code> / <code>actions/action_mask</code>&#xFF1A;<code>(T, 128)</code>&#x3002;&#x5F53;&#x524D;&#x65F6;&#x523B;&#x7684;&#x52A8;&#x4F5C;&#x3002;</li>
+<li><code>actions/action_chunk</code> / <code>actions/action_chunk_mask</code>&#xFF1A;<code>(T, 64, 128)</code>&#x3002;&#x672A;&#x6765;&#x52A8;&#x4F5C;&#x5757;&#x3002;</li>
+<li><code>timestamps_unix_s</code>&#xFF1A;<code>(T,)</code>&#x3002;Unix &#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x7528;&#x4E8E;&#x65F6;&#x5E8F;&#x5BF9;&#x9F50;&#x5206;&#x6790;&#x3002;</li>
+</ul>
+<p>&#x66F4;&#x5B8C;&#x6574;&#x7684;&#x683C;&#x5F0F;&#x63A8;&#x5BFC;&#x4E0E;&#x5F20;&#x91CF;&#x5F62;&#x72B6;&#x89E3;&#x91CA;&#x89C1;&#xFF1A;<code>theory_rdt_format.md</code>&#x3002;</p>
+<h2 id="5-&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x4E0E;&#x6807;&#x5B9A;">5. &#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x4E0E;&#x6807;&#x5B9A;</h2>
+<ul>
+<li>&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#xFF1A;&#x5B9E;&#x73B0;&#x4E0E;&#x9650;&#x5236;&#x89C1; <code>stage1_3_timesync.md</code></li>
+<li>&#x76F8;&#x673A;/&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF1A;&#x6D41;&#x7A0B;&#x4E0E;&#x9A8C;&#x6536;&#x89C1; <code>stage1_3_calibration.md</code></li>
+</ul>
+<h2 id="6-&#x7406;&#x8BBA;&#x8865;&#x5145;">6. &#x7406;&#x8BBA;&#x8865;&#x5145;</h2>
+<h3 id="61-unified-128--mask">6.1 unified 128 + mask</h3>
+<p>&#x672C;&#x9879;&#x76EE;&#x5BF9;&#x9F50; RDT fine-tuning &#x7684;&#x5173;&#x952E;&#x70B9;&#x4E4B;&#x4E00;&#x662F;&#xFF1A;&#x6BCF;&#x6761; proprio/action &#x90FD;&#x4E0D;&#x662F;&#x201C;&#x53EA;&#x6709;&#x6570;&#x503C;&#x201D;&#xFF0C;&#x800C;&#x662F;&#x201C;&#x6570;&#x503C; + &#x53EF;&#x7528;&#x6027; mask&#x201D;&#x3002;</p>
+<ul>
+<li><code>value</code>&#xFF1A;<code>float32[128]</code>&#xFF0C;&#x7F3A;&#x5931;&#x7EF4;&#x5EA6;&#x586B; 0</li>
+<li><code>mask</code>&#xFF1A;<code>uint8[128]</code>&#xFF0C;&#x53EF;&#x7528;&#x7EF4;&#x5EA6;&#x7F6E; 1</li>
+</ul>
+<p>&#x5B9E;&#x73B0;&#x5BF9;&#x5E94;&#xFF1A;<code>RDT/rdt_hdf5.py::UnifiedVector/make_unified_vector/fill_slice</code>&#x3002;</p>
+<h3 id="62-actionchunk&#xFF08;ta64&#xFF09;&#x7684;&#x6784;&#x9020;">6.2 action_chunk&#xFF08;Ta=64&#xFF09;&#x7684;&#x6784;&#x9020;</h3>
+<p>episode &#x7ED3;&#x675F;&#x65F6;&#xFF0C;&#x628A; per-step <code>action[t]</code> &#x5806;&#x53E0;&#x4E3A;&#xFF1A;</p>
+<p><script type="math/tex; mode=display">
+\text{action\_chunk}[t,\tau] = \text{action}[t+\tau],\ \tau\in[0,Ta)
+
+</script></p>
+<p>&#x8D8A;&#x754C;&#x90E8;&#x5206;&#x505A; 0 padding&#xFF0C;&#x5E76;&#x628A; mask &#x7F6E; 0&#x3002;</p>
+<p>&#x5B9E;&#x73B0;&#x5BF9;&#x5E94;&#xFF1A;<code>RDT/rdt_hdf5.py::RDTHDF5EpisodeWriter.finalize_action_chunks()</code>&#x3002;</p>
+<p>&#x4E0E;&#x540C;&#x6B65;&#x76F8;&#x5173;&#x7684;&#x5B9E;&#x73B0;&#x7EC6;&#x8282;&#x4E0E;&#x9650;&#x5236;&#x8BF7;&#x76F4;&#x63A5;&#x5F15;&#x7528;&#xFF1A;<code>stage1_3_timesync.md</code>&#xFF08;&#x907F;&#x514D;&#x5728;&#x591A;&#x5904;&#x91CD;&#x590D;&#x5BFC;&#x81F4;&#x4E0D;&#x4E00;&#x81F4;&#xFF09;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="stage1_2_3_leader_follower.html" class="navigation navigation-prev " aria-label="Previous page: 3. 主从臂遥操">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="theory_rdt_format.html" class="navigation navigation-next " aria-label="Next page: 理论：RDT 数据格式">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"3. 数据集构建（RDT）","level":"1.6","depth":1,"next":{"title":"理论：RDT 数据格式","level":"1.6.1","depth":2,"path":"theory_rdt_format.md","ref":"theory_rdt_format.md","articles":[]},"previous":{"title":"3. 主从臂遥操","level":"1.5.2","depth":2,"path":"stage1_2_3_leader_follower.md","ref":"stage1_2_3_leader_follower.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"stage1_3_dataset.md","mtime":"2026-01-10T12:43:42.299Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

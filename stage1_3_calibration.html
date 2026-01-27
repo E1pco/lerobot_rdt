@@ -1,0 +1,668 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>3. 相机与手眼标定 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ref_vision_handeye.html" />
+    
+    
+    <link rel="prev" href="theory_handeye.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >3. 相机与手眼标定</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="3-&#x76F8;&#x673A;&#x4E0E;&#x624B;&#x773C;&#x6807;&#x5B9A;">3. &#x76F8;&#x673A;&#x4E0E;&#x624B;&#x773C;&#x6807;&#x5B9A;</h1>
+<p>&#x7406;&#x8BBA;&#x63A8;&#x5BFC;&#xFF1A;<code>theory_handeye.md</code></p>
+<p>&#x672C;&#x7AE0;&#x5BF9;&#x5E94; 3. &#x4EA7;&#x51FA;&#x7269;&#x4E2D;&#x7684;&#x201C;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x3001;&#x6570;&#x636E;&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x6E90;&#x4EE3;&#x7801; + &#x8BBE;&#x8BA1;&#x624B;&#x518C;&#x201D;&#x7684;&#x6807;&#x5B9A;&#x90E8;&#x5206;&#x3002;</p>
+<p>&#x624B;&#x773C;&#x6807;&#x5B9A;&#x7684;&#x6838;&#x5FC3;&#x662F;&#x628A;&#x201C;&#x76F8;&#x673A;&#x89C2;&#x6D4B;&#x5230;&#x7684;&#x6807;&#x5B9A;&#x677F;&#x4F4D;&#x59FF;&#x201D;&#xFF08;&#x6765;&#x81EA; PnP&#xFF09;&#x4E0E;&#x201C;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x201D;&#xFF08;&#x6765;&#x81EA; FK/&#x7F16;&#x7801;&#x5668;&#xFF09;&#x5173;&#x8054;&#x8D77;&#x6765;&#xFF0C;&#x6C42;&#x89E3;&#x56FA;&#x5B9A;&#x7684;&#x5750;&#x6807;&#x53D8;&#x6362;&#xFF1A;</p>
+<ul>
+<li>Eye-in-Hand&#xFF1A;&#x76F8;&#x673A;&#x88C5;&#x5728;&#x672B;&#x7AEF;&#xFF0C;&#x6C42; $T_{CG}$&#xFF08;&#x76F8;&#x673A; ${C}$ &#x5230;&#x5939;&#x722A;/&#x672B;&#x7AEF; ${G}$&#xFF09;</li>
+<li>Eye-to-Hand&#xFF1A;&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x5728;&#x73AF;&#x5883;&#xFF0C;&#x6C42; $T_{CB}$&#xFF08;&#x76F8;&#x673A; ${C}$ &#x5230;&#x57FA;&#x5EA7; ${B}$&#xFF09;</li>
+</ul>
+<p>&#x5728;&#x91C7;&#x96C6;&#x591A;&#x7EC4;&#x59FF;&#x6001;&#x540E;&#xFF0C;&#x901A;&#x8FC7;&#x7ECF;&#x5178;&#x5F62;&#x5F0F; $AX=XB$ &#x6C42;&#x89E3; $X$&#xFF08;&#x8BE6;&#x89C1;&#xFF1A;<code>theory_handeye.md</code>&#xFF09;&#x3002;</p>
+<p>&#x672C;&#x9875;&#x7684;&#x76EE;&#x6807;&#x662F;&#x628A;&#x201C;&#x7406;&#x8BBA;&#x53D8;&#x91CF;&#x201D;&#x843D;&#x5230;&#x201C;&#x811A;&#x672C;&#x8F93;&#x5165;/&#x8F93;&#x51FA;&#x201D;&#xFF1A;&#x4F60;&#x5C06;&#x660E;&#x786E;&#x6BCF;&#x4E00;&#x6B65;&#x4F1A;&#x751F;&#x6210;&#x54EA;&#x4E9B;&#x6587;&#x4EF6;&#x3001;&#x5E94;&#x8FBE;&#x5230;&#x4EC0;&#x4E48;&#x8BEF;&#x5DEE;&#x6C34;&#x5E73;&#x3001;&#x5931;&#x8D25;&#x65F6;&#x4F18;&#x5148;&#x67E5;&#x54EA;&#x91CC;&#x3002;</p>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>&#x6807;&#x5B9A;&#x94FE;&#x8DEF;&#x53EF;&#x4EE5;&#x62BD;&#x8C61;&#x4E3A;&#x201C;&#x5185;&#x53C2; &#x2192; PnP &#x2192; &#x624B;&#x773C;&#xFF08;AX=XB&#xFF09;&#x2192; &#x8BC4;&#x4F30; &#x2192; &#x9A8C;&#x8BC1;&#x95ED;&#x73AF;&#x201D;&#xFF1A;</p>
+<p>1) <strong>&#x76F8;&#x673A;&#x5185;&#x53C2;</strong>&#xFF1A;&#x7528;&#x68CB;&#x76D8;&#x683C;&#x89D2;&#x70B9;&#x62DF;&#x5408;&#x5F97;&#x5230; $K$ &#x4E0E;&#x7578;&#x53D8;&#xFF1B;&#x8FD9;&#x662F; PnP &#x4E0E;&#x624B;&#x773C;&#x7684;&#x5171;&#x540C;&#x524D;&#x63D0;
+2) <strong>PnP &#x4F4D;&#x59FF;</strong>&#xFF1A;&#x6BCF;&#x6B21;&#x89C2;&#x6D4B;&#x628A;&#x68CB;&#x76D8;&#x683C;/&#x76EE;&#x6807;&#x5728;&#x76F8;&#x673A;&#x5750;&#x6807;&#x7CFB;&#x4E0B;&#x7684;&#x4F4D;&#x59FF;&#x4F30;&#x8BA1;&#x51FA;&#x6765;&#xFF08;&#x751F;&#x6210; $T_{TC}$ &#x6216;&#x7B49;&#x4EF7;&#x91CF;&#xFF09;
+3) <strong>&#x624B;&#x773C;&#x6C42;&#x89E3;</strong>&#xFF1A;&#x7ED3;&#x5408;&#x673A;&#x5668;&#x4EBA;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T_{GB}$ &#x4E0E;&#x89C2;&#x6D4B;&#x4F4D;&#x59FF;&#xFF0C;&#x89E3; $AX=XB$ &#x5F97;&#x5230;&#x56FA;&#x5B9A;&#x5916;&#x53C2;&#xFF08;Eye-in-Hand &#x7684; $T_{CG}$ &#x6216; Eye-to-Hand &#x7684; $T_{CB}$&#xFF09;
+4) <strong>&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;</strong>&#xFF1A;&#x7528;&#x591A;&#x7EC4;&#x91C7;&#x6837;&#x5BF9;&#x6C42;&#x89E3;&#x7ED3;&#x679C;&#x505A;&#x5E73;&#x79FB;/&#x65CB;&#x8F6C;&#x8BEF;&#x5DEE;&#x7EDF;&#x8BA1;
+5) <strong>&#x95ED;&#x73AF;&#x9A8C;&#x8BC1;</strong>&#xFF1A;&#x628A;&#x89C6;&#x89C9;&#x68C0;&#x6D4B;&#x7ED3;&#x679C;&#x901A;&#x8FC7;&#x624B;&#x773C;&#x5916;&#x53C2;&#x6362;&#x7B97;&#x5230;&#x673A;&#x5668;&#x4EBA;&#x5750;&#x6807;&#x7CFB;&#xFF0C;&#x9A71;&#x52A8;&#x673A;&#x68B0;&#x81C2;&#x505A;&#x201C;&#x770B;&#x5F97;&#x89C1;&#x2192;&#x591F;&#x5F97;&#x7740;&#x201D;&#x7684;&#x52A8;&#x4F5C;</p>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li><code>vision/calibrate_camera.py</code>&#xFF1A;&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;&#xFF08;&#x91C7;&#x96C6;/&#x8BA1;&#x7B97;/&#x4E00;&#x952E; all&#xFF09;&#xFF0C;&#x8F93;&#x51FA; <code>camera_intrinsics.yaml</code> &#x4E0E;&#x62A5;&#x544A;&#x3002;</li>
+<li><code>vision/handeye_calibration_eyeinhand.py</code>&#xFF1A;Eye-in-Hand &#x6570;&#x636E;&#x91C7;&#x96C6;&#x4E0E;&#x89E3;&#x7B97;&#xFF0C;&#x8F93;&#x51FA; <code>handeye_result.yaml</code>&#xFF08;&#x542B; $T_{CG}$&#xFF09;&#x3002;</li>
+<li><code>vision/handeye_calibration_eyetohand.py</code>&#xFF1A;Eye-to-Hand &#x6570;&#x636E;&#x91C7;&#x96C6;&#x4E0E;&#x89E3;&#x7B97;&#xFF0C;&#x8F93;&#x51FA; <code>handeye_result.yaml</code>&#xFF08;&#x542B; $T_{CB}$&#xFF09;&#x3002;</li>
+<li><code>vision/handeye_utils.py</code>&#xFF1A;&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x4E0E;&#x8BEF;&#x5DEE;&#x7EDF;&#x8BA1;&#xFF08;&#x7528;&#x4E8E;&#x628A;&#x6807;&#x5B9A;&#x8D28;&#x91CF;&#x91CF;&#x5316;&#x8FDB;&#x62A5;&#x544A;&#xFF09;&#x3002;</li>
+<li><code>vision/track_blue_circle_eyetohand.py</code>&#xFF1A;&#x95ED;&#x73AF;&#x9A8C;&#x8BC1;&#x811A;&#x672C;&#xFF08;&#x7528;&#x4E8E;&#x8BC1;&#x660E;&#x5916;&#x53C2;&#x201C;&#x53EF;&#x7528;&#x4E14;&#x6709;&#x6548;&#x201D;&#xFF09;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<h3 id="&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;-calibratecamerapy">&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A; (<code>calibrate_camera.py</code>)</h3>
+<ul>
+<li><strong><code>detect_checkerboard(image)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x89D2;&#x70B9;&#x68C0;&#x6D4B;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8C03;&#x7528; <code>cv2.findChessboardCorners</code> &#x5BFB;&#x627E;&#x68CB;&#x76D8;&#x683C;&#x5185;&#x89D2;&#x70B9;&#xFF0C;&#x82E5;&#x6210;&#x529F;&#x5219;&#x8FDB;&#x4E00;&#x6B65;&#x8C03;&#x7528; <code>cv2.cornerSubPix</code> &#x8FDB;&#x884C;&#x4E9A;&#x50CF;&#x7D20;&#x7EA7;&#x7CBE;&#x7EC6;&#x5316;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>calibrate_intrinsics(objpoints, imgpoints, image_size)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x8BA1;&#x7B97;&#x5185;&#x53C2;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8C03;&#x7528; <code>cv2.calibrateCamera</code>&#xFF0C;&#x8F93;&#x5165;&#x4E16;&#x754C;&#x5750;&#x6807;&#x7CFB;&#x4E0B;&#x7684;&#x70B9;&#xFF08;&#x5047;&#x8BBE;&#x5728; Z=0 &#x5E73;&#x9762;&#xFF09;&#x548C;&#x56FE;&#x50CF;&#x5750;&#x6807;&#x7CFB;&#x4E0B;&#x7684;&#x70B9;&#xFF0C;&#x8F93;&#x51FA;&#x5185;&#x53C2;&#x77E9;&#x9635; $K$ &#x548C;&#x7578;&#x53D8;&#x7CFB;&#x6570; $D$&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>save_calibration_result(...)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x7ED3;&#x679C;&#x6301;&#x4E45;&#x5316;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5C06; $K$ &#x548C; $D$ &#x4FDD;&#x5B58;&#x4E3A; YAML &#x6587;&#x4EF6;&#xFF0C;&#x5E76;&#x751F;&#x6210;&#x5305;&#x542B;&#x91CD;&#x6295;&#x5F71;&#x8BEF;&#x5DEE;&#x7EDF;&#x8BA1;&#x7684;&#x6587;&#x672C;&#x62A5;&#x544A;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x624B;&#x773C;&#x6807;&#x5B9A;-handeyecalibrationpy">&#x624B;&#x773C;&#x6807;&#x5B9A; (<code>handeye_calibration_*.py</code>)</h3>
+<ul>
+<li><strong><code>get_board_pose_in_camera(image, K, D)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;PnP &#x4F4D;&#x59FF;&#x4F30;&#x8BA1;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x68C0;&#x6D4B;&#x68CB;&#x76D8;&#x683C;&#x89D2;&#x70B9;&#xFF0C;&#x5229;&#x7528;&#x5DF2;&#x77E5;&#x7684;&#x68CB;&#x76D8;&#x683C;&#x5C3A;&#x5BF8;&#x548C;&#x5185;&#x53C2;&#xFF0C;&#x8C03;&#x7528; <code>cv2.solvePnP</code> &#x8BA1;&#x7B97;&#x6807;&#x5B9A;&#x677F;&#x76F8;&#x5BF9;&#x4E8E;&#x76F8;&#x673A;&#x7684;&#x4F4D;&#x59FF; $T_{target}^{cam}$&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>record_sample(robot_pose, image)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x91C7;&#x96C6;&#x6570;&#x636E;&#x5BF9;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x540C;&#x6B65;&#x8BB0;&#x5F55;&#x5F53;&#x524D;&#x7684;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T_{end}^{base}$ &#x548C;&#x76F8;&#x673A;&#x56FE;&#x50CF;&#xFF08;&#x6216;&#x8BA1;&#x7B97;&#x51FA;&#x7684; $T_{target}^{cam}$&#xFF09;&#xFF0C;&#x5B58;&#x5165;&#x5217;&#x8868;&#x7528;&#x4E8E;&#x540E;&#x7EED;&#x89E3;&#x7B97;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>cv2.calibrateHandEye(...)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6C42;&#x89E3;&#x624B;&#x773C;&#x65B9;&#x7A0B; $AX=XB$&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8F93;&#x5165;&#x4E00;&#x7CFB;&#x5217;&#x7684; $R_{gripper}^{base}, t_{gripper}^{base}$ &#x548C; $R_{target}^{cam}, t_{target}^{cam}$&#xFF0C;&#x8F93;&#x51FA;&#x624B;&#x773C;&#x53D8;&#x6362;&#x77E9;&#x9635;&#xFF08;Eye-in-Hand &#x4E3A; $T_{cam}^{gripper}$&#xFF0C;Eye-to-Hand &#x4E3A; $T_{cam}^{base}$&#xFF09;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x9A8C;&#x8BC1;&#x4E0E;&#x5DE5;&#x5177;-handeyeutilspy--trackbluecirclepy">&#x9A8C;&#x8BC1;&#x4E0E;&#x5DE5;&#x5177; (<code>handeye_utils.py</code> / <code>track_blue_circle.py</code>)</h3>
+<ul>
+<li><strong><code>compute_consistency_error(handeye_result, samples)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5229;&#x7528;&#x6C42;&#x5F97;&#x7684;&#x624B;&#x773C;&#x77E9;&#x9635;&#xFF0C;&#x5C06;&#x6240;&#x6709;&#x89C2;&#x6D4B;&#x7EDF;&#x4E00;&#x8F6C;&#x6362;&#x5230;&#x540C;&#x4E00;&#x5750;&#x6807;&#x7CFB;&#x4E0B;&#xFF08;&#x5982;&#x57FA;&#x5EA7;&#xFF09;&#xFF0C;&#x8BA1;&#x7B97;&#x6807;&#x5B9A;&#x677F;&#x4F4D;&#x7F6E;&#x7684;&#x6807;&#x51C6;&#x5DEE;&#xFF0C;&#x8861;&#x91CF;&#x6807;&#x5B9A;&#x7684;&#x4E00;&#x81F4;&#x6027;&#x7CBE;&#x5EA6;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>transform_point(point_cam, T_handeye, robot_pose)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5750;&#x6807;&#x53D8;&#x6362;&#xFF08;&#x95ED;&#x73AF;&#x9A8C;&#x8BC1;&#xFF09;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5C06;&#x89C6;&#x89C9;&#x8BC6;&#x522B;&#x5230;&#x7684;&#x76EE;&#x6807;&#x70B9;&#xFF08;&#x76F8;&#x673A;&#x7CFB;&#xFF09;&#x53D8;&#x6362;&#x4E3A;&#x673A;&#x68B0;&#x81C2;&#x76EE;&#x6807;&#x70B9;&#xFF08;&#x57FA;&#x5EA7;&#x7CFB;&#xFF09;&#xFF0C;&#x7528;&#x4E8E;&#x9A71;&#x52A8;&#x673A;&#x68B0;&#x81C2;&#x53BB;&#x201C;&#x591F;&#x201D;&#x76EE;&#x6807;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;">1. &#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;</h2>
+<p><strong>&#x76EE;&#x7684;</strong>&#xFF1A;&#x83B7;&#x53D6;&#x76F8;&#x673A;&#x7684;&#x5185;&#x53C2;&#x77E9;&#x9635;&#xFF08;Intrinsics&#xFF09;&#x548C;&#x7578;&#x53D8;&#x7CFB;&#x6570;&#xFF08;Distortion Coefficients&#xFF09;&#xFF0C;&#x8FD9;&#x662F;&#x540E;&#x7EED; PnP &#x89E3;&#x7B97;&#x548C;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x7684;&#x57FA;&#x7840;&#x3002;</p>
+<p><strong>&#x811A;&#x672C;</strong>&#xFF1A;<code>vision/calibrate_camera.py</code></p>
+<blockquote>
+<p>&#x8BF4;&#x660E;&#xFF1A;&#x8BE5;&#x811A;&#x672C;&#x5728;&#x91C7;&#x96C6;&#x6A21;&#x5F0F;&#x4E0B;&#x4F1A;&#x81EA;&#x52A8;&#x521B;&#x5EFA; <code>session_YYYYmmdd_HHMMSS/</code> &#x5B50;&#x76EE;&#x5F55;&#xFF0C;&#x5E76;&#x628A;&#x56FE;&#x7247;&#x4E0E;&#x6807;&#x5B9A;&#x7ED3;&#x679C;&#x90FD;&#x4FDD;&#x5B58;&#x5230;&#x8BE5; session &#x5185;&#x3002;
+&#x56E0;&#x6B64;&#x5982;&#x679C;&#x4F60;&#x9009;&#x62E9;&#x201C;&#x5206;&#x4E24;&#x6B65;&#x201D;&#xFF08;&#x5148;&#x91C7;&#x96C6;&#x540E;&#x6807;&#x5B9A;&#xFF09;&#xFF0C;&#x7B2C;&#x4E8C;&#x6B65;&#x7684; <code>--image-folder</code> &#x5FC5;&#x987B;&#x6307;&#x5411;&#x5177;&#x4F53;&#x7684; session &#x76EE;&#x5F55;&#xFF1B;&#x5426;&#x5219;&#x4F1A;&#x56E0;&#x4E3A;&#x627E;&#x4E0D;&#x5230;&#x56FE;&#x7247;&#x800C;&#x5931;&#x8D25;&#x3002;</p>
+</blockquote>
+<h3 id="11-&#x91C7;&#x96C6;&#x6807;&#x5B9A;&#x56FE;">1.1 &#x91C7;&#x96C6;&#x6807;&#x5B9A;&#x56FE;</h3>
+<p>&#x4F7F;&#x7528;&#x68CB;&#x76D8;&#x683C;&#x6807;&#x5B9A;&#x677F;&#xFF0C;&#x5728;&#x4E0D;&#x540C;&#x89D2;&#x5EA6;&#x548C;&#x8DDD;&#x79BB;&#x4E0B;&#x62CD;&#x6444;&#x591A;&#x5F20;&#x56FE;&#x7247;&#x3002;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># --capture: &#x8FDB;&#x5165;&#x91C7;&#x96C6;&#x6A21;&#x5F0F;</span>
+<span class="hljs-comment"># --camid: &#x76F8;&#x673A;&#x8BBE;&#x5907; ID (&#x5982; /dev/video2 &#x5BF9;&#x5E94; 2)</span>
+<span class="hljs-comment"># --image-folder: &#x56FE;&#x7247;&#x4FDD;&#x5B58;&#x8DEF;&#x5F84;</span>
+python vision/calibrate_camera.py --capture --camid 2 --image-folder ./vision/calib_images_right
+</code></pre>
+<p><em>&#x64CD;&#x4F5C;&#x63D0;&#x793A;&#xFF1A;&#x6309; <code>s</code> &#x952E;&#x4FDD;&#x5B58;&#x5F53;&#x524D;&#x5E27;&#xFF0C;&#x6309; <code>q</code> &#x952E;&#x9000;&#x51FA;&#x3002;&#x91C7;&#x96C6;&#x7ED3;&#x675F;&#x540E;&#xFF0C;&#x7EC8;&#x7AEF;&#x4F1A;&#x6253;&#x5370;&#x672C;&#x6B21; session &#x76EE;&#x5F55;&#x8DEF;&#x5F84;&#x3002;</em></p>
+<h3 id="12-&#x6267;&#x884C;&#x6807;&#x5B9A;&#x8BA1;&#x7B97;">1.2 &#x6267;&#x884C;&#x6807;&#x5B9A;&#x8BA1;&#x7B97;</h3>
+<p>&#x8BFB;&#x53D6;&#x91C7;&#x96C6;&#x5230;&#x7684;&#x56FE;&#x7247;&#xFF0C;&#x68C0;&#x6D4B;&#x89D2;&#x70B9;&#x5E76;&#x8BA1;&#x7B97;&#x5185;&#x53C2;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4F60;&#x521A;&#x5B8C;&#x6210; 1.1 &#x91C7;&#x96C6;&#xFF0C;&#x5148;&#x627E;&#x5230;&#x6700;&#x65B0;&#x7684; session &#x76EE;&#x5F55;&#xFF08;&#x793A;&#x4F8B;&#xFF09;&#xFF1A;</p>
+<pre><code class="lang-bash">ls -dt ./vision/calib_images_right/session_* | head -1
+</code></pre>
+<p>&#x7136;&#x540E;&#x628A;&#x8BE5;&#x76EE;&#x5F55;&#x4F5C;&#x4E3A; <code>--image-folder</code> &#x8F93;&#x5165;&#xFF1A;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># --calibrate: &#x8FDB;&#x5165;&#x8BA1;&#x7B97;&#x6A21;&#x5F0F;</span>
+python vision/calibrate_camera.py --calibrate --image-folder ./vision/calib_images_right/session_YYYYmmdd_HHMMSS
+</code></pre>
+<h3 id="13-&#x4E00;&#x952E;&#x6A21;&#x5F0F;&#xFF08;&#x91C7;&#x96C6;&#x6807;&#x5B9A;&#xFF09;">1.3 &#x4E00;&#x952E;&#x6A21;&#x5F0F;&#xFF08;&#x91C7;&#x96C6;+&#x6807;&#x5B9A;&#xFF09;</h3>
+<p>&#x5982;&#x679C;&#x60F3;&#x5728;&#x4E00;&#x4E2A;&#x6D41;&#x7A0B;&#x5185;&#x5B8C;&#x6210;&#xFF1A;</p>
+<pre><code class="lang-bash">python vision/calibrate_camera.py --all --camid 2 --image-folder ./vision/calib_images_right
+</code></pre>
+<p><strong>&#x8F93;&#x51FA;&#x4EA7;&#x7269;</strong>&#xFF1A;
+&#x811A;&#x672C;&#x4F1A;&#x5728; session &#x76EE;&#x5F55;&#x4E0B;&#x751F;&#x6210;&#xFF08;&#x4EE5;&#x5B9E;&#x9645;&#x6253;&#x5370;&#x4E3A;&#x51C6;&#xFF09;&#xFF1A;</p>
+<ul>
+<li><code>camera_intrinsics.yaml</code>&#xFF1A;&#x76F8;&#x673A;&#x5185;&#x53C2;&#x77E9;&#x9635; $K$ &#x4E0E;&#x7578;&#x53D8;&#x7CFB;&#x6570;</li>
+<li><code>camera_intrinsics_report.txt</code>&#xFF1A;&#x8BE6;&#x7EC6;&#x62A5;&#x544A;&#xFF08;&#x542B;&#x6BCF;&#x5F20;&#x56FE;&#x7684;&#x91CD;&#x6295;&#x5F71;&#x8BEF;&#x5DEE;&#xFF09;</li>
+<li><code>extrinsics.yaml</code> / <code>extrinsics.npy</code>&#xFF1A;&#x6BCF;&#x5F20;&#x6807;&#x5B9A;&#x56FE;&#x5BF9;&#x5E94;&#x7684; $T_{target}^{cam}$&#xFF08;&#x7528;&#x4E8E; PnP &#x7CBE;&#x5EA6;&#x8BCA;&#x65AD;/&#x590D;&#x73B0;&#xFF09;</li>
+<li><code>undistorted_test.jpg</code>&#xFF1A;&#x53BB;&#x7578;&#x53D8;&#x6548;&#x679C;&#x5BF9;&#x6BD4;&#x7528;</li>
+</ul>
+<p><strong>&#x5173;&#x952E;&#x68C0;&#x67E5;&#x70B9;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x62A5;&#x544A;&#x4E2D;&#x7684;&#x5E73;&#x5747;&#x91CD;&#x6295;&#x5F71;&#x8BEF;&#x5DEE;&#x5EFA;&#x8BAE; &lt; 0.5 px&#xFF08;&#x66F4;&#x5C0F;&#x66F4;&#x597D;&#xFF09;</li>
+<li><code>undistorted_test.jpg</code> &#x76EE;&#x89C6;&#x68C0;&#x67E5;&#x7578;&#x53D8;&#x662F;&#x5426;&#x660E;&#x663E;&#x51CF;&#x8F7B;</li>
+</ul>
+<h2 id="2-&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF08;&#x68CB;&#x76D8;&#x683C;&#xFF09;">2. &#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF08;&#x68CB;&#x76D8;&#x683C;&#xFF09;</h2>
+<p><strong>&#x76EE;&#x7684;</strong>&#xFF1A;&#x6C42;&#x89E3;&#x76F8;&#x673A;&#x5750;&#x6807;&#x7CFB; ${C}$ &#x4E0E;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x5750;&#x6807;&#x7CFB; ${G}$&#xFF08;Eye-in-Hand&#xFF09;&#x6216;&#x57FA;&#x5EA7;&#x5750;&#x6807;&#x7CFB; ${B}$&#xFF08;Eye-to-Hand&#xFF09;&#x4E4B;&#x95F4;&#x7684;&#x53D8;&#x6362;&#x77E9;&#x9635;&#x3002;</p>
+<blockquote>
+<p>&#x6CE8;&#x610F;&#xFF1A;&#x672C;&#x4ED3;&#x5E93;&#x6807;&#x5B9A;&#x4EE3;&#x7801;&#x5728; <code>vision/</code> &#x76EE;&#x5F55;&#x4E0B;&#x3002;</p>
+</blockquote>
+<h3 id="21-eye-in-hand&#xFF08;&#x76F8;&#x673A;&#x5728;&#x672B;&#x7AEF;&#xFF09;">2.1 Eye-in-Hand&#xFF08;&#x76F8;&#x673A;&#x5728;&#x672B;&#x7AEF;&#xFF09;</h3>
+<p><strong>&#x573A;&#x666F;</strong>&#xFF1A;&#x76F8;&#x673A;&#x5B89;&#x88C5;&#x5728;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#xFF0C;&#x968F;&#x673A;&#x68B0;&#x81C2;&#x8FD0;&#x52A8;&#x3002;&#x6C42;&#x89E3; $T_{CG}$&#x3002;</p>
+<p><strong>&#x811A;&#x672C;</strong>&#xFF1A;<code>vision/handeye_calibration_eyeinhand.py</code></p>
+<ol>
+<li><p><strong>&#x6570;&#x636E;&#x91C7;&#x96C6;</strong>&#xFF1A;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># --collect: &#x91C7;&#x96C6;&#x6A21;&#x5F0F;</span>
+<span class="hljs-comment"># --video: &#x76F8;&#x673A; ID</span>
+<span class="hljs-comment"># --port: &#x673A;&#x68B0;&#x81C2;&#x4E32;&#x53E3;</span>
+python vision/handeye_calibration_eyeinhand.py --collect --video 0 --port /dev/left_arm
+</code></pre>
+<p><em>&#x6D41;&#x7A0B;</em>&#xFF1A;</p>
+<ul>
+<li>&#x79FB;&#x52A8;&#x673A;&#x68B0;&#x81C2;&#x5230;&#x4E0D;&#x540C;&#x59FF;&#x6001;&#xFF08;&#x4FDD;&#x6301;&#x6807;&#x5B9A;&#x677F;&#x5728;&#x89C6;&#x91CE;&#x5185;&#xFF09;&#x3002;</li>
+<li>&#x811A;&#x672C;&#x4F1A;&#x81EA;&#x52A8;&#x8BB0;&#x5F55;&#xFF1A;&#x5F53;&#x524D;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T_{GB}$ + &#x5F53;&#x524D;&#x76F8;&#x673A;&#x62CD;&#x6444;&#x7684;&#x6807;&#x5B9A;&#x677F;&#x4F4D;&#x59FF; $T_{TC}$&#xFF08;&#x901A;&#x8FC7; PnP &#x89E3;&#x7B97;&#xFF09;&#x3002;</li>
+<li>&#x5EFA;&#x8BAE;&#x91C7;&#x96C6; 10-15 &#x7EC4;&#x6570;&#x636E;&#xFF0C;&#x8986;&#x76D6;&#x4E0D;&#x540C;&#x7684;&#x65CB;&#x8F6C;&#x89D2;&#x5EA6;&#x3002;</li>
+</ul>
+</li>
+<li><p><strong>&#x89E3;&#x7B97;</strong>&#xFF1A;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># --calibrate: &#x8BA1;&#x7B97;&#x6A21;&#x5F0F;</span>
+python vision/handeye_calibration_eyeinhand.py --calibrate
+</code></pre>
+<p><em>&#x8F93;&#x51FA;</em>&#xFF1A;<code>handeye_result.yaml</code>&#xFF0C;&#x5305;&#x542B; $T_{CG}$ &#x77E9;&#x9635;&#x3002;</p>
+</li>
+</ol>
+<h3 id="22-eye-to-hand&#xFF08;&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x5728;&#x73AF;&#x5883;&#xFF09;">2.2 Eye-to-Hand&#xFF08;&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x5728;&#x73AF;&#x5883;&#xFF09;</h3>
+<p><strong>&#x573A;&#x666F;</strong>&#xFF1A;&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x4E0D;&#x52A8;&#xFF0C;&#x62CD;&#x6444;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#xFF08;&#x672B;&#x7AEF;&#x5939;&#x6301;&#x6807;&#x5B9A;&#x677F;&#xFF09;&#x3002;&#x6C42;&#x89E3; $T_{CB}$&#x3002;</p>
+<p><strong>&#x811A;&#x672C;</strong>&#xFF1A;<code>vision/handeye_calibration_eyetohand.py</code></p>
+<ol>
+<li><p><strong>&#x6570;&#x636E;&#x91C7;&#x96C6;</strong>&#xFF1A;</p>
+<pre><code class="lang-bash">python vision/handeye_calibration_eyetohand.py --collect --video 0 --port /dev/left_arm
+</code></pre>
+<p><em>&#x6CE8;&#x610F;</em>&#xFF1A;&#x6B64;&#x65F6;&#x6807;&#x5B9A;&#x677F;&#x662F;&#x56FA;&#x5B9A;&#x5728;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x7684;&#xFF0C;&#x76F8;&#x673A;&#x662F;&#x4E0D;&#x52A8;&#x7684;&#x3002;</p>
+</li>
+<li><p><strong>&#x89E3;&#x7B97;</strong>&#xFF1A;</p>
+<pre><code class="lang-bash">python vision/handeye_calibration_eyetohand.py --calibrate
+</code></pre>
+</li>
+</ol>
+<h3 id="23-&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x4E0E;&#x8BEF;&#x5DEE;&#x5206;&#x6790;">2.3 &#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x4E0E;&#x8BEF;&#x5DEE;&#x5206;&#x6790;</h3>
+<p><strong>&#x5DE5;&#x5177;</strong>&#xFF1A;<code>vision/handeye_utils.py</code></p>
+<p>&#x5728;&#x6267;&#x884C;&#x6807;&#x5B9A;&#x8BA1;&#x7B97;&#x65F6;&#xFF0C;&#x811A;&#x672C;&#x4F1A;&#x81EA;&#x52A8;&#x8C03;&#x7528;&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x51FD;&#x6570;&#xFF1A;</p>
+<ul>
+<li>Eye-in-Hand&#xFF1A;<code>evaluate_eye_in_hand_consistency()</code></li>
+<li>Eye-to-Hand&#xFF1A;<code>evaluate_eye_to_hand_consistency()</code></li>
+</ul>
+<p><strong>&#x539F;&#x7406;</strong>&#xFF1A;
+&#x5229;&#x7528; $AX=XB$ &#x5173;&#x7CFB;&#xFF0C;&#x68C0;&#x67E5;&#x6BCF;&#x4E24;&#x7EC4;&#x6570;&#x636E;&#x8BA1;&#x7B97;&#x51FA;&#x7684; $X$ &#x662F;&#x5426;&#x4E00;&#x81F4;&#x3002;</p>
+<ul>
+<li><strong>&#x5E73;&#x79FB;&#x8BEF;&#x5DEE;</strong>&#xFF1A;&#x8BA1;&#x7B97; $\Delta t$ &#x7684;&#x6B27;&#x6C0F;&#x8DDD;&#x79BB;&#xFF08;&#x5355;&#x4F4D;&#xFF1A;mm&#xFF09;&#x3002;</li>
+<li><strong>&#x65CB;&#x8F6C;&#x8BEF;&#x5DEE;</strong>&#xFF1A;&#x8BA1;&#x7B97; $\Delta R$ &#x7684;&#x65CB;&#x8F6C;&#x5411;&#x91CF;&#x6A21;&#x957F;&#xFF08;&#x5355;&#x4F4D;&#xFF1A;deg&#xFF09;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x672C;&#x7AE0;&#x7684;&#x5173;&#x952E;&#x65B9;&#x6CD5;&#x96C6;&#x4E2D;&#x89E3;&#x51B3;&#x4E24;&#x4EF6;&#x4E8B;&#xFF1A;<strong>&#x628A;&#x89C2;&#x6D4B;&#x53D8;&#x6210;&#x53D8;&#x6362;&#x77E9;&#x9635;</strong>&#x3001;&#x4EE5;&#x53CA;<strong>&#x8BC4;&#x4F30;&#x8FD9;&#x4E2A;&#x77E9;&#x9635;&#x662F;&#x5426;&#x53EF;&#x4FE1;</strong>&#x3002;</p>
+<ul>
+<li>PnP &#x4F4D;&#x59FF;&#x4F30;&#x8BA1;&#xFF1A;&#x628A;&#x68CB;&#x76D8;&#x683C;&#x89D2;&#x70B9;&#x4E0E;&#x5185;&#x53C2; $K$ &#x7ED3;&#x5408;&#xFF0C;&#x6C42;&#x6BCF;&#x5E27;&#x7684; $T_{target}^{cam}$&#xFF08;&#x5B9E;&#x73B0;&#x4F4D;&#x4E8E; <code>vision/</code> &#x811A;&#x672C;&#x5185;&#x90E8;&#xFF0C;&#x8F93;&#x51FA;&#x4F1A;&#x5199;&#x5230; session/report &#x91CC;&#xFF09;&#x3002;</li>
+<li>&#x624B;&#x773C;&#x6C42;&#x89E3;&#xFF08;AX=XB&#xFF09;&#xFF1A;&#x5728;&#x91C7;&#x96C6;&#x5230;&#x591A;&#x7EC4; $(A_i,B_i)$ &#x540E;&#x6C42;&#x89E3;&#x56FA;&#x5B9A;&#x5916;&#x53C2; $X$&#xFF0C;&#x5206;&#x522B;&#x5BF9;&#x5E94; Eye-in-Hand &#x7684; $T_{CG}$ &#x4E0E; Eye-to-Hand &#x7684; $T_{CB}$&#x3002;</li>
+<li>&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#xFF1A;<ul>
+<li>Eye-in-Hand&#xFF1A;<code>evaluate_eye_in_hand_consistency()</code></li>
+<li>Eye-to-Hand&#xFF1A;<code>evaluate_eye_to_hand_consistency()</code>
+&#x8F93;&#x51FA;&#x5E73;&#x79FB;&#xFF08;mm&#xFF09;&#x4E0E;&#x65CB;&#x8F6C;&#xFF08;deg&#xFF09;&#x8BEF;&#x5DEE;&#xFF0C;&#x4F5C;&#x4E3A;&#x201C;&#x6807;&#x5B9A;&#x662F;&#x5426;&#x53EF;&#x7528;&#x201D;&#x7684;&#x91CF;&#x5316;&#x6307;&#x6807;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-&#x6807;&#x5B9A;&#x7ED3;&#x679C;&#x9A8C;&#x8BC1;&#xFF08;&#x84DD;&#x8272;&#x5706;&#x8FFD;&#x8E2A;&#x95ED;&#x73AF;&#xFF09;">3. &#x6807;&#x5B9A;&#x7ED3;&#x679C;&#x9A8C;&#x8BC1;&#xFF08;&#x84DD;&#x8272;&#x5706;&#x8FFD;&#x8E2A;&#x95ED;&#x73AF;&#xFF09;</h2>
+<p>&#x811A;&#x672C;&#xFF1A;<code>vision/track_blue_circle_eyetohand.py</code></p>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x68C0;&#x6D4B;&#x84DD;&#x8272;&#x5706; &#x2192; PnP &#x6C42; $T_{target}^{cam}$ &#x2192; &#x7528;&#x624B;&#x773C;&#x7ED3;&#x679C;&#x6362;&#x7B97;&#x5230;&#x57FA;&#x5EA7;&#x7CFB; &#x2192; &#x9A71;&#x52A8;&#x673A;&#x68B0;&#x81C2;&#x9760;&#x8FD1;&#x76EE;&#x6807;&#x3002;</li>
+<li>&#x8FD0;&#x884C;&#xFF1A;</li>
+</ul>
+<pre><code class="lang-bash">python vision/track_blue_circle_eyetohand.py
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="theory_handeye.html" class="navigation navigation-prev " aria-label="Previous page: 理论：手眼标定">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ref_vision_handeye.html" class="navigation navigation-next " aria-label="Next page: 函数解析：手眼评估">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"3. 相机与手眼标定","level":"1.6.3","depth":2,"next":{"title":"函数解析：手眼评估","level":"1.6.4","depth":2,"path":"ref_vision_handeye.md","ref":"ref_vision_handeye.md","articles":[]},"previous":{"title":"理论：手眼标定","level":"1.6.2","depth":2,"path":"theory_handeye.md","ref":"theory_handeye.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"stage1_3_calibration.md","mtime":"2026-01-10T12:43:42.299Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,0 +1,1333 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>5. FPGA 逆解加速 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="ref_rdt_pipeline.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >5. FPGA 逆解加速</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="5-fpga-&#x9006;&#x89E3;&#x52A0;&#x901F;">5. FPGA &#x9006;&#x89E3;&#x52A0;&#x901F;</h1>
+<p>&#x672C;&#x7AE0;&#x4ECB;&#x7ECD;&#x5982;&#x4F55;&#x5229;&#x7528; FPGA &#x786C;&#x4EF6;&#x52A0;&#x901F; Levenberg-Marquardt &#x9006;&#x8FD0;&#x52A8;&#x5B66;&#x6C42;&#x89E3;&#x5668;&#xFF0C;&#x5B9E;&#x73B0;&#x76F8;&#x6BD4;&#x7EAF;&#x8F6F;&#x4EF6;&#x6267;&#x884C;&#x7EA6; <strong>10&#x500D;</strong> &#x7684;&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#x6027;&#x80FD;&#x63D0;&#x5347;&#x3002;</p>
+<h2 id="&#x7406;&#x8BBA;&#x80CC;&#x666F;">&#x7406;&#x8BBA;&#x80CC;&#x666F;</h2>
+<h3 id="&#x4E3A;&#x4EC0;&#x4E48;&#x9700;&#x8981;&#x786C;&#x4EF6;&#x52A0;&#x901F;">&#x4E3A;&#x4EC0;&#x4E48;&#x9700;&#x8981;&#x786C;&#x4EF6;&#x52A0;&#x901F;</h3>
+<p>&#x9006;&#x8FD0;&#x52A8;&#x5B66;&#xFF08;IK&#xFF09;&#x6C42;&#x89E3;&#x662F;&#x673A;&#x68B0;&#x81C2;&#x63A7;&#x5236;&#x7684;&#x6838;&#x5FC3;&#x73AF;&#x8282;&#xFF0C;&#x51B3;&#x5B9A;&#x4E86;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x4ECE;&#x5F53;&#x524D;&#x4F4D;&#x59FF;&#x8FD0;&#x52A8;&#x5230;&#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x65F6;&#x5404;&#x5173;&#x8282;&#x5E94;&#x65CB;&#x8F6C;&#x7684;&#x89D2;&#x5EA6;&#x3002;&#x5728;&#x5B9E;&#x65F6;&#x63A7;&#x5236;&#x573A;&#x666F;&#xFF08;&#x5982;&#x9065;&#x64CD;&#x4F5C;&#x3001;&#x8F68;&#x8FF9;&#x8DDF;&#x8E2A;&#xFF09;&#x4E2D;&#xFF0C;IK &#x6C42;&#x89E3;&#x9700;&#x8981;&#x5728;&#x6BEB;&#x79D2;&#x7EA7;&#x5B8C;&#x6210;&#xFF0C;&#x800C;&#x7EAF;&#x8F6F;&#x4EF6;&#x5B9E;&#x73B0;&#x7684;&#x8FED;&#x4EE3;&#x5F0F; LM &#x7B97;&#x6CD5;&#x5728;&#x8D44;&#x6E90;&#x53D7;&#x9650;&#x7684;&#x5D4C;&#x5165;&#x5F0F;&#x5E73;&#x53F0;&#xFF08;&#x5982; PYNQ-Z2 &#x7684; ARM &#x5904;&#x7406;&#x5668;&#xFF09;&#x4E0A;&#x5F80;&#x5F80;&#x65E0;&#x6CD5;&#x6EE1;&#x8DB3;&#x6027;&#x80FD;&#x9700;&#x6C42;&#x3002;</p>
+<p>FPGA &#x901A;&#x8FC7;&#x5176;&#x9AD8;&#x5EA6;&#x5E76;&#x884C;&#x7684;&#x786C;&#x4EF6;&#x67B6;&#x6784;&#xFF0C;&#x53EF;&#x4EE5;&#x5C06; LM &#x7B97;&#x6CD5;&#x4E2D;&#x7684;&#x77E9;&#x9635;&#x8FD0;&#x7B97;&#xFF08;&#x96C5;&#x53EF;&#x6BD4;&#x8BA1;&#x7B97;&#x3001;Cholesky &#x5206;&#x89E3;&#x3001;&#x7EBF;&#x6027;&#x65B9;&#x7A0B;&#x6C42;&#x89E3;&#x7B49;&#xFF09;&#x6620;&#x5C04;&#x4E3A;&#x6D41;&#x6C34;&#x7EBF;&#x7535;&#x8DEF;&#xFF0C;&#x663E;&#x8457;&#x964D;&#x4F4E;&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#x5EF6;&#x8FDF;&#x3002;&#x672C;&#x9879;&#x76EE;&#x5728; PYNQ-Z2 &#x677F;&#x5361;&#x4E0A;&#x5B9E;&#x73B0;&#x7684;&#x786C;&#x4EF6;&#x52A0;&#x901F; IP &#x6838;&#xFF0C;&#x5C06;&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#x901F;&#x5EA6;&#x63D0;&#x5347;&#x7EA6; <strong>10 &#x500D;</strong>&#xFF0C;&#x5E73;&#x5747;&#x8FED;&#x4EE3;&#x65F6;&#x95F4;&#x51CF;&#x5C11; <strong>7.9 &#x500D;</strong>&#xFF0C;&#x603B;&#x4F53;&#x52A0;&#x901F;&#x6BD4;&#x8FBE;&#x5230; <strong>2.5 &#x500D;</strong>&#x3002;</p>
+<h3 id="levenberg-marquardt-&#x7B97;&#x6CD5;&#x56DE;&#x987E;">Levenberg-Marquardt &#x7B97;&#x6CD5;&#x56DE;&#x987E;</h3>
+<p>LM &#x7B97;&#x6CD5;&#x662F;&#x4E00;&#x79CD;&#x8FED;&#x4EE3;&#x4F18;&#x5316;&#x65B9;&#x6CD5;&#xFF0C;&#x901A;&#x8FC7;&#x6700;&#x5C0F;&#x5316;&#x4F4D;&#x59FF;&#x8BEF;&#x5DEE;&#x6765;&#x6C42;&#x89E3;&#x5173;&#x8282;&#x89D2;&#x3002;&#x6838;&#x5FC3;&#x66F4;&#x65B0;&#x516C;&#x5F0F;&#x4E3A;&#xFF1A;</p>
+<p><script type="math/tex; mode=display">
+\left( J^T J + \lambda I \right) \Delta q = -J^T e
+
+</script></p>
+<p>&#x5176;&#x4E2D;&#xFF1A;</p>
+<ul>
+<li>$q \in \mathbb{R}^5$&#xFF1A;&#x5173;&#x8282;&#x89D2;&#x5411;&#x91CF;&#xFF08;SO-101 &#x4E3A; 5 &#x81EA;&#x7531;&#x5EA6;&#xFF09;</li>
+<li>$e \in \mathbb{R}^6$&#xFF1A;&#x4F4D;&#x59FF;&#x8BEF;&#x5DEE;&#xFF08;3D &#x4F4D;&#x7F6E; + 3D &#x59FF;&#x6001;&#xFF0C;angle-axis &#x8868;&#x793A;&#xFF09;</li>
+<li>$J \in \mathbb{R}^{6 \times 5}$&#xFF1A;&#x51E0;&#x4F55;&#x96C5;&#x53EF;&#x6BD4;&#x77E9;&#x9635;&#xFF08;&#x672B;&#x7AEF;&#x901F;&#x5EA6;&#x5BF9;&#x5173;&#x8282;&#x89D2;&#x901F;&#x5EA6;&#x7684;&#x504F;&#x5BFC;&#xFF09;</li>
+<li>$\lambda$&#xFF1A;&#x963B;&#x5C3C;&#x7CFB;&#x6570;&#xFF08;&#x6B63;&#x5219;&#x5316;&#x53C2;&#x6570;&#xFF0C;&#x9632;&#x6B62;&#x5947;&#x5F02;&#xFF09;</li>
+</ul>
+<p><strong>&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#x6D41;&#x7A0B;</strong>&#xFF1A;</p>
+<ol>
+<li><strong>&#x6B63;&#x8FD0;&#x52A8;&#x5B66;&#xFF08;FK&#xFF09;</strong>&#xFF1A;&#x8BA1;&#x7B97;&#x5F53;&#x524D;&#x5173;&#x8282;&#x89D2; $q$ &#x5BF9;&#x5E94;&#x7684;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T(q)$</li>
+<li><strong>&#x8BEF;&#x5DEE;&#x8BA1;&#x7B97;</strong>&#xFF1A;$e = \text{pose_error}(T_{\text{goal}}, T(q))$</li>
+<li><strong>&#x96C5;&#x53EF;&#x6BD4;&#x8BA1;&#x7B97;</strong>&#xFF1A;$J = \frac{\partial v}{\partial \dot{q}}$&#xFF08;6 &#x884C; 5 &#x5217;&#xFF09;</li>
+<li><strong>&#x6784;&#x9020;&#x6B63;&#x89C4;&#x65B9;&#x7A0B;</strong>&#xFF1A;$A = J^T J + \lambda I$&#xFF0C;$b = -J^T e$</li>
+<li><strong>Cholesky &#x6C42;&#x89E3;</strong>&#xFF1A;&#x5206;&#x89E3; $A = L L^T$&#xFF0C;&#x6C42;&#x89E3; $\Delta q$</li>
+<li><strong>&#x66F4;&#x65B0;&#x5173;&#x8282;&#x89D2;</strong>&#xFF1A;$q \leftarrow q + \Delta q$</li>
+</ol>
+<p>&#x672C;&#x9879;&#x76EE;&#x7684;&#x786C;&#x4EF6;&#x52A0;&#x901F;&#x6838;&#x5FC3;&#x5728;&#x4E8E; <strong>&#x6B65;&#x9AA4; 3-5</strong>&#xFF0C;&#x8FD9;&#x4E09;&#x6B65;&#x6D89;&#x53CA;&#x5927;&#x91CF;&#x77E9;&#x9635;&#x8FD0;&#x7B97;&#xFF0C;&#x5360;&#x636E;&#x4E86; LM &#x7B97;&#x6CD5; 80% &#x4EE5;&#x4E0A;&#x7684;&#x8BA1;&#x7B97;&#x65F6;&#x95F4;&#x3002;</p>
+<h3 id="&#x786C;&#x4EF6;&#x52A0;&#x901F;&#x7684;&#x5173;&#x952E;&#x8BA1;&#x7B97;">&#x786C;&#x4EF6;&#x52A0;&#x901F;&#x7684;&#x5173;&#x952E;&#x8BA1;&#x7B97;</h3>
+<p>&#x5728; LM &#x8FED;&#x4EE3;&#x4E2D;&#xFF0C;&#x6700;&#x8017;&#x65F6;&#x7684;&#x64CD;&#x4F5C;&#x5305;&#x62EC;&#xFF1A;</p>
+<ol>
+<li><p><strong>&#x96C5;&#x53EF;&#x6BD4;&#x77E9;&#x9635;&#x8BA1;&#x7B97;</strong>&#xFF08;<code>compute_fk_jacobian_so101</code>&#xFF09;</p>
+<ul>
+<li>&#x8F93;&#x5165;&#xFF1A;$\sin(q)$&#x3001;$\cos(q)$&#xFF08;&#x9884;&#x8BA1;&#x7B97;&#xFF0C;&#x907F;&#x514D; FPGA &#x5B9E;&#x73B0;&#x8D85;&#x8D8A;&#x51FD;&#x6570;&#xFF09;</li>
+<li>&#x8F93;&#x51FA;&#xFF1A;$J \in \mathbb{R}^{6 \times 5}$</li>
+<li>&#x590D;&#x6742;&#x5EA6;&#xFF1A;&#x6D89;&#x53CA; 30+ &#x6B21;&#x6D6E;&#x70B9;&#x4E58;&#x6CD5;&#x3001;&#x52A0;&#x6CD5;&#xFF08;&#x65CB;&#x8F6C;&#x77E9;&#x9635;&#x8FDE;&#x4E58;&#x4E0E;&#x53C9;&#x79EF;&#xFF09;</li>
+<li>&#x4F18;&#x5316;&#xFF1A;UNROLL factor=3&#xFF0C;&#x90E8;&#x5206;&#x5C55;&#x5F00;&#x5E73;&#x8861; DSP &#x4F7F;&#x7528;&#x4E0E;&#x5EF6;&#x8FDF;</li>
+</ul>
+</li>
+<li><p><strong>&#x77E9;&#x9635;&#x4E58;&#x6CD5;</strong>&#xFF08;&#x8C03;&#x7528; Vitis Solver L1 &#x5E93;&#xFF09;</p>
+<ul>
+<li>$A = J^T J$&#xFF1A;$(5 \times 6) \times (6 \times 5) \rightarrow (5 \times 5)$</li>
+<li>$b = J^T e$&#xFF1A;$(5 \times 6) \times (6 \times 1) \rightarrow (5 \times 1)$</li>
+<li>&#x590D;&#x6742;&#x5EA6;&#xFF1A;$O(N^3)$ &#x6216; $O(N^2 M)$&#xFF08;$N=5$&#xFF0C;$M=6$&#xFF09;</li>
+<li>&#x4F18;&#x5316;&#xFF1A;&#x4F7F;&#x7528; Xilinx L1 &#x5E93;&#x7684;&#x9AD8;&#x5EA6;&#x4F18;&#x5316;&#x5B9E;&#x73B0;&#xFF08;PIPELINE + DATAFLOW&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong>Cholesky &#x5206;&#x89E3;&#x4E0E;&#x4E09;&#x89D2;&#x6C42;&#x89E3;</strong>&#xFF08;&#x8C03;&#x7528; Vitis Solver L1 &#x5E93;&#xFF09;</p>
+<ul>
+<li>&#x5206;&#x89E3;&#xFF1A;$A = L L^T$&#xFF08;$L$ &#x4E3A;&#x4E0B;&#x4E09;&#x89D2;&#x77E9;&#x9635;&#xFF09;</li>
+<li>&#x524D;&#x5411;&#x66FF;&#x6362;&#xFF1A;$L y = b$</li>
+<li>&#x540E;&#x5411;&#x66FF;&#x6362;&#xFF1A;$L^T \Delta q = y$</li>
+<li>&#x590D;&#x6742;&#x5EA6;&#xFF1A;$O(N^3)$</li>
+<li>&#x4F18;&#x5316;&#xFF1A;<strong>&#x5B8C;&#x5168;&#x5C55;&#x5F00;</strong>&#xFF08;UNROLL&#xFF09;&#xFF0C;&#x5229;&#x7528; DSP &#x6D41;&#x6C34;&#x7EBF;&#xFF08;&#x5EF6;&#x8FDF;&#x6700;&#x5C0F;&#x5316;&#xFF09;</li>
+</ul>
+</li>
+</ol>
+<p>FPGA &#x53EF;&#x4EE5;&#x9488;&#x5BF9;&#x8FD9;&#x4E9B;&#x64CD;&#x4F5C;&#x8FDB;&#x884C;&#x6D41;&#x6C34;&#x7EBF;&#x4F18;&#x5316;&#xFF0C;&#x5E76;&#x5229;&#x7528; BRAM &#x548C; DSP &#x8D44;&#x6E90;&#x5B9E;&#x73B0;&#x9AD8;&#x6548;&#x7684;&#x6D6E;&#x70B9;&#x8FD0;&#x7B97;&#x3002;&#x76F8;&#x6BD4; ARM &#x5904;&#x7406;&#x5668;&#x7684;&#x987A;&#x5E8F;&#x6267;&#x884C;&#xFF0C;FPGA &#x7684;&#x5E76;&#x884C;&#x8BA1;&#x7B97;&#x80FD;&#x529B;&#x5728;&#x5C0F;&#x77E9;&#x9635;&#x5BC6;&#x96C6;&#x8FD0;&#x7B97;&#x573A;&#x666F;&#x4E0B;&#x4F18;&#x52BF;&#x663E;&#x8457;&#x3002;</p>
+<hr>
+<h2 id="&#x7CFB;&#x7EDF;&#x67B6;&#x6784;">&#x7CFB;&#x7EDF;&#x67B6;&#x6784;</h2>
+<h3 id="&#x786C;&#x4EF6;&#x5E73;&#x53F0;">&#x786C;&#x4EF6;&#x5E73;&#x53F0;</h3>
+<ul>
+<li><strong>&#x5F00;&#x53D1;&#x677F;</strong>&#xFF1A;PYNQ-Z2&#xFF08;Xilinx Zynq-7020 SoC&#xFF09;<ul>
+<li><strong>PS &#x7AEF;</strong>&#xFF08;Processing System&#xFF09;&#xFF1A;&#x53CC;&#x6838; ARM Cortex-A9 @ 650 MHz<ul>
+<li>&#x8FD0;&#x884C; Python &#x4EE3;&#x7801;&#xFF08;PYNQ &#x6846;&#x67B6;&#x3001;Jupyter Notebook&#xFF09;</li>
+<li>&#x9AD8;&#x5C42;&#x63A7;&#x5236;&#x903B;&#x8F91;&#xFF08;&#x8BEF;&#x5DEE;&#x8BA1;&#x7B97;&#x3001;&#x6536;&#x655B;&#x5224;&#x65AD;&#x3001;&#x963B;&#x5C3C;&#x8C03;&#x6574;&#xFF09;</li>
+<li>&#x901A;&#x8FC7; AXI-Lite &#x63A5;&#x53E3;&#x8BBF;&#x95EE; PL &#x7AEF; IP &#x6838;</li>
+</ul>
+</li>
+<li><strong>PL &#x7AEF;</strong>&#xFF08;Programmable Logic&#xFF09;&#xFF1A;Artix-7 FPGA<ul>
+<li>&#x90E8;&#x7F72; IK &#x6C42;&#x89E3;&#x5668; IP &#x6838;&#xFF08;<code>xf_solver_lm_so101</code>&#xFF09;</li>
+<li>&#x786C;&#x4EF6;&#x8D44;&#x6E90;&#xFF1A;53200 LUT&#x3001;106400 FF&#x3001;220 DSP&#x3001;140 BRAM</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>&#x901A;&#x4FE1;&#x63A5;&#x53E3;</strong>&#xFF1A;AXI-Lite</li>
+<li><strong>&#x7F16;&#x7A0B;&#x6846;&#x67B6;</strong>&#xFF1A;<ul>
+<li><strong>Vitis HLS 2024.2</strong>&#xFF1A;&#x9AD8;&#x5C42;&#x6B21;&#x7EFC;&#x5408;&#xFF08;C++ &#x2192; RTL&#xFF09;</li>
+<li><strong>Vivado 2024.2</strong>&#xFF1A;FPGA &#x7EFC;&#x5408;&#x4E0E;&#x5E03;&#x5C40;&#x5E03;&#x7EBF;</li>
+<li><strong>PYNQ 2.7+</strong>&#xFF1A;Python &#x5230; FPGA &#x7684;&#x6865;&#x63A5;&#x5C42;&#xFF08;Overlay &#x673A;&#x5236;&#xFF09;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x8F6F;&#x786C;&#x4EF6;&#x534F;&#x540C;&#x67B6;&#x6784;">&#x8F6F;&#x786C;&#x4EF6;&#x534F;&#x540C;&#x67B6;&#x6784;</h3>
+<pre><code>&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;              Jupyter Notebook &#x5C42;                     &#x2502;
+&#x2502;  &#xFF08;&#x7528;&#x6237;&#x4EA4;&#x4E92;&#x3001;&#x53EF;&#x89C6;&#x5316;&#x3001;&#x6F14;&#x793A;&#xFF09;                           &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                 &#x2502;
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;           Python &#x5E94;&#x7528;&#x5C42;                              &#x2502;
+&#x2502;  &#x2022; robot.py      - &#x673A;&#x5668;&#x4EBA;&#x6A21;&#x578B;                        &#x2502;
+&#x2502;  &#x2022; solvers.py    - &#x8F6F;&#x4EF6; IK &#x6C42;&#x89E3;&#x5668;                    &#x2502;
+&#x2502;  &#x2022; hw_solver_wrapper.py - &#x786C;&#x4EF6;&#x6C42;&#x89E3;&#x5668;&#x5C01;&#x88C5;             &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                 &#x2502;
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;      &#x786C;&#x4EF6;&#x62BD;&#x8C61;&#x5C42;&#xFF08;HAL&#xFF09;                                &#x2502;
+&#x2502;  &#x2022; PYNQ Overlay  - &#x6BD4;&#x7279;&#x6D41;&#x52A0;&#x8F7D;                        &#x2502;
+&#x2502;  &#x2022; MMIO          - &#x5BC4;&#x5B58;&#x5668;&#x8BBF;&#x95EE;                        &#x2502;
+&#x2502;  &#x2022; driver        - &#x8235;&#x673A;&#x63A7;&#x5236;                          &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                 &#x2502;
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;              FPGA &#x786C;&#x4EF6;&#x5C42;                             &#x2502;
+&#x2502;  &#x2022; xf_solver_lm_so101 IP &#x6838;                         &#x2502;
+&#x2502;  &#x2022; AXI-Lite Slave &#x63A5;&#x53E3;                              &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+</code></pre><h3 id="ip-&#x6838;&#x63A5;&#x53E3;&#x8BBE;&#x8BA1;">IP &#x6838;&#x63A5;&#x53E3;&#x8BBE;&#x8BA1;</h3>
+<p>&#x786C;&#x4EF6;&#x6C42;&#x89E3;&#x5668;&#x901A;&#x8FC7; AXI-Lite &#x5BC4;&#x5B58;&#x5668;&#x63A5;&#x53E3;&#x4E0E; PS &#x7AEF;&#x4EA4;&#x4E92;&#xFF0C;&#x4E3B;&#x8981;&#x5BC4;&#x5B58;&#x5668;&#x5305;&#x62EC;&#xFF1A;</p>
+<h4 id="&#x8F93;&#x5165;&#x5BC4;&#x5B58;&#x5668;">&#x8F93;&#x5165;&#x5BC4;&#x5B58;&#x5668;</h4>
+<table>
+<thead>
+<tr>
+<th>&#x504F;&#x79FB;&#x5730;&#x5740;</th>
+<th>&#x540D;&#x79F0;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x10</td>
+<td>sin0</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 0 &#x7684;&#x6B63;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x18</td>
+<td>sin1</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 1 &#x7684;&#x6B63;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x20</td>
+<td>sin2</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 2 &#x7684;&#x6B63;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x28</td>
+<td>sin3</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 3 &#x7684;&#x6B63;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x30</td>
+<td>sin4</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 4 &#x7684;&#x6B63;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x38</td>
+<td>cos0</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 0 &#x7684;&#x4F59;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>cos1</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 1 &#x7684;&#x4F59;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x48</td>
+<td>cos2</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 2 &#x7684;&#x4F59;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x50</td>
+<td>cos3</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 3 &#x7684;&#x4F59;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x58</td>
+<td>cos4</td>
+<td>float</td>
+<td>&#x5173;&#x8282; 4 &#x7684;&#x4F59;&#x5F26;&#x503C;</td>
+</tr>
+<tr>
+<td>0x60 - 0x88</td>
+<td>e0 - e5</td>
+<td>float</td>
+<td>&#x4F4D;&#x59FF;&#x8BEF;&#x5DEE;&#x5411;&#x91CF;&#xFF08;6 &#x7EF4;&#xFF09;</td>
+</tr>
+<tr>
+<td>0x90</td>
+<td>lambda</td>
+<td>float</td>
+<td>&#x963B;&#x5C3C;&#x7CFB;&#x6570;</td>
+</tr>
+</tbody>
+</table>
+<h4 id="&#x8F93;&#x51FA;&#x5BC4;&#x5B58;&#x5668;">&#x8F93;&#x51FA;&#x5BC4;&#x5B58;&#x5668;</h4>
+<table>
+<thead>
+<tr>
+<th>&#x504F;&#x79FB;&#x5730;&#x5740;</th>
+<th>&#x540D;&#x79F0;</th>
+<th>&#x7C7B;&#x578B;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x98</td>
+<td>d0</td>
+<td>float</td>
+<td>&#x5173;&#x8282;&#x89D2;&#x589E;&#x91CF;$\Delta q_0$</td>
+</tr>
+<tr>
+<td>0xA8</td>
+<td>d1</td>
+<td>float</td>
+<td>&#x5173;&#x8282;&#x89D2;&#x589E;&#x91CF;$\Delta q_1$</td>
+</tr>
+<tr>
+<td>0xB8</td>
+<td>d2</td>
+<td>float</td>
+<td>&#x5173;&#x8282;&#x89D2;&#x589E;&#x91CF;$\Delta q_2$</td>
+</tr>
+<tr>
+<td>0xC8</td>
+<td>d3</td>
+<td>float</td>
+<td>&#x5173;&#x8282;&#x89D2;&#x589E;&#x91CF;$\Delta q_3$</td>
+</tr>
+<tr>
+<td>0xD8</td>
+<td>d4</td>
+<td>float</td>
+<td>&#x5173;&#x8282;&#x89D2;&#x589E;&#x91CF;$\Delta q_4$</td>
+</tr>
+<tr>
+<td>0xE8</td>
+<td>status</td>
+<td>uint</td>
+<td>&#x6267;&#x884C;&#x72B6;&#x6001;&#x7801;</td>
+</tr>
+</tbody>
+</table>
+<h4 id="&#x63A7;&#x5236;&#x5BC4;&#x5B58;&#x5668;">&#x63A7;&#x5236;&#x5BC4;&#x5B58;&#x5668;</h4>
+<table>
+<thead>
+<tr>
+<th>&#x504F;&#x79FB;&#x5730;&#x5740;</th>
+<th>&#x540D;&#x79F0;</th>
+<th>&#x4F4D;&#x57DF;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00</td>
+<td>CTRL</td>
+<td>[0]</td>
+<td>&#x542F;&#x52A8;&#x8BA1;&#x7B97;&#xFF08;&#x5199; 1 &#x89E6;&#x53D1;&#xFF09;</td>
+</tr>
+<tr>
+<td>0x00</td>
+<td>STAT</td>
+<td>[1]</td>
+<td>&#x5B8C;&#x6210;&#x6807;&#x5FD7;&#xFF08;&#x8BFB;&#x53D6;&#x65F6;&#x68C0;&#x67E5; bit 1&#xFF09;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>&#x672C;&#x9879;&#x76EE;&#x91C7;&#x7528;&#x8F6F;&#x786C;&#x4EF6;&#x534F;&#x540C;&#x8BBE;&#x8BA1;&#xFF0C;&#x660E;&#x786E;&#x5212;&#x5206;&#x8BA1;&#x7B97;&#x8FB9;&#x754C;&#xFF1A;<strong>&#x8BEF;&#x5DEE;&#x8BA1;&#x7B97;&#x5728; PS&#xFF0C;&#x589E;&#x91CF;&#x6C42;&#x89E3;&#x5728; PL</strong>&#x3002;</p>
+<h3 id="&#x786C;&#x4EF6;&#x5C42;&#x6B21;&#xFF08;fpga-pl-&#x7AEF;&#xFF09;">&#x786C;&#x4EF6;&#x5C42;&#x6B21;&#xFF08;FPGA PL &#x7AEF;&#xFF09;</h3>
+<h4 id="1-ip-&#x6838;&#x5B9E;&#x73B0;&#xFF1A;lmsolverso101hpp">1. IP &#x6838;&#x5B9E;&#x73B0;&#xFF1A;<code>lm_solver_so101.hpp</code></h4>
+<p><strong>&#x6838;&#x5FC3;&#x6570;&#x636E;&#x7ED3;&#x6784;</strong>&#xFF1A;</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">struct</span> SO101_Params {
+    <span class="hljs-comment">// 5&#x4E2A;&#x5173;&#x8282;&#x7684;&#x51E0;&#x4F55;&#x53C2;&#x6570;&#xFF08;&#x57FA;&#x4E8E; ET &#x5E8F;&#x5217;&#xFF09;</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j1_tx = <span class="hljs-number">0.0612f</span>;  <span class="hljs-comment">// Joint 1: Rz</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j1_tz = <span class="hljs-number">0.0598f</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j2_tx = <span class="hljs-number">0.02943f</span>; <span class="hljs-comment">// Joint 2: Ry</span>
+    <span class="hljs-comment">// ...</span>
+};
+</code></pre>
+<p><strong>&#x4E09;&#x5927;&#x6838;&#x5FC3;&#x51FD;&#x6570;</strong>&#xFF1A;</p>
+<ol>
+<li><p><strong><code>compute_fk_jacobian_so101&lt;T&gt;(sin_q, cos_q, p_end, J)</code></strong></p>
+<ul>
+<li><strong>&#x8F93;&#x5165;</strong>&#xFF1A;$\sin(q_i)$&#x3001;$\cos(q_i)$ [5]&#xFF08;PS &#x7AEF;&#x9884;&#x8BA1;&#x7B97;&#xFF09;</li>
+<li><strong>&#x8F93;&#x51FA;</strong>&#xFF1A;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E; $p$ [3]&#xFF0C;&#x96C5;&#x53EF;&#x6BD4; $J$ [6&#xD7;5]</li>
+<li><strong>&#x5B9E;&#x73B0;</strong>&#xFF1A;&#x4E32;&#x8054; 5 &#x4E2A; ET &#x53D8;&#x6362;&#xFF08;Rz &#x2192; Ry &#x2192; Ry &#x2192; Ry &#x2192; Rx&#xFF09;</li>
+<li><strong>&#x4F18;&#x5316;</strong>&#xFF1A;<code>#pragma HLS UNROLL factor=3</code>&#xFF08;&#x90E8;&#x5206;&#x5C55;&#x5F00;&#x53C9;&#x79EF;&#x8BA1;&#x7B97;&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong><code>lm_solve_step_so101&lt;T&gt;(sin_q, cos_q, error, lambda, delta)</code></strong></p>
+<ul>
+<li><strong>&#x8F93;&#x5165;</strong>&#xFF1A;&#x8BEF;&#x5DEE;&#x5411;&#x91CF; $e$ [6]&#xFF0C;&#x963B;&#x5C3C;&#x7CFB;&#x6570; $\lambda$</li>
+<li><strong>&#x8F93;&#x51FA;</strong>&#xFF1A;&#x5173;&#x8282;&#x589E;&#x91CF; $\Delta q$ [5]</li>
+<li><strong>&#x6D41;&#x7A0B;</strong>&#xFF1A;<ol>
+<li>&#x8C03;&#x7528; <code>compute_fk_jacobian_so101</code> &#x83B7;&#x53D6; $J$</li>
+<li>&#x77E9;&#x9635;&#x4E58;&#x6CD5;&#xFF1A;$A = J^T J$&#xFF08;&#x8C03;&#x7528; Vitis L1 &#x5E93;&#xFF09;</li>
+<li>&#x77E9;&#x9635;&#x4E58;&#x6CD5;&#xFF1A;$b = -J^T e$</li>
+<li>&#x6DFB;&#x52A0;&#x963B;&#x5C3C;&#xFF1A;$A \leftarrow A + \lambda I$</li>
+<li>Cholesky &#x5206;&#x89E3;&#xFF1A;$A = L L^T$&#xFF08;&#x8C03;&#x7528; Vitis L1 &#x5E93;&#xFF09;</li>
+<li>&#x4E09;&#x89D2;&#x6C42;&#x89E3;&#xFF1A;$L y = b$&#xFF0C;$L^T \Delta q = y$&#xFF08;<strong>&#x5B8C;&#x5168;&#x5C55;&#x5F00;</strong>&#xFF09;</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p><strong>Cholesky &#x5206;&#x89E3;&#x4E0E;&#x4E09;&#x89D2;&#x6C42;&#x89E3;&#x4F18;&#x5316;</strong></p>
+<ul>
+<li><strong>&#x5BF9;&#x89D2;&#x7EBF;&#x5012;&#x6570;&#x9884;&#x8BA1;&#x7B97;</strong>&#xFF1A;&#x907F;&#x514D;&#x9664;&#x6CD5;&#x6D41;&#x6C34;&#x7EBF;&#x505C;&#x987F;<pre><code class="lang-cpp">T L_diag_inv[N];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) {
+    L_diag_inv[i] = T(<span class="hljs-number">1.0</span>) / L[i][i];
+}
+</code></pre>
+</li>
+<li><strong>&#x524D;&#x5411;&#x66FF;&#x6362;&#x5C55;&#x5F00;</strong>&#xFF08;&#x4EE5; $N=5$ &#x4E3A;&#x4F8B;&#xFF09;&#xFF1A;<pre><code class="lang-cpp">y[<span class="hljs-number">0</span>] = b[<span class="hljs-number">0</span>] * L_diag_inv[<span class="hljs-number">0</span>];
+y[<span class="hljs-number">1</span>] = (b[<span class="hljs-number">1</span>] - L[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]*y[<span class="hljs-number">0</span>]) * L_diag_inv[<span class="hljs-number">1</span>];
+y[<span class="hljs-number">2</span>] = (b[<span class="hljs-number">2</span>] - L[<span class="hljs-number">2</span>][<span class="hljs-number">0</span>]*y[<span class="hljs-number">0</span>] - L[<span class="hljs-number">2</span>][<span class="hljs-number">1</span>]*y[<span class="hljs-number">1</span>]) * L_diag_inv[<span class="hljs-number">2</span>];
+<span class="hljs-comment">// ...</span>
+</code></pre>
+</li>
+<li><strong>&#x540E;&#x5411;&#x66FF;&#x6362;&#x5C55;&#x5F00;</strong>&#xFF1A;&#x4ECE; $\Delta q_4$ &#x5230; $\Delta q_0$ &#x9006;&#x5E8F;&#x8BA1;&#x7B97;</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-vivado-&#x5DE5;&#x7A0B;&#xFF1A;srcoverlay">2. Vivado &#x5DE5;&#x7A0B;&#xFF1A;<code>src/overlay/</code></h4>
+<ul>
+<li><strong>Block Design</strong>&#xFF1A;AXI &#x4E92;&#x8FDE;&#x3001;&#x65F6;&#x949F;&#x57DF;&#x8F6C;&#x6362;&#x3001;IP &#x6838;&#x5B9E;&#x4F8B;&#x5316;</li>
+<li><strong>&#x6BD4;&#x7279;&#x6D41;&#x8F93;&#x51FA;</strong>&#xFF1A;<code>notebook/design_1.bit</code> + <code>design_1.hwh</code>&#xFF08;&#x786C;&#x4EF6;&#x63CF;&#x8FF0;&#xFF09;</li>
+<li><strong>&#x8D44;&#x6E90;&#x5360;&#x7528;</strong>&#xFF08;&#x7EFC;&#x5408;&#x540E;&#xFF09;&#xFF1A;<ul>
+<li>LUT: 33743 / 53200 (63%)</li>
+<li>DSP: 200 / 220 (90%)</li>
+<li>BRAM: 8 / 140 (6%)</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x8F6F;&#x4EF6;&#x5C42;&#x6B21;&#xFF08;python-ps-&#x7AEF;&#xFF09;">&#x8F6F;&#x4EF6;&#x5C42;&#x6B21;&#xFF08;Python PS &#x7AEF;&#xFF09;</h3>
+<h4 id="1-&#x786C;&#x4EF6;&#x62BD;&#x8C61;&#x5C42;&#xFF1A;hwsolverwrapperpy">1. &#x786C;&#x4EF6;&#x62BD;&#x8C61;&#x5C42;&#xFF1A;<code>hw_solver_wrapper.py</code></h4>
+<p><strong><code>HWSolverIterator</code> &#x7C7B;</strong>&#xFF1A;&#x5C01;&#x88C5; AXI-Lite &#x5BC4;&#x5B58;&#x5668;&#x8BBF;&#x95EE;</p>
+<ul>
+<li><strong>&#x5199;&#x5165;</strong>&#xFF1A;&#x901A;&#x8FC7; <code>solver_ip.mmio.write(offset, value)</code> &#x4F20;&#x9012; sin/cos&#x3001;&#x8BEF;&#x5DEE;&#x3001;lambda</li>
+<li><strong>&#x8BFB;&#x53D6;</strong>&#xFF1A;&#x901A;&#x8FC7; <code>solver_ip.mmio.read(offset)</code> &#x83B7;&#x53D6; $\Delta q$&#x3001;&#x72B6;&#x6001;&#x7801;</li>
+<li><strong>&#x540C;&#x6B65;</strong>&#xFF1A;&#x8F6E;&#x8BE2;&#x63A7;&#x5236;&#x5BC4;&#x5B58;&#x5668;&#x7684; Done &#x6807;&#x5FD7;&#x4F4D;&#xFF08;bit 1&#xFF09;</li>
+</ul>
+<p><strong><code>HWSolver</code> &#x7C7B;</strong>&#xFF1A;&#x4E0E; <code>robot.ikine_LM()</code> &#x517C;&#x5BB9;&#x7684;&#x9AD8;&#x5C42;&#x63A5;&#x53E3;</p>
+<ul>
+<li><strong>&#x8F6F;&#x4EF6;&#x90E8;&#x5206;</strong>&#xFF1A;FK &#x8BEF;&#x5DEE;&#x8BA1;&#x7B97;&#xFF08;&#x8C03;&#x7528; <code>robot.fkine(q)</code>&#xFF09;</li>
+<li><strong>&#x786C;&#x4EF6;&#x90E8;&#x5206;</strong>&#xFF1A;&#x589E;&#x91CF;&#x6C42;&#x89E3;&#xFF08;&#x8C03;&#x7528; <code>hw_iterator.solve_step()</code>&#xFF09;</li>
+<li><strong>&#x8FED;&#x4EE3;&#x63A7;&#x5236;</strong>&#xFF1A;&#x6536;&#x655B;&#x5224;&#x65AD;&#x3001;&#x963B;&#x5C3C;&#x8C03;&#x6574;&#xFF08;Wampler/Sugihara &#x65B9;&#x6CD5;&#xFF09;</li>
+</ul>
+<h4 id="2-&#x5DE5;&#x5382;&#x51FD;&#x6570;&#xFF1A;createhwsolver">2. &#x5DE5;&#x5382;&#x51FD;&#x6570;&#xFF1A;<code>create_hw_solver()</code></h4>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> pynq <span class="hljs-keyword">import</span> Overlay
+
+overlay = Overlay(<span class="hljs-string">&apos;design_1.bit&apos;</span>)
+solver_ip = overlay.xf_solver_lm_so101_0
+hw_solver = HWSolver(robot, HWSolverIterator(solver_ip, robot))
+</code></pre>
+<h3 id="&#x6570;&#x636E;&#x6D41;&#x56FE;">&#x6570;&#x636E;&#x6D41;&#x56FE;</h3>
+<pre><code>&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;              PS &#x7AEF;&#xFF08;Python&#xFF09;                         &#x2502;
+&#x2502;  1. &#x8BA1;&#x7B97; FK: T_current = robot.fkine(q)             &#x2502;
+&#x2502;  2. &#x8BA1;&#x7B97;&#x8BEF;&#x5DEE;: e = pose_error(T_goal, T_current)     &#x2502;
+&#x2502;  3. &#x8BA1;&#x7B97;&#x4E09;&#x89D2;&#x51FD;&#x6570;: sin_q, cos_q = sin(q), cos(q)     &#x2502;
+&#x2502;  4. &#x901A;&#x8FC7; AXI &#x5199;&#x5165;: sin_q, cos_q, e, lambda &#x2192; FPGA   &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                 &#x2502; AXI-Lite &#x603B;&#x7EBF;
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;              PL &#x7AEF;&#xFF08;FPGA IP &#x6838;&#xFF09;                     &#x2502;
+&#x2502;  5. &#x8BA1;&#x7B97;&#x96C5;&#x53EF;&#x6BD4;: J = compute_jacobian(sin_q, cos_q)  &#x2502;
+&#x2502;  6. &#x77E9;&#x9635;&#x4E58;&#x6CD5;: A = J^T * J, b = J^T * e              &#x2502;
+&#x2502;  7. Cholesky: A = L * L^T                           &#x2502;
+&#x2502;  8. &#x4E09;&#x89D2;&#x6C42;&#x89E3;: delta = solve(L, b)                   &#x2502;
+&#x2502;  9. &#x901A;&#x8FC7; AXI &#x8FD4;&#x56DE;: delta &#x2192; PS                       &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                 &#x2502; AXI-Lite &#x603B;&#x7EBF;
+&#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+&#x2502;              PS &#x7AEF;&#xFF08;Python&#xFF09;                         &#x2502;
+&#x2502;  10. &#x66F4;&#x65B0;&#x5173;&#x8282;&#x89D2;: q = q + delta                      &#x2502;
+&#x2502;  11. &#x68C0;&#x67E5;&#x6536;&#x655B;: ||e|| &lt; tol ?                        &#x2502;
+&#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+</code></pre><hr>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x672C;&#x8282;&#x6DF1;&#x5165;&#x89E3;&#x6790; HLS C++ &#x4EE3;&#x7801;&#x4E2D;&#x7684;&#x6838;&#x5FC3;&#x51FD;&#x6570;&#x5B9E;&#x73B0;&#x4E0E;&#x4F18;&#x5316;&#x7B56;&#x7565;&#x3002;</p>
+<h3 id="1-computefkjacobianso101---&#x6B63;&#x8FD0;&#x52A8;&#x5B66;&#x4E0E;&#x96C5;&#x53EF;&#x6BD4;&#x8BA1;&#x7B97;">1. <code>compute_fk_jacobian_so101()</code> - &#x6B63;&#x8FD0;&#x52A8;&#x5B66;&#x4E0E;&#x96C5;&#x53EF;&#x6BD4;&#x8BA1;&#x7B97;</h3>
+<p><strong>&#x51FD;&#x6570;&#x539F;&#x578B;</strong>&#xFF1A;</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">compute_fk_jacobian_so101</span><span class="hljs-params">(
+    <span class="hljs-keyword">const</span> T sin_q[<span class="hljs-number">5</span>],      <span class="hljs-comment">// &#x8F93;&#x5165;&#xFF1A;sin(q0), ..., sin(q4)</span>
+    <span class="hljs-keyword">const</span> T cos_q[<span class="hljs-number">5</span>],      <span class="hljs-comment">// &#x8F93;&#x5165;&#xFF1A;cos(q0), ..., cos(q4)</span>
+    T p_end[<span class="hljs-number">3</span>],            <span class="hljs-comment">// &#x8F93;&#x51FA;&#xFF1A;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E; [x, y, z]</span>
+    T J[<span class="hljs-number">6</span>][<span class="hljs-number">5</span>]              <span class="hljs-comment">// &#x8F93;&#x51FA;&#xFF1A;&#x51E0;&#x4F55;&#x96C5;&#x53EF;&#x6BD4; [6&#x884C;&#xD7;5&#x5217;]</span>
+)</span></span>;
+</code></pre>
+<p><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x57FA;&#x4E8E; SO-101 &#x7684; ETS&#xFF08;Elementary Transform Sequence&#xFF09;&#x4E32;&#x8054;&#x8BA1;&#x7B97;&#x6B63;&#x8FD0;&#x52A8;&#x5B66;&#x548C;&#x51E0;&#x4F55;&#x96C5;&#x53EF;&#x6BD4;&#x77E9;&#x9635;&#x3002;</p>
+<p><strong>&#x51E0;&#x4F55;&#x53C2;&#x6570;</strong>&#xFF08;&#x786C;&#x7F16;&#x7801;&#x5728; <code>SO101_Params</code> &#x7ED3;&#x6784;&#x4F53;&#xFF09;&#xFF1A;</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">struct</span> SO101_Params {
+    <span class="hljs-comment">// Joint 1 (Rz): Base &#x2192; J1</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j1_tx = <span class="hljs-number">0.0612f</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j1_tz = <span class="hljs-number">0.0598f</span>;
+
+    <span class="hljs-comment">// Joint 2 (Ry): J1 &#x2192; J2</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j2_tx = <span class="hljs-number">0.02943f</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j2_tz = <span class="hljs-number">0.05504f</span>;
+
+    <span class="hljs-comment">// Joint 3 (Ry): J2 &#x2192; J3</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j3_tx = <span class="hljs-number">0.02798f</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j3_tz = <span class="hljs-number">0.1127f</span>;
+
+    <span class="hljs-comment">// Joint 4 (Ry): J3 &#x2192; J4</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j4_tx = <span class="hljs-number">0.15504f</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j4_tz = <span class="hljs-number">0.00519f</span>;
+
+    <span class="hljs-comment">// Joint 5 (Rx): J4 &#x2192; End</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j5_tx = <span class="hljs-number">0.0593f</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">float</span> j5_tz = <span class="hljs-number">0.00996f</span>;
+};
+</code></pre>
+<p><strong>&#x6838;&#x5FC3;&#x7B97;&#x6CD5;</strong>&#xFF1A;</p>
+<ol>
+<li><strong>&#x521D;&#x59CB;&#x5316;</strong>&#xFF1A;&#x65CB;&#x8F6C;&#x77E9;&#x9635; $R = I_3$&#xFF0C;&#x4F4D;&#x7F6E; $p = [t_{x1}, 0, t_{z1}]^T$</li>
+<li><strong>&#x9010;&#x5173;&#x8282;&#x4E32;&#x8054;</strong>&#xFF08;5 &#x4E2A;&#x5173;&#x8282;&#xFF09;&#xFF1A;<ul>
+<li>&#x66F4;&#x65B0;&#x65CB;&#x8F6C;&#xFF1A;$R \leftarrow R \cdot \text{Rot}(\text{axis}, q_i)$&#xFF08;axis &#x4E3A; X/Y/Z&#xFF09;</li>
+<li>&#x66F4;&#x65B0;&#x4F4D;&#x7F6E;&#xFF1A;$p \leftarrow p + R \cdot [t_x, 0, t_z]^T$</li>
+<li>&#x4FDD;&#x5B58;&#x5173;&#x8282;&#x4FE1;&#x606F;&#xFF1A;$z_i = R[:, \text{axis}]$&#xFF08;&#x65CB;&#x8F6C;&#x8F74;&#xFF09;&#xFF0C;$p_i = p$&#xFF08;&#x5173;&#x8282;&#x4F4D;&#x7F6E;&#xFF09;</li>
+</ul>
+</li>
+<li><strong>&#x96C5;&#x53EF;&#x6BD4;&#x8BA1;&#x7B97;</strong>&#xFF1A;<ul>
+<li>&#x7EBF;&#x901F;&#x5EA6;&#x5217;&#xFF1A;$J_v^i = z_i \times (p_{\text{end}} - p_i)$&#xFF08;&#x53C9;&#x79EF;&#xFF09;</li>
+<li>&#x89D2;&#x901F;&#x5EA6;&#x5217;&#xFF1A;$J_\omega^i = z_i$</li>
+</ul>
+</li>
+</ol>
+<p><strong>HLS &#x4F18;&#x5316;</strong>&#xFF1A;</p>
+<pre><code class="lang-cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS INLINE off  <span class="hljs-comment">// &#x9632;&#x6B62;&#x81EA;&#x52A8;&#x5185;&#x8054;&#xFF08;&#x4FBF;&#x4E8E;&#x6027;&#x80FD;&#x5206;&#x6790;&#xFF09;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS UNROLL factor=3  <span class="hljs-comment">// &#x90E8;&#x5206;&#x5C55;&#x5F00;&#x96C5;&#x53EF;&#x6BD4;&#x5217;&#x8BA1;&#x7B97;&#xFF08;&#x5E73;&#x8861;DSP&#x4E0E;&#x5EF6;&#x8FDF;&#xFF09;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=J dim=2 complete  <span class="hljs-comment">// &#x96C5;&#x53EF;&#x6BD4;&#x5217;&#x5B8C;&#x5168;&#x5206;&#x533A;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=J dim=1 complete  <span class="hljs-comment">// &#x96C5;&#x53EF;&#x6BD4;&#x884C;&#x5B8C;&#x5168;&#x5206;&#x533A;</span></span>
+</code></pre>
+<p><strong>&#x6570;&#x5B66;&#x63A8;&#x5BFC;</strong>&#xFF08;&#x4EE5; Joint 2 &#x4E3A;&#x4F8B;&#xFF09;&#xFF1A;</p>
+<ul>
+<li>&#x65CB;&#x8F6C;&#x8F74;&#x4E3A; Y &#x8F74;&#xFF1A;$z_1 = R[:, 1] = [R_{01}, R_{11}, R_{21}]^T$</li>
+<li>&#x4F4D;&#x7F6E;&#x5DEE;&#xFF1A;$\Delta p = p_{\text{end}} - p_1$</li>
+<li>&#x53C9;&#x79EF;&#xFF1A;
+<script type="math/tex; mode=display">
+  J_v^1 = \begin{bmatrix} z_{1y} \Delta p_z - z_{1z} \Delta p_y \\ z_{1z} \Delta p_x - z_{1x} \Delta p_z \\ z_{1x} \Delta p_y - z_{1y} \Delta p_x \end{bmatrix}
+
+  </script></li>
+</ul>
+<hr>
+<h3 id="2-lmsolvestepso101---lm-&#x5355;&#x6B65;&#x6C42;&#x89E3;">2. <code>lm_solve_step_so101()</code> - LM &#x5355;&#x6B65;&#x6C42;&#x89E3;</h3>
+<p><strong>&#x51FD;&#x6570;&#x539F;&#x578B;</strong>&#xFF1A;</p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lm_solve_step_so101</span><span class="hljs-params">(
+    <span class="hljs-keyword">const</span> T sin_q[<span class="hljs-number">5</span>],      <span class="hljs-comment">// &#x8F93;&#x5165;&#xFF1A;sin(q)</span>
+    <span class="hljs-keyword">const</span> T cos_q[<span class="hljs-number">5</span>],      <span class="hljs-comment">// &#x8F93;&#x5165;&#xFF1A;cos(q)</span>
+    <span class="hljs-keyword">const</span> T error[<span class="hljs-number">6</span>],      <span class="hljs-comment">// &#x8F93;&#x5165;&#xFF1A;&#x4F4D;&#x59FF;&#x8BEF;&#x5DEE; e</span>
+    T lambda,              <span class="hljs-comment">// &#x8F93;&#x5165;&#xFF1A;&#x963B;&#x5C3C;&#x7CFB;&#x6570;</span>
+    T delta[<span class="hljs-number">5</span>]             <span class="hljs-comment">// &#x8F93;&#x51FA;&#xFF1A;&#x5173;&#x8282;&#x589E;&#x91CF; &#x394;q</span>
+)</span></span>;
+</code></pre>
+<p><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x5B8C;&#x6210; LM &#x7B97;&#x6CD5;&#x7684;&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#xFF0C;&#x4ECE;&#x8BEF;&#x5DEE;&#x5230;&#x5173;&#x8282;&#x589E;&#x91CF;&#x3002;</p>
+<p><strong>&#x8BA1;&#x7B97;&#x6D41;&#x7A0B;</strong>&#xFF1A;</p>
+<ol>
+<li><p><strong>&#x8BA1;&#x7B97;&#x96C5;&#x53EF;&#x6BD4;</strong>&#xFF08;&#x8C03;&#x7528; <code>compute_fk_jacobian_so101</code>&#xFF09;</p>
+<pre><code class="lang-cpp">T J[<span class="hljs-number">6</span>][<span class="hljs-number">5</span>];
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=J dim=0 complete</span>
+compute_fk_jacobian_so101&lt;T&gt;(sin_q, cos_q, p_end, J);
+</code></pre>
+</li>
+<li><p><strong>&#x77E9;&#x9635;&#x4E58;&#x6CD5; $A = J^T J$</strong>&#xFF08;&#x8C03;&#x7528; Vitis Solver L1 &#x5E93;&#xFF09;</p>
+<pre><code class="lang-cpp">T A[<span class="hljs-number">5</span>][<span class="hljs-number">5</span>];
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=A dim=0 complete</span>
+<span class="hljs-keyword">typedef</span> matrixMultiplyTraits&lt;Transpose, NoTranspose, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, T, T&gt; JtJ_Traits;
+matrixMultiplyTop&lt;Transpose, NoTranspose, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, JtJ_Traits, T, T&gt;(J, J, A);
+</code></pre>
+<ul>
+<li><strong>Transpose &#x6A21;&#x5F0F;</strong>&#xFF1A;&#x81EA;&#x52A8;&#x8F6C;&#x7F6E;&#x7B2C;&#x4E00;&#x4E2A;&#x77E9;&#x9635;</li>
+<li><strong>&#x6D41;&#x6C34;&#x7EBF;&#x6DF1;&#x5EA6;</strong>&#xFF1A;&#x5E93;&#x5185;&#x90E8;&#x5DF2;&#x4F18;&#x5316;&#xFF08;II=1&#xFF0C;&#x541E;&#x5410;&#x7387;&#x6700;&#x5927;&#x5316;&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong>&#x77E9;&#x9635;&#x4E58;&#x6CD5; $b = J^T e$</strong></p>
+<pre><code class="lang-cpp">T b[<span class="hljs-number">5</span>];
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=b complete</span>
+<span class="hljs-keyword">typedef</span> matrixMultiplyTraits&lt;Transpose, NoTranspose, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>, T, T&gt; Jte_Traits;
+matrixMultiplyTop&lt;Transpose, NoTranspose, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, Jte_Traits, T, T&gt;(J, e_mat, b_mat);
+</code></pre>
+</li>
+<li><p><strong>&#x6DFB;&#x52A0;&#x963B;&#x5C3C; $A \leftarrow A + \lambda I$</strong></p>
+<pre><code class="lang-cpp"><span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+    <span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS UNROLL</span>
+    A[i][i] += lambda;
+}
+</code></pre>
+<ul>
+<li><strong>UNROLL</strong>&#xFF1A;&#x5B8C;&#x5168;&#x5C55;&#x5F00;&#xFF08;5 &#x4E2A;&#x52A0;&#x6CD5;&#x5E76;&#x884C;&#x6267;&#x884C;&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong>Cholesky &#x5206;&#x89E3; $A = L L^T$</strong>&#xFF08;&#x8C03;&#x7528; Vitis Solver L1 &#x5E93;&#xFF09;</p>
+<pre><code class="lang-cpp">T L[<span class="hljs-number">5</span>][<span class="hljs-number">5</span>];
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=L dim=0 complete</span>
+<span class="hljs-keyword">typedef</span> choleskyTraits&lt;<span class="hljs-literal">true</span>, <span class="hljs-number">5</span>, T, T&gt; CholeskyConfig;
+<span class="hljs-keyword">int</span> chol_ret = choleskyTop&lt;<span class="hljs-literal">true</span>, <span class="hljs-number">5</span>, CholeskyConfig, T, T&gt;(A, L);
+</code></pre>
+<ul>
+<li><strong>Lower Triangle &#x6A21;&#x5F0F;</strong>&#xFF1A;&#x53EA;&#x8BA1;&#x7B97;&#x4E0B;&#x4E09;&#x89D2;&#xFF08;&#x8282;&#x7701; 50% &#x8FD0;&#x7B97;&#xFF09;</li>
+<li><strong>&#x5931;&#x8D25;&#x5904;&#x7406;</strong>&#xFF1A;&#x82E5; $A$ &#x975E;&#x6B63;&#x5B9A;&#xFF0C;&#x8FD4;&#x56DE;&#x9519;&#x8BEF;&#x7801; 1</li>
+</ul>
+</li>
+<li><p><strong>&#x4E09;&#x89D2;&#x6C42;&#x89E3;</strong>&#xFF08;<strong>&#x5B8C;&#x5168;&#x5C55;&#x5F00;&#x5B9E;&#x73B0;</strong>&#xFF09;</p>
+<ul>
+<li><strong>&#x524D;&#x5411;&#x66FF;&#x6362; $L y = b$</strong>&#xFF1A;<pre><code class="lang-cpp">T L_diag_inv[<span class="hljs-number">5</span>];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+    L_diag_inv[i] = T(<span class="hljs-number">1.0</span>) / L[i][i];  <span class="hljs-comment">// &#x9884;&#x8BA1;&#x7B97;&#x5BF9;&#x89D2;&#x7EBF;&#x5012;&#x6570;</span>
+}
+y[<span class="hljs-number">0</span>] = b[<span class="hljs-number">0</span>] * L_diag_inv[<span class="hljs-number">0</span>];
+y[<span class="hljs-number">1</span>] = (b[<span class="hljs-number">1</span>] - L[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]*y[<span class="hljs-number">0</span>]) * L_diag_inv[<span class="hljs-number">1</span>];
+y[<span class="hljs-number">2</span>] = (b[<span class="hljs-number">2</span>] - L[<span class="hljs-number">2</span>][<span class="hljs-number">0</span>]*y[<span class="hljs-number">0</span>] - L[<span class="hljs-number">2</span>][<span class="hljs-number">1</span>]*y[<span class="hljs-number">1</span>]) * L_diag_inv[<span class="hljs-number">2</span>];
+y[<span class="hljs-number">3</span>] = (b[<span class="hljs-number">3</span>] - L[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>]*y[<span class="hljs-number">0</span>] - L[<span class="hljs-number">3</span>][<span class="hljs-number">1</span>]*y[<span class="hljs-number">1</span>] - L[<span class="hljs-number">3</span>][<span class="hljs-number">2</span>]*y[<span class="hljs-number">2</span>]) * L_diag_inv[<span class="hljs-number">3</span>];
+y[<span class="hljs-number">4</span>] = (b[<span class="hljs-number">4</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">0</span>]*y[<span class="hljs-number">0</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">1</span>]*y[<span class="hljs-number">1</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">2</span>]*y[<span class="hljs-number">2</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">3</span>]*y[<span class="hljs-number">3</span>]) * L_diag_inv[<span class="hljs-number">4</span>];
+</code></pre>
+</li>
+<li><strong>&#x540E;&#x5411;&#x66FF;&#x6362; $L^T \Delta q = y$</strong>&#xFF1A;<pre><code class="lang-cpp">delta[<span class="hljs-number">4</span>] = y[<span class="hljs-number">4</span>] * L_diag_inv[<span class="hljs-number">4</span>];
+delta[<span class="hljs-number">3</span>] = (y[<span class="hljs-number">3</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">3</span>]*delta[<span class="hljs-number">4</span>]) * L_diag_inv[<span class="hljs-number">3</span>];
+delta[<span class="hljs-number">2</span>] = (y[<span class="hljs-number">2</span>] - L[<span class="hljs-number">3</span>][<span class="hljs-number">2</span>]*delta[<span class="hljs-number">3</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">2</span>]*delta[<span class="hljs-number">4</span>]) * L_diag_inv[<span class="hljs-number">2</span>];
+delta[<span class="hljs-number">1</span>] = (y[<span class="hljs-number">1</span>] - L[<span class="hljs-number">2</span>][<span class="hljs-number">1</span>]*delta[<span class="hljs-number">2</span>] - L[<span class="hljs-number">3</span>][<span class="hljs-number">1</span>]*delta[<span class="hljs-number">3</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">1</span>]*delta[<span class="hljs-number">4</span>]) * L_diag_inv[<span class="hljs-number">1</span>];
+delta[<span class="hljs-number">0</span>] = (y[<span class="hljs-number">0</span>] - L[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]*delta[<span class="hljs-number">1</span>] - L[<span class="hljs-number">2</span>][<span class="hljs-number">0</span>]*delta[<span class="hljs-number">2</span>] - L[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>]*delta[<span class="hljs-number">3</span>] - L[<span class="hljs-number">4</span>][<span class="hljs-number">0</span>]*delta[<span class="hljs-number">4</span>]) * L_diag_inv[<span class="hljs-number">0</span>];
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-python-&#x786C;&#x4EF6;&#x5C01;&#x88C5;&#xFF1A;hwsolverwrapperpy">3. Python &#x786C;&#x4EF6;&#x5C01;&#x88C5;&#xFF1A;<code>hw_solver_wrapper.py</code></h3>
+<p><strong><code>HWSolverIterator</code> &#x7C7B;</strong>&#xFF1A;AXI-Lite &#x5BC4;&#x5B58;&#x5668;&#x6620;&#x5C04;</p>
+<table>
+<thead>
+<tr>
+<th>&#x5BC4;&#x5B58;&#x5668;&#x504F;&#x79FB;</th>
+<th>&#x540D;&#x79F0;</th>
+<th>&#x6570;&#x636E;&#x7C7B;&#x578B;</th>
+<th>&#x65B9;&#x5411;</th>
+<th>&#x63CF;&#x8FF0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x00</td>
+<td>CTRL/STAT</td>
+<td>uint32</td>
+<td>R/W</td>
+<td>[0]=&#x542F;&#x52A8;&#xFF0C;[1]=&#x5B8C;&#x6210;&#x6807;&#x5FD7;</td>
+</tr>
+<tr>
+<td>0x10-0x30</td>
+<td>sin0-sin4</td>
+<td>float32</td>
+<td>W</td>
+<td>$\sin(q_i)$</td>
+</tr>
+<tr>
+<td>0x38-0x58</td>
+<td>cos0-cos4</td>
+<td>float32</td>
+<td>W</td>
+<td>$\cos(q_i)$</td>
+</tr>
+<tr>
+<td>0x60-0x88</td>
+<td>e0-e5</td>
+<td>float32</td>
+<td>W</td>
+<td>&#x8BEF;&#x5DEE;&#x5411;&#x91CF;$e$</td>
+</tr>
+<tr>
+<td>0x90</td>
+<td>lambda</td>
+<td>float32</td>
+<td>W</td>
+<td>&#x963B;&#x5C3C;&#x7CFB;&#x6570;$\lambda$</td>
+</tr>
+<tr>
+<td>0x98-0xD8</td>
+<td>d0-d4</td>
+<td>float32</td>
+<td>R</td>
+<td>&#x5173;&#x8282;&#x589E;&#x91CF;$\Delta q$</td>
+</tr>
+<tr>
+<td>0xE8</td>
+<td>status</td>
+<td>uint32</td>
+<td>R</td>
+<td>&#x6267;&#x884C;&#x72B6;&#x6001;&#x7801;</td>
+</tr>
+</tbody>
+</table>
+<p><strong>&#x6838;&#x5FC3;&#x65B9;&#x6CD5;</strong>&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">solve_step</span><span class="hljs-params">(self, q, error, lambda_damping=<span class="hljs-number">0.01</span>)</span>:</span>
+    sin_q, cos_q = np.sin(q), np.cos(q)
+
+    <span class="hljs-comment"># &#x5199;&#x5165;&#x8F93;&#x5165;</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">5</span>):
+        self.solver_ip.mmio.write(<span class="hljs-number">0x10</span> + i*<span class="hljs-number">8</span>, sin_q[i].astype(np.float32))
+        self.solver_ip.mmio.write(<span class="hljs-number">0x38</span> + i*<span class="hljs-number">8</span>, cos_q[i].astype(np.float32))
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">6</span>):
+        self.solver_ip.mmio.write(<span class="hljs-number">0x60</span> + i*<span class="hljs-number">8</span>, error[i].astype(np.float32))
+    self.solver_ip.mmio.write(<span class="hljs-number">0x90</span>, np.float32(lambda_damping))
+
+    <span class="hljs-comment"># &#x542F;&#x52A8;&#x8BA1;&#x7B97;</span>
+    self.solver_ip.mmio.write(<span class="hljs-number">0x00</span>, <span class="hljs-number">0x01</span>)
+
+    <span class="hljs-comment"># &#x8F6E;&#x8BE2;&#x7B49;&#x5F85;&#xFF08;&#x8D85;&#x65F6;&#x4FDD;&#x62A4;&#xFF09;</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(<span class="hljs-number">10000</span>):
+        <span class="hljs-keyword">if</span> self.solver_ip.mmio.read(<span class="hljs-number">0x00</span>) &amp; <span class="hljs-number">0x02</span>:
+            <span class="hljs-keyword">break</span>
+
+    <span class="hljs-comment"># &#x8BFB;&#x53D6;&#x8F93;&#x51FA;</span>
+    delta = np.array([self.solver_ip.mmio.read(<span class="hljs-number">0x98</span> + i*<span class="hljs-number">0x10</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">5</span>)], dtype=np.float32)
+    status = self.solver_ip.mmio.read(<span class="hljs-number">0xE8</span>)
+    <span class="hljs-keyword">return</span> delta, status
+</code></pre>
+<p><strong>MMIO &#x5F00;&#x9500;&#x5206;&#x6790;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x5199;&#x5165; 23 &#x4E2A;&#x5BC4;&#x5B58;&#x5668;&#xFF08;sin&#xD7;5 + cos&#xD7;5 + error&#xD7;6 + lambda&#xD7;1&#xFF09;&#xFF1A;&#x7EA6; <strong>50 &#x3BC;s</strong></li>
+<li>&#x786C;&#x4EF6;&#x8BA1;&#x7B97;&#xFF1A;&#x7EA6; <strong>100 &#x3BC;s</strong>&#xFF08;&#x5305;&#x62EC;&#x96C5;&#x53EF;&#x6BD4;&#x3001;&#x77E9;&#x9635;&#x4E58;&#x6CD5;&#x3001;Cholesky&#xFF09;</li>
+<li>&#x8BFB;&#x53D6; 6 &#x4E2A;&#x5BC4;&#x5B58;&#x5668;&#xFF08;delta&#xD7;5 + status&#xD7;1&#xFF09;&#xFF1A;&#x7EA6; <strong>15 &#x3BC;s</strong></li>
+<li><strong>&#x603B;&#x5EF6;&#x8FDF;</strong>&#xFF1A;&#x7EA6; <strong>165 &#x3BC;s/&#x6B65;</strong>&#xFF08;&#x76F8;&#x6BD4;&#x7EAF;&#x8F6F;&#x4EF6;&#x7684; ~1500 &#x3BC;s&#xFF0C;&#x63D0;&#x5347; <strong>9&#xD7;</strong>&#xFF09;</li>
+</ul>
+<hr>
+<h2 id="&#x6027;&#x80FD;&#x6570;&#x636E;">&#x6027;&#x80FD;&#x6570;&#x636E;</h2>
+<h3 id="&#x6027;&#x80FD;&#x63D0;&#x5347;&#x603B;&#x7ED3;">&#x6027;&#x80FD;&#x63D0;&#x5347;&#x603B;&#x7ED3;</h3>
+<p>&#x7ECF;&#x5BF9;&#x6BD4;&#x6D4B;&#x8BD5;&#xFF0C;&#x786C;&#x4EF6;&#x52A0;&#x901F;&#x76F8;&#x6BD4;&#x7EAF;&#x8F6F;&#x4EF6;&#x5B9E;&#x73B0;&#x7684;&#x6027;&#x80FD;&#x6539;&#x5584;&#x5982;&#x4E0B;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x6027;&#x80FD;&#x6307;&#x6807;</th>
+<th>&#x7EAF;&#x8F6F;&#x4EF6;&#xFF08;PS&#xFF09;</th>
+<th>&#x786C;&#x4EF6;&#x52A0;&#x901F;&#xFF08;PL&#xFF09;</th>
+<th>&#x63D0;&#x5347;&#x500D;&#x6570;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#x901F;&#x5EA6;</strong></td>
+<td>&#x57FA;&#x51C6;</td>
+<td>&#x6539;&#x5584;</td>
+<td><strong>~10&#xD7;</strong></td>
+</tr>
+<tr>
+<td><strong>&#x5E73;&#x5747;&#x8FED;&#x4EE3;&#x65F6;&#x95F4;</strong></td>
+<td>&#x57FA;&#x51C6;</td>
+<td>&#x51CF;&#x5C11;</td>
+<td><strong>~7.9&#xD7;</strong></td>
+</tr>
+<tr>
+<td><strong>&#x541E;&#x5410;&#x7387;</strong></td>
+<td>&#x57FA;&#x51C6;</td>
+<td>&#x63D0;&#x5347;</td>
+<td><strong>~9.2&#xD7;</strong></td>
+</tr>
+<tr>
+<td><strong>&#x603B;&#x4F53;&#x52A0;&#x901F;&#x6BD4;</strong></td>
+<td>1.0&#xD7;</td>
+<td>&#x52A0;&#x901F;</td>
+<td><strong>~2.5&#xD7;</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>&#x6CE8;</strong>&#xFF1A;&#x5177;&#x4F53;&#x6027;&#x80FD;&#x6570;&#x636E;&#x4F1A;&#x56E0;&#x6D4B;&#x8BD5;&#x573A;&#x666F;&#x548C;&#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x800C;&#x5F02;&#x3002;&#x8BE6;&#x7EC6;&#x56FE;&#x8868;&#x548C;&#x6570;&#x636E;&#x89C1; <code>notebook/test_results/</code>&#x3002;</p>
+</blockquote>
+<h3 id="&#x8D44;&#x6E90;&#x5229;&#x7528;&#x7387;">&#x8D44;&#x6E90;&#x5229;&#x7528;&#x7387;</h3>
+<p>FPGA &#x8D44;&#x6E90;&#x6D88;&#x8017;&#xFF08;Zynq-7020&#xFF09;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x8D44;&#x6E90;&#x7C7B;&#x578B;</th>
+<th>&#x4F7F;&#x7528;&#x91CF;</th>
+<th>&#x603B;&#x91CF;</th>
+<th>&#x5360;&#x6BD4;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LUT</td>
+<td>28456</td>
+<td>53200</td>
+<td>53.5%</td>
+</tr>
+<tr>
+<td>FF</td>
+<td>31204</td>
+<td>106400</td>
+<td>29.3%</td>
+</tr>
+<tr>
+<td>BRAM</td>
+<td>48</td>
+<td>140</td>
+<td>34.3%</td>
+</tr>
+<tr>
+<td>DSP</td>
+<td>134</td>
+<td>220</td>
+<td>60.9%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>&#x5206;&#x6790;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>DSP &#x8D44;&#x6E90;&#x5360;&#x7528;&#x8F83;&#x9AD8;</strong>&#xFF08;60.9%&#xFF09;&#xFF1A;&#x7528;&#x4E8E;&#x6D6E;&#x70B9;&#x4E58;&#x6CD5;&#x3001;&#x4E58;&#x52A0;&#x64CD;&#x4F5C;&#xFF08;&#x77E9;&#x9635;&#x4E58;&#x6CD5;&#x3001;Cholesky &#x5206;&#x89E3;&#xFF09;</li>
+<li><strong>BRAM &#x7528;&#x4E8E;&#x5B58;&#x50A8;&#x4E2D;&#x95F4;&#x77E9;&#x9635;</strong>&#xFF1A;&#x96C5;&#x53EF;&#x6BD4; $J$ [6&#xD7;5]&#x3001;&#x6B63;&#x89C4;&#x77E9;&#x9635; $A$ [5&#xD7;5]&#x3001;Cholesky &#x56E0;&#x5B50; $L$ [5&#xD7;5]</li>
+<li><strong>LUT/FF &#x7528;&#x4E8E;&#x63A7;&#x5236;&#x903B;&#x8F91;&#x4E0E;&#x6570;&#x636E;&#x8DEF;&#x5F84;</strong>&#xFF1A;AXI-Lite &#x63A5;&#x53E3;&#x3001;&#x72B6;&#x6001;&#x673A;&#x3001;&#x6D6E;&#x70B9;&#x8FD0;&#x7B97;&#x5355;&#x5143;</li>
+<li><strong>&#x4F18;&#x5316;&#x7A7A;&#x95F4;</strong>&#xFF1A;&#x82E5;&#x9700;&#x652F;&#x6301;&#x66F4;&#x9AD8;&#x81EA;&#x7531;&#x5EA6;&#xFF08;&#x5982; 6-DOF&#xFF09;&#xFF0C;&#x53EF;&#x8003;&#x8651;&#x65F6;&#x5206;&#x590D;&#x7528; DSP&#xFF08;&#x964D;&#x4F4E;&#x8D44;&#x6E90;&#x5360;&#x7528;&#xFF0C;&#x589E;&#x52A0;&#x5EF6;&#x8FDF;&#xFF09;</li>
+</ul>
+<hr>
+<h2 id="&#x4F18;&#x5316;&#x7B56;&#x7565;">&#x4F18;&#x5316;&#x7B56;&#x7565;</h2>
+<h3 id="hls-&#x4F18;&#x5316;&#x6307;&#x4EE4;">HLS &#x4F18;&#x5316;&#x6307;&#x4EE4;</h3>
+<p>&#x5728; <code>lm_solver_so101.hpp</code> &#x4E2D;&#x5E94;&#x7528;&#x7684;&#x5173;&#x952E;&#x4F18;&#x5316;&#xFF1A;</p>
+<ol>
+<li><p><strong>PIPELINE</strong>&#xFF08;&#x6D41;&#x6C34;&#x7EBF;&#xFF09;</p>
+<pre><code class="lang-cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS PIPELINE II=1</span>
+</code></pre>
+<ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x4F7F;&#x5FAA;&#x73AF;&#x5404;&#x8FED;&#x4EE3;&#x91CD;&#x53E0;&#x6267;&#x884C;&#xFF0C;&#x76EE;&#x6807;&#x542F;&#x52A8;&#x95F4;&#x9694;&#xFF08;II&#xFF09;&#x4E3A; 1 &#x5468;&#x671F;</li>
+<li><strong>&#x5E94;&#x7528;&#x573A;&#x666F;</strong>&#xFF1A;&#x77E9;&#x9635;&#x4E58;&#x6CD5;&#x5185;&#x5C42;&#x5FAA;&#x73AF;&#x3001;Cholesky &#x5206;&#x89E3;&#x8FED;&#x4EE3;</li>
+<li><strong>&#x6548;&#x679C;</strong>&#xFF1A;&#x5C06;&#x5EF6;&#x8FDF;&#x4ECE; $O(N^2)$ &#x964D;&#x81F3; $O(N)$&#xFF08;&#x5BF9;&#x4E8E;&#x53EF;&#x6D41;&#x6C34;&#x5316;&#x7684;&#x5FAA;&#x73AF;&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong>UNROLL</strong>&#xFF08;&#x5FAA;&#x73AF;&#x5C55;&#x5F00;&#xFF09;</p>
+<pre><code class="lang-cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS UNROLL factor=3  <span class="hljs-comment">// &#x90E8;&#x5206;&#x5C55;&#x5F00;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS UNROLL           <span class="hljs-comment">// &#x5B8C;&#x5168;&#x5C55;&#x5F00;</span></span>
+</code></pre>
+<ul>
+<li><strong>&#x90E8;&#x5206;&#x5C55;&#x5F00;</strong>&#xFF08;factor=3&#xFF09;&#xFF1A;&#x7528;&#x4E8E;&#x96C5;&#x53EF;&#x6BD4;&#x5217;&#x8BA1;&#x7B97;&#xFF08;5 &#x4E2A;&#x5173;&#x8282; &#x2192; 2 &#x4E2A;&#x5E76;&#x884C;&#x5355;&#x5143;&#xFF09;<ul>
+<li>&#x5E73;&#x8861;&#x5E76;&#x884C;&#x5EA6;&#x4E0E;&#x8D44;&#x6E90;&#x5360;&#x7528;</li>
+</ul>
+</li>
+<li><strong>&#x5B8C;&#x5168;&#x5C55;&#x5F00;</strong>&#xFF1A;&#x7528;&#x4E8E;&#x5C0F;&#x5FAA;&#x73AF;&#xFF08;&#x5982; 5&#xD7;5 &#x77E9;&#x9635;&#x5BF9;&#x89D2;&#x7EBF;&#x64CD;&#x4F5C;&#xFF09;<ul>
+<li>&#x6D88;&#x9664;&#x5FAA;&#x73AF;&#x5F00;&#x9500;&#xFF0C;&#x6240;&#x6709;&#x8FED;&#x4EE3;&#x5E76;&#x884C;&#x6267;&#x884C;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>ARRAY_PARTITION</strong>&#xFF08;&#x6570;&#x7EC4;&#x5206;&#x533A;&#xFF09;</p>
+<pre><code class="lang-cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=J complete dim=1  <span class="hljs-comment">// &#x884C;&#x5B8C;&#x5168;&#x5206;&#x533A;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=J complete dim=2  <span class="hljs-comment">// &#x5217;&#x5B8C;&#x5168;&#x5206;&#x533A;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> HLS ARRAY_PARTITION variable=A dim=0 complete  <span class="hljs-comment">// &#x5168;&#x7EF4;&#x5EA6;&#x5B8C;&#x5168;&#x5206;&#x533A;</span></span>
+</code></pre>
+<ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5C06;&#x6570;&#x7EC4;&#x5206;&#x6563;&#x5230;&#x591A;&#x4E2A; BRAM &#x5757;&#x6216;&#x5BC4;&#x5B58;&#x5668;</li>
+<li><strong>&#x6548;&#x679C;</strong>&#xFF1A;&#x6D88;&#x9664;&#x8BBF;&#x95EE;&#x51B2;&#x7A81;&#xFF0C;&#x5141;&#x8BB8;&#x5E76;&#x884C;&#x8BFB;&#x5199;</li>
+<li><strong>&#x4EE3;&#x4EF7;</strong>&#xFF1A;BRAM &#x6570;&#x91CF;&#x589E;&#x52A0;&#xFF08;$5 \times 5 = 25$ &#x4E2A;&#x5B58;&#x50A8;&#x5355;&#x5143;&#xFF09;</li>
+</ul>
+</li>
+</ol>
+<h3 id="cholesky-&#x7B97;&#x5B50;&#x96C6;&#x6210;">Cholesky &#x7B97;&#x5B50;&#x96C6;&#x6210;</h3>
+<p>&#x672C;&#x9879;&#x76EE;&#x501F;&#x9274;&#x4E86;&#x521D;&#x8D5B;&#x9636;&#x6BB5;&#x4F18;&#x5316;&#x7684; Cholesky &#x7B97;&#x5B50;&#xFF08;&#x6027;&#x80FD;&#x63D0;&#x5347; <strong>4-5 &#x500D;</strong>&#xFF09;&#xFF0C;&#x7528;&#x4E8E;&#x6C42;&#x89E3;&#x6B63;&#x89C4;&#x65B9;&#x7A0B; $\left( J^T J + \lambda I \right) \Delta q = -J^T e$&#xFF1A;</p>
+<p><strong>&#x8F93;&#x5165;</strong>&#xFF1A;&#x5BF9;&#x79F0;&#x6B63;&#x5B9A;&#x77E9;&#x9635; $A = J^T J + \lambda I \in \mathbb{R}^{5 \times 5}$</p>
+<p><strong>&#x8F93;&#x51FA;</strong>&#xFF1A;&#x4E0B;&#x4E09;&#x89D2;&#x77E9;&#x9635; $L$&#xFF08;&#x6EE1;&#x8DB3; $A = L L^T$&#xFF09;</p>
+<p><strong>&#x540E;&#x7EED;</strong>&#xFF1A;&#x901A;&#x8FC7;&#x524D;&#x5411;/&#x540E;&#x5411;&#x56DE;&#x4EE3;&#x6C42;&#x89E3; $\Delta q$</p>
+<p><strong>&#x4F18;&#x5316;&#x5173;&#x952E;</strong>&#xFF1A;</p>
+<ol>
+<li><p><strong>&#x6D88;&#x9664;&#x5FAA;&#x73AF;&#x4F9D;&#x8D56;</strong>&#xFF08;&#x901A;&#x8FC7;&#x6570;&#x636E;&#x91CD;&#x6392;&#xFF09;</p>
+<ul>
+<li>&#x539F;&#x59CB;&#x7B97;&#x6CD5;&#xFF1A;$L_{ij} = (A_{ij} - \sum_{k=1}^{j-1} L_{ik} L_{jk}) / L_{jj}$</li>
+<li>&#x4F18;&#x5316;&#x7B97;&#x6CD5;&#xFF1A;&#x9884;&#x8BA1;&#x7B97;&#x5BF9;&#x89D2;&#x7EBF;&#x5012;&#x6570;&#xFF0C;&#x7528;&#x4E58;&#x6CD5;&#x66FF;&#x4EE3;&#x9664;&#x6CD5;</li>
+</ul>
+</li>
+<li><p><strong>BRAM &#x5E26;&#x5BBD;&#x4F18;&#x5316;</strong>&#xFF08;&#x53CC;&#x7AEF;&#x53E3;&#x8BBF;&#x95EE;&#xFF09;</p>
+<ul>
+<li>&#x5206;&#x533A;&#x7B56;&#x7565;&#xFF1A;&#x6309;&#x884C;&#x5206;&#x533A;&#xFF08;row-wise partition&#xFF09;</li>
+<li>&#x5E76;&#x884C;&#x5EA6;&#xFF1A;&#x540C;&#x65F6;&#x8BFB;&#x53D6; $L_{ik}$ &#x548C; $L_{jk}$</li>
+</ul>
+</li>
+<li><p><strong>&#x6D6E;&#x70B9;&#x6D41;&#x6C34;&#x7EBF;&#x6DF1;&#x5EA6;&#x8C03;&#x4F18;</strong></p>
+<ul>
+<li>&#x4E58;&#x6CD5;&#x5668;&#x5EF6;&#x8FDF;&#xFF1A;8 &#x5468;&#x671F;</li>
+<li>&#x52A0;&#x6CD5;&#x5668;&#x5EF6;&#x8FDF;&#xFF1A;11 &#x5468;&#x671F;</li>
+<li>&#x9664;&#x6CD5;&#x5668;&#x5EF6;&#x8FDF;&#xFF1A;28 &#x5468;&#x671F;</li>
+<li><strong>&#x4F18;&#x5316;</strong>&#xFF1A;&#x7528;&#x5012;&#x6570;&#x4E58;&#x6CD5;&#xFF08;&#x5EF6;&#x8FDF; 8+8=16 &#x5468;&#x671F;&#xFF09;&#x66FF;&#x4EE3;&#x9664;&#x6CD5;</li>
+</ul>
+</li>
+</ol>
+<p><strong>&#x6027;&#x80FD;&#x6570;&#x636E;</strong>&#xFF08;Cholesky &#x7B97;&#x5B50;&#x5355;&#x72EC;&#x6D4B;&#x8BD5;&#xFF09;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x6027;&#x80FD;&#x6307;&#x6807;</th>
+<th>&#x4F18;&#x5316;&#x524D;</th>
+<th>&#x4F18;&#x5316;&#x540E;</th>
+<th>&#x6539;&#x5584;&#x5E45;&#x5EA6;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x5EF6;&#x8FDF; (Latency)</strong></td>
+<td>4919</td>
+<td>991</td>
+<td>79.9%</td>
+</tr>
+<tr>
+<td><strong>&#x6267;&#x884C;&#x65F6;&#x95F4;</strong></td>
+<td>30871</td>
+<td>4731</td>
+<td>84.7%</td>
+</tr>
+<tr>
+<td><strong>&#x542F;&#x52A8;&#x95F4;&#x9694; (II)</strong></td>
+<td>696</td>
+<td>124</td>
+<td>82.2%</td>
+</tr>
+<tr>
+<td><strong>&#x541E;&#x5410;&#x7387; (Throughput)</strong></td>
+<td>2.3e5</td>
+<td>1.6e6</td>
+<td>596%</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="&#x603B;&#x7ED3;">&#x603B;&#x7ED3;</h2>
+<p>FPGA &#x786C;&#x4EF6;&#x52A0;&#x901F;&#x4E3A;&#x5B9E;&#x65F6;&#x9006;&#x8FD0;&#x52A8;&#x5B66;&#x6C42;&#x89E3;&#x63D0;&#x4F9B;&#x4E86;&#x663E;&#x8457;&#x7684;&#x6027;&#x80FD;&#x63D0;&#x5347;&#xFF0C;&#x4F7F;&#x5F97;&#x5728;&#x8D44;&#x6E90;&#x53D7;&#x9650;&#x7684;&#x5D4C;&#x5165;&#x5F0F;&#x5E73;&#x53F0;&#x4E0A;&#x4E5F;&#x80FD;&#x5B9E;&#x73B0;&#x9AD8;&#x9891;&#x63A7;&#x5236;&#xFF08;&gt;100 Hz&#xFF09;&#x3002;&#x672C;&#x7AE0;&#x4ECB;&#x7ECD;&#x7684;&#x8F6F;&#x786C;&#x4EF6;&#x534F;&#x540C;&#x67B6;&#x6784;&#x5177;&#x6709;&#x826F;&#x597D;&#x7684;&#x53EF;&#x6269;&#x5C55;&#x6027;&#xFF0C;&#x53EF;&#x8FDB;&#x4E00;&#x6B65;&#x4F18;&#x5316;&#x4EE5;&#x652F;&#x6301;&#x66F4;&#x590D;&#x6742;&#x7684;&#x673A;&#x5668;&#x4EBA;&#xFF08;&#x5982; 6-DOF&#x3001;7-DOF &#x5197;&#x4F59;&#x81C2;&#xFF09;&#x6216;&#x66F4;&#x9AD8;&#x7CBE;&#x5EA6;&#x7684;&#x6C42;&#x89E3;&#x7B97;&#x6CD5;&#xFF08;&#x5982;&#x4E8C;&#x9636; LM&#x3001;SQP&#xFF09;&#x3002;</p>
+<p><strong>&#x5173;&#x952E;&#x8981;&#x70B9;</strong>&#xFF1A;</p>
+<ol>
+<li><p><strong>&#x6027;&#x80FD;&#x63D0;&#x5347;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x5355;&#x6B65;&#x8FED;&#x4EE3;&#x52A0;&#x901F;&#x7EA6; <strong>10 &#x500D;</strong>&#xFF08;&#x901A;&#x8FC7;&#x6D41;&#x6C34;&#x7EBF;&#x4E0E;&#x5E76;&#x884C;&#x4F18;&#x5316;&#xFF09;</li>
+<li>&#x603B;&#x4F53;&#x6C42;&#x89E3;&#x52A0;&#x901F;&#x7EA6; <strong>2.5 &#x500D;</strong>&#xFF08;&#x542B; MMIO &#x901A;&#x4FE1;&#x5F00;&#x9500;&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong>&#x8F6F;&#x786C;&#x4EF6;&#x5206;&#x5DE5;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>PS &#x7AEF;</strong>&#xFF1A;FK/&#x8BEF;&#x5DEE;&#x8BA1;&#x7B97;&#x3001;&#x6536;&#x655B;&#x5224;&#x65AD;&#x3001;&#x963B;&#x5C3C;&#x8C03;&#x6574;&#xFF08;&#x9700;&#x8981;&#x6761;&#x4EF6;&#x5206;&#x652F;&#x4E0E;&#x6D6E;&#x70B9;&#x8D85;&#x8D8A;&#x51FD;&#x6570;&#xFF09;</li>
+<li><strong>PL &#x7AEF;</strong>&#xFF1A;&#x96C5;&#x53EF;&#x6BD4;&#x8BA1;&#x7B97;&#x3001;&#x77E9;&#x9635;&#x4E58;&#x6CD5;&#x3001;Cholesky &#x5206;&#x89E3;&#xFF08;&#x9AD8;&#x5EA6;&#x5E76;&#x884C;&#x7684;&#x7EBF;&#x6027;&#x4EE3;&#x6570;&#xFF09;</li>
+</ul>
+</li>
+<li><p><strong>&#x63A5;&#x53E3;&#x8BBE;&#x8BA1;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>AXI-Lite &#x5BC4;&#x5B58;&#x5668;&#x6620;&#x5C04;</strong>&#xFF1A;&#x8F93;&#x5165;/&#x8F93;&#x51FA;&#x5BC4;&#x5B58;&#x5668;&#x6E05;&#x6670;&#x5206;&#x79BB;</li>
+<li><strong>&#x4E09;&#x89D2;&#x51FD;&#x6570;&#x9884;&#x8BA1;&#x7B97;</strong>&#xFF1A;&#x907F;&#x514D; FPGA &#x5B9E;&#x73B0;&#x590D;&#x6742;&#x7684; CORDIC &#x7B97;&#x6CD5;</li>
+</ul>
+</li>
+<li><p><strong>&#x4F18;&#x5316;&#x7ECF;&#x9A8C;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>Cholesky &#x7B97;&#x5B50;&#x4F18;&#x5316;</strong>&#xFF1A;&#x5EF6;&#x8FDF;&#x964D;&#x4F4E; <strong>79.9%</strong>&#xFF0C;&#x541E;&#x5410;&#x7387;&#x63D0;&#x5347; <strong>596%</strong></li>
+<li><strong>&#x4E09;&#x89D2;&#x6C42;&#x89E3;&#x5B8C;&#x5168;&#x5C55;&#x5F00;</strong>&#xFF1A;&#x5EF6;&#x8FDF;&#x4ECE; $O(N^2)$ &#x964D;&#x81F3; $O(N)$</li>
+<li><strong>&#x6570;&#x7EC4;&#x5206;&#x533A;&#x7B56;&#x7565;</strong>&#xFF1A;&#x5C0F;&#x77E9;&#x9635;&#xFF08;$N \leq 5$&#xFF09;&#x5B8C;&#x5168;&#x5206;&#x533A;&#x5230;&#x5BC4;&#x5B58;&#x5668;</li>
+</ul>
+</li>
+<li><p><strong>&#x53EF;&#x6269;&#x5C55;&#x6027;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x4FEE;&#x6539; <code>SO101_Params</code> &#x5373;&#x53EF;&#x9002;&#x914D;&#x4E0D;&#x540C;&#x673A;&#x5668;&#x4EBA;&#xFF08;&#x4EC5;&#x9700;&#x91CD;&#x65B0;&#x7EFC;&#x5408;&#xFF09;</li>
+<li>&#x652F;&#x6301;&#x66F4;&#x9AD8;&#x81EA;&#x7531;&#x5EA6;&#xFF1A;&#x589E;&#x52A0; $N$ &#x548C;&#x77E9;&#x9635;&#x7EF4;&#x5EA6;&#xFF08;&#x9700;&#x8BC4;&#x4F30;&#x8D44;&#x6E90;&#x5360;&#x7528;&#xFF09;</li>
+<li>&#x652F;&#x6301;&#x5176;&#x4ED6; IK &#x7B97;&#x6CD5;&#xFF1A;&#x66FF;&#x6362; <code>lm_solve_step_so101</code> &#x5185;&#x6838;&#xFF08;&#x5982; GN&#x3001;NR&#x3001;QP&#xFF09;</li>
+</ul>
+</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ref_rdt_pipeline.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 函数解析：RDT 采集链路">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"5. FPGA 逆解加速","level":"1.7","depth":1,"previous":{"title":"函数解析：RDT 采集链路","level":"1.6.6","depth":2,"path":"ref_rdt_pipeline.md","ref":"ref_rdt_pipeline.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"stage1_5_fpga.md","mtime":"2026-01-10T12:43:42.300Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

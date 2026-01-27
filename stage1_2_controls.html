@@ -1,0 +1,571 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>2. 控制映射速查 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="stage1_2_3_leader_follower.html" />
+    
+    
+    <link rel="prev" href="stage1_2_hci_teleop.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >2. 控制映射速查</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="2-&#x63A7;&#x5236;&#x6620;&#x5C04;&#x901F;&#x67E5;&#xFF08;&#x952E;&#x76D8;joycon&#xFF09;">2. &#x63A7;&#x5236;&#x6620;&#x5C04;&#x901F;&#x67E5;&#xFF08;&#x952E;&#x76D8;/JoyCon&#xFF09;</h1>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>&#x6620;&#x5C04;&#x5173;&#x7CFB;&#x5728;&#x7A0B;&#x5E8F;&#x91CC;&#x901A;&#x5E38;&#x4F53;&#x73B0;&#x4E3A;&#xFF1A;&#x8F93;&#x5165;&#x4E8B;&#x4EF6; &#x2192; $\Delta$&#xFF08;&#x6B65;&#x6570;&#x6216;&#x4F4D;&#x59FF;&#x589E;&#x91CF;&#xFF09;&#x2192; &#x76EE;&#x6807;&#x6784;&#x9020;&#xFF08;IK &#x65F6;&#xFF09;&#x2192; &#x4E0B;&#x53D1;&#x3002;</p>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li><code>arm_keyboard_control.py</code>&#xFF1A;&#x6309;&#x952E; &#x2192; &#x5173;&#x8282;&#x6B65;&#x6570;&#x589E;&#x91CF;&#xFF08;&#x4E0D;&#x7ECF; IK&#xFF09;&#x3002;</li>
+<li><code>ik_keyboard_realtime.py</code>&#xFF1A;&#x6309;&#x952E; &#x2192; &#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x589E;&#x91CF; &#x2192; IK &#x2192; &#x4E0B;&#x53D1;&#x3002;</li>
+<li><code>joycon_ik_control_py.py</code>&#xFF1A;JoyCon &#x6447;&#x6746;/IMU &#x2192; &#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x589E;&#x91CF; &#x2192; IK &#x2192; &#x4E0B;&#x53D1;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<h3 id="&#x952E;&#x76D8;&#x5173;&#x8282;&#x7EA7;&#x63A7;&#x5236;-armkeyboardcontroller">&#x952E;&#x76D8;&#x5173;&#x8282;&#x7EA7;&#x63A7;&#x5236; (<code>ArmKeyboardController</code>)</h3>
+<ul>
+<li><strong><code>on_press(key)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x952E;&#x76D8;&#x4E8B;&#x4EF6;&#x56DE;&#x8C03;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x6355;&#x83B7;&#x6309;&#x952E;&#xFF0C;&#x67E5;&#x8868;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x7684;&#x5173;&#x8282;&#x548C;&#x65B9;&#x5411;&#xFF0C;&#x8C03;&#x7528; <code>update_joint</code>&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>update_joint(joint_name, delta)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x66F4;&#x65B0;&#x5355;&#x5173;&#x8282;&#x76EE;&#x6807;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8BFB;&#x53D6;&#x5F53;&#x524D;&#x503C;&#xFF0C;&#x52A0;&#x4E0A; <code>delta</code>&#xFF08;&#x6B65;&#x6570;&#x589E;&#x91CF;&#xFF09;&#xFF0C;&#x505A;&#x8F6F;&#x9650;&#x4F4D;&#x622A;&#x65AD;&#xFF0C;&#x7ACB;&#x5373;&#x4E0B;&#x53D1;&#x6307;&#x4EE4;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>reset_to_home()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x4E00;&#x952E;&#x56DE;&#x4E2D;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8C03;&#x7528; <code>controller.soft_move_to_home()</code>&#xFF0C;&#x4EE5;&#x8F83;&#x6162;&#x901F;&#x5EA6;&#x5E73;&#x6ED1;&#x56DE;&#x5230;&#x9884;&#x8BBE;&#x96F6;&#x4F4D;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x952E;&#x76D8;-ik-&#x63A7;&#x5236;-ikkeyboardrealtimepy">&#x952E;&#x76D8; IK &#x63A7;&#x5236; (<code>ik_keyboard_realtime.py</code>)</h3>
+<ul>
+<li><strong><code>get_key_nonblock()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x975E;&#x963B;&#x585E;&#x8BFB;&#x53D6;&#x952E;&#x76D8;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x4F7F;&#x7528; <code>termios</code> &#x548C; <code>sys.stdin</code> &#x4FEE;&#x6539;&#x7EC8;&#x7AEF;&#x5C5E;&#x6027;&#xFF0C;&#x5B9E;&#x73B0;&#x6309;&#x952E;&#x5373;&#x8BFB;&#xFF0C;&#x65E0;&#x9700;&#x56DE;&#x8F66;&#xFF0C;&#x4FDD;&#x8BC1;&#x63A7;&#x5236;&#x5B9E;&#x65F6;&#x6027;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>build_target_pose(current_pose, keys)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6784;&#x9020;&#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x6839;&#x636E;&#x6309;&#x4E0B;&#x7684;&#x952E;&#xFF08;&#x5982; W/S/A/D&#xFF09;&#xFF0C;&#x5728;&#x5F53;&#x524D;&#x4F4D;&#x59FF; <code>(x, y, z, r, p, y)</code> &#x4E0A;&#x53E0;&#x52A0;&#x589E;&#x91CF; <code>delta</code>&#xFF0C;&#x8FD4;&#x56DE;&#x65B0;&#x7684;&#x76EE;&#x6807;&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635; $T^*$&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>robot.ikine_LM(Tep, q0, mask)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6C42;&#x89E3;&#x9006;&#x8FD0;&#x52A8;&#x5B66;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x4EE5;&#x5F53;&#x524D;&#x5173;&#x8282;&#x89D2; <code>q0</code> &#x4E3A;&#x521D;&#x503C;&#xFF0C;&#x6C42;&#x89E3;&#x76EE;&#x6807; $T^*$ &#x5BF9;&#x5E94;&#x7684;&#x5173;&#x8282;&#x89D2;&#x3002;<code>mask</code> &#x901A;&#x5E38;&#x8BBE;&#x4E3A; <code>[1,1,1,0,0,0]</code> (&#x53EA;&#x63A7;&#x4F4D;&#x7F6E;) &#x6216; <code>[1,1,1,1,1,0]</code> (&#x63A7;&#x4F4D;&#x7F6E;+Pitch/Roll)&#xFF0C;&#x5FFD;&#x7565; Yaw &#x4EE5;&#x907F;&#x514D; 5-DoF &#x5947;&#x5F02;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="joycon-ik-&#x63A7;&#x5236;-joyconikcontroller">JoyCon IK &#x63A7;&#x5236; (<code>JoyConIKController</code>)</h3>
+<ul>
+<li><strong><code>JoyconRobotics.get_control()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x83B7;&#x53D6;&#x624B;&#x67C4;&#x72B6;&#x6001;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8FD4;&#x56DE;&#x6447;&#x6746;&#x63A8;&#x91CF;&#xFF08;&#x5F52;&#x4E00;&#x5316; -1~1&#xFF09;&#x548C; IMU &#x59FF;&#x6001;&#xFF08;&#x56DB;&#x5143;&#x6570;/&#x6B27;&#x62C9;&#x89D2;&#xFF09;&#xFF0C;&#x7ECF;&#x8FC7;&#x4E86;&#x6B7B;&#x533A;&#x5904;&#x7406;&#x548C;&#x4F4E;&#x901A;&#x6EE4;&#x6CE2;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>JoyConIKController.run()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x4E3B;&#x63A7;&#x5236;&#x5FAA;&#x73AF;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x4EE5;&#x56FA;&#x5B9A;&#x9891;&#x7387;&#xFF08;&#x5982; 30Hz&#xFF09;&#x8FD0;&#x884C;&#xFF0C;&#x5B8C;&#x6210;&#x201C;&#x8BFB;&#x624B;&#x67C4; -&gt; &#x7B97;&#x589E;&#x91CF; -&gt; &#x66F4;&#x65B0;&#x76EE;&#x6807; -&gt; IK &#x6C42;&#x89E3; -&gt; &#x4E0B;&#x53D1;&#x6267;&#x884C;&#x201D;&#x7684;&#x5168;&#x8FC7;&#x7A0B;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>_ButtonHelper.check()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6309;&#x952E;&#x72B6;&#x6001;&#x673A;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x533A;&#x5206;&#x201C;&#x6309;&#x4E0B;&#x77AC;&#x95F4;&#x201D;&#xFF08;Rising Edge&#xFF09;&#x548C;&#x201C;&#x6309;&#x4F4F;&#x4E0D;&#x653E;&#x201D;&#xFF08;Holding&#xFF09;&#xFF0C;&#x7528;&#x4E8E;&#x5206;&#x522B;&#x5904;&#x7406;&#x89E6;&#x53D1;&#x5F0F;&#x52A8;&#x4F5C;&#xFF08;&#x5982;&#x5207;&#x6362;&#x6A21;&#x5F0F;&#xFF09;&#x548C;&#x8FDE;&#x7EED;&#x52A8;&#x4F5C;&#xFF08;&#x5982;&#x5939;&#x722A;&#x5F00;&#x5408;&#xFF09;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-&#x952E;&#x76D8;&#x5173;&#x8282;&#x6B65;&#x8FDB;&#xFF08;armkeyboardcontrolpy&#xFF09;">1. &#x952E;&#x76D8;&#x5173;&#x8282;&#x6B65;&#x8FDB;&#xFF08;<code>arm_keyboard_control.py</code>&#xFF09;</h2>
+<ul>
+<li><code>q/a</code>&#xFF1A;<code>shoulder_pan</code> +/&#x2212;</li>
+<li><code>w/s</code>&#xFF1A;<code>shoulder_lift</code> +/&#x2212;</li>
+<li><code>e/d</code>&#xFF1A;<code>elbow_flex</code> +/&#x2212;</li>
+<li><code>r/f</code>&#xFF1A;<code>wrist_flex</code> +/&#x2212;</li>
+<li><code>t/g</code>&#xFF1A;<code>wrist_roll</code> +/&#x2212;</li>
+<li><code>y/h</code>&#xFF1A;<code>gripper</code> +/&#x2212;</li>
+<li><code>m</code>&#xFF1A;&#x56DE;&#x4E2D;&#x4F4D;</li>
+<li><code>ESC</code>&#xFF1A;&#x9000;&#x51FA;</li>
+</ul>
+<p>&#x9002;&#x7528;&#x573A;&#x666F;&#xFF1A;&#x9A8C;&#x8BC1;&#x901A;&#x4FE1;&#x3001;&#x9650;&#x4F4D;&#x3001;&#x5173;&#x8282;&#x65B9;&#x5411;&#x3002;</p>
+<h2 id="2-&#x952E;&#x76D8;&#x672B;&#x7AEF;-ik&#xFF08;ikkeyboardrealtimepy&#xFF09;">2. &#x952E;&#x76D8;&#x672B;&#x7AEF; IK&#xFF08;<code>ik_keyboard_realtime.py</code>&#xFF09;</h2>
+<ul>
+<li>&#x5E73;&#x79FB;&#xFF1A;<code>I/K</code>&#xFF08;X&#xFF09;&#x3001;<code>A/D</code>&#xFF08;Y&#xFF09;&#x3001;<code>W/S</code>&#xFF08;Z&#xFF09;</li>
+<li>&#x59FF;&#x6001;&#xFF1A;<code>J/L</code>&#xFF08;pitch&#xFF09;&#x3001;<code>U/O</code>&#xFF08;yaw&#xFF09;</li>
+<li><code>+/-</code>&#xFF1A;&#x901F;&#x5EA6;&#x8C03;&#x8282;</li>
+<li><code>Q</code>&#xFF1A;&#x9000;&#x51FA;</li>
+</ul>
+<p>&#x9002;&#x7528;&#x573A;&#x666F;&#xFF1A;&#x9A8C;&#x8BC1; FK/IK &#x662F;&#x5426;&#x7A33;&#x5B9A;&#x3001;mask/&#x521D;&#x503C;&#x662F;&#x5426;&#x5408;&#x7406;&#x3002;</p>
+<h2 id="3-joycon-&#x672B;&#x7AEF;-ik&#xFF08;joyconikcontrolpypy&#xFF09;">3. JoyCon &#x672B;&#x7AEF; IK&#xFF08;<code>joycon_ik_control_py.py</code>&#xFF09;</h2>
+<ul>
+<li>&#x59FF;&#x6001;/&#x4F4D;&#x79FB;&#xFF1A;&#x79FB;&#x52A8; Joy-Con&#xFF08;&#x5728;&#x201C;&#x57FA;&#x51C6;&#x4F4D;&#x59FF;&#x201D;&#x4E0A;&#x53E0;&#x52A0;&#x504F;&#x79FB;&#xFF09;</li>
+<li><code>ZR</code>&#xFF1A;&#x5939;&#x722A;&#x6536;&#x7D27;&#x4E00;&#x70B9;</li>
+<li><code>R</code>&#xFF1A;&#x5939;&#x722A;&#x677E;&#x5F00;&#x4E00;&#x70B9;</li>
+<li><code>B</code>&#xFF1A;Z &#x624B;&#x52A8;&#x4E0A;&#x79FB;&#xFF08;&#x589E;&#x52A0; Z &#x504F;&#x79FB;&#xFF09;</li>
+<li><code>Home</code>&#xFF1A;&#x673A;&#x68B0;&#x81C2;&#x56DE;&#x4E2D; + JoyCon &#x91CD;&#x8FDE;/&#x6821;&#x51C6;</li>
+<li><code>+/-</code>&#xFF1A;&#x901F;&#x5EA6;&#x8C03;&#x8282;</li>
+<li><code>X</code>&#xFF1A;&#x9000;&#x51FA;</li>
+</ul>
+<p>&#x5B89;&#x5168;&#x5EFA;&#x8BAE;&#xFF1A;&#x6240;&#x6709;&#x52A8;&#x4F5C;&#x90FD;&#x4ECE;&#x5C0F;&#x5E45;&#x5EA6;&#x5F00;&#x59CB;&#xFF0C;&#x5148;&#x628A; <code>speed</code> &#x8C03;&#x4F4E;&#xFF0C;&#x786E;&#x8BA4;&#x65B9;&#x5411;&#x65E0;&#x8BEF;&#x518D;&#x52A0;&#x901F;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="stage1_2_hci_teleop.html" class="navigation navigation-prev " aria-label="Previous page: 2. 人机交互（键盘/JoyCon）">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="stage1_2_3_leader_follower.html" class="navigation navigation-next " aria-label="Next page: 3. 主从臂遥操">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"2. 控制映射速查","level":"1.5.1","depth":2,"next":{"title":"3. 主从臂遥操","level":"1.5.2","depth":2,"path":"stage1_2_3_leader_follower.md","ref":"stage1_2_3_leader_follower.md","articles":[]},"previous":{"title":"2. 人机交互（键盘/JoyCon）","level":"1.5","depth":1,"path":"stage1_2_hci_teleop.md","ref":"stage1_2_hci_teleop.md","articles":[{"title":"2. 控制映射速查","level":"1.5.1","depth":2,"path":"stage1_2_controls.md","ref":"stage1_2_controls.md","articles":[]},{"title":"3. 主从臂遥操","level":"1.5.2","depth":2,"path":"stage1_2_3_leader_follower.md","ref":"stage1_2_3_leader_follower.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"stage1_2_controls.md","mtime":"2026-01-03T18:41:56.274Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

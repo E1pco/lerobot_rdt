@@ -1,0 +1,548 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>函数解析：手眼评估 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="stage1_3_timesync.html" />
+    
+    
+    <link rel="prev" href="stage1_3_calibration.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >函数解析：手眼评估</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x6807;&#x5B9A;&#x4E0E;&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#xFF08;vision&#xFF09;">&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x6807;&#x5B9A;&#x4E0E;&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#xFF08;<code>vision/</code>&#xFF09;</h1>
+<p>&#x672C;&#x7AE0;&#x5BF9;&#x5E94; 3. &#x7684;&#x201C;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x6E90;&#x4EE3;&#x7801; + &#x8BF4;&#x660E;&#x6587;&#x6863;&#x201D;&#xFF0C;&#x91CD;&#x70B9;&#x89E3;&#x6790;&#x53EF;&#x590D;&#x7528;&#x7684;&#x6838;&#x5FC3;&#x51FD;&#x6570;&#xFF1A;</p>
+<ul>
+<li><code>vision/handeye_utils.py</code></li>
+</ul>
+<p>&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x7684;&#x7406;&#x8BBA;&#x76EE;&#x6807;&#x662F;&#xFF1A;&#x5728;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x5F97;&#x5230; $T_{CG}$</p>
+<p>$ &#x6216; $T_{CB}$ &#x540E;&#xFF0C;&#x7528;&#x591A;&#x7EC4;&#x91C7;&#x6837;&#x6784;&#x9020;&#x8BEF;&#x5DEE;&#x6307;&#x6807;&#xFF08;mm/deg&#xFF09;&#xFF0C;&#x56DE;&#x7B54;&#x201C;&#x8FD9;&#x4E2A;&#x5916;&#x53C2;&#x662F;&#x5426;&#x53EF;&#x4FE1;&#x3001;&#x662F;&#x5426;&#x53EF;&#x7528;&#x4E8E;&#x95ED;&#x73AF;&#x9A8C;&#x8BC1;/&#x6570;&#x636E;&#x590D;&#x73B0;&#x201D;&#x3002;</p>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<ul>
+<li>&#x6807;&#x5B9A;&#x811A;&#x672C;&#xFF08;<code>vision/handeye_calibration_*.py</code>&#xFF09;&#xFF1A;&#x8D1F;&#x8D23;&#x91C7;&#x96C6; $T_{GB}^{(i)}$ &#x4E0E; $T_{TC}^{(i)}$ &#x5E76;&#x6C42;&#x89E3;&#x5916;&#x53C2;</li>
+<li>&#x8BC4;&#x4F30;&#x51FD;&#x6570;&#xFF08;<code>vision/handeye_utils.py</code>&#xFF09;&#xFF1A;&#x8D1F;&#x8D23;&#x628A;&#x5916;&#x53C2;&#x4EE3;&#x5165;&#x91C7;&#x6837;&#x5BF9;/&#x91C7;&#x6837;&#x96C6;&#xFF0C;&#x8F93;&#x51FA;&#x8BEF;&#x5DEE;&#x7EDF;&#x8BA1;&#x4E0E;&#x62A5;&#x544A;</li>
+</ul>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li><code>vision/handeye_calibration_eyeinhand.py</code> / <code>vision/handeye_calibration_eyetohand.py</code>&#xFF1A;&#x751F;&#x6210; <code>handeye_result.yaml</code>&#x3002;</li>
+<li><code>vision/handeye_utils.py</code>&#xFF1A;&#x5728;&#x6807;&#x5B9A;&#x89E3;&#x7B97;&#x9636;&#x6BB5;&#x6216;&#x5355;&#x72EC;&#x8C03;&#x7528;&#x65F6;&#x8F93;&#x51FA;&#x4E00;&#x81F4;&#x6027;&#x62A5;&#x544A;&#x3002;</li>
+<li><code>vision/track_blue_circle_eyetohand.py</code>&#xFF1A;&#x4F7F;&#x7528;&#x6807;&#x5B9A;&#x7ED3;&#x679C;&#x505A;&#x95ED;&#x73AF;&#x9A8C;&#x8BC1;&#xFF08;&#x628A;&#x201C;&#x8BC4;&#x4F30;&#x597D;&#x201D;&#x53D8;&#x6210;&#x201C;&#x80FD;&#x7528;&#x201D;&#xFF09;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x4E0B;&#x6587;&#x9010;&#x4E2A;&#x51FD;&#x6570;&#x8BF4;&#x660E;&#x8F93;&#x5165;/&#x8F93;&#x51FA;&#x4E0E;&#x8BEF;&#x5DEE;&#x8BA1;&#x7B97;&#x65B9;&#x5F0F;</p>
+<h2 id="1-evaluateeyeinhandconsistencytcamgripper-tgripperbaselist-ttargetcamlist">1. <code>evaluate_eye_in_hand_consistency(T_cam_gripper, T_gripper_base_list, T_target_cam_list)</code></h2>
+<ul>
+<li>&#x573A;&#x666F;&#xFF1A;Eye-in-Hand</li>
+<li>&#x8F93;&#x5165;&#xFF1A;<ul>
+<li><code>T_cam_gripper</code>&#xFF1A;$T_{CG}$&#xFF08;&#x6807;&#x5B9A;&#x7ED3;&#x679C;&#xFF09;</li>
+<li><code>T_gripper_base_list</code>&#xFF1A;&#x6BCF;&#x6B21;&#x91C7;&#x96C6;&#x7684; $T_{GB}^{(i)}$</li>
+<li><code>T_target_cam_list</code>&#xFF1A;&#x6BCF;&#x6B21;&#x91C7;&#x96C6;&#x7684; $T_{TC}^{(i)}$&#xFF08;PnP &#x5F97;&#x5230;&#xFF09;</li>
+</ul>
+</li>
+<li>&#x6838;&#x5FC3;&#x8BA1;&#x7B97;&#xFF08;&#x76F8;&#x90BB;&#x5BF9;&#xFF09;&#xFF1A;<ul>
+<li>$A=T_{GB}^{(i+1)}(T_{GB}^{(i)})^{-1}$</li>
+<li>$B=(T_{TC}^{(i+1)})^{-1}T_{TC}^{(i)}$</li>
+<li>$\Delta=(AX)(XB)^{-1}$</li>
+</ul>
+</li>
+<li>&#x8F93;&#x51FA;&#xFF1A;<ul>
+<li><code>trans_errors</code>&#xFF08;mm&#xFF09;/ <code>rot_errors</code>&#xFF08;deg&#xFF09;&#x53CA;&#x5747;&#x503C;/&#x6700;&#x5927;&#x503C;</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-evaluateeyetohandconsistencytcambase-tgripperbaselist-ttargetcamlist">2. <code>evaluate_eye_to_hand_consistency(T_cam_base, T_gripper_base_list, T_target_cam_list)</code></h2>
+<ul>
+<li>&#x573A;&#x666F;&#xFF1A;Eye-to-Hand</li>
+<li>&#x8F93;&#x5165;&#xFF1A;<ul>
+<li><code>T_cam_base</code>&#xFF1A;$T_{CB}$&#xFF08;&#x6807;&#x5B9A;&#x7ED3;&#x679C;&#xFF09;</li>
+<li>&#x5217;&#x8868;&#x540C;&#x4E0A;</li>
+</ul>
+</li>
+<li>&#x6838;&#x5FC3;&#x8BA1;&#x7B97;&#xFF1A;<ul>
+<li>&#x6BCF;&#x6B21;&#x6C42; $T_{TG}^{(i)}=(T_{GB}^{(i)})^{-1}T_{CB}T_{TC}^{(i)}$</li>
+<li>&#x4E24;&#x4E24;&#x6BD4;&#x8F83; $\Delta_{ij}=T_{TG}^{(i)}(T_{TG}^{(j)})^{-1}$</li>
+</ul>
+</li>
+<li>&#x8F93;&#x51FA;&#xFF1A;<ul>
+<li>&#x540C;&#x4E0A;&#xFF08;mm/deg&#xFF09;</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-printconsistencyreportresult-title&#x4E00;&#x81F4;&#x6027;&#x8BEF;&#x5DEE;">3. <code>print_consistency_report(result, title=&apos;&#x4E00;&#x81F4;&#x6027;&#x8BEF;&#x5DEE;&apos;)</code></h2>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x628A;&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;&#x7ED3;&#x679C;&#x6253;&#x5370;&#x4E3A;&#x201C;&#x5E73;&#x5747;/&#x6700;&#x5927; + &#x8D28;&#x91CF;&#x7B49;&#x7EA7;&#x201D;</li>
+<li>&#x8D28;&#x91CF;&#x9608;&#x503C;&#xFF1A;&#x5B9E;&#x73B0;&#x91CC;&#x7528;&#x7ECF;&#x9A8C;&#x9608;&#x503C;&#xFF08;mm/deg&#xFF09;&#x5206;&#x7EA7;</li>
+</ul>
+<h2 id="4-&#x4E0E;&#x91C7;&#x96C6;&#x811A;&#x672C;&#x7684;&#x63A5;&#x53E3;&#x8FB9;&#x754C;">4. &#x4E0E;&#x91C7;&#x96C6;&#x811A;&#x672C;&#x7684;&#x63A5;&#x53E3;&#x8FB9;&#x754C;</h2>
+<ul>
+<li>&#x6807;&#x5B9A;&#x811A;&#x672C;&#x8D1F;&#x8D23;&#x751F;&#x6210;&#xFF1A;<ul>
+<li>&#x5185;&#x53C2;&#xFF1A;&#x76F8;&#x673A; <code>K/dist</code></li>
+<li>&#x624B;&#x773C;&#x7ED3;&#x679C;&#xFF1A;$T_{CG}$ &#x6216; $T_{CB}$</li>
+</ul>
+</li>
+<li>&#x6570;&#x636E;&#x96C6;&#x91C7;&#x96C6;&#x811A;&#x672C;&#x53EA;&#x8D1F;&#x8D23;&#x8BB0;&#x5F55;&#x63A7;&#x5236;&#x4E0E;&#x56FE;&#x50CF;&#xFF0C;&#x4E0D;&#x4F1A;&#x81EA;&#x52A8;&#x63A8;&#x5BFC;&#x5916;&#x53C2;&#xFF1B;&#x5916;&#x53C2;&#x5E94;&#x4F5C;&#x4E3A;&#x5B9E;&#x9A8C;&#x914D;&#x7F6E;&#x5199;&#x5165;&#x62A5;&#x544A;&#x3002;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="stage1_3_calibration.html" class="navigation navigation-prev " aria-label="Previous page: 3. 相机与手眼标定">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="stage1_3_timesync.html" class="navigation navigation-next " aria-label="Next page: 3. 时序同步说明">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"函数解析：手眼评估","level":"1.6.4","depth":2,"next":{"title":"3. 时序同步说明","level":"1.6.5","depth":2,"path":"stage1_3_timesync.md","ref":"stage1_3_timesync.md","articles":[]},"previous":{"title":"3. 相机与手眼标定","level":"1.6.3","depth":2,"path":"stage1_3_calibration.md","ref":"stage1_3_calibration.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ref_vision_handeye.md","mtime":"2026-01-27T13:26:19.259Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

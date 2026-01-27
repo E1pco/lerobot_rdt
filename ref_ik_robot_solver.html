@@ -1,0 +1,571 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>函数解析：ik · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="stage1_2_hci_teleop.html" />
+    
+    
+    <link rel="prev" href="ref_sdk_driver.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >函数解析：ik</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x8FD0;&#x52A8;&#x5B66;&#x4E0E;-ik&#xFF08;ik&#xFF09;">&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x8FD0;&#x52A8;&#x5B66;&#x4E0E; IK&#xFF08;<code>ik/</code>&#xFF09;</h1>
+<p>&#x672C;&#x7AE0;&#x5BF9;&#x5E94; 1./2. &#x7684;&#x201C;&#x7B97;&#x6CD5;&#x5C42; SDK&#x201D;&#xFF0C;&#x4E3B;&#x8981;&#x6587;&#x4EF6;&#xFF1A;</p>
+<ul>
+<li><code>ik/robot.py</code></li>
+<li><code>ik/solver.py</code></li>
+</ul>
+<p>&#x8FD0;&#x52A8;&#x5B66;/IK &#x5C42;&#x8981;&#x89E3;&#x51B3;&#x7684;&#x662F;&#xFF1A;</p>
+<ul>
+<li><strong>&#x6B63;&#x8FD0;&#x52A8;&#x5B66;</strong>&#xFF1A;&#x7ED9;&#x5B9A;&#x5173;&#x8282;&#x89D2; $q$&#xFF0C;&#x8BA1;&#x7B97;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T(q)$</li>
+<li><strong>&#x9006;&#x8FD0;&#x52A8;&#x5B66;</strong>&#xFF1A;&#x7ED9;&#x5B9A;&#x76EE;&#x6807;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T^<em>$&#xFF0C;&#x6C42;&#x4E00;&#x4E2A;&#x5173;&#x8282;&#x89D2;&#x89E3; $q$ &#x4F7F; $T(q)\approx T^</em>$</li>
+<li><strong>&#x5DE5;&#x7A0B;&#x95ED;&#x73AF;</strong>&#xFF1A;&#x628A; $q$ &#x4E0E;&#x8235;&#x673A;&#x6B65;&#x6570;&#x4E92;&#x76F8;&#x8F6C;&#x6362;&#xFF0C;&#x4FDD;&#x8BC1; IK &#x8F93;&#x51FA;&#x80FD;&#x771F;&#x6B63;&#x9A71;&#x52A8;&#x786C;&#x4EF6;&#x5E76;&#x80FD;&#x4ECE;&#x786C;&#x4EF6;&#x8BFB;&#x56DE;&#x66F4;&#x65B0;&#x72B6;&#x6001;</li>
+</ul>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<ul>
+<li><code>ik.robot.Robot</code>&#xFF1A;&#x9762;&#x5411;&#x5DE5;&#x7A0B;&#x4F7F;&#x7528;&#x7684;&#x5C01;&#x88C5;&#xFF08;FK/IK &#x8C03;&#x7528; + &#x89D2;&#x5EA6;&#x2194;&#x6B65;&#x6570;&#x8F6C;&#x6362;&#xFF09;</li>
+<li><code>ik.solver</code>&#xFF1A;&#x6570;&#x503C;&#x6CD5; IK &#x6C42;&#x89E3;&#x5668;&#xFF08;LM/GN/NR/QP &#x7B49;&#xFF09;</li>
+<li>SO101 &#x6A21;&#x578B;&#x6784;&#x5EFA;&#xFF1A;<code>create_so101_*</code> &#x628A; ETS &#x53C2;&#x6570;&#x3001;&#x9650;&#x4F4D;&#x3001;&#x7B26;&#x53F7;&#x7EA6;&#x5B9A;&#x7EC4;&#x5408;&#x6210;&#x53EF;&#x7528;&#x6A21;&#x578B;</li>
+</ul>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li><code>ik_keyboard_realtime.py</code>&#xFF1A;&#x672B;&#x7AEF; IK &#x63A7;&#x5236;&#x7684;&#x6700;&#x5C0F;&#x9A8C;&#x8BC1;&#x811A;&#x672C;&#x3002;</li>
+<li><code>joycon_ik_control_py.py</code>&#xFF1A;&#x9065;&#x64CD;&#x4F5C;&#x811A;&#x672C;&#xFF08;&#x9700;&#x8981; IK &#x5728;&#x5B9E;&#x65F6;&#x5FAA;&#x73AF;&#x5185;&#x6536;&#x655B;&#xFF09;&#x3002;</li>
+<li><code>RDT/collect_rdt_dataset_teleop.py</code>&#xFF1A;&#x91C7;&#x96C6;&#x65F6;&#x4F1A;&#x6301;&#x7EED;&#x8BFB;&#x56DE;&#x5173;&#x8282;&#x89D2;/&#x672B;&#x7AEF;&#x72B6;&#x6001;&#x5199;&#x5165; unified vector&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x4E0B;&#x6587;&#x6309;&#x7C7B;/&#x51FD;&#x6570;&#x89E3;&#x91CA;&#x5404;&#x65B9;&#x6CD5;&#x5728;&#x201C;&#x8BFB;&#x72B6;&#x6001;&#x2192;&#x6784;&#x9020;&#x76EE;&#x6807;&#x2192;&#x6C42;&#x89E3;&#x2192;&#x4E0B;&#x53D1;&#x201D;&#x7684;&#x94FE;&#x8DEF;&#x4E2D;&#x627F;&#x62C5;&#x7684;&#x804C;&#x8D23;&#x3002;</p>
+<h2 id="1-ikrobotrobot">1. <code>ik.robot.Robot</code></h2>
+<h3 id="11-qtoservotargetsqrad--countsperrev4096-gearratio-gearsign">1.1 <code>q_to_servo_targets(q_rad, ..., counts_per_rev=4096, gear_ratio, gear_sign)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x5173;&#x8282;&#x89D2;&#xFF08;rad&#xFF09;&#x2192; &#x8235;&#x673A;&#x76EE;&#x6807;&#x6B65;&#x6570;&#xFF08;steps&#xFF09;</li>
+<li>&#x516C;&#x5F0F;&#x89C1;&#xFF1A;<code>stage1_1_sdk.md</code></li>
+<li>&#x5173;&#x952E;&#x4F9D;&#x8D56;&#xFF1A;<code>home_pose</code>&#xFF08;&#x82E5;&#x672A;&#x4F20;&#x5165;&#x5219;&#x4ECE; <code>ServoController.home_pose</code> &#x53D6;&#xFF09;</li>
+</ul>
+<p>&#x5E38;&#x89C1;&#x9519;&#x8BEF;&#xFF1A;</p>
+<ul>
+<li>&#x672A;&#x4F20; <code>home_pose</code> &#x4E14; <code>ServoController</code> &#x672A;&#x80FD;&#x521D;&#x59CB;&#x5316; &#x2192; &#x629B; <code>ValueError</code></li>
+</ul>
+<h3 id="12-readjointanglesjointnamesnone-homeposenone-gearsignnone-gearrationone">1.2 <code>read_joint_angles(joint_names=None, home_pose=None, gear_sign=None, gear_ratio=None)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x8BFB;&#x8235;&#x673A;&#x5F53;&#x524D;&#x6B65;&#x6570; &#x2192; &#x53CD;&#x89E3;&#x5173;&#x8282;&#x89D2;&#xFF08;rad&#xFF09;</li>
+<li>&#x5E95;&#x5C42;&#x4F9D;&#x8D56;&#xFF1A;<code>ServoController.read_servo_positions()</code></li>
+</ul>
+<h3 id="13-fkineq">1.3 <code>fkine(q)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;FK&#xFF0C;&#x8FD4;&#x56DE; $4\times4$ &#x9F50;&#x6B21;&#x77E9;&#x9635;</li>
+<li>&#x5B9E;&#x73B0;&#xFF1A;<code>return self.ets.fkine(q)</code></li>
+</ul>
+<h3 id="14-ikinelmtep-q0none--masknone-k-methodchan">1.4 <code>ikine_LM(Tep, q0=None, ..., mask=None, k=..., method=&apos;chan&apos;)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;LM &#x6570;&#x503C; IK</li>
+<li>&#x771F;&#x5B9E;&#x5B9E;&#x73B0;&#xFF1A;&#x8C03;&#x7528; <code>ik/solver.py::ikine_LM(self.ets, ...)</code></li>
+<li>&#x5173;&#x952E;&#x53C2;&#x6570;&#xFF1A;<ul>
+<li><code>q0</code> &#x521D;&#x503C;&#xFF08;&#x5F3A;&#x70C8;&#x5EFA;&#x8BAE;&#x4F20;&#x5165;&#x5F53;&#x524D;&#x5173;&#x8282;&#x89D2;&#xFF09;</li>
+<li><code>mask</code>&#xFF08;&#x4F4D;&#x7F6E;/&#x59FF;&#x6001;&#x6743;&#x91CD;&#xFF09;</li>
+<li><code>ilimit/slimit/tol</code>&#xFF08;&#x8FED;&#x4EE3;/&#x591A;&#x6B21;&#x641C;&#x7D22;/&#x6536;&#x655B;&#x9608;&#x503C;&#xFF09;</li>
+</ul>
+</li>
+</ul>
+<p>&#x540C;&#x7C7B;&#x63A5;&#x53E3;&#xFF1A;<code>ikine_GN/ikine_NR/ikine_QP</code>&#x3002;</p>
+<h2 id="2-iksolverikinelm&#xFF08;&#x6838;&#x5FC3;&#x6C42;&#x89E3;&#x5668;&#xFF09;">2. <code>ik.solver.ikine_LM</code>&#xFF08;&#x6838;&#x5FC3;&#x6C42;&#x89E3;&#x5668;&#xFF09;</h2>
+<h3 id="21-angleaxiste-tep">2.1 <code>_angle_axis(Te, Tep)</code></h3>
+<ul>
+<li>&#x8F93;&#x5165;&#xFF1A;&#x5F53;&#x524D;&#x4F4D;&#x59FF; $T_e$ &#x4E0E;&#x76EE;&#x6807;&#x4F4D;&#x59FF; $T_{ep}$</li>
+<li>&#x8F93;&#x51FA;&#xFF1A;6D &#x8BEF;&#x5DEE; $e=[\Delta p,\ \Delta R]$<ul>
+<li>$\Delta p = p^*-p$</li>
+<li>$\Delta R$ &#x7528; $R_{err}=R^*R^T$ &#x8F6C;&#x4E3A;&#x8F74;&#x89D2;&#x5411;&#x91CF;</li>
+</ul>
+</li>
+</ul>
+<h3 id="22-&#x4EE3;&#x4EF7;&#x51FD;&#x6570;&#x4E0E;&#x6743;&#x91CD;">2.2 &#x4EE3;&#x4EF7;&#x51FD;&#x6570;&#x4E0E;&#x6743;&#x91CD;</h3>
+<ul>
+<li><code>mask</code> &#x2192; $W_e=\mathrm{diag}(mask)$</li>
+<li>&#x4EE3;&#x4EF7;&#xFF1A;$E=\frac12 e^T W_e e$</li>
+</ul>
+<h3 id="23-lm-&#x66F4;&#x65B0;">2.3 LM &#x66F4;&#x65B0;</h3>
+<ul>
+<li>&#x96C5;&#x53EF;&#x6BD4;&#xFF1A;<code>J = ets.jacob0(q)</code></li>
+<li>&#x963B;&#x5C3C;&#xFF1A;<code>Wn</code> &#x968F; <code>method</code> &#x4E0D;&#x540C;&#x800C;&#x4E0D;&#x540C;&#xFF08;chan/wampler/sugihara&#xFF09;</li>
+<li>&#x66F4;&#x65B0;&#xFF1A;$q \leftarrow q + (J^T W_e J + W_n)^{-1} J^T W_e e$</li>
+</ul>
+<h3 id="24-&#x591A;&#x6B21;&#x641C;&#x7D22;&#xFF08;slimit&#xFF09;">2.4 &#x591A;&#x6B21;&#x641C;&#x7D22;&#xFF08;slimit&#xFF09;</h3>
+<ul>
+<li>&#x7B2C; 1 &#x6B21;&#x7528; <code>q0</code></li>
+<li>&#x540E;&#x7EED;&#x968F;&#x673A;&#x521D;&#x59CB;&#x5316;&#x91CD;&#x8BD5;</li>
+</ul>
+<p>&#x5931;&#x8D25;&#x6A21;&#x5F0F;&#xFF1A;</p>
+<ul>
+<li>&#x77E9;&#x9635;&#x5947;&#x5F02;&#xFF08;<code>LinAlgError</code>&#xFF09;&#x5BFC;&#x81F4;&#x4E2D;&#x65AD;&#x5F53;&#x524D;&#x641C;&#x7D22;</li>
+<li>&#x8FED;&#x4EE3;&#x8017;&#x5C3D;&#xFF1A;&#x8FD4;&#x56DE; <code>IKResult(False, q, &apos;iteration limit reached&apos;)</code></li>
+</ul>
+<h2 id="3-so101-&#x6A21;&#x578B;&#x6784;&#x5EFA;&#x51FD;&#x6570;">3. SO101 &#x6A21;&#x578B;&#x6784;&#x5EFA;&#x51FD;&#x6570;</h2>
+<ul>
+<li><code>create_so101_5dof()</code>&#xFF1A;5DOF ETS + <code>gear_sign/gear_ratio/qlim</code></li>
+<li><code>create_so101_5dof_gripper()</code>&#xFF1A;&#x5728; 5DOF &#x672B;&#x7AEF;&#x540E;&#x989D;&#x5916;&#x589E;&#x52A0;&#x56FA;&#x5B9A;&#x5E73;&#x79FB;&#x6BB5;&#xFF08;&#x5DE5;&#x5177;&#x957F;&#x5EA6;&#xFF09;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ref_sdk_driver.html" class="navigation navigation-prev " aria-label="Previous page: 函数解析：driver">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="stage1_2_hci_teleop.html" class="navigation navigation-next " aria-label="Next page: 2. 人机交互（键盘/JoyCon）">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"函数解析：ik","level":"1.4.3","depth":2,"next":{"title":"2. 人机交互（键盘/JoyCon）","level":"1.5","depth":1,"path":"stage1_2_hci_teleop.md","ref":"stage1_2_hci_teleop.md","articles":[{"title":"2. 控制映射速查","level":"1.5.1","depth":2,"path":"stage1_2_controls.md","ref":"stage1_2_controls.md","articles":[]},{"title":"3. 主从臂遥操","level":"1.5.2","depth":2,"path":"stage1_2_3_leader_follower.md","ref":"stage1_2_3_leader_follower.md","articles":[]}]},"previous":{"title":"函数解析：driver","level":"1.4.2","depth":2,"path":"ref_sdk_driver.md","ref":"ref_sdk_driver.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ref_ik_robot_solver.md","mtime":"2026-01-10T14:45:15.969Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

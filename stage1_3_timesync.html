@@ -1,0 +1,551 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>3. 时序同步说明 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ref_rdt_pipeline.html" />
+    
+    
+    <link rel="prev" href="ref_vision_handeye.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >3. 时序同步说明</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="3-&#x6570;&#x636E;&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x8BF4;&#x660E;">3. &#x6570;&#x636E;&#x65F6;&#x5E8F;&#x540C;&#x6B65;&#x8BF4;&#x660E;</h1>
+<p>&#x672C;&#x7AE0;&#x63CF;&#x8FF0; 3. &#x6570;&#x636E;&#x91C7;&#x96C6;&#x94FE;&#x8DEF;&#x4E2D;&#x201C;&#x5982;&#x4F55;&#x5BF9;&#x9F50;&#x540C;&#x4E00;&#x63A7;&#x5236;&#x5468;&#x671F;&#x7684;&#x6570;&#x636E;&#x201D;&#xFF0C;&#x4EE5;&#x53CA;&#x5F53;&#x524D;&#x5B9E;&#x73B0;&#x7684;&#x9650;&#x5236;&#x4E0E;&#x53EF;&#x6539;&#x8FDB;&#x65B9;&#x5411;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x7684;&#x201C;&#x540C;&#x6B65;&#x201D;&#x5E76;&#x4E0D;&#x7B49;&#x4EF7;&#x4E8E;&#x786C;&#x4EF6;&#x540C;&#x89E6;&#x53D1;&#xFF0C;&#x800C;&#x662F;&#xFF1A;&#x5728;&#x79BB;&#x6563;&#x63A7;&#x5236;&#x5468;&#x671F;&#xFF08;control tick&#xFF09;&#x5185;&#xFF0C;&#x628A;&#x591A;&#x6A21;&#x6001;&#x89C2;&#x6D4B;&#x5C3D;&#x53EF;&#x80FD;&#x5BF9;&#x9F50;&#x5230;&#x540C;&#x4E00;&#x65F6;&#x95F4;&#x8F74;&#xFF0C;&#x4FDD;&#x8BC1;&#x4E0B;&#x6E38;&#x80FD;&#x89E3;&#x91CA;&#x201C;&#x8FD9;&#x5F20;&#x56FE;/&#x8FD9;&#x4E2A; proprio/&#x8FD9;&#x4E2A; action &#x5C5E;&#x4E8E;&#x540C;&#x4E00;&#x6B21;&#x51B3;&#x7B56;&#x201D;&#x3002;</p>
+<p>&#x56E0;&#x6B64;&#x672C;&#x7AE0;&#x5173;&#x6CE8;&#x7684;&#x662F;&#xFF1A;</p>
+<ul>
+<li>&#x4EE5; tick &#x4E3A;&#x5355;&#x4F4D;&#x7684;&#x5BF9;&#x9F50;&#x7B56;&#x7565;</li>
+<li>&#x5199;&#x5165; HDF5 &#x7684;&#x65F6;&#x95F4;&#x6233;&#x8BED;&#x4E49;</li>
+<li>&#x73B0;&#x6709;&#x8F6F;&#x4EF6;&#x91C7;&#x96C6;&#x5E26;&#x6765;&#x7684;&#x504F;&#x5DEE;&#x4E0E;&#x9700;&#x8981;&#x5728;&#x62A5;&#x544A;&#x91CC;&#x8BF4;&#x660E;&#x7684;&#x9650;&#x5236;</li>
+</ul>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>&#x5F53;&#x524D;&#x5B9E;&#x73B0;&#x91C7;&#x7528;<strong>&#x5355;&#x7EBF;&#x7A0B;&#x5355;&#x5FAA;&#x73AF;</strong>&#x9A71;&#x52A8;&#xFF0C;&#x628A;&#x6BCF;&#x4E2A; tick &#x7684;&#x91C7;&#x6837;&#x987A;&#x5E8F;&#x56FA;&#x5B9A;&#x4E0B;&#x6765;&#xFF0C;&#x5E76;&#x628A;&#x201C;&#x8FD1;&#x4F3C;&#x540C;&#x65F6;&#x523B;&#x201D;&#x7684;&#x6570;&#x636E;&#x5199;&#x5165;&#x540C;&#x4E00;&#x4E2A; step&#xFF1A;</p>
+<p>1) &#x8BFB;&#x8F93;&#x5165;&#xFF08;&#x9065;&#x64CD;&#x4F5C;&#xFF09;
+2) &#x8BFB;&#x673A;&#x5668;&#x4EBA;&#x72B6;&#x6001;&#xFF08;proprio&#xFF09;
+3) &#x53D6;&#x76F8;&#x673A;&#x56FE;&#x50CF;&#xFF08;&#x6309;&#x76F8;&#x673A;&#x987A;&#x5E8F;&#xFF09;&#x5E76;&#x5806;&#x53E0;&#x6700;&#x8FD1; <code>Timg=2</code> &#x5E27;
+4) &#x5199;&#x5165; action/proprio/images &#x4E0E; <code>timestamps_unix_s</code></p>
+<p>&#x8FD9;&#x79CD;&#x7ED3;&#x6784;&#x7684;&#x4F18;&#x70B9;&#x662F;&#x5B9E;&#x73B0;&#x7B80;&#x5355;&#x3001;&#x590D;&#x73B0;&#x8DEF;&#x5F84;&#x6E05;&#x6670;&#xFF1B;&#x7F3A;&#x70B9;&#x662F;&#x8DE8;&#x76F8;&#x673A;&#x4E0E;&#x8DE8;&#x6A21;&#x6001;&#x5FC5;&#x7136;&#x5B58;&#x5728;&#x6BEB;&#x79D2;&#x7EA7;&#x504F;&#x5DEE;&#x3002;</p>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li><code>RDT/collect_rdt_dataset_teleop.py</code>&#xFF1A;&#x91C7;&#x96C6;&#x4E3B;&#x5FAA;&#x73AF;&#x4E0E; tick &#x5BF9;&#x9F50;&#x903B;&#x8F91;&#xFF08;&#x51B3;&#x5B9A;&#x201C;&#x540C;&#x6B65;&#x8BED;&#x4E49;&#x201D;&#xFF09;&#x3002;</li>
+<li><code>RDT/build_rdt_hdf5_from_raw.py</code>&#xFF1A;&#x628A; raw &#x5E8F;&#x5217;&#x6574;&#x7406;&#x6210; HDF5&#x3002;</li>
+<li><code>RDT/rdt_hdf5.py</code>&#xFF1A;HDF5 &#x5B57;&#x6BB5;&#x5B9A;&#x4E49;&#xFF08;&#x5305;&#x542B; <code>timestamps_unix_s</code> &#x7B49;&#xFF09;&#x3002;</li>
+<li><code>RDT/inspect_rdt_hdf5.py</code>&#xFF1A;&#x901A;&#x8FC7; shape/&#x62BD;&#x6837;&#x53EF;&#x89C6;&#x5316;&#x68C0;&#x67E5;&#x5BF9;&#x9F50;&#x6548;&#x679C;&#x662F;&#x5426;&#x7B26;&#x5408;&#x9884;&#x671F;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;&#xFF08;&#x5BF9;&#x9F50;&#x5728;&#x4EE3;&#x7801;&#x91CC;&#x843D;&#x5230;&#x54EA;&#x4E9B;&#x5199;&#x5165;&#x70B9;&#xFF09;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;&#xFF08;&#x5BF9;&#x9F50;&#x5728;&#x4EE3;&#x7801;&#x91CC;&#x843D;&#x5230;&#x54EA;&#x4E9B;&#x201C;&#x5199;&#x5165;&#x70B9;&#x201D;&#xFF09;</h2>
+<h3 id="&#x91C7;&#x96C6;&#x4E3B;&#x5FAA;&#x73AF;-collectrdtdatasetteleoppy">&#x91C7;&#x96C6;&#x4E3B;&#x5FAA;&#x73AF; (<code>collect_rdt_dataset_teleop.py</code>)</h3>
+<ul>
+<li><strong><code>main_loop()</code> &#x4E2D;&#x7684;&#x987A;&#x5E8F;&#x6267;&#x884C;&#x903B;&#x8F91;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5B9A;&#x4E49;&#x8F6F;&#x540C;&#x6B65;&#x7B56;&#x7565;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5728;&#x4E00;&#x4E2A; <code>while</code> &#x5FAA;&#x73AF;&#xFF08;Tick&#xFF09;&#x5185;&#xFF0C;&#x4E25;&#x683C;&#x6309;&#x7167;&#x201C;&#x8BFB;&#x624B;&#x67C4; -&gt; &#x8BFB;&#x673A;&#x68B0;&#x81C2; -&gt; &#x8BFB;&#x76F8;&#x673A; -&gt; &#x5B58;&#x6570;&#x636E;&#x201D;&#x7684;&#x987A;&#x5E8F;&#x6267;&#x884C;&#x3002;&#x867D;&#x7136;&#x5404;&#x8BBE;&#x5907;&#x6CA1;&#x6709;&#x786C;&#x4EF6;&#x89E6;&#x53D1;&#x4FE1;&#x53F7;&#x8FDE;&#x63A5;&#xFF0C;&#x4F46;&#x8FD9;&#x79CD;&#x987A;&#x5E8F;&#x6267;&#x884C;&#x4FDD;&#x8BC1;&#x4E86;&#x5728;&#x4EE3;&#x7801;&#x903B;&#x8F91;&#x4E0A;&#x5B83;&#x4EEC;&#x5C5E;&#x4E8E;&#x540C;&#x4E00;&#x4E2A;&#x201C;Step&#x201D;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>time.time()</code> &#x8C03;&#x7528;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x8BB0;&#x5F55;&#x65F6;&#x95F4;&#x6233;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5728;&#x8BFB;&#x53D6;&#x5B8C;&#x6240;&#x6709;&#x4F20;&#x611F;&#x5668;&#x6570;&#x636E;&#x540E;&#xFF0C;&#x8C03;&#x7528;&#x4E00;&#x6B21; <code>time.time()</code> &#x83B7;&#x53D6;&#x5F53;&#x524D; Unix &#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x5E76;&#x5C06;&#x5176;&#x4F5C;&#x4E3A;&#x8BE5; Step &#x7684; <code>timestamp</code> &#x5199;&#x5165; CSV/HDF5&#x3002;&#x8FD9;&#x4E3A;&#x540E;&#x7EED;&#x5206;&#x6790;&#x5BF9;&#x9F50;&#x8BEF;&#x5DEE;&#x63D0;&#x4F9B;&#x4E86;&#x7C97;&#x7C92;&#x5EA6;&#x7684;&#x57FA;&#x51C6;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;-hdf5-rdthdf5py--buildrdthdf5fromrawpy">&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E; HDF5 (<code>rdt_hdf5.py</code> / <code>build_rdt_hdf5_from_raw.py</code>)</h3>
+<ul>
+<li><strong>&#x56FE;&#x50CF;&#x5806;&#x53E0; (Image Stacking)</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6784;&#x9020;&#x65F6;&#x5E8F;&#x8F93;&#x5165;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5728;&#x5199;&#x5165; HDF5 &#x65F6;&#xFF0C;&#x5BF9;&#x4E8E;&#x65F6;&#x523B; $t$&#xFF0C;&#x4E0D;&#x4EC5;&#x5199;&#x5165;&#x5F53;&#x524D;&#x5E27; $I_t$&#xFF0C;&#x8FD8;&#x53EF;&#x80FD;&#x6839;&#x636E;&#x914D;&#x7F6E;&#xFF08;<code>T_img</code>&#xFF09;&#x5199;&#x5165;&#x5386;&#x53F2;&#x5E27; $I_{t-1}$&#x3002;&#x82E5; $t=0$&#xFF0C;&#x5219;&#x590D;&#x5236; $I_0$ &#x8FDB;&#x884C; Padding&#x3002;&#x8FD9;&#x5728; <code>RDTHDF5EpisodeWriter</code> &#x4E2D;&#x5904;&#x7406;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>timestamps_unix_s</code> &#x5B57;&#x6BB5;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6570;&#x636E;&#x5BF9;&#x9F50;&#x7684;&#x9A8C;&#x8BC1;&#x4F9D;&#x636E;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x5728; HDF5 &#x4E2D;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB; Dataset &#x5B58;&#x50A8;&#x3002;&#x5728;&#x591A;&#x673A;&#x91C7;&#x96C6;&#x6216;&#x591A;&#x6A21;&#x6001;&#x878D;&#x5408;&#x573A;&#x666F;&#x4E0B;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x6BD4;&#x8F83;&#x4E0D;&#x540C;&#x6D41;&#x7684; timestamp &#x6765;&#x8BC4;&#x4F30;&#x540C;&#x6B65;&#x504F;&#x5DEE;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-&#x540C;&#x6B65;&#x76EE;&#x6807;">1. &#x540C;&#x6B65;&#x76EE;&#x6807;</h2>
+<p>&#x5728;&#x6BCF;&#x4E2A; control tick&#xFF0C;&#x5C3D;&#x91CF;&#x8BA9;&#x4EE5;&#x4E0B;&#x6570;&#x636E;&#x80FD;&#x5728;&#x540C;&#x4E00;&#x65F6;&#x95F4;&#x8F74;&#x4E0A;&#x5BF9;&#x9F50;&#xFF1A;</p>
+<ul>
+<li>&#x4E09;&#x76F8;&#x673A;&#x56FE;&#x50CF;&#xFF08;exterior/right-wrist/left-wrist&#xFF09;&#x6700;&#x8FD1; <code>Timg=2</code> &#x5E27;</li>
+<li>&#x53CC;&#x81C2; proprio&#xFF08;&#x5173;&#x8282;/&#x672B;&#x7AEF;&#x7B49;&#xFF0C;&#x5199;&#x5165; unified 128 + mask&#xFF09;</li>
+<li>&#x5F53;&#x524D;&#x52A8;&#x4F5C; action&#xFF08;&#x5199;&#x5165; unified 128 + mask&#xFF09;</li>
+</ul>
+<h2 id="2-&#x5F53;&#x524D;&#x5B9E;&#x73B0;&#xFF08;&#x4EE3;&#x7801;&#x6620;&#x5C04;&#xFF09;">2. &#x5F53;&#x524D;&#x5B9E;&#x73B0;&#xFF08;&#x4EE3;&#x7801;&#x6620;&#x5C04;&#xFF09;</h2>
+<p>&#x4E3B;&#x5FAA;&#x73AF;&#xFF1A;<code>RDT/collect_rdt_dataset_teleop.py</code></p>
+<ul>
+<li>&#x5355;&#x4E00;&#x5FAA;&#x73AF;&#x9A71;&#x52A8;&#xFF1A;&#x6BCF;&#x4E2A; tick &#x987A;&#x5E8F;&#x6267;&#x884C;&#x201C;&#x8BFB;&#x8F93;&#x5165; &#x2192; &#x8BFB;&#x72B6;&#x6001; &#x2192; &#x53D6;&#x56FE;&#x50CF; &#x2192; &#x5199; step&#x201D;&#x3002;</li>
+<li>&#x65F6;&#x95F4;&#x6233;&#xFF1A;&#x5199;&#x5165; <code>timestamps_unix_s</code>&#xFF08;Unix &#x79D2;&#xFF09;&#x3002;</li>
+<li>&#x56FE;&#x50CF;&#x5806;&#x53E0;&#xFF1A;&#x6BCF;&#x4E2A; tick &#x4FDD;&#x5B58;&#x6700;&#x8FD1; <code>Timg=2</code> &#x5E27;&#xFF08;&#x4E0D;&#x8DB3;&#x5219; padding&#xFF09;&#x3002;</li>
+</ul>
+<h2 id="3-&#x5DF2;&#x77E5;&#x9650;&#x5236;">3. &#x5DF2;&#x77E5;&#x9650;&#x5236;</h2>
+<ul>
+<li>&#x591A;&#x76F8;&#x673A;&#x4E3A;&#x8F6F;&#x4EF6;&#x987A;&#x5E8F;&#x8BFB;&#x53D6;&#xFF1A;&#x8DE8;&#x76F8;&#x673A;&#x5B58;&#x5728;&#x6BEB;&#x79D2;&#x7EA7;&#x504F;&#x5DEE;&#xFF08;&#x975E;&#x786C;&#x89E6;&#x53D1;&#xFF09;&#x3002;</li>
+<li>&#x56FE;&#x50CF;&#x4E0E;&#x5173;&#x8282;&#x72B6;&#x6001;&#x5E76;&#x975E;&#x540C;&#x4E00;&#x65F6;&#x523B;&#x91C7;&#x6837;&#xFF1A;&#x53D7;&#x91C7;&#x96C6;&#x987A;&#x5E8F;&#x4E0E; USB/&#x4E32;&#x53E3;&#x6296;&#x52A8;&#x5F71;&#x54CD;&#x3002;</li>
+</ul>
+<h2 id="4-&#x53EF;&#x6539;&#x8FDB;&#x65B9;&#x5411;">4. &#x53EF;&#x6539;&#x8FDB;&#x65B9;&#x5411;</h2>
+<ul>
+<li>&#x4E3A;&#x6BCF;&#x8DEF;&#x76F8;&#x673A;&#x5355;&#x72EC;&#x8BB0;&#x5F55;&#x5E27;&#x7EA7;&#x65F6;&#x95F4;&#x6233;&#xFF08;&#x6BCF;&#x5E27;&#x4E00;&#x4E2A; timestamp&#xFF09;&#xFF0C;&#x5E76;&#x5728; HDF5 &#x4E2D;&#x989D;&#x5916;&#x4FDD;&#x5B58;&#x3002;</li>
+<li>&#x591A;&#x7EBF;&#x7A0B;/&#x5F02;&#x6B65;&#x91C7;&#x96C6;&#x76F8;&#x673A;&#xFF0C;&#x4E3B;&#x7EBF;&#x7A0B;&#x6309;&#x65F6;&#x95F4;&#x6700;&#x8FD1;&#x90BB;&#x5BF9;&#x9F50;&#x3002;</li>
+<li>&#x4F7F;&#x7528;&#x786C;&#x4EF6;&#x89E6;&#x53D1;&#x540C;&#x6B65;&#x76F8;&#x673A;&#xFF08;&#x6700;&#x4E25;&#x683C;&#xFF09;&#xFF0C;&#x6216;&#x4F7F;&#x7528;&#x540C;&#x4E00;&#x540C;&#x6B65;&#x4FE1;&#x53F7;&#x5199;&#x5165;&#x65E5;&#x5FD7;&#x3002;</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ref_vision_handeye.html" class="navigation navigation-prev " aria-label="Previous page: 函数解析：手眼评估">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ref_rdt_pipeline.html" class="navigation navigation-next " aria-label="Next page: 函数解析：RDT 采集链路">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"3. 时序同步说明","level":"1.6.5","depth":2,"next":{"title":"函数解析：RDT 采集链路","level":"1.6.6","depth":2,"path":"ref_rdt_pipeline.md","ref":"ref_rdt_pipeline.md","articles":[]},"previous":{"title":"函数解析：手眼评估","level":"1.6.4","depth":2,"path":"ref_vision_handeye.md","ref":"ref_vision_handeye.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"stage1_3_timesync.md","mtime":"2026-01-10T12:43:42.299Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

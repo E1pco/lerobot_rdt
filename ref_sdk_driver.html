@@ -1,0 +1,591 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>函数解析：driver · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ref_ik_robot_solver.html" />
+    
+    
+    <link rel="prev" href="stage1_1_sdk_api.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >函数解析：driver</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x8235;&#x673A;&#x9A71;&#x52A8;&#x4E0E;&#x63A7;&#x5236;&#xFF08;driver&#xFF09;">&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;&#x8235;&#x673A;&#x9A71;&#x52A8;&#x4E0E;&#x63A7;&#x5236;&#xFF08;<code>driver/</code>&#xFF09;</h1>
+<p>&#x672C;&#x7AE0;&#x805A;&#x7126; 1. SDK &#x7684;&#x201C;&#x786C;&#x4EF6;&#x901A;&#x4FE1;&#x5C42; + &#x63A7;&#x5236;&#x62BD;&#x8C61;&#x5C42;&#x201D;&#xFF0C;&#x5BF9;&#x5E94;&#x6E90;&#x7801;&#xFF1A;</p>
+<ul>
+<li><code>driver/ftservo_driver.py</code></li>
+<li><code>driver/ftservo_controller.py</code></li>
+</ul>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<ul>
+<li><code>FTServo</code>&#xFF1A;&#x534F;&#x8BAE;&#x4E0E;&#x4E32;&#x53E3;&#x5C01;&#x88C5;&#xFF08;&#x7EC4;&#x5305;&#x3001;&#x6821;&#x9A8C;&#x3001;&#x6536;&#x53D1;&#x3001;&#x540C;&#x6B65;&#x8BFB;&#x5199;&#xFF09;</li>
+<li><code>ServoController</code>&#xFF1A;&#x9762;&#x5411;&#x5173;&#x8282;&#x540D;&#x7684;&#x63A7;&#x5236;&#x62BD;&#x8C61;&#xFF08;&#x52A0;&#x8F7D;&#x914D;&#x7F6E;&#x3001;&#x8F6F;&#x9650;&#x4F4D;&#x3001;&#x56DE;&#x4E2D;&#x3001;&#x540C;&#x6B65;&#x4E0B;&#x53D1;&#xFF09;</li>
+</ul>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li><code>arm_keyboard_control.py</code>&#xFF1A;&#x76F4;&#x63A5;&#x4F7F;&#x7528; <code>ServoController</code> &#x505A;&#x6B65;&#x6570;&#x7EA7;&#x63A7;&#x5236;&#x4E0E;&#x56DE;&#x4E2D;&#x3002;</li>
+<li><code>ik_keyboard_realtime.py</code> / <code>joycon_ik_control_py.py</code>&#xFF1A;&#x5728; IK &#x4E4B;&#x540E;&#x7528; <code>ServoController</code> &#x4E0B;&#x53D1;&#x76EE;&#x6807;&#x5E76;&#x8BFB;&#x56DE;&#x5F53;&#x524D;&#x4F4D;&#x7F6E;&#x3002;</li>
+<li><code>RDT/collect_rdt_dataset_teleop.py</code>&#xFF1A;&#x91C7;&#x96C6;&#x65F6;&#x8BFB; proprio/&#x4E0B;&#x53D1; action&#xFF0C;&#x540C;&#x6837;&#x4F9D;&#x8D56;&#x63A7;&#x5236;&#x5C42;&#x7A33;&#x5B9A;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x4E0B;&#x6587;&#x6309;&#x7C7B;/&#x65B9;&#x6CD5;&#x9010;&#x4E2A;&#x89E3;&#x91CA;&#x804C;&#x8D23;&#x3001;&#x8F93;&#x5165;&#x8F93;&#x51FA;&#x4E0E;&#x5E38;&#x89C1;&#x5931;&#x8D25;&#x6A21;&#x5F0F;&#x3002;</p>
+<h2 id="1-driverftservodriverftservo">1. <code>driver.ftservo_driver.FTServo</code></h2>
+<p>&#x5B9A;&#x4F4D;&#xFF1A;&#x4E32;&#x53E3;&#x534F;&#x8BAE;&#x5C01;&#x88C5;&#xFF0C;&#x63D0;&#x4F9B;&#x300C;&#x7EC4;&#x5305;&#x2192;&#x53D1;&#x9001;&#x2192;&#x89E3;&#x6790;&#x5E94;&#x7B54;&#x300D;&#x80FD;&#x529B;&#x3002;</p>
+<h3 id="11-initport-baudrate-timeout">1.1 <code>__init__(port, baudrate, timeout)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x6253;&#x5F00;&#x4E32;&#x53E3; <code>serial.Serial(port, baudrate, timeout=...)</code></li>
+<li>&#x5931;&#x8D25;&#x6A21;&#x5F0F;&#xFF1A;&#x7AEF;&#x53E3;&#x4E0D;&#x5B58;&#x5728;/&#x65E0;&#x6743;&#x9650;/&#x6CE2;&#x7279;&#x7387;&#x4E0D;&#x5339;&#x914D;</li>
+</ul>
+<h3 id="12-buildpacketid-instruction-paramsnone">1.2 <code>build_packet(ID, instruction, params=None)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x6784;&#x9020;&#x6307;&#x4EE4;&#x5305; <code>HEADER(0xFF,0xFF) + [ID, length, instruction] + params + checksum</code></li>
+<li><code>length = len(params) + 2</code>&#xFF08;&#x5305;&#x542B; <code>instruction</code> &#x4E0E; <code>checksum</code>&#xFF09;</li>
+</ul>
+<h3 id="13-checksumdata">1.3 <code>checksum(data)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x8FD4;&#x56DE;&#x6309;&#x534F;&#x8BAE;&#x5B9A;&#x4E49;&#x7684;&#x6821;&#x9A8C;&#xFF1A;</li>
+</ul>
+<p><script type="math/tex; mode=display">
+\text{chk}=\sim(\sum data)\ \&\ 0xFF
+
+</script></p>
+<h3 id="14-sendpacketpacket">1.4 <code>send_packet(packet)</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x5411;&#x4E32;&#x53E3;&#x5199;&#x5165;&#x5B57;&#x8282;&#x6D41;</li>
+</ul>
+<h3 id="15-readresponse">1.5 <code>read_response()</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x8BFB;&#x53D6;&#x5E94;&#x7B54;&#x5305;&#x5E76;&#x8FD4;&#x56DE; dict&#xFF1A;<ul>
+<li><code>id/length/error/params/checksum/valid</code></li>
+</ul>
+</li>
+<li>&#x5173;&#x952E;&#x70B9;&#xFF1A;&#x4F1A;&#x6821;&#x9A8C; checksum&#xFF08;<code>valid</code>&#xFF09;</li>
+<li>&#x5931;&#x8D25;&#x6A21;&#x5F0F;&#xFF1A;&#x8BFB;&#x53D6;&#x8D85;&#x65F6;&#x3001;&#x5E27;&#x5934;&#x4E0D;&#x5339;&#x914D;&#x3001;&#x957F;&#x5EA6;&#x4E0D;&#x8DB3;</li>
+</ul>
+<h3 id="16-&#x57FA;&#x672C;&#x6307;&#x4EE4;&#xFF08;pingreaddatawritedata&#xFF09;">1.6 &#x57FA;&#x672C;&#x6307;&#x4EE4;&#xFF08;<code>ping/read_data/write_data/...</code>&#xFF09;</h3>
+<ul>
+<li><code>ping(ID)</code>&#xFF1A;&#x53D1; ping &#x5E76;&#x8BFB;&#x5E94;&#x7B54;</li>
+<li><code>read_data(ID, start_addr, length)</code>&#xFF1A;&#x8BFB;&#x5BC4;&#x5B58;&#x5668;&#x7247;&#x6BB5;</li>
+<li><code>write_data(ID, start_addr, data_bytes)</code>&#xFF1A;&#x5199;&#x5BC4;&#x5B58;&#x5668;&#x7247;&#x6BB5;</li>
+<li><code>sync_write(start_addr, data_len, servo_data_dict)</code>&#xFF1A;&#x5E7F;&#x64AD;&#x540C;&#x6B65;&#x5199;</li>
+<li><code>sync_read(start_addr, data_len, ids)</code>&#xFF1A;&#x5E7F;&#x64AD;&#x540C;&#x6B65;&#x8BFB;&#xFF08;&#x9010;&#x4E2A;&#x6536;&#x5E94;&#x7B54;&#xFF09;</li>
+</ul>
+<p>&#x5DE5;&#x7A0B;&#x4E0A;&#xFF0C;&#x672C;&#x9879;&#x76EE;&#x4E3B;&#x8981;&#x7528;&#x5230;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x5730;&#x5740;&#xFF1A;</p>
+<ul>
+<li><code>0x2A</code>&#xFF1A;&#x5199;&#x5165;&#x300C;&#x4F4D;&#x7F6E;(2B)+&#x65F6;&#x95F4;(2B)+&#x901F;&#x5EA6;(2B)&#x300D;</li>
+<li><code>0x38</code>&#xFF1A;&#x8BFB;&#x53D6;&#x5F53;&#x524D;&#x4F4D;&#x7F6E;&#xFF08;2B&#xFF09;</li>
+</ul>
+<h2 id="2-driverftservocontrollerservocontroller">2. <code>driver.ftservo_controller.ServoController</code></h2>
+<p>&#x5B9A;&#x4F4D;&#xFF1A;&#x5BF9;&#x4E0A;&#x63D0;&#x4F9B;&#x201C;&#x6309;&#x5173;&#x8282;&#x540D;&#x63A7;&#x5236;&#x201D;&#xFF0C;&#x5BF9;&#x4E0B;&#x8C03;&#x7528; <code>FTServo</code>&#x3002;</p>
+<h3 id="21-&#x521D;&#x59CB;&#x5316;&#x4E0E;&#x914D;&#x7F6E;&#x52A0;&#x8F7D;">2.1 &#x521D;&#x59CB;&#x5316;&#x4E0E;&#x914D;&#x7F6E;&#x52A0;&#x8F7D;</h3>
+<ul>
+<li><code>__init__(port, baudrate, config_path)</code>&#xFF1A;&#x52A0;&#x8F7D; JSON &#x914D;&#x7F6E;&#x4E3A; <code>self.config</code></li>
+<li><code>id_map</code>&#xFF1A;&#x628A; <code>id -&gt; joint_name</code> &#x53CD;&#x5411;&#x6620;&#x5C04;</li>
+<li><code>home_pose</code>&#xFF1A;<ul>
+<li>&#x975E;&#x5939;&#x722A;&#xFF1A;&#x53D6; <code>(range_min + range_max)//2</code></li>
+<li>&#x5939;&#x722A;&#xFF1A;&#x53D6; <code>range_min</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="22-&#x9650;&#x4F4D;&#x4FDD;&#x62A4;&#xFF1A;limitpositionname-targetpos">2.2 &#x9650;&#x4F4D;&#x4FDD;&#x62A4;&#xFF1A;<code>limit_position(name, target_pos)</code></h3>
+<ul>
+<li>&#x8F93;&#x5165;&#xFF1A;&#x5173;&#x8282;&#x540D;&#x3001;&#x76EE;&#x6807;&#x6B65;&#x6570;</li>
+<li>&#x8F93;&#x51FA;&#xFF1A;&#x88C1;&#x526A;&#x5230; <code>[range_min, range_max]</code> &#x540E;&#x7684;&#x6B65;&#x6570;</li>
+<li>&#x526F;&#x4F5C;&#x7528;&#xFF1A;&#x82E5;&#x88AB;&#x88C1;&#x526A;&#x4F1A;&#x6253;&#x5370;&#x8B66;&#x544A;</li>
+</ul>
+<h3 id="23-&#x5355;&#x5173;&#x8282;&#x63A7;&#x5236;&#xFF1A;moveservoname-targetpos-speed1000">2.3 &#x5355;&#x5173;&#x8282;&#x63A7;&#x5236;&#xFF1A;<code>move_servo(name, target_pos, speed=1000)</code></h3>
+<ul>
+<li>&#x7EC4;&#x5305;&#x683C;&#x5F0F;&#xFF1A;<code>[pos_lo,pos_hi, 0,0, speed_lo,speed_hi]</code></li>
+<li>&#x8C03;&#x7528;&#xFF1A;<code>FTServo.write_data(id, 0x2A, data)</code></li>
+<li>&#x5931;&#x8D25;&#x6A21;&#x5F0F;&#xFF1A;&#x4E32;&#x53E3;&#x5199;&#x5931;&#x8D25;&#x3001;&#x8235;&#x673A;&#x65E0;&#x5E94;&#x7B54;&#x3001;<code>resp[&apos;error&apos;]!=0</code> &#x6216; <code>valid=False</code></li>
+</ul>
+<h3 id="24-&#x591A;&#x5173;&#x8282;&#x540C;&#x6B65;&#x63A7;&#x5236;">2.4 &#x591A;&#x5173;&#x8282;&#x540C;&#x6B65;&#x63A7;&#x5236;</h3>
+<ul>
+<li><code>move_group(targets_dict)</code>&#xFF1A;&#x56FA;&#x5B9A; speed=1000 &#x7684;&#x540C;&#x6B65;&#x5199;</li>
+<li><code>fast_move_to_pose(target_dict, speed=...)</code>&#xFF1A;&#x652F;&#x6301; int &#x6216; dict &#x901F;&#x5EA6;</li>
+</ul>
+<p>&#x5E95;&#x5C42;&#x90FD;&#x662F; <code>FTServo.sync_write(0x2A, 6, servo_data)</code>&#x3002;</p>
+<h3 id="25-&#x56DE;&#x4E2D;&#x4F4D;&#x4E0E;&#x7F13;&#x52A8;">2.5 &#x56DE;&#x4E2D;&#x4F4D;&#x4E0E;&#x7F13;&#x52A8;</h3>
+<ul>
+<li><code>move_to_home(name)</code>&#xFF1A;&#x5355;&#x5173;&#x8282;&#x56DE;&#x4E2D;</li>
+<li><code>move_all_home()</code>&#xFF1A;&#x5168;&#x90E8;&#x5173;&#x8282;&#x540C;&#x6B65;&#x56DE;&#x4E2D;</li>
+<li><code>soft_move_to_home(step_count, interval)</code>&#xFF1A;&#x8BFB;&#x5F53;&#x524D;&#x6B65;&#x6570;&#x2192;&#x7EBF;&#x6027;&#x63D2;&#x503C;&#x2192;&#x9010;&#x6B65; sync_write</li>
+<li><code>soft_move_to_pose(target_dict, step_count, interval)</code>&#xFF1A;&#x540C;&#x7406;&#xFF0C;&#x4F46;&#x76EE;&#x6807;&#x7531; <code>target_dict</code> &#x6307;&#x5B9A;</li>
+</ul>
+<h3 id="26-&#x8BFB;&#x53D6;&#x4F4D;&#x7F6E;&#xFF1A;readservopositionsjointnamesnone-verbosefalse">2.6 &#x8BFB;&#x53D6;&#x4F4D;&#x7F6E;&#xFF1A;<code>read_servo_positions(joint_names=None, verbose=False)</code></h3>
+<ul>
+<li>&#x5E95;&#x5C42;&#xFF1A;<code>FTServo.sync_read(0x38, 2, ids)</code></li>
+<li>&#x8F93;&#x51FA;&#xFF1A;<code>{joint_name: position_steps}</code></li>
+</ul>
+<h2 id="3-&#x6700;&#x5C0F;&#x8C03;&#x7528;&#x94FE;">3. &#x6700;&#x5C0F;&#x8C03;&#x7528;&#x94FE;</h2>
+<ul>
+<li>&#x56DE;&#x4E2D;&#x4F4D;&#xFF1A;<code>ServoController.move_all_home()</code></li>
+<li>&#x8BFB;&#x5B9E;&#x9645;&#x4F4D;&#x7F6E;&#xFF1A;<code>ServoController.read_servo_positions()</code></li>
+<li>&#x76EE;&#x6807;&#x6B65;&#x6570;&#xFF08;&#x6765;&#x81EA; IK&#xFF09;&#xFF1A;<code>Robot.q_to_servo_targets()</code></li>
+<li>&#x9650;&#x4F4D;&#xFF1A;<code>ServoController.limit_position()</code></li>
+<li>&#x4E0B;&#x53D1;&#xFF1A;<code>ServoController.fast_move_to_pose()</code></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="stage1_1_sdk_api.html" class="navigation navigation-prev " aria-label="Previous page: 1. API 速查">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ref_ik_robot_solver.html" class="navigation navigation-next " aria-label="Next page: 函数解析：ik">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"函数解析：driver","level":"1.4.2","depth":2,"next":{"title":"函数解析：ik","level":"1.4.3","depth":2,"path":"ref_ik_robot_solver.md","ref":"ref_ik_robot_solver.md","articles":[]},"previous":{"title":"1. API 速查","level":"1.4.1","depth":2,"path":"stage1_1_sdk_api.md","ref":"stage1_1_sdk_api.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ref_sdk_driver.md","mtime":"2026-01-03T18:59:03.087Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

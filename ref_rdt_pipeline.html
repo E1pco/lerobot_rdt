@@ -1,0 +1,635 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>函数解析：RDT 采集链路 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="stage1_5_fpga.html" />
+    
+    
+    <link rel="prev" href="stage1_3_timesync.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >函数解析：RDT 采集链路</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;rdt-&#x6570;&#x636E;&#x91C7;&#x96C6;&#x4E0E;&#x843D;&#x76D8;&#xFF08;rdt&#xFF09;">&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;RDT &#x6570;&#x636E;&#x91C7;&#x96C6;&#x4E0E;&#x843D;&#x76D8;&#xFF08;<code>RDT/</code>&#xFF09;</h1>
+<p>&#x672C;&#x7AE0;&#x5BF9;&#x5E94; 3. &#x7684;&#x201C;&#x6570;&#x636E;&#x96C6;&#x91C7;&#x96C6;&#x6E90;&#x4EE3;&#x7801; + &#x683C;&#x5F0F;&#x8BF4;&#x660E;&#x201D;&#xFF0C;&#x5173;&#x952E;&#x6587;&#x4EF6;&#xFF1A;</p>
+<ul>
+<li><code>RDT/collect_rdt_dataset_teleop.py</code></li>
+<li><code>RDT/rdt_hdf5.py</code></li>
+<li><code>RDT/build_rdt_hdf5_from_raw.py</code></li>
+<li><code>RDT/inspect_rdt_hdf5.py</code></li>
+</ul>
+<p>RDT &#x91C7;&#x96C6;&#x94FE;&#x8DEF;&#x7684;&#x7406;&#x8BBA;&#x76EE;&#x6807;&#x662F;&#xFF1A;&#x628A;&#x591A;&#x6A21;&#x6001;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#xFF08;&#x56FE;&#x50CF;&#x3001;proprio&#x3001;action&#x3001;&#x65F6;&#x95F4;&#x6233;&#xFF09;&#x7EC4;&#x7EC7;&#x6210;<strong>&#x56FA;&#x5B9A; shape &#x4E14;&#x53EF;&#x89E3;&#x91CA;</strong>&#x7684;&#x6570;&#x636E;&#x96C6;&#xFF0C;&#x4F7F;&#x4E0B;&#x6E38; fine-tuning &#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x6D88;&#x8D39;&#x3002;&#x6838;&#x5FC3;&#x7EA6;&#x675F;&#x662F; <code>unified 128 + mask + action_chunk</code>&#xFF08;&#x8BE6;&#x89C1; <code>theory_rdt_format.md</code>&#xFF09;&#x3002;</p>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<ul>
+<li><code>collect_rdt_dataset_teleop.py</code>&#xFF1A;&#x5B9E;&#x65F6;&#x91C7;&#x96C6;&#x4E0E;&#x201C;&#x5199; step&#x201D;&#xFF08;raw &#x6216;&#x76F4;&#x63A5; HDF5&#xFF09;</li>
+<li><code>rdt_hdf5.py</code>&#xFF1A;&#x683C;&#x5F0F;&#x89C4;&#x8303;&#x5C42;&#xFF08;UnifiedVector + HDF5 writer&#xFF09;</li>
+<li><code>build_rdt_hdf5_from_raw.py</code>&#xFF1A;&#x79BB;&#x7EBF;&#x91CD;&#x5EFA;&#xFF08;raw&#x2192;HDF5&#xFF09;</li>
+<li><code>inspect_rdt_hdf5.py</code>&#xFF1A;&#x9A8C;&#x6536;&#x4E0E;&#x6392;&#x9519;&#xFF08;shape/&#x62BD;&#x6837;&#x53EF;&#x89C6;&#x5316;&#xFF09;</li>
+</ul>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<ul>
+<li>&#x91C7;&#x96C6;&#xFF1A;&#x7528; <code>collect_rdt_dataset_teleop.py</code> &#x5F55;&#x4E00;&#x6BB5; raw/hdf5 episode&#x3002;</li>
+<li>&#x8F6C;&#x6362;&#xFF1A;&#x7528; <code>build_rdt_hdf5_from_raw.py</code> &#x628A; raw &#x6574;&#x7406;&#x6210;&#x6807;&#x51C6; HDF5&#x3002;</li>
+<li>&#x68C0;&#x67E5;&#xFF1A;&#x7528; <code>inspect_rdt_hdf5.py</code> &#x786E;&#x8BA4;&#x5F20;&#x91CF; shape&#x3001;mask&#x3001;&#x62BD;&#x6837;&#x5E27;&#x6B63;&#x5E38;&#x3002;</li>
+</ul>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<p>&#x4E0B;&#x6587;&#x6309;&#x201C;&#x683C;&#x5F0F;&#x5B9A;&#x4E49; &#x2192; &#x91C7;&#x96C6;&#x5199;&#x5165; &#x2192; &#x8F6C;&#x6362;&#x4E0E;&#x68C0;&#x67E5;&#x201D;&#x7684;&#x987A;&#x5E8F;&#x89E3;&#x91CA;&#x5173;&#x952E;&#x65B9;&#x6CD5;&#x5728;&#x7BA1;&#x7EBF;&#x4E2D;&#x7684;&#x804C;&#x8D23;&#x3002;</p>
+<h2 id="1-rdtrdthdf5py---&#x6570;&#x636E;&#x683C;&#x5F0F;&#x5B9A;&#x4E49;&#x4E0E;-hdf5-&#x5199;&#x5165;&#x6838;&#x5FC3;">1. <code>RDT/rdt_hdf5.py</code> - &#x6570;&#x636E;&#x683C;&#x5F0F;&#x5B9A;&#x4E49;&#x4E0E; HDF5 &#x5199;&#x5165;&#x6838;&#x5FC3;</h2>
+<p><strong>&#x811A;&#x672C;&#x529F;&#x80FD;</strong>&#xFF1A;
+&#x8BE5;&#x6A21;&#x5757;&#x5B9A;&#x4E49;&#x4E86; RDT &#x6570;&#x636E;&#x96C6;&#x7684;&#x6838;&#x5FC3;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF0C;&#x5B9E;&#x73B0;&#x4E86;&#x7EDF;&#x4E00;&#x7684; 128 &#x7EF4;&#x5411;&#x91CF;&#x8868;&#x793A;&#xFF08;Unified Vector&#xFF09;&#x548C; HDF5 &#x6587;&#x4EF6;&#x7684;&#x5199;&#x5165;&#x903B;&#x8F91;&#x3002;&#x5B83;&#x662F;&#x6570;&#x636E;&#x91C7;&#x96C6;&#x6D41;&#x7A0B;&#x4E2D;&#x7684;&#x683C;&#x5F0F;&#x89C4;&#x8303;&#x5C42;&#xFF0C;&#x786E;&#x4FDD;&#x751F;&#x6210;&#x7684;&#x6570;&#x636E;&#x7B26;&#x5408; RDT Fine-tuning &#x7684;&#x8F93;&#x5165;&#x8981;&#x6C42;&#x3002;</p>
+<h3 id="11-rotmattorot6dr---&#x65CB;&#x8F6C;&#x77E9;&#x9635;&#x5230;6d&#x8868;&#x793A;&#x7684;&#x8F6C;&#x6362;">1.1 <code>rotmat_to_rot6d(R)</code> - &#x65CB;&#x8F6C;&#x77E9;&#x9635;&#x5230;6D&#x8868;&#x793A;&#x7684;&#x8F6C;&#x6362;</h3>
+<p><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x5C06; 3&#xD7;3 &#x65CB;&#x8F6C;&#x77E9;&#x9635;&#x538B;&#x7F29;&#x4E3A; 6 &#x7EF4;&#x8FDE;&#x7EED;&#x8868;&#x793A;&#xFF0C;&#x907F;&#x514D;&#x4E07;&#x5411;&#x9501;&#x95EE;&#x9898;&#x3002;</p>
+<p><strong>&#x5B9E;&#x73B0;&#x539F;&#x7406;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>&#x8F93;&#x5165;</strong>&#xFF1A;$3\times3$ &#x65CB;&#x8F6C;&#x77E9;&#x9635; $R$</li>
+<li><strong>&#x8F93;&#x51FA;</strong>&#xFF1A;6D &#x5411;&#x91CF;&#xFF08;&#x53D6; $R$ &#x7684;&#x524D;&#x4E24;&#x5217;&#xFF0C;&#x6309;&#x5217;&#x4E3B;&#x5E8F;&#x5C55;&#x5E73;&#xFF09;</li>
+<li><strong>&#x6570;&#x5B66;&#x4F9D;&#x636E;</strong>&#xFF1A;6D &#x8868;&#x793A;&#x6CD5;&#x7531; Zhou et al. (CVPR 2019) &#x63D0;&#x51FA;&#xFF0C;&#x901A;&#x8FC7; Gram-Schmidt &#x6B63;&#x4EA4;&#x5316;&#x53EF;&#x6062;&#x590D;&#x5B8C;&#x6574;&#x65CB;&#x8F6C;&#x77E9;&#x9635;&#xFF0C;&#x4E14;&#x5728;&#x795E;&#x7ECF;&#x7F51;&#x7EDC;&#x8BAD;&#x7EC3;&#x4E2D;&#x6BD4;&#x56DB;&#x5143;&#x6570;&#x66F4;&#x7A33;&#x5B9A;&#x3002;</li>
+</ul>
+<p><strong>&#x4EE3;&#x7801;&#x903B;&#x8F91;</strong>&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rotmat_to_rot6d</span><span class="hljs-params">(R)</span>:</span>
+    <span class="hljs-comment"># &#x53D6;&#x524D;&#x4E24;&#x5217;</span>
+    <span class="hljs-keyword">return</span> R[:, :<span class="hljs-number">2</span>].T.flatten()  <span class="hljs-comment"># shape: (6,)</span>
+</code></pre>
+<h3 id="12-unifiedvector--makeunifiedvector--fillslicevec-sl-data">1.2 <code>UnifiedVector</code> / <code>make_unified_vector()</code> / <code>fill_slice(vec, sl, data)</code></h3>
+<p><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x5B9E;&#x73B0;&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#xFF08;Unified Vector&#xFF09;&#x7684;&#x6784;&#x5EFA;&#x4E0E;&#x586B;&#x5145;&#xFF0C;&#x8FD9;&#x662F; RDT &#x5904;&#x7406;&#x5F02;&#x6784;&#x673A;&#x5668;&#x4EBA;&#x6570;&#x636E;&#x7684;&#x5173;&#x952E;&#x673A;&#x5236;&#x3002;</p>
+<p><strong>&#x8BBE;&#x8BA1;&#x52A8;&#x673A;</strong>&#xFF1A;
+&#x4E0D;&#x540C;&#x673A;&#x5668;&#x4EBA;&#x7684;&#x81EA;&#x7531;&#x5EA6;&#x3001;&#x4F20;&#x611F;&#x5668;&#x914D;&#x7F6E;&#x5DEE;&#x5F02;&#x5F88;&#x5927;&#x3002;Unified Vector &#x901A;&#x8FC7; 128 &#x7EF4;&#x56FA;&#x5B9A;&#x957F;&#x5EA6; + Mask &#x673A;&#x5236;&#xFF0C;&#x5141;&#x8BB8;&#x4E0D;&#x540C;&#x914D;&#x7F6E;&#x7684;&#x673A;&#x5668;&#x4EBA;&#x5171;&#x4EAB;&#x540C;&#x4E00;&#x8BAD;&#x7EC3;&#x7BA1;&#x9053;&#x3002;</p>
+<p><strong>&#x6838;&#x5FC3;&#x6570;&#x636E;&#x7ED3;&#x6784;</strong>&#xFF1A;</p>
+<ul>
+<li><code>UnifiedVector.value</code>&#xFF1A;<code>float32[128]</code> - &#x5B58;&#x50A8;&#x7269;&#x7406;&#x91CF;&#x7684;&#x6570;&#x503C;&#xFF08;&#x672A;&#x4F7F;&#x7528;&#x7684;&#x7EF4;&#x5EA6;&#x586B; 0&#xFF09;</li>
+<li><code>UnifiedVector.mask</code>&#xFF1A;<code>uint8[128]</code> - &#x6807;&#x8BB0;&#x54EA;&#x4E9B;&#x7EF4;&#x5EA6;&#x6709;&#x6548;&#xFF08;1=&#x6709;&#x6548;&#xFF0C;0=&#x65E0;&#x6548;&#xFF09;</li>
+</ul>
+<p><strong>&#x65B9;&#x6CD5;&#x8BE6;&#x89E3;</strong>&#xFF1A;</p>
+<ul>
+<li><p><strong><code>make_unified_vector()</code></strong>&#xFF1A;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x7A7A;&#x7684; Unified Vector</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_unified_vector</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-keyword">return</span> UnifiedVector(
+        value=np.zeros(<span class="hljs-number">128</span>, dtype=np.float32),
+        mask=np.zeros(<span class="hljs-number">128</span>, dtype=np.uint8)
+    )
+</code></pre>
+</li>
+<li><p><strong><code>fill_slice(vec, sl, data)</code></strong>&#xFF1A;&#x5411;&#x6307;&#x5B9A;&#x5207;&#x7247;&#x586B;&#x5145;&#x6570;&#x636E;&#x5E76;&#x81EA;&#x52A8;&#x66F4;&#x65B0; mask</p>
+<ul>
+<li><strong>&#x53C2;&#x6570;</strong>&#xFF1A;<ul>
+<li><code>vec</code>&#xFF1A;&#x76EE;&#x6807; UnifiedVector</li>
+<li><code>sl</code>&#xFF1A;&#x5207;&#x7247;&#x5BF9;&#x8C61;&#xFF08;&#x5982; <code>slice(0, 6)</code> &#x8868;&#x793A;&#x524D; 6 &#x7EF4;&#xFF09;</li>
+<li><code>data</code>&#xFF1A;&#x8981;&#x586B;&#x5145;&#x7684;&#x6570;&#x636E;&#xFF08;&#x81EA;&#x52A8;&#x622A;&#x65AD;&#x5230;&#x5207;&#x7247;&#x957F;&#x5EA6;&#xFF09;</li>
+</ul>
+</li>
+<li><strong>&#x5B9E;&#x73B0;</strong>&#xFF1A;<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fill_slice</span><span class="hljs-params">(vec, sl, data)</span>:</span>
+    indices = range(*sl.indices(<span class="hljs-number">128</span>))
+    length = len(indices)
+    vec.value[sl] = data[:length]
+    vec.mask[sl] = <span class="hljs-number">1</span>  <span class="hljs-comment"># &#x6807;&#x8BB0;&#x4E3A;&#x6709;&#x6548;</span>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="13-rdthdf5episodewriter---hdf5-&#x6587;&#x4EF6;&#x5199;&#x5165;&#x5668;">1.3 <code>RDTHDF5EpisodeWriter</code> - HDF5 &#x6587;&#x4EF6;&#x5199;&#x5165;&#x5668;</h3>
+<p><strong>&#x529F;&#x80FD;</strong>&#xFF1A;&#x7BA1;&#x7406;&#x5355;&#x4E2A; Episode &#x7684; HDF5 &#x6587;&#x4EF6;&#x5199;&#x5165;&#xFF0C;&#x81EA;&#x52A8;&#x5904;&#x7406;&#x5F20;&#x91CF;&#x5F62;&#x72B6;&#x3001;Action Chunk &#x751F;&#x6210;&#x7B49;&#x7EC6;&#x8282;&#x3002;</p>
+<p><strong>&#x521D;&#x59CB;&#x5316;</strong>&#xFF1A;</p>
+<pre><code class="lang-python">writer = RDTHDF5EpisodeWriter(
+    filepath=<span class="hljs-string">&quot;episode_000001.hdf5&quot;</span>,
+    Timg=<span class="hljs-number">2</span>,          <span class="hljs-comment"># &#x5386;&#x53F2;&#x56FE;&#x50CF;&#x5E27;&#x6570;</span>
+    Ncam=<span class="hljs-number">3</span>,          <span class="hljs-comment"># &#x76F8;&#x673A;&#x6570;&#x91CF;</span>
+    image_size=<span class="hljs-number">384</span>,  <span class="hljs-comment"># &#x56FE;&#x50CF;&#x5206;&#x8FA8;&#x7387;</span>
+    Ta=<span class="hljs-number">64</span>            <span class="hljs-comment"># Action Chunk &#x957F;&#x5EA6;</span>
+)
+</code></pre>
+<p><strong>&#x6838;&#x5FC3;&#x65B9;&#x6CD5;</strong>&#xFF1A;</p>
+<ul>
+<li><p><strong><code>append_step(...)</code></strong>&#xFF1A;&#x8FFD;&#x52A0;&#x4E00;&#x6761;&#x65F6;&#x95F4;&#x6B65;&#x6570;&#x636E;</p>
+<ul>
+<li><strong>&#x6821;&#x9A8C;</strong>&#xFF1A;&#x81EA;&#x52A8;&#x68C0;&#x67E5; <code>images</code> &#x7684; shape &#x662F;&#x5426;&#x4E3A; <code>(Timg, Ncam, H, W, 3)</code></li>
+<li><strong>&#x5B58;&#x50A8;</strong>&#xFF1A;&#x5C06; proprio/action &#x7684; value &#x548C; mask &#x5206;&#x522B;&#x8FFD;&#x52A0;&#x5230;&#x5BF9;&#x5E94; Dataset</li>
+</ul>
+</li>
+<li><p><strong><code>finalize_action_chunks()</code></strong>&#xFF1A;&#x751F;&#x6210;&#x672A;&#x6765;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;</p>
+<ul>
+<li><strong>&#x539F;&#x7406;</strong>&#xFF1A;&#x5BF9;&#x4E8E;&#x65F6;&#x523B; $t$&#xFF0C;&#x6784;&#x9020; <code>action_chunk[t, :, :] = [action[t], action[t+1], ..., action[t+Ta-1]]</code></li>
+<li><strong>&#x8FB9;&#x754C;&#x5904;&#x7406;</strong>&#xFF1A;&#x5F53; $t+\tau \geq T$ &#x65F6;&#xFF0C;&#x7528;&#x96F6;&#x586B;&#x5145;&#x5E76;&#x5C06; mask &#x7F6E; 0</li>
+<li><strong>&#x81EA;&#x52A8;&#x8C03;&#x7528;</strong>&#xFF1A;&#x5728; <code>close()</code> &#x65F6;&#x81EA;&#x52A8;&#x6267;&#x884C;</li>
+</ul>
+</li>
+<li><p><strong><code>close()</code></strong>&#xFF1A;&#x5173;&#x95ED;&#x6587;&#x4EF6;&#x5E76;&#x4FDD;&#x5B58;&#x5143;&#x6570;&#x636E;</p>
+<ul>
+<li><strong>&#x6D41;&#x7A0B;</strong>&#xFF1A;finalize action_chunks &#x2192; &#x5199;&#x5165; meta &#x4FE1;&#x606F; &#x2192; &#x5173;&#x95ED; HDF5 &#x6587;&#x4EF6;&#x53E5;&#x67C4;</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-rdtcollectrdtdatasetteleoppy">2. <code>RDT/collect_rdt_dataset_teleop.py</code></h2>
+<h3 id="21-rawepisodewriter">2.1 <code>RawEpisodeWriter</code></h3>
+<ul>
+<li>&#x4F5C;&#x7528;&#xFF1A;&#x5199; raw episode&#xFF08;CSV + JPG&#xFF09;&#xFF0C;&#x4FBF;&#x4E8E;&#x8089;&#x773C;&#x68C0;&#x67E5;</li>
+<li><code>append_step(...)</code>&#xFF1A;<ul>
+<li>&#x4FDD;&#x5B58; <code>timg*ncam</code> &#x5F20;&#x56FE;&#x7247;&#x5230; <code>images/</code></li>
+<li>&#x8FFD;&#x52A0; proprio/action/mask/timestamp &#x5230; CSV</li>
+</ul>
+</li>
+</ul>
+<h3 id="22-&#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;&#xFF1A;padtosquareandresizergbframebgr-outsize-padbgr">2.2 &#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;&#xFF1A;<code>pad_to_square_and_resize_rgb(frame_bgr, out_size, pad_bgr)</code></h3>
+<ul>
+<li>pad &#x6210;&#x6B63;&#x65B9;&#x5F62; &#x2192; resize &#x5230; <code>out_size</code> &#x2192; &#x8F6C; RGB</li>
+</ul>
+<h3 id="23-&#x76F8;&#x673A;&#x62BD;&#x8C61;&#xFF1A;multiviewcamera">2.3 &#x76F8;&#x673A;&#x62BD;&#x8C61;&#xFF1A;<code>MultiViewCamera</code></h3>
+<ul>
+<li><code>_open(source, width, height)</code>&#xFF1A;&#x652F;&#x6301; index &#x6216;&#x8DEF;&#x5F84;&#xFF1B;&#x652F;&#x6301; v4l2/gstreamer backend</li>
+<li><code>read_bgr(view)</code>&#xFF1A;&#x8BFB;&#x53D6;&#x6307;&#x5B9A; view &#x7684;&#x4E00;&#x5E27;</li>
+<li><code>close()</code>&#xFF1A;&#x91CA;&#x653E;&#x6240;&#x6709; <code>VideoCapture</code></li>
+</ul>
+<h3 id="24-&#x901F;&#x5EA6;&#x4F30;&#x8BA1;&#xFF1A;computeangvelradsrprev-rcur-dt">2.4 &#x901F;&#x5EA6;&#x4F30;&#x8BA1;&#xFF1A;<code>compute_ang_vel_rad_s(R_prev, R_cur, dt)</code></h3>
+<ul>
+<li>&#x901A;&#x8FC7; $dR=R_{prev}^T R_{cur}$ &#x7684;&#x65CB;&#x8F6C;&#x5411;&#x91CF;&#x9664;&#x4EE5; dt &#x4F30;&#x8BA1;&#x89D2;&#x901F;&#x5EA6;</li>
+</ul>
+<h3 id="25-episode-&#x7F16;&#x53F7;&#xFF1A;maxexistingepisodeidxoutdir">2.5 episode &#x7F16;&#x53F7;&#xFF1A;<code>_max_existing_episode_idx(out_dir)</code></h3>
+<ul>
+<li>&#x626B;&#x63CF; <code>episode_XXXXXX/</code> &#x4E0E; <code>episode_XXXXXX.hdf5</code>&#xFF0C;&#x8FD4;&#x56DE;&#x6700;&#x5927;&#x7F16;&#x53F7;</li>
+<li>&#x7528;&#x4E8E;&#x907F;&#x514D;&#x8986;&#x76D6;&#x3001;&#x5B9E;&#x73B0;&#x8DE8;&#x8FD0;&#x884C;&#x9012;&#x589E;</li>
+</ul>
+<h3 id="26-&#x91C7;&#x96C6;&#x4E3B;&#x7C7B;&#xFF1A;joyconrdtcollector">2.6 &#x91C7;&#x96C6;&#x4E3B;&#x7C7B;&#xFF1A;<code>JoyConRDTCollector</code></h3>
+<ul>
+<li>&#x521D;&#x59CB;&#x5316;&#x9636;&#x6BB5;&#xFF1A;<ul>
+<li>&#x521B;&#x5EFA;&#x53CC;&#x81C2; <code>ArmRig</code></li>
+<li>&#x53EF;&#x9009;&#x6253;&#x5F00;&#x4E09;&#x76F8;&#x673A; <code>MultiViewCamera</code></li>
+<li>&#x914D;&#x7F6E; preview &#x4E0E;&#x4FDD;&#x5B58;&#x683C;&#x5F0F;</li>
+</ul>
+</li>
+<li><code>run()</code>&#xFF08;&#x4E3B;&#x5FAA;&#x73AF;&#xFF0C;&#x51FD;&#x6570;&#x4F53;&#x8F83;&#x957F;&#xFF09;&#xFF1A;<ul>
+<li>&#x8BFB; JoyCon &#x63A7;&#x5236;</li>
+<li>&#x751F;&#x6210;&#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x2192;IK&#x2192;&#x4E0B;&#x53D1;</li>
+<li>&#x82E5;&#x5F55;&#x5236;&#xFF1A;&#x6784;&#x5EFA; unified proprio/action &#x2192; writer.append_step</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-raw&#x2192;hdf5-&#x4E0E;&#x68C0;&#x67E5;">3. raw&#x2192;HDF5 &#x4E0E;&#x68C0;&#x67E5;</h2>
+<ul>
+<li><code>build_rdt_hdf5_from_raw.py</code>&#xFF1A;&#x8BFB;&#x53D6; raw &#x7684; CSV/JPG&#xFF0C;&#x91CD;&#x5EFA; HDF5 episode</li>
+<li><code>inspect_rdt_hdf5.py</code>&#xFF1A;&#x6253;&#x5370; meta/shape&#xFF0C;&#x5E76;&#x53EF;&#x62BD;&#x6837;&#x68C0;&#x67E5;&#x5185;&#x5BB9;</li>
+</ul>
+<p>&#x7406;&#x8BBA;&#x89E3;&#x91CA;&#xFF08;unified/mask/action_chunk&#xFF09;&#x89C1;&#xFF1A;<code>theory_rdt_format.md</code>&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="stage1_3_timesync.html" class="navigation navigation-prev " aria-label="Previous page: 3. 时序同步说明">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="stage1_5_fpga.html" class="navigation navigation-next " aria-label="Next page: 5. FPGA 逆解加速">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"函数解析：RDT 采集链路","level":"1.6.6","depth":2,"next":{"title":"5. FPGA 逆解加速","level":"1.7","depth":1,"path":"stage1_5_fpga.md","ref":"stage1_5_fpga.md","articles":[]},"previous":{"title":"3. 时序同步说明","level":"1.6.5","depth":2,"path":"stage1_3_timesync.md","ref":"stage1_3_timesync.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ref_rdt_pipeline.md","mtime":"2026-01-10T12:43:42.297Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

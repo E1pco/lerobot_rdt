@@ -1,0 +1,693 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>2. 人机交互（键盘/JoyCon） · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="stage1_2_controls.html" />
+    
+    
+    <link rel="prev" href="ref_ik_robot_solver.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="stage1_overview.html">
+            
+                <a href="stage1_overview.html">
+            
+                    
+                    Stage 1 总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="env_setup.html">
+            
+                <a href="env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="stage1_1_sdk.html">
+            
+                <a href="stage1_1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="stage1_1_sdk_api.html">
+            
+                <a href="stage1_1_sdk_api.html">
+            
+                    
+                    1. API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="ref_sdk_driver.html">
+            
+                <a href="ref_sdk_driver.html">
+            
+                    
+                    函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="ref_ik_robot_solver.html">
+            
+                <a href="ref_ik_robot_solver.html">
+            
+                    
+                    函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.5" data-path="stage1_2_hci_teleop.html">
+            
+                <a href="stage1_2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="stage1_2_controls.html">
+            
+                <a href="stage1_2_controls.html">
+            
+                    
+                    2. 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="stage1_2_3_leader_follower.html">
+            
+                <a href="stage1_2_3_leader_follower.html">
+            
+                    
+                    3. 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="stage1_3_dataset.html">
+            
+                <a href="stage1_3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="theory_rdt_format.html">
+            
+                <a href="theory_rdt_format.html">
+            
+                    
+                    理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="theory_handeye.html">
+            
+                <a href="theory_handeye.html">
+            
+                    
+                    理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="stage1_3_calibration.html">
+            
+                <a href="stage1_3_calibration.html">
+            
+                    
+                    3. 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="ref_vision_handeye.html">
+            
+                <a href="ref_vision_handeye.html">
+            
+                    
+                    函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="stage1_3_timesync.html">
+            
+                <a href="stage1_3_timesync.html">
+            
+                    
+                    3. 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="ref_rdt_pipeline.html">
+            
+                <a href="ref_rdt_pipeline.html">
+            
+                    
+                    函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="stage1_5_fpga.html">
+            
+                <a href="stage1_5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >2. 人机交互（键盘/JoyCon）</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="2-&#x57FA;&#x4E8E;&#x81EA;&#x8BBE;&#x8BA1;-sdk-&#x7684;&#x9065;&#x64CD;&#x4F5C;&#x952E;&#x76D8;&#x7B49;&#x4EBA;&#x673A;&#x4EA4;&#x4E92;">2. &#x57FA;&#x4E8E;&#x81EA;&#x8BBE;&#x8BA1; SDK &#x7684;&#x9065;&#x64CD;&#x4F5C;/&#x952E;&#x76D8;&#x7B49;&#x4EBA;&#x673A;&#x4EA4;&#x4E92;</h1>
+<p>&#x5FEB;&#x901F;&#x8DF3;&#x8F6C;&#xFF1A;</p>
+<ul>
+<li>&#x63A7;&#x5236;&#x6620;&#x5C04;&#x901F;&#x67E5;&#xFF1A;<code>stage1_2_controls.md</code></li>
+<li>&#x7406;&#x8BBA;&#x63A8;&#x5BFC;&#xFF08;FK/IK/LM&#xFF09;&#xFF1A;<code>stage1_1_sdk.md</code></li>
+</ul>
+<p>&#x5BF9;&#x5E94; <code>decument/task.txt</code> &#x7684; 2. &#x4EA7;&#x51FA;&#x7269;&#xFF1A;</p>
+<ul>
+<li>&#x6E90;&#x4EE3;&#x7801;&#xFF1A;&#x672C;&#x4ED3;&#x5E93;&#x6839;&#x76EE;&#x5F55;&#x811A;&#x672C; + <code>joyconrobotics/</code></li>
+<li>&#x6F14;&#x793A;&#x89C6;&#x9891;&#xFF1A;</li>
+<li>&#x8BBE;&#x8BA1;/&#x5B9E;&#x73B0;&#x624B;&#x518C;&#xFF1A;&#x672C;&#x6587;</li>
+<li>&#x63A7;&#x5236;&#x8BEF;&#x5DEE;&#x5206;&#x6790;&#x6587;&#x6863;&#xFF1A;&#x672C;&#x6587;&#x201C;&#x8BEF;&#x5DEE;&#x5206;&#x6790;&#x201D;</li>
+</ul>
+<p>&#x672C;&#x7AE0;&#x89E3;&#x51B3;&#x7684;&#x95EE;&#x9898;&#x662F;&#xFF1A;&#x7ED9;&#x5B9A;&#x4EBA;&#x7C7B;&#x8F93;&#x5165;&#xFF08;&#x952E;&#x76D8;/JoyCon&#xFF09;&#xFF0C;&#x5982;&#x4F55;&#x5728;&#x6BCF;&#x4E2A;&#x63A7;&#x5236;&#x5468;&#x671F;&#x6784;&#x9020;&#x76EE;&#x6807;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T^*$&#xFF0C;&#x5E76;&#x901A;&#x8FC7;&#x6570;&#x503C; IK &#x6C42;&#x89E3;&#x5173;&#x8282;&#x89D2; $q$&#xFF0C;&#x6700;&#x7EC8;&#x4E0B;&#x53D1;&#x5230;&#x8235;&#x673A;&#x6B65;&#x6570;&#x3002;</p>
+<p>&#x7EDF;&#x4E00;&#x63A7;&#x5236;&#x95ED;&#x73AF;&#xFF08;&#x4E0E; 1. &#x4FDD;&#x6301;&#x4E00;&#x81F4;&#xFF09;&#xFF1A;</p>
+<p>1) &#x8BFB;&#x53D6;&#x5F53;&#x524D;&#x5173;&#x8282;&#x89D2; $q_t$&#xFF08;&#x7531;&#x6B65;&#x6570;&#x53CD;&#x89E3;&#xFF09;
+2) FK &#x5F97;&#x5230;&#x5F53;&#x524D;&#x672B;&#x7AEF;&#x4F4D;&#x59FF; $T(q_t)$
+3) &#x5C06;&#x8F93;&#x5165;&#x6620;&#x5C04;&#x4E3A;&#x4F4D;&#x59FF;&#x589E;&#x91CF;&#xFF0C;&#x6784;&#x9020; $T^<em>_{t+1}$
+4) LM-IK&#xFF1A;&#x6C42; $q_{t+1}$ &#x4F7F; $T(q_{t+1})\approx T^</em>_{t+1}$
+5) &#x89D2;&#x5EA6;&#x2192;&#x6B65;&#x6570;&#xFF0C;&#x4E0B;&#x53D1;&#x5E76;&#x505A;&#x9650;&#x4F4D;&#x88C1;&#x526A;</p>
+<p>&#x76F8;&#x5173;&#x63A8;&#x5BFC;&#xFF08;&#x8BEF;&#x5DEE;&#x5B9A;&#x4E49;&#x3001;mask&#x3001;LM &#x66F4;&#x65B0;&#xFF09;&#x96C6;&#x4E2D;&#x5728;&#xFF1A;<code>stage1_1_sdk.md</code>&#x3002;</p>
+<h2 id="&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>&#x672C;&#x7AE0;&#x7A0B;&#x5E8F;&#x7ED3;&#x6784;&#x53EF;&#x4EE5;&#x62BD;&#x8C61;&#x4E3A;&#x201C;&#x8F93;&#x5165; &#x2192; &#x76EE;&#x6807;&#x6784;&#x9020; &#x2192; IK &#x2192; &#x4E0B;&#x53D1;&#x201D;&#x7684;&#x7A33;&#x5B9A;&#x63A7;&#x5236;&#x73AF;&#xFF1A;</p>
+<p>1) <strong>&#x8F93;&#x5165;&#x5C42;</strong>&#xFF1A;&#x952E;&#x76D8;&#xFF08;<code>pynput</code> &#x6216;&#x975E;&#x963B;&#x585E; stdin&#xFF09;/ JoyCon&#xFF08;<code>joyconrobotics/</code>&#xFF09;&#x8F93;&#x51FA;&#x79BB;&#x6563;&#x6309;&#x952E;&#x6216;&#x8FDE;&#x7EED;&#x59FF;&#x6001;/&#x6447;&#x6746;&#x91CF;
+2) <strong>&#x76EE;&#x6807;&#x6784;&#x9020;&#x5C42;</strong>&#xFF1A;&#x628A;&#x8F93;&#x5165;&#x6620;&#x5C04;&#x4E3A; $\Delta p$ / $\Delta rpy$&#xFF0C;&#x4E0E;&#x201C;&#x57FA;&#x51C6;&#x4F4D;&#x59FF;&#x201D;&#x5408;&#x6210; $T^<em>$
+3) <strong>&#x6C42;&#x89E3;&#x5C42;</strong>&#xFF1A;&#x7528; <code>ik.robot.Robot.ikine_LM</code> &#x6C42; $q$&#xFF0C;&#x5FC5;&#x8981;&#x65F6;&#x7528; <code>mask</code> &#x53EA;&#x63A7;&#x5236;&#x5B50;&#x7A7A;&#x95F4;
+4) <strong>&#x6267;&#x884C;&#x5C42;</strong>&#xFF1A;<code>Robot.q_to_servo_targets</code> &#x628A;&#x89D2;&#x5EA6;&#x53D8;&#x6210;&#x6B65;&#x6570;&#xFF0C;<code>ServoController.limit_position</code> &#x622A;&#x65AD;&#xFF0C;<code>ServoController.fast_move_to_pose</code> &#x540C;&#x6B65;&#x4E0B;&#x53D1;
+5) <em>*&#x8F85;&#x52A9;&#x5C42;</em></em>&#xFF1A;&#x901F;&#x5EA6;&#x6863;&#x3001;Home &#x590D;&#x4F4D;&#x3001;&#x9000;&#x51FA;&#x6E05;&#x7406;&#x4E0E;&#x6309;&#x94AE;&#x4E8B;&#x4EF6;&#x5904;&#x7406;&#xFF08;&#x5939;&#x722A;/&#x8FDE;&#x53D1;&#xFF09;</p>
+<h2 id="&#x811A;&#x672C;&#x4F5C;&#x7528;">&#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<h3 id="1-&#x952E;&#x76D8;&#xFF08;&#x5173;&#x8282;&#x7EA7;&#xFF09;&#xFF1A;armkeyboardcontrolpy">1. &#x952E;&#x76D8;&#xFF08;&#x5173;&#x8282;&#x7EA7;&#xFF09;&#xFF1A;<code>arm_keyboard_control.py</code></h3>
+<p>&#x8BE5;&#x811A;&#x672C;&#x63D0;&#x4F9B;&#x6700;&#x57FA;&#x7840;&#x7684;&#x5355;&#x5173;&#x8282;&#x8C03;&#x8BD5;&#x529F;&#x80FD;&#x3002;&#x5B83;&#x7ED5;&#x8FC7;&#x4E86;&#x590D;&#x6742;&#x7684;&#x8FD0;&#x52A8;&#x5B66;&#x89E3;&#x7B97;&#xFF0C;&#x76F4;&#x63A5;&#x5BF9;&#x6BCF;&#x4E2A;&#x8235;&#x673A;&#x7684;&#x76EE;&#x6807;&#x6B65;&#x6570;&#xFF08;steps&#xFF09;&#x8FDB;&#x884C;&#x589E;&#x91CF;&#x63A7;&#x5236;&#x3002;
+&#x4E3B;&#x8981;&#x7528;&#x4E8E;&#xFF1A;&#x9A8C;&#x8BC1;&#x4E32;&#x53E3;&#x901A;&#x4FE1;&#x3001;&#x786E;&#x8BA4;&#x5173;&#x8282;&#x65B9;&#x5411;&#x3001;&#x6D4B;&#x8BD5;&#x8F6F;&#x9650;&#x4F4D;&#x3001;&#x5FEB;&#x901F;&#x56DE;&#x4E2D;&#x3002;</p>
+<h3 id="2-&#x952E;&#x76D8;&#xFF08;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x7EA7;-ik&#xFF09;&#xFF1A;ikkeyboardrealtimepy">2. &#x952E;&#x76D8;&#xFF08;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x7EA7; IK&#xFF09;&#xFF1A;<code>ik_keyboard_realtime.py</code></h3>
+<p>&#x8BE5;&#x811A;&#x672C;&#x5B9E;&#x73B0;&#x4E86;&#x57FA;&#x4E8E;&#x9006;&#x8FD0;&#x52A8;&#x5B66;&#xFF08;IK&#xFF09;&#x7684;&#x7B1B;&#x5361;&#x5C14;&#x7A7A;&#x95F4;&#x63A7;&#x5236;&#x3002;&#x7528;&#x6237;&#x901A;&#x8FC7;&#x952E;&#x76D8;&#x63A7;&#x5236;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x5728; X/Y/Z &#x8F74;&#x79FB;&#x52A8;&#x6216; Roll/Pitch/Yaw &#x65CB;&#x8F6C;&#x3002;
+&#x4E3B;&#x8981;&#x7528;&#x4E8E;&#xFF1A;&#x9A8C;&#x8BC1; IK &#x6C42;&#x89E3;&#x5668;&#x8868;&#x73B0;&#x3001;&#x68C0;&#x67E5;&#x8FD0;&#x52A8;&#x5B66;&#x6A21;&#x578B;&#x4E00;&#x81F4;&#x6027;&#x3001;&#x4F53;&#x9A8C;&#x672B;&#x7AEF;&#x63A7;&#x5236;&#x3002;</p>
+<h3 id="3-joycon&#xFF08;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x7EA7;-ik&#xFF09;&#xFF1A;joyconikcontrolpypy">3. JoyCon&#xFF08;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#x7EA7; IK&#xFF09;&#xFF1A;<code>joycon_ik_control_py.py</code></h3>
+<p>&#x8FD9;&#x662F;&#x672C;&#x9879;&#x76EE;&#x6700;&#x6838;&#x5FC3;&#x7684;&#x9065;&#x64CD;&#x4F5C;&#x811A;&#x672C;&#xFF0C;&#x7528;&#x4E8E; 3. &#x9636;&#x6BB5;&#x7684;&#x6570;&#x636E;&#x96C6;&#x91C7;&#x96C6;&#x3002;&#x5229;&#x7528; Switch Joy-Con &#x624B;&#x67C4;&#x7684;&#x6447;&#x6746;&#x548C;&#x59FF;&#x6001;&#x4F20;&#x611F;&#x5668;&#xFF08;IMU&#xFF09;&#x63A7;&#x5236;&#x673A;&#x68B0;&#x81C2;&#x3002;
+&#x4E3B;&#x8981;&#x7279;&#x70B9;&#xFF1A;6-DoF &#x63A7;&#x5236;&#x3001;&#x5E73;&#x6ED1;&#x4F53;&#x9A8C;&#xFF08;&#x901F;&#x5EA6;/&#x6B7B;&#x533A;&#xFF09;&#x3001;&#x6240;&#x89C1;&#x5373;&#x6240;&#x5F97;&#x3002;</p>
+<h3 id="4-joycon-&#x8F93;&#x5165;&#x5E93;&#xFF1A;joyconrobotics">4. JoyCon &#x8F93;&#x5165;&#x5E93;&#xFF1A;<code>joyconrobotics/</code></h3>
+<p>&#x5C01;&#x88C5;&#x4E86; HID &#x901A;&#x4FE1;&#x4E0E;&#x539F;&#x59CB;&#x6570;&#x636E;&#x89E3;&#x6790;&#xFF0C;&#x63D0;&#x4F9B;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x7684;&#x6447;&#x6746;/IMU &#x63A5;&#x53E3;&#x3002;</p>
+<h2 id="&#x65B9;&#x6CD5;&#x4F5C;&#x7528;">&#x65B9;&#x6CD5;&#x4F5C;&#x7528;</h2>
+<h3 id="&#x5173;&#x8282;&#x7EA7;&#x63A7;&#x5236;-armkeyboardcontroller">&#x5173;&#x8282;&#x7EA7;&#x63A7;&#x5236; (<code>ArmKeyboardController</code>)</h3>
+<ul>
+<li><strong><code>__init__</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x521D;&#x59CB;&#x5316;&#x63A7;&#x5236;&#x5668;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x521D;&#x59CB;&#x5316; <code>ServoController</code>&#xFF0C;&#x5E76;&#x8BFB;&#x53D6;&#x5F53;&#x524D;&#x6240;&#x6709;&#x8235;&#x673A;&#x7684;&#x5B9E;&#x9645;&#x4F4D;&#x7F6E;&#x4F5C;&#x4E3A;&#x63A7;&#x5236;&#x8D77;&#x70B9;&#x3002;&#x82E5;&#x8BFB;&#x53D6;&#x5931;&#x8D25;&#xFF0C;&#x5219;&#x9ED8;&#x8BA4;&#x4F7F;&#x7528; <code>home_pose</code>&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>update_joint(name, delta)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6267;&#x884C;&#x5355;&#x5173;&#x8282;&#x8FD0;&#x52A8;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8BA1;&#x7B97; <code>new_pos = current_pos + delta</code>&#xFF0C;&#x8C03;&#x7528; <code>controller.limit_position</code> &#x8FDB;&#x884C;&#x8F6F;&#x9650;&#x4F4D;&#x88C1;&#x526A;&#xFF0C;&#x6700;&#x540E;&#x7EC4;&#x88C5;&#x534F;&#x8BAE;&#x5305;&#x901A;&#x8FC7; <code>sync_write</code> &#x4E0B;&#x53D1;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>reset_to_home()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x56DE;&#x4E2D;&#x4F4D;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x8C03;&#x7528; <code>controller.soft_move_to_home</code> &#x5B9E;&#x73B0;&#x5E26;&#x63D2;&#x503C;&#x7684;&#x5E73;&#x6ED1;&#x56DE;&#x4E2D;&#xFF0C;&#x907F;&#x514D;&#x6025;&#x505C;&#x6025;&#x542F;&#x5BF9;&#x673A;&#x68B0;&#x7ED3;&#x6784;&#x9020;&#x6210;&#x51B2;&#x51FB;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>on_press(key)</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6309;&#x952E;&#x6620;&#x5C04;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;<code>pynput</code> &#x5E93;&#x7684;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;&#x67E5;&#x8868;&#x5C06;&#x6309;&#x952E;&#x6620;&#x5C04;&#x4E3A;&#x7279;&#x5B9A;&#x5173;&#x8282;&#x7684;&#x6B65;&#x6570;&#x589E;&#x91CF;&#xFF08;&#x9ED8;&#x8BA4; <code>step=100</code>&#xFF09;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x5B9E;&#x65F6;-ik-&#x63A7;&#x5236;-ikkeyboardrealtimepy--joyconikcontrolpypy">&#x5B9E;&#x65F6; IK &#x63A7;&#x5236; (<code>ik_keyboard_realtime.py</code> / <code>joycon_ik_control_py.py</code>)</h3>
+<ul>
+<li><strong><code>main()</code> / <code>run()</code> (&#x4E3B;&#x5FAA;&#x73AF;)</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x63A7;&#x5236;&#x7CFB;&#x7EDF;&#x7684;&#x6838;&#x5FC3;&#x8C03;&#x5EA6;&#x5668;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;<ol>
+<li><strong>&#x521D;&#x59CB;&#x5316;</strong>&#xFF1A;&#x8FDE;&#x63A5;&#x8235;&#x673A;&#xFF0C;&#x56DE;&#x4E2D;&#xFF0C;&#x8BFB;&#x53D6;&#x5F53;&#x524D; <code>q0</code> &#x5E76; FK &#x5F97;&#x5230;&#x521D;&#x59CB;&#x4F4D;&#x59FF; $T_{now}$&#x3002;</li>
+<li><strong>&#x8F93;&#x5165;&#x5904;&#x7406;</strong>&#xFF1A;&#x975E;&#x963B;&#x585E;&#x8BFB;&#x53D6;&#x952E;&#x76D8;&#x6216; JoyCon &#x72B6;&#x6001;&#xFF08;&#x6447;&#x6746;/IMU&#xFF09;&#x3002;</li>
+<li><strong>&#x76EE;&#x6807;&#x6784;&#x5EFA;</strong>&#xFF1A;&#x6839;&#x636E;&#x8F93;&#x5165;&#x66F4;&#x65B0;&#x57FA;&#x51C6;&#x4F4D;&#x59FF; <code>(x, y, z, r, p, y)</code>&#xFF0C;&#x8C03;&#x7528; <code>build_target_pose</code> &#x751F;&#x6210; $T_{target}$&#x3002;</li>
+<li><strong>IK &#x6C42;&#x89E3;</strong>&#xFF1A;&#x8C03;&#x7528; <code>robot.ikine_LM(Tep=T_target, q0=q_current, ...)</code>&#x3002;</li>
+<li><strong>&#x4E0B;&#x53D1;</strong>&#xFF1A;<code>q_to_servo_targets</code> &#x8F6C;&#x6B65;&#x6570; -&gt; &#x9650;&#x4F4D; -&gt; &#x4E0B;&#x53D1;&#x3002;</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong><code>get_key_nonblock()</code></strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x952E;&#x76D8;&#x65E0;&#x963B;&#x585E;&#x8F93;&#x5165;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x4F7F;&#x7528; <code>select</code> + <code>tty</code> (Linux) &#x4FEE;&#x6539;&#x7EC8;&#x7AEF;&#x5C5E;&#x6027;&#xFF0C;&#x5B9E;&#x73B0;&#x6309;&#x952E;&#x5373;&#x8BFB;&#x3002;</li>
+</ul>
+</li>
+<li><strong><code>JoyConIKController</code> &#x7C7B;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;JoyCon &#x9065;&#x64CD;&#x4F5C;&#x903B;&#x8F91;&#x5C01;&#x88C5;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;<ul>
+<li><strong>&#x72B6;&#x6001;&#x8BFB;&#x53D6;</strong>&#xFF1A;<code>joycon.get_control()</code> &#x8FD4;&#x56DE;&#x5F52;&#x4E00;&#x5316;&#x7684;&#x6447;&#x6746;&#x63A8;&#x91CF;&#x548C; IMU &#x56DB;&#x5143;&#x6570;&#x3002;</li>
+<li><strong>&#x589E;&#x91CF;&#x6620;&#x5C04;</strong>&#xFF1A;&#x6447;&#x6746;&#x6620;&#x5C04;&#x4E3A;&#x4F4D;&#x7F6E;&#x589E;&#x91CF; <code>delta_pos</code>&#xFF0C;IMU &#x76F8;&#x5BF9;&#x59FF;&#x6001;&#x6620;&#x5C04;&#x4E3A; <code>delta_rpy</code>&#x3002;</li>
+<li><strong>&#x5E73;&#x6ED1;&#x5904;&#x7406;</strong>&#xFF1A;&#x5F15;&#x5165;&#x6B7B;&#x533A;&#xFF08;Deadzone&#xFF09;&#x9632;&#x6B62;&#x6F02;&#x79FB;&#xFF0C;&#x4F7F;&#x7528;&#x4F4E;&#x901A;&#x6EE4;&#x6CE2;&#x5E73;&#x6ED1;&#x8F93;&#x5165;&#x3002;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>_ButtonHelper</code> &#x7C7B;</strong><ul>
+<li><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6309;&#x952E;&#x4E8B;&#x4EF6;&#x5904;&#x7406;&#x3002;</li>
+<li><strong>&#x7EC6;&#x8282;</strong>&#xFF1A;&#x652F;&#x6301;&#x201C;&#x6309;&#x4E0B;&#x77AC;&#x95F4;&#xFF08;rising edge&#xFF09;&#x201D;&#x548C;&#x201C;&#x957F;&#x6309;&#x8FDE;&#x53D1;&#xFF08;repeat&#xFF09;&#x201D;&#x68C0;&#x6D4B;&#xFF0C;&#x7528;&#x4E8E;&#x7CBE;&#x7EC6;&#x63A7;&#x5236;&#x5939;&#x722A;&#x5F00;&#x5408;&#x6216;&#x8C03;&#x6574;&#x901F;&#x5EA6;&#x6863;&#x4F4D;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-&#x952E;&#x4F4D;&#x8BF4;&#x660E;">2. &#x952E;&#x4F4D;&#x8BF4;&#x660E;</h2>
+<h3 id="1-armkeyboardcontrolpy&#xFF08;&#x5173;&#x8282;&#x6B65;&#x8FDB;&#xFF09;">1. <code>arm_keyboard_control.py</code>&#xFF08;&#x5173;&#x8282;&#x6B65;&#x8FDB;&#xFF09;</h3>
+<ul>
+<li><code>q/a</code>&#xFF1A;<code>shoulder_pan</code> +/&#x2212;</li>
+<li><code>w/s</code>&#xFF1A;<code>shoulder_lift</code> +/&#x2212;</li>
+<li><code>e/d</code>&#xFF1A;<code>elbow_flex</code> +/&#x2212;</li>
+<li><code>r/f</code>&#xFF1A;<code>wrist_flex</code> +/&#x2212;</li>
+<li><code>t/g</code>&#xFF1A;<code>wrist_roll</code> +/&#x2212;</li>
+<li><code>y/h</code>&#xFF1A;<code>gripper</code> +/&#x2212;</li>
+<li><code>m</code>&#xFF1A;&#x56DE;&#x4E2D;&#x4F4D;</li>
+<li><code>ESC</code>&#xFF1A;&#x9000;&#x51FA;</li>
+</ul>
+<h3 id="2-ikkeyboardrealtimepy&#xFF08;&#x672B;&#x7AEF;-ik&#xFF09;">2. <code>ik_keyboard_realtime.py</code>&#xFF08;&#x672B;&#x7AEF; IK&#xFF09;</h3>
+<ul>
+<li><code>W/S</code>&#xFF1A;$+Z/-Z$</li>
+<li><code>A/D</code>&#xFF1A;$-Y/+Y$</li>
+<li><code>I/K</code>&#xFF1A;$+X/-X$</li>
+<li><code>J/L</code>&#xFF1A;pitch +/&#x2212;</li>
+<li><code>U/O</code>&#xFF1A;yaw +/&#x2212;</li>
+<li><code>+/-</code>&#xFF1A;&#x901F;&#x5EA6;&#x8C03;&#x8282;</li>
+<li><code>Q</code>&#xFF1A;&#x9000;&#x51FA;</li>
+</ul>
+<h3 id="3-joyconikcontrolpypy&#xFF08;joycon--ik&#xFF09;">3. <code>joycon_ik_control_py.py</code>&#xFF08;JoyCon + IK&#xFF09;</h3>
+<ul>
+<li>&#x79FB;&#x52A8; Joy-Con&#xFF1A;&#x63A7;&#x5236;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E;/&#x59FF;&#x6001;&#x504F;&#x79FB;&#xFF08;&#x5728;&#x201C;&#x57FA;&#x51C6;&#x4F4D;&#x59FF;&#x201D;&#x4E0A;&#x53E0;&#x52A0;&#xFF09;</li>
+<li><code>ZR</code>&#xFF1A;&#x5939;&#x722A;&#x6536;&#x7D27;&#x4E00;&#x70B9;</li>
+<li><code>R</code>&#xFF1A;&#x5939;&#x722A;&#x677E;&#x5F00;&#x4E00;&#x70B9;</li>
+<li><code>B</code>&#xFF1A;Z &#x65B9;&#x5411;&#x624B;&#x52A8;&#x4E0A;&#x79FB;&#xFF08;&#x589E;&#x5927; Z &#x504F;&#x79FB;&#xFF09;</li>
+<li><code>Home</code>&#xFF1A;&#x673A;&#x68B0;&#x81C2;&#x56DE;&#x4E2D; + &#x91CD;&#x65B0;&#x8FDE;&#x63A5; JoyCon</li>
+<li><code>+/-</code>&#xFF1A;&#x901F;&#x5EA6;&#x8C03;&#x8282;</li>
+<li><code>X</code>&#xFF1A;&#x9000;&#x51FA;</li>
+</ul>
+<h2 id="3-&#x8FD0;&#x884C;&#x4E0E;&#x5F55;&#x5C4F;&#xFF08;">3. &#x8FD0;&#x884C;&#x4E0E;&#x5F55;&#x5C4F;&#xFF08;</h2>
+<h3 id="1-&#x952E;&#x76D8;&#x5173;&#x8282;&#x6B65;&#x8FDB;">1. &#x952E;&#x76D8;&#x5173;&#x8282;&#x6B65;&#x8FDB;</h3>
+<ul>
+<li><code>python arm_keyboard_control.py</code></li>
+</ul>
+<h3 id="2-&#x952E;&#x76D8;-ik-&#x63A7;&#x5236;">2. &#x952E;&#x76D8; IK &#x63A7;&#x5236;</h3>
+<ul>
+<li><code>python ik_keyboard_realtime.py</code></li>
+</ul>
+<h3 id="3-joycon-ik-&#x63A7;&#x5236;">3. JoyCon IK &#x63A7;&#x5236;</h3>
+<ul>
+<li>&#x53F3;&#x81C2;&#x793A;&#x4F8B;&#xFF1A;<ul>
+<li><code>python joycon_ik_control_py.py --device right --port /dev/right_arm --config ./driver/right_arm.json</code></li>
+</ul>
+</li>
+<li>&#x5DE6;&#x81C2;&#x793A;&#x4F8B;&#xFF1A;<ul>
+<li><code>python joycon_ik_control_py.py --device left --port /dev/left_arm --config ./driver/left_arm.json</code></li>
+</ul>
+</li>
+</ul>
+<p>&#x5F55;&#x5C4F;&#x5EFA;&#x8BAE;&#x955C;&#x5934;&#xFF1A;</p>
+<p>1) &#x673A;&#x68B0;&#x81C2;&#x4E0E;&#x64CD;&#x4F5C;&#x8005;&#x540C;&#x6846;&#xFF1B;
+2) &#x5148;&#x56DE;&#x4E2D;&#x4F4D;&#xFF0C;&#x518D;&#x505A; 2~3 &#x6B21;&#x5C0F;&#x5E45;&#x672B;&#x7AEF;&#x79FB;&#x52A8;&#xFF1B;
+3) &#x5C55;&#x793A;&#x5939;&#x722A;&#x5F00;&#x5408;&#xFF1B;
+4) &#x6700;&#x540E;&#x6309; <code>X</code> &#x6216; <code>ESC/Q</code> &#x6B63;&#x5E38;&#x9000;&#x51FA;&#x3002;</p>
+<h2 id="4-&#x63A7;&#x5236;&#x8BEF;&#x5DEE;&#x5206;&#x6790;">4. &#x63A7;&#x5236;&#x8BEF;&#x5DEE;&#x5206;&#x6790;</h2>
+<h3 id="41-&#x5EFA;&#x8BAE;&#x5B9A;&#x4E49;&#xFF08;&#x6700;&#x5C0F;&#x96C6;&#x5408;&#xFF09;">4.1 &#x5EFA;&#x8BAE;&#x5B9A;&#x4E49;&#xFF08;&#x6700;&#x5C0F;&#x96C6;&#x5408;&#xFF09;</h3>
+<ul>
+<li><strong>&#x672B;&#x7AEF;&#x91CD;&#x590D;&#x5B9A;&#x4F4D;&#x8BEF;&#x5DEE;&#xFF08;&#x4F4D;&#x7F6E;&#xFF09;</strong>&#xFF1A;&#x5BF9;&#x540C;&#x4E00;&#x76EE;&#x6807;&#x4F4D;&#x59FF; $T^*$ &#x91CD;&#x590D;&#x5230;&#x8FBE; $N$ &#x6B21;&#xFF0C;&#x8BB0;&#x5F55;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E; $p_k$&#xFF0C;&#x7EDF;&#x8BA1;
+<script type="math/tex; mode=display">
+  e_p = \sqrt{\frac{1}{N}\sum_{k=1}^N \lVert p_k - \bar{p} \rVert^2}
+
+  </script></li>
+<li><strong>&#x672B;&#x7AEF;&#x91CD;&#x590D;&#x5B9A;&#x4F4D;&#x8BEF;&#x5DEE;&#xFF08;&#x59FF;&#x6001;&#xFF09;</strong>&#xFF1A;&#x5BF9;&#x540C;&#x4E00;&#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x91CD;&#x590D;&#x5230;&#x8FBE;&#xFF0C;&#x8BB0;&#x5F55;&#x6B27;&#x62C9;&#x89D2;/&#x65CB;&#x8F6C;&#x5411;&#x91CF;&#x5DEE;&#x7684;&#x5747;&#x65B9;&#x6839;&#xFF08;&#x5355;&#x4F4D; deg&#xFF09;</li>
+<li><strong>IK &#x6210;&#x529F;&#x7387;</strong>&#xFF1A;&#x63A7;&#x5236;&#x5FAA;&#x73AF;&#x4E2D; <code>success/total</code>&#xFF08;&#x5931;&#x8D25;&#x65F6;&#x8BB0;&#x5F55; <code>reason</code>&#xFF09;</li>
+<li><strong>&#x9650;&#x4F4D;&#x622A;&#x65AD;&#x6B21;&#x6570;</strong>&#xFF1A;<code>limit_position()</code> &#x89E6;&#x53D1;&#x6B21;&#x6570;&#xFF08;&#x63D0;&#x793A;&#x4F60;&#x7684;&#x76EE;&#x6807;&#x662F;&#x5426;&#x7ECF;&#x5E38;&#x8D8A;&#x754C;&#xFF09;</li>
+</ul>
+<h3 id="42-&#x8BB0;&#x5F55;&#x65B9;&#x5F0F;&#xFF08;&#x63A8;&#x8350;&#x4F60;&#x5199;&#x8FDB;&#x5B9E;&#x9A8C;&#x65E5;&#x5FD7;&#xFF09;">4.2 &#x8BB0;&#x5F55;&#x65B9;&#x5F0F;&#xFF08;&#x63A8;&#x8350;&#x4F60;&#x5199;&#x8FDB;&#x5B9E;&#x9A8C;&#x65E5;&#x5FD7;&#xFF09;</h3>
+<ul>
+<li>&#x8BB0;&#x5F55;&#x63A7;&#x5236;&#x5468;&#x671F;&#xFF08;tick &#x9891;&#x7387;&#xFF09;&#x3001;&#x6BCF; tick &#x7684;&#x76EE;&#x6807;&#x589E;&#x91CF;&#xFF08;XYZ &#x4E0E; RPY&#xFF09;&#x3001;<code>speed</code> &#x6863;&#x4F4D;</li>
+<li>&#x540C;&#x4E00;&#x52A8;&#x4F5C;&#x505A; 3 &#x7EC4;&#x91CD;&#x590D;&#x5B9E;&#x9A8C;&#xFF1A;&#x4F4E;&#x901F;/&#x4E2D;&#x901F;/&#x9AD8;&#x901F;</li>
+<li>&#x6BCF;&#x7EC4;&#x5B9E;&#x9A8C;&#x81F3;&#x5C11; 30 &#x79D2;&#xFF0C;&#x4FDD;&#x8BC1;&#x7EDF;&#x8BA1;&#x7A33;&#x5B9A;</li>
+</ul>
+<h3 id="43-&#x5E38;&#x89C1;&#x7ED3;&#x8BBA;&#xFF08;&#x5199;&#x62A5;&#x544A;&#x65F6;&#x600E;&#x4E48;&#x4E25;&#x8C28;&#x8868;&#x8FF0;&#xFF09;">4.3 &#x5E38;&#x89C1;&#x7ED3;&#x8BBA;&#xFF08;&#x5199;&#x62A5;&#x544A;&#x65F6;&#x600E;&#x4E48;&#x4E25;&#x8C28;&#x8868;&#x8FF0;&#xFF09;</h3>
+<ul>
+<li>&#x82E5;&#x8BEF;&#x5DEE;&#x968F;&#x901F;&#x5EA6;&#x663E;&#x8457;&#x589E;&#x5927;&#xFF1A;&#x66F4;&#x53EF;&#x80FD;&#x662F;&#x8235;&#x673A;&#x5185;&#x73AF;/&#x8D1F;&#x8F7D;/&#x901A;&#x4FE1;&#x6296;&#x52A8;&#x5F15;&#x5165;&#x7684;&#x52A8;&#x6001;&#x8BEF;&#x5DEE;&#xFF0C;&#x800C;&#x975E;&#x7EAF;&#x8FD0;&#x52A8;&#x5B66;&#x6A21;&#x578B;&#x8BEF;&#x5DEE;</li>
+<li>&#x82E5;&#x540C;&#x4E00;&#x65B9;&#x5411;&#x603B;&#x504F;&#xFF1A;&#x4F18;&#x5148;&#x6000;&#x7591; <code>homing_offset</code>&#x3001;&#x5173;&#x8282;&#x65B9;&#x5411;&#x7B26;&#x53F7;&#xFF08;<code>gear_sign</code>&#xFF09;&#x6216; DH/ETS &#x6A21;&#x578B;&#x4E0E;&#x5B9E;&#x673A;&#x4E0D;&#x4E00;&#x81F4;</li>
+<li>&#x82E5; IK &#x5076;&#x53D1;&#x5931;&#x8D25;&#xFF1A;&#x4F18;&#x5148;&#x964D;&#x4F4E;&#x6BCF; tick &#x4F4D;&#x59FF;&#x589E;&#x91CF;&#xFF0C;&#x6216;&#x8C03;&#x6574; <code>mask</code>&#xFF08;&#x5148;&#x53EA;&#x63A7; xyz&#xFF0C;&#x518D;&#x9010;&#x6B65;&#x52A0;&#x5165;&#x59FF;&#x6001;&#xFF09;</li>
+</ul>
+<h2 id="5-&#x5173;&#x952E;&#x5B9E;&#x73B0;&#x94FE;&#x8DEF;&#xFF08;&#x4ECE;&#x8F93;&#x5165;&#x5230;&#x8235;&#x673A;&#x4E0B;&#x53D1;&#xFF09;">5. &#x5173;&#x952E;&#x5B9E;&#x73B0;&#x94FE;&#x8DEF;&#xFF08;&#x4ECE;&#x8F93;&#x5165;&#x5230;&#x8235;&#x673A;&#x4E0B;&#x53D1;&#xFF09;</h2>
+<p>&#x4EE5; <code>joycon_ik_control_py.py</code> &#x4E3A;&#x4F8B;&#xFF0C;&#x63A7;&#x5236;&#x94FE;&#x8DEF;&#x662F;&#xFF1A;</p>
+<p>1) JoyCon &#x8BFB;&#x53D6;&#x59FF;&#x6001;/&#x4F4D;&#x79FB;&#x504F;&#x79FB;&#xFF1A;<code>JoyconRobotics.get_control()</code>
+2) &#x4E0E;&#x201C;&#x57FA;&#x51C6;&#x4F4D;&#x59FF;&#x201D;&#x53E0;&#x52A0;&#x751F;&#x6210;&#x76EE;&#x6807;&#xFF1A;</p>
+<ul>
+<li><code>pos = base_pos + joycon_offset_pos</code></li>
+<li><code>rpy = base_rpy + joycon_offset_rpy</code>&#xFF08;&#x8BE5;&#x811A;&#x672C;&#x5BF9; roll/pitch &#x505A;&#x4E86;&#x7B26;&#x53F7;&#x5BF9;&#x9F50;&#xFF09;</li>
+</ul>
+<p>3) &#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x77E9;&#x9635;&#xFF1A;<code>build_target_pose()</code>
+4) IK &#x6C42;&#x89E3;&#xFF1A;<code>robot.ikine_LM(Tep=T_goal, q0=current_q, mask=..., method=...)</code>
+5) &#x89D2;&#x5EA6;&#x2192;&#x6B65;&#x6570;&#xFF1A;<code>robot.q_to_servo_targets()</code>
+6) &#x9650;&#x4F4D;&#xFF1A;<code>ServoController.limit_position()</code>
+7) &#x540C;&#x6B65;&#x5199;&#xFF1A;<code>ServoController.fast_move_to_pose()</code> &#x2192; <code>FTServo.sync_write(0x2A, ...)</code></p>
+<p>&#x5176;&#x4E2D; IK &#x7684;&#x8BEF;&#x5DEE;&#x5B9A;&#x4E49;&#xFF08;angle-axis&#xFF09;&#x4E0E; LM &#x66F4;&#x65B0;&#x516C;&#x5F0F;&#x89C1;&#xFF1A;<code>stage1_1_sdk.md</code>&#x3002;</p>
+<h3 id="41-&#x8BEF;&#x5DEE;&#x6765;&#x6E90;">4.1 &#x8BEF;&#x5DEE;&#x6765;&#x6E90;</h3>
+<ul>
+<li>&#x673A;&#x68B0;&#x4E0E;&#x8235;&#x673A;&#xFF1A;&#x80CC;&#x9699;&#x3001;&#x6469;&#x64E6;&#x3001;&#x8D1F;&#x8F7D;&#x53D8;&#x5316;&#x3001;&#x8235;&#x673A;&#x5185;&#x73AF;&#x53C2;&#x6570;&#x5DEE;&#x5F02;&#x3002;</li>
+<li>&#x96F6;&#x4F4D;/&#x9650;&#x4F4D;&#x6807;&#x5B9A;&#xFF1A;<code>homing_offset</code> &#x4E0D;&#x51C6;&#x5BFC;&#x81F4; FK/IK &#x7684;&#x201C;&#x96F6;&#x70B9;&#x201D;&#x9519;&#x4F4D;&#x3002;</li>
+<li>IK &#x6570;&#x503C;&#x8BEF;&#x5DEE;&#xFF1A;&#x521D;&#x503C;&#x504F;&#x79BB;&#x3001;&#x6B65;&#x957F;&#x8FC7;&#x5927;&#x3001;<code>mask</code> &#x8BBE;&#x7F6E;&#x4E0D;&#x5408;&#x7406;&#x5BFC;&#x81F4;&#x6536;&#x655B;&#x5230;&#x5C40;&#x90E8;&#x6700;&#x4F18;&#x6216;&#x5931;&#x8D25;&#x3002;</li>
+<li>&#x4F20;&#x611F;&#x5668;&#x4E0E;&#x8F93;&#x5165;&#xFF1A;JoyCon &#x59FF;&#x6001;&#x6F02;&#x79FB;&#x3001;&#x7528;&#x6237;&#x624B;&#x6296;&#x3001;&#x6EE4;&#x6CE2;&#x53C2;&#x6570;&#x4E0D;&#x5339;&#x914D;&#x3002;</li>
+<li>&#x63A7;&#x5236;&#x4E0E;&#x901A;&#x4FE1;&#xFF1A;&#x4E32;&#x53E3;&#x6296;&#x52A8;&#x3001;&#x63A7;&#x5236;&#x5468;&#x671F;&#x4E0D;&#x7A33;&#x5B9A;&#x3001;&#x901F;&#x5EA6;/&#x52A0;&#x901F;&#x5EA6;&#x8FC7;&#x9AD8;&#x5F15;&#x53D1;&#x8D85;&#x8C03;&#x3002;</li>
+</ul>
+<h3 id="42-&#x89C2;&#x6D4B;&#x6307;&#x6807;&#x4E0E;&#x5EFA;&#x8BAE;&#x8BB0;&#x5F55;&#x65B9;&#x5F0F;">4.2 &#x89C2;&#x6D4B;&#x6307;&#x6807;&#x4E0E;&#x5EFA;&#x8BAE;&#x8BB0;&#x5F55;&#x65B9;&#x5F0F;</h3>
+<ul>
+<li>&#x672B;&#x7AEF;&#x91CD;&#x590D;&#x5B9A;&#x4F4D;&#x8BEF;&#x5DEE;&#xFF1A;&#x540C;&#x4E00;&#x76EE;&#x6807;&#x4F4D;&#x59FF;&#x591A;&#x6B21;&#x5230;&#x8FBE;&#x540E;&#x7684; XYZ &#x504F;&#x5DEE;&#xFF08;mm&#xFF09;&#x4E0E;&#x59FF;&#x6001;&#x504F;&#x5DEE;&#xFF08;deg&#xFF09;&#x3002;</li>
+<li>IK &#x6210;&#x529F;&#x7387;&#xFF1A;&#x8FDE;&#x7EED;&#x63A7;&#x5236; ticks &#x4E2D; <code>success/total</code>&#x3002;</li>
+<li>&#x6781;&#x9650;&#x89E6;&#x53D1;&#x6B21;&#x6570;&#xFF1A;<code>limit_position()</code> &#x622A;&#x65AD;&#x7684;&#x6B21;&#x6570;&#xFF08;&#x5EFA;&#x8BAE;&#x5728;&#x5B9E;&#x9A8C;&#x65E5;&#x5FD7;&#x4E2D;&#x8BB0;&#x5F55;&#xFF09;&#x3002;</li>
+</ul>
+<h3 id="43-&#x5E38;&#x7528;&#x6392;&#x67E5;&#x6539;&#x8FDB;&#x624B;&#x6BB5;">4.3 &#x5E38;&#x7528;&#x6392;&#x67E5;/&#x6539;&#x8FDB;&#x624B;&#x6BB5;</h3>
+<ul>
+<li>&#x964D;&#x4F4E;&#x6BCF; tick &#x4F4D;&#x59FF;&#x589E;&#x91CF;&#x3001;&#x964D;&#x4F4E; <code>speed</code> &#x4E0A;&#x9650;&#x3002;</li>
+<li>&#x5148;&#x7528; <code>arm_keyboard_control.py</code> &#x9A8C;&#x8BC1;&#x6BCF;&#x4E2A;&#x5173;&#x8282;&#x65B9;&#x5411;&#x4E0E;&#x9650;&#x4F4D;&#x662F;&#x5426;&#x6B63;&#x786E;&#x3002;</li>
+<li>&#x786E;&#x4FDD;&#x8FD0;&#x884C;&#x65F6;&#x4F7F;&#x7528;&#x6B63;&#x786E;&#x7684; <code>driver/*_arm.json</code>&#x3002;</li>
+<li>JoyCon &#x6F02;&#x79FB;&#x65F6;&#x7528; <code>Home</code> &#x91CD;&#x7F6E;&#x57FA;&#x51C6;&#x4F4D;&#x59FF;&#x5E76;&#x91CD;&#x65B0;&#x6821;&#x51C6;&#x3002;</li>
+</ul>
+<pre><code>
+
+</code></pre>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ref_ik_robot_solver.html" class="navigation navigation-prev " aria-label="Previous page: 函数解析：ik">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="stage1_2_controls.html" class="navigation navigation-next " aria-label="Next page: 2. 控制映射速查">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"2. 人机交互（键盘/JoyCon）","level":"1.5","depth":1,"next":{"title":"2. 控制映射速查","level":"1.5.1","depth":2,"path":"stage1_2_controls.md","ref":"stage1_2_controls.md","articles":[]},"previous":{"title":"函数解析：ik","level":"1.4.3","depth":2,"path":"ref_ik_robot_solver.md","ref":"ref_ik_robot_solver.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"stage1_2_hci_teleop.md","mtime":"2026-01-10T12:43:42.299Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-27T13:27:48.053Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+
