@@ -1,0 +1,1449 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>3.2 理论：手眼标定 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch3_3_calibration.html" />
+    
+    
+    <link rel="prev" href="ch3_1_theory_rdt_format.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="ch0_overview.html">
+            
+                <a href="ch0_overview.html">
+            
+                    
+                    总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="ch0_env_setup.html">
+            
+                <a href="ch0_env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第一章 自设计 SDK</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ch1_sdk.html">
+            
+                <a href="ch1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="ch1_1_sdk_api.html">
+            
+                <a href="ch1_1_sdk_api.html">
+            
+                    
+                    1.1 API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="ch1_2_ref_driver.html">
+            
+                <a href="ch1_2_ref_driver.html">
+            
+                    
+                    1.2 函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="ch1_3_ref_ik.html">
+            
+                <a href="ch1_3_ref_ik.html">
+            
+                    
+                    1.3 函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第二章 人机交互</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ch2_hci_teleop.html">
+            
+                <a href="ch2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.1" data-path="ch2_1_controls.html">
+            
+                <a href="ch2_1_controls.html">
+            
+                    
+                    2.1 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2" data-path="ch2_2_leader_follower.html">
+            
+                <a href="ch2_2_leader_follower.html">
+            
+                    
+                    2.2 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第三章 数据集构建</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ch3_dataset.html">
+            
+                <a href="ch3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1.1" data-path="ch3_1_theory_rdt_format.html">
+            
+                <a href="ch3_1_theory_rdt_format.html">
+            
+                    
+                    3.1 理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.1.2" data-path="ch3_2_theory_handeye.html">
+            
+                <a href="ch3_2_theory_handeye.html">
+            
+                    
+                    3.2 理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.3" data-path="ch3_3_calibration.html">
+            
+                <a href="ch3_3_calibration.html">
+            
+                    
+                    3.3 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.4" data-path="ch3_4_timesync.html">
+            
+                <a href="ch3_4_timesync.html">
+            
+                    
+                    3.4 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.5" data-path="ch3_5_ref_handeye.html">
+            
+                <a href="ch3_5_ref_handeye.html">
+            
+                    
+                    3.5 函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.6" data-path="ch3_6_ref_rdt_pipeline.html">
+            
+                <a href="ch3_6_ref_rdt_pipeline.html">
+            
+                    
+                    3.6 函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第四章 RDT 训练与微调</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="ch4_rdt_training.html">
+            
+                <a href="ch4_rdt_training.html">
+            
+                    
+                    4. RDT 训练与微调
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1.1" data-path="ch4_1_env_setup.html">
+            
+                <a href="ch4_1_env_setup.html">
+            
+                    
+                    4.1 训练环境配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.2" data-path="ch4_2_data_prep.html">
+            
+                <a href="ch4_2_data_prep.html">
+            
+                    
+                    4.2 数据集准备与转换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.3" data-path="ch4_3_finetune.html">
+            
+                <a href="ch4_3_finetune.html">
+            
+                    
+                    4.3 模型微调
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.4" data-path="ch4_4_deploy.html">
+            
+                <a href="ch4_4_deploy.html">
+            
+                    
+                    4.4 模型部署与推理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.5" data-path="ch4_5_ref_rdt_training.html">
+            
+                <a href="ch4_5_ref_rdt_training.html">
+            
+                    
+                    4.5 函数解析：RDT 模型与训练
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第五章 FPGA 硬件加速</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="ch5_fpga.html">
+            
+                <a href="ch5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >3.2 理论：手眼标定</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="32-&#x7406;&#x8BBA;&#xFF1A;&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF08;hand-eye-calibration&#xFF09;">3.2 &#x7406;&#x8BBA;&#xFF1A;&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF08;Hand-Eye Calibration&#xFF09;</h1>
+<h2 id="&#x76EE;&#x5F55;">&#x76EE;&#x5F55;</h2>
+<ol>
+<li><a href="#1-&#x6982;&#x8FF0;">&#x6982;&#x8FF0;</a></li>
+<li><a href="#2-&#x773C;&#x5728;&#x624B;&#x4E0A;&#x6807;&#x5B9A;-eye-in-hand">&#x773C;&#x5728;&#x624B;&#x4E0A;&#x6807;&#x5B9A; (Eye-in-Hand)</a></li>
+<li><a href="#3-&#x773C;&#x5728;&#x624B;&#x5916;&#x6807;&#x5B9A;-eye-to-hand">&#x773C;&#x5728;&#x624B;&#x5916;&#x6807;&#x5B9A; (Eye-to-Hand)</a></li>
+<li><a href="#4-&#x6570;&#x5B66;&#x539F;&#x7406;">&#x6570;&#x5B66;&#x539F;&#x7406;</a></li>
+<li><a href="#5-&#x6807;&#x5B9A;&#x6D41;&#x7A0B;">&#x6807;&#x5B9A;&#x6D41;&#x7A0B;</a></li>
+<li><a href="#6-&#x5E38;&#x89C1;&#x7B97;&#x6CD5;">&#x5E38;&#x89C1;&#x7B97;&#x6CD5;</a></li>
+<li><a href="#7-&#x6807;&#x5B9A;&#x8D28;&#x91CF;&#x8BC4;&#x4F30;">&#x6807;&#x5B9A;&#x8D28;&#x91CF;&#x8BC4;&#x4F30;</a></li>
+<li><a href="#8-&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x5EFA;&#x8BAE;">&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x5EFA;&#x8BAE;</a></li>
+</ol>
+<hr>
+<h2 id="1-&#x6982;&#x8FF0;">1. &#x6982;&#x8FF0;</h2>
+<h3 id="11-&#x4EC0;&#x4E48;&#x662F;&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF1F;">1.1 &#x4EC0;&#x4E48;&#x662F;&#x624B;&#x773C;&#x6807;&#x5B9A;&#xFF1F;</h3>
+<p><strong>&#x624B;&#x773C;&#x6807;&#x5B9A;</strong>&#x662F;&#x673A;&#x5668;&#x4EBA;&#x89C6;&#x89C9;&#x7CFB;&#x7EDF;&#x4E2D;&#x7684;&#x5173;&#x952E;&#x6280;&#x672F;&#xFF0C;&#x7528;&#x4E8E;&#x786E;&#x5B9A;&#x76F8;&#x673A;&#x5750;&#x6807;&#x7CFB;&#x4E0E;&#x673A;&#x5668;&#x4EBA;&#x5750;&#x6807;&#x7CFB;&#x4E4B;&#x95F4;&#x7684;&#x7A7A;&#x95F4;&#x53D8;&#x6362;&#x5173;&#x7CFB;&#x3002;&#x6839;&#x636E;&#x76F8;&#x673A;&#x5B89;&#x88C5;&#x4F4D;&#x7F6E;&#x7684;&#x4E0D;&#x540C;&#xFF0C;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x5206;&#x4E3A;&#x4E24;&#x79CD;&#x4E3B;&#x8981;&#x7C7B;&#x578B;&#x3002;</p>
+<h3 id="12-&#x57FA;&#x672C;&#x6982;&#x5FF5;">1.2 &#x57FA;&#x672C;&#x6982;&#x5FF5;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x6982;&#x5FF5;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x5750;&#x6807;&#x7CFB;&#x7EDF;</strong></td>
+<td>&#x673A;&#x5668;&#x4EBA;&#x7CFB;&#x7EDF;&#x6D89;&#x53CA;&#x591A;&#x4E2A;&#x5750;&#x6807;&#x7CFB;&#xFF1A;&#x57FA;&#x5EA7;&#x5750;&#x6807;&#x7CFB;&#x3001;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x5750;&#x6807;&#x7CFB;&#x3001;&#x76F8;&#x673A;&#x5750;&#x6807;&#x7CFB;&#x3001;&#x6807;&#x5B9A;&#x677F;&#x5750;&#x6807;&#x7CFB;</td>
+</tr>
+<tr>
+<td><strong>&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;</strong></td>
+<td>&#x4F7F;&#x7528; $4 \times 4$ &#x77E9;&#x9635;&#x8868;&#x793A;&#x4E09;&#x7EF4;&#x7A7A;&#x95F4;&#x4E2D;&#x7684;&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;</td>
+</tr>
+<tr>
+<td><strong>&#x6807;&#x5B9A;&#x76EE;&#x6807;</strong></td>
+<td>&#x901A;&#x5E38;&#x4F7F;&#x7528;&#x68CB;&#x76D8;&#x683C;&#x6807;&#x5B9A;&#x677F;&#x6216;&#x5706;&#x70B9;&#x6807;&#x5B9A;&#x677F;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-&#x5E94;&#x7528;&#x573A;&#x666F;">1.3 &#x5E94;&#x7528;&#x573A;&#x666F;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x573A;&#x666F;</th>
+<th>&#x9700;&#x6C42;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&#x89C6;&#x89C9;&#x5F15;&#x5BFC;&#x6293;&#x53D6;</td>
+<td>&#x76F8;&#x673A;&#x68C0;&#x6D4B;&#x7269;&#x4F53;&#x4F4D;&#x7F6E; &#x2192; &#x8F6C;&#x6362;&#x4E3A;&#x673A;&#x5668;&#x4EBA;&#x53EF;&#x6267;&#x884C;&#x7684;&#x76EE;&#x6807;&#x4F4D;&#x59FF;</td>
+</tr>
+<tr>
+<td>&#x89C6;&#x89C9;&#x4F3A;&#x670D;</td>
+<td>&#x5B9E;&#x65F6;&#x8DDF;&#x8E2A;&#x76EE;&#x6807; &#x2192; &#x95ED;&#x73AF;&#x63A7;&#x5236;&#x673A;&#x5668;&#x4EBA;&#x8FD0;&#x52A8;</td>
+</tr>
+<tr>
+<td>&#x6570;&#x636E;&#x91C7;&#x96C6;</td>
+<td>&#x8BB0;&#x5F55;&#x56FE;&#x50CF;&#x65F6;&#x540C;&#x6B65;&#x8BB0;&#x5F55;&#x5BF9;&#x5E94;&#x7684;&#x673A;&#x5668;&#x4EBA;&#x72B6;&#x6001;</td>
+</tr>
+<tr>
+<td>&#x4E09;&#x7EF4;&#x91CD;&#x5EFA;</td>
+<td>&#x591A;&#x89C6;&#x89D2;&#x878D;&#x5408;&#x65F6;&#x9700;&#x8981;&#x7CBE;&#x786E;&#x7684;&#x76F8;&#x673A;&#x4F4D;&#x59FF;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-&#x773C;&#x5728;&#x624B;&#x4E0A;&#x6807;&#x5B9A;-eye-in-hand">2. &#x773C;&#x5728;&#x624B;&#x4E0A;&#x6807;&#x5B9A; (Eye-in-Hand)</h2>
+<h3 id="21-&#x914D;&#x7F6E;&#x8BF4;&#x660E;">2.1 &#x914D;&#x7F6E;&#x8BF4;&#x660E;</h3>
+<p>&#x773C;&#x5728;&#x624B;&#x4E0A;&#x914D;&#x7F6E;&#x662F;&#x6307;<strong>&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x5B89;&#x88C5;&#x5728;&#x673A;&#x68B0;&#x81C2;&#x7684;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x4E0A;</strong>&#xFF0C;&#x76F8;&#x673A;&#x968F;&#x673A;&#x68B0;&#x81C2;&#x4E00;&#x8D77;&#x8FD0;&#x52A8;&#x3002;</p>
+<pre><code>&#x673A;&#x5668;&#x4EBA;&#x57FA;&#x5EA7; &#x2192; &#x673A;&#x68B0;&#x81C2;&#x5173;&#x8282; &#x2192; &#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668; &#x2192; &#x76F8;&#x673A;
+                                    &#x2193;
+                              &#x6807;&#x5B9A;&#x677F;(&#x56FA;&#x5B9A;&#x5728;&#x5DE5;&#x4F5C;&#x53F0;)
+</code></pre><h3 id="22-&#x5750;&#x6807;&#x5173;&#x7CFB;">2.2 &#x5750;&#x6807;&#x5173;&#x7CFB;</h3>
+<p>&#x5728;&#x773C;&#x5728;&#x624B;&#x4E0A;&#x914D;&#x7F6E;&#x4E2D;&#xFF0C;&#x9700;&#x8981;&#x6C42;&#x89E3;&#x7684;&#x662F;<strong>&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x5230;&#x76F8;&#x673A;&#x7684;&#x53D8;&#x6362;&#x77E9;&#x9635;</strong> ${}^E\mathbf{T}_C$&#xFF08;Hand-to-Eye transformation&#xFF09;&#x3002;</p>
+<p><strong>&#x5173;&#x952E;&#x5750;&#x6807;&#x7CFB;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>Base</strong> ($B$)&#xFF1A;&#x673A;&#x5668;&#x4EBA;&#x57FA;&#x5EA7;&#x5750;&#x6807;&#x7CFB;</li>
+<li><strong>End</strong> ($E$)&#xFF1A;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x5750;&#x6807;&#x7CFB;</li>
+<li><strong>Camera</strong> ($C$)&#xFF1A;&#x76F8;&#x673A;&#x5750;&#x6807;&#x7CFB;</li>
+<li><strong>Target</strong> ($T$)&#xFF1A;&#x6807;&#x5B9A;&#x677F;&#x5750;&#x6807;&#x7CFB;&#xFF08;&#x56FA;&#x5B9A;&#xFF09;</li>
+</ul>
+<h3 id="23-&#x53D8;&#x6362;&#x5173;&#x7CFB;&#x63A8;&#x5BFC;">2.3 &#x53D8;&#x6362;&#x5173;&#x7CFB;&#x63A8;&#x5BFC;</h3>
+<p>&#x5750;&#x6807;&#x7CFB;&#x4E4B;&#x95F4;&#x7684;&#x5B8C;&#x6574;&#x53D8;&#x6362;&#x94FE;&#x4E3A;&#xFF1A;</p>
+<p><script type="math/tex">{}^B\mathbf{T}_T = {}^B\mathbf{T}_E \cdot {}^E\mathbf{T}_C \cdot {}^C\mathbf{T}_T</script></p>
+<p>&#x5176;&#x4E2D; ${}^A\mathbf{T}_B$ &#x8868;&#x793A;&#x4ECE;&#x5750;&#x6807;&#x7CFB; $B$ &#x5230;&#x5750;&#x6807;&#x7CFB; $A$ &#x7684;&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;&#x3002;</p>
+<p>&#x7531;&#x4E8E;&#x6807;&#x5B9A;&#x677F;&#x4F4D;&#x7F6E;&#x56FA;&#x5B9A;&#xFF0C;&#x5F53;&#x673A;&#x68B0;&#x81C2;&#x79FB;&#x52A8;&#x5230;&#x4E0D;&#x540C;&#x4F4D;&#x59FF;&#x65F6;&#xFF1A;</p>
+<p><script type="math/tex">{}^B\mathbf{T}_E^{(1)} \cdot {}^E\mathbf{T}_C \cdot {}^C\mathbf{T}_T^{(1)} = {}^B\mathbf{T}_E^{(2)} \cdot {}^E\mathbf{T}_C \cdot {}^C\mathbf{T}_T^{(2)}</script></p>
+<p>&#x4E24;&#x8FB9;&#x540C;&#x65F6;&#x5DE6;&#x4E58; $({}^B\mathbf{T}_E^{(1)})^{-1}$ &#x548C;&#x53F3;&#x4E58; $({}^C\mathbf{T}_T^{(1)})^{-1}$&#xFF0C;&#x6574;&#x7406;&#x5F97;&#x5230;&#x6807;&#x51C6;&#x7684; $\mathbf{AX} = \mathbf{XB}$ &#x95EE;&#x9898;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{A} \cdot \mathbf{X} = \mathbf{X} \cdot \mathbf{B}</script></p>
+<p>&#x5176;&#x4E2D;&#xFF1A;</p>
+<ul>
+<li>$\mathbf{A} = ({}^B\mathbf{T}<em>E^{(1)})^{-1} \cdot {}^B\mathbf{T}_E^{(2)} = {}^{E_1}\mathbf{T}</em>{E_2}$ &#xFF08;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x7684;&#x76F8;&#x5BF9;&#x8FD0;&#x52A8;&#xFF09;</li>
+<li>$\mathbf{X} = {}^E\mathbf{T}_C$ &#xFF08;&#x5F85;&#x6C42;&#x89E3;&#x7684;&#x624B;&#x773C;&#x5173;&#x7CFB;&#xFF09;</li>
+<li>$\mathbf{B} = ({}^C\mathbf{T}<em>T^{(2)})^{-1} \cdot {}^C\mathbf{T}_T^{(1)} = {}^{C_2}\mathbf{T}</em>{C_1}$ &#xFF08;&#x76F8;&#x673A;&#x89C2;&#x5BDF;&#x5230;&#x7684;&#x6807;&#x5B9A;&#x677F;&#x76F8;&#x5BF9;&#x8FD0;&#x52A8;&#xFF09;</li>
+</ul>
+<h3 id="24-&#x5E94;&#x7528;&#x573A;&#x666F;">2.4 &#x5E94;&#x7528;&#x573A;&#x666F;</h3>
+<ol>
+<li><strong>&#x673A;&#x5668;&#x4EBA;&#x6293;&#x53D6;</strong>&#xFF1A;&#x76F8;&#x673A;&#x8DDF;&#x968F;&#x673A;&#x68B0;&#x81C2;&#x89C2;&#x5BDF;&#x76EE;&#x6807;&#x7269;&#x4F53;</li>
+<li><strong>&#x7CBE;&#x5BC6;&#x88C5;&#x914D;</strong>&#xFF1A;&#x76F8;&#x673A;&#x63D0;&#x4F9B;&#x5B9E;&#x65F6;&#x89C6;&#x89C9;&#x53CD;&#x9988;</li>
+<li><strong>&#x79FB;&#x52A8;&#x68C0;&#x6D4B;</strong>&#xFF1A;&#x76F8;&#x673A;&#x9700;&#x8981;&#x4ECE;&#x591A;&#x4E2A;&#x89D2;&#x5EA6;&#x89C2;&#x5BDF;&#x76EE;&#x6807;</li>
+<li><strong>&#x710A;&#x63A5;/&#x55B7;&#x6D82;</strong>&#xFF1A;&#x76F8;&#x673A;&#x76D1;&#x63A7;&#x4F5C;&#x4E1A;&#x8FC7;&#x7A0B;</li>
+</ol>
+<h3 id="25-&#x4F18;&#x52BF;&#x4E0E;&#x52A3;&#x52BF;">2.5 &#x4F18;&#x52BF;&#x4E0E;&#x52A3;&#x52BF;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x4F18;&#x52BF;</th>
+<th>&#x52A3;&#x52BF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&#x76F8;&#x673A;&#x89C6;&#x91CE;&#x968F;&#x673A;&#x68B0;&#x81C2;&#x79FB;&#x52A8;&#xFF0C;&#x53EF;&#x4ECE;&#x591A;&#x89D2;&#x5EA6;&#x89C2;&#x5BDF;&#x76EE;&#x6807;</td>
+<td>&#x76F8;&#x673A;&#x589E;&#x52A0;&#x672B;&#x7AEF;&#x8D1F;&#x8F7D;</td>
+</tr>
+<tr>
+<td>&#x9002;&#x5408;&#x9700;&#x8981;&#x8FD1;&#x8DDD;&#x79BB;&#x89C2;&#x5BDF;&#x7684;&#x7CBE;&#x5BC6;&#x4F5C;&#x4E1A;</td>
+<td>&#x7EBF;&#x7F06;&#x7BA1;&#x7406;&#x590D;&#x6742;</td>
+</tr>
+<tr>
+<td>&#x5DE5;&#x4F5C;&#x7A7A;&#x95F4;&#x7075;&#x6D3B;&#x6027;&#x9AD8;</td>
+<td>&#x76F8;&#x673A;&#x632F;&#x52A8;&#x53EF;&#x80FD;&#x5F71;&#x54CD;&#x56FE;&#x50CF;&#x8D28;&#x91CF;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-&#x773C;&#x5728;&#x624B;&#x5916;&#x6807;&#x5B9A;-eye-to-hand">3. &#x773C;&#x5728;&#x624B;&#x5916;&#x6807;&#x5B9A; (Eye-to-Hand)</h2>
+<h3 id="31-&#x914D;&#x7F6E;&#x8BF4;&#x660E;">3.1 &#x914D;&#x7F6E;&#x8BF4;&#x660E;</h3>
+<p>&#x773C;&#x5728;&#x624B;&#x5916;&#x914D;&#x7F6E;&#x662F;&#x6307;<strong>&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x5B89;&#x88C5;&#x5728;&#x673A;&#x5668;&#x4EBA;&#x5DE5;&#x4F5C;&#x7A7A;&#x95F4;&#x7684;&#x5916;&#x90E8;</strong>&#xFF08;&#x5982;&#x652F;&#x67B6;&#x3001;&#x5929;&#x82B1;&#x677F;&#x7B49;&#xFF09;&#xFF0C;&#x76F8;&#x673A;&#x4F4D;&#x7F6E;&#x56FA;&#x5B9A;&#x4E0D;&#x52A8;&#x3002;</p>
+<pre><code>        &#x76F8;&#x673A;(&#x56FA;&#x5B9A;)
+          &#x2193;
+    &#x673A;&#x5668;&#x4EBA;&#x57FA;&#x5EA7; &#x2192; &#x673A;&#x68B0;&#x81C2;&#x5173;&#x8282; &#x2192; &#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668; &#x2192; &#x6807;&#x5B9A;&#x677F;
+</code></pre><h3 id="32-&#x5750;&#x6807;&#x5173;&#x7CFB;">3.2 &#x5750;&#x6807;&#x5173;&#x7CFB;</h3>
+<p>&#x5728;&#x773C;&#x5728;&#x624B;&#x5916;&#x914D;&#x7F6E;&#x4E2D;&#xFF0C;&#x9700;&#x8981;&#x6C42;&#x89E3;&#x7684;&#x662F;<strong>&#x673A;&#x5668;&#x4EBA;&#x57FA;&#x5EA7;&#x5230;&#x76F8;&#x673A;&#x7684;&#x53D8;&#x6362;&#x77E9;&#x9635;</strong> ${}^C\mathbf{T}_B$&#xFF08;Base-to-Camera transformation&#xFF09;&#x3002;</p>
+<p><strong>&#x5173;&#x952E;&#x5750;&#x6807;&#x7CFB;</strong>&#xFF1A;</p>
+<ul>
+<li><strong>Base</strong> ($B$)&#xFF1A;&#x673A;&#x5668;&#x4EBA;&#x57FA;&#x5EA7;&#x5750;&#x6807;&#x7CFB;</li>
+<li><strong>End</strong> ($E$)&#xFF1A;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x5750;&#x6807;&#x7CFB;</li>
+<li><strong>Camera</strong> ($C$)&#xFF1A;&#x76F8;&#x673A;&#x5750;&#x6807;&#x7CFB;&#xFF08;&#x56FA;&#x5B9A;&#xFF09;</li>
+<li><strong>Target</strong> ($T$)&#xFF1A;&#x6807;&#x5B9A;&#x677F;&#x5750;&#x6807;&#x7CFB;&#xFF08;&#x56FA;&#x5B9A;&#x5728;&#x672B;&#x7AEF;&#xFF09;</li>
+</ul>
+<h3 id="33-&#x53D8;&#x6362;&#x5173;&#x7CFB;&#x63A8;&#x5BFC;">3.3 &#x53D8;&#x6362;&#x5173;&#x7CFB;&#x63A8;&#x5BFC;</h3>
+<p>&#x5750;&#x6807;&#x7CFB;&#x4E4B;&#x95F4;&#x7684;&#x5B8C;&#x6574;&#x53D8;&#x6362;&#x94FE;&#x4E3A;&#xFF1A;</p>
+<p><script type="math/tex">{}^C\mathbf{T}_T = {}^C\mathbf{T}_B \cdot {}^B\mathbf{T}_E \cdot {}^E\mathbf{T}_T</script></p>
+<p>&#x5F53;&#x673A;&#x68B0;&#x81C2;&#x79FB;&#x52A8;&#x5230;&#x4E0D;&#x540C;&#x4F4D;&#x59FF;&#x65F6;&#xFF1A;</p>
+<p><script type="math/tex">{}^C\mathbf{T}_T^{(1)} = {}^C\mathbf{T}_B \cdot {}^B\mathbf{T}_E^{(1)} \cdot {}^E\mathbf{T}_T</script>
+<script type="math/tex">{}^C\mathbf{T}_T^{(2)} = {}^C\mathbf{T}_B \cdot {}^B\mathbf{T}_E^{(2)} \cdot {}^E\mathbf{T}_T</script></p>
+<p>&#x540C;&#x6837;&#x53EF;&#x4EE5;&#x8F6C;&#x5316;&#x4E3A; $\mathbf{AX} = \mathbf{XB}$ &#x95EE;&#x9898;&#xFF1A;</p>
+<p>&#x5176;&#x4E2D;&#xFF1A;</p>
+<ul>
+<li>$\mathbf{A} = {}^C\mathbf{T}_T^{(2)} \cdot ({}^C\mathbf{T}_T^{(1)})^{-1}$ &#xFF08;&#x76F8;&#x673A;&#x89C2;&#x5BDF;&#x5230;&#x7684;&#x6807;&#x5B9A;&#x677F;&#x8FD0;&#x52A8;&#xFF09;</li>
+<li>$\mathbf{X} = {}^C\mathbf{T}_B$ &#xFF08;&#x5F85;&#x6C42;&#x89E3;&#x7684;&#x76F8;&#x673A;&#x5230;&#x57FA;&#x5EA7;&#x5173;&#x7CFB;&#xFF09;</li>
+<li>$\mathbf{B} = {}^B\mathbf{T}_E^{(2)} \cdot ({}^B\mathbf{T}_E^{(1)})^{-1}$ &#xFF08;&#x672B;&#x7AEF;&#x6267;&#x884C;&#x5668;&#x7684;&#x8FD0;&#x52A8;&#xFF09;</li>
+</ul>
+<h3 id="34-&#x5E94;&#x7528;&#x573A;&#x666F;">3.4 &#x5E94;&#x7528;&#x573A;&#x666F;</h3>
+<ol>
+<li><strong>&#x7269;&#x6599;&#x5206;&#x62E3;</strong>&#xFF1A;&#x56FA;&#x5B9A;&#x76F8;&#x673A;&#x4FEF;&#x89C6;&#x5DE5;&#x4F5C;&#x53F0;</li>
+<li><strong>&#x8D28;&#x91CF;&#x68C0;&#x6D4B;</strong>&#xFF1A;&#x5927;&#x89C6;&#x91CE;&#x76D1;&#x63A7;&#x751F;&#x4EA7;&#x7EBF;</li>
+<li><strong>&#x88C5;&#x914D;&#x5F15;&#x5BFC;</strong>&#xFF1A;&#x76F8;&#x673A;&#x89C2;&#x5BDF;&#x6574;&#x4E2A;&#x88C5;&#x914D;&#x533A;&#x57DF;</li>
+<li><strong>&#x7801;&#x579B;&#x4F5C;&#x4E1A;</strong>&#xFF1A;&#x56FA;&#x5B9A;&#x76F8;&#x673A;&#x76D1;&#x63A7;&#x6258;&#x76D8;&#x533A;&#x57DF;</li>
+</ol>
+<h3 id="35-&#x4F18;&#x52BF;&#x4E0E;&#x52A3;&#x52BF;">3.5 &#x4F18;&#x52BF;&#x4E0E;&#x52A3;&#x52BF;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x4F18;&#x52BF;</th>
+<th>&#x52A3;&#x52BF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&#x4E0D;&#x589E;&#x52A0;&#x673A;&#x68B0;&#x81C2;&#x8D1F;&#x8F7D;</td>
+<td>&#x89C6;&#x91CE;&#x56FA;&#x5B9A;&#xFF0C;&#x65E0;&#x6CD5;&#x89C2;&#x5BDF;&#x590D;&#x6742;&#x89D2;&#x5EA6;</td>
+</tr>
+<tr>
+<td>&#x7EBF;&#x7F06;&#x5E03;&#x7F6E;&#x7B80;&#x5355;</td>
+<td>&#x53EF;&#x80FD;&#x5B58;&#x5728;&#x906E;&#x6321;&#x95EE;&#x9898;</td>
+</tr>
+<tr>
+<td>&#x56FE;&#x50CF;&#x7A33;&#x5B9A;&#x6027;&#x597D;</td>
+<td>&#x9700;&#x8981;&#x8F83;&#x5927;&#x7684;&#x5B89;&#x88C5;&#x7A7A;&#x95F4;</td>
+</tr>
+<tr>
+<td>&#x53EF;&#x4EE5;&#x89C2;&#x5BDF;&#x6574;&#x4E2A;&#x5DE5;&#x4F5C;&#x533A;&#x57DF;</td>
+<td>&#x5BF9;&#x4E8E;&#x5C0F;&#x7269;&#x4F53;&#xFF0C;&#x5206;&#x8FA8;&#x7387;&#x53EF;&#x80FD;&#x4E0D;&#x8DB3;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-&#x6570;&#x5B66;&#x539F;&#x7406;">4. &#x6570;&#x5B66;&#x539F;&#x7406;</h2>
+<h3 id="41-&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;">4.1 &#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;</h3>
+<p>&#x4E09;&#x7EF4;&#x7A7A;&#x95F4;&#x4E2D;&#x7684;&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;&#x8868;&#x793A;&#x4E3A;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{T} = \begin{bmatrix} \mathbf{R} & \mathbf{t} \\ \mathbf{0}^T & 1 \end{bmatrix} \in SE(3)</script></p>
+<p>&#x5176;&#x4E2D;&#xFF1A;</p>
+<ul>
+<li>$\mathbf{R} \in SO(3)$ &#x662F; $3 \times 3$ &#x65CB;&#x8F6C;&#x77E9;&#x9635;&#xFF0C;&#x6EE1;&#x8DB3; $\mathbf{R}^T\mathbf{R} = \mathbf{I}$ &#x4E14; $\det(\mathbf{R}) = 1$</li>
+<li>$\mathbf{t} \in \mathbb{R}^3$ &#x662F; $3 \times 1$ &#x5E73;&#x79FB;&#x5411;&#x91CF;</li>
+</ul>
+<p>&#x5BF9;&#x4E8E;&#x70B9; $\mathbf{p} = [x, y, z, 1]^T$&#xFF0C;&#x53D8;&#x6362;&#x540E;&#x7684;&#x70B9;&#x4E3A;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{p}' = \mathbf{T} \cdot \mathbf{p}</script></p>
+<h3 id="42-mathbfax--mathbfxb-&#x95EE;&#x9898;">4.2 $\mathbf{AX} = \mathbf{XB}$ &#x95EE;&#x9898;</h3>
+<p>&#x8FD9;&#x662F;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x7684;<strong>&#x6838;&#x5FC3;&#x6570;&#x5B66;&#x95EE;&#x9898;</strong>&#xFF0C;&#x9700;&#x8981;&#x4ECE;&#x591A;&#x7EC4;&#x89C2;&#x6D4B;&#x6570;&#x636E;&#x4E2D;&#x6C42;&#x89E3; $\mathbf{X}$&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{A}_i \cdot \mathbf{X} = \mathbf{X} \cdot \mathbf{B}_i, \quad i = 1, 2, \ldots, n</script></p>
+<p>&#x5C06;&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;&#x5206;&#x89E3;&#x4E3A;&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;&#x4E24;&#x90E8;&#x5206;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{A}_i = \begin{bmatrix} \mathbf{R}_A^{(i)} & \mathbf{t}_A^{(i)} \\ \mathbf{0}^T & 1 \end{bmatrix}, \quad \mathbf{X} = \begin{bmatrix} \mathbf{R}_X & \mathbf{t}_X \\ \mathbf{0}^T & 1 \end{bmatrix}, \quad \mathbf{B}_i = \begin{bmatrix} \mathbf{R}_B^{(i)} & \mathbf{t}_B^{(i)} \\ \mathbf{0}^T & 1 \end{bmatrix}</script></p>
+<p><strong>&#x65CB;&#x8F6C;&#x90E8;&#x5206;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{R}_A^{(i)} \cdot \mathbf{R}_X = \mathbf{R}_X \cdot \mathbf{R}_B^{(i)}</script></p>
+<p><strong>&#x5E73;&#x79FB;&#x90E8;&#x5206;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{R}_A^{(i)} \cdot \mathbf{t}_X + \mathbf{t}_A^{(i)} = \mathbf{R}_X \cdot \mathbf{t}_B^{(i)} + \mathbf{t}_X</script></p>
+<p>&#x6574;&#x7406;&#x5F97;&#xFF1A;</p>
+<p><script type="math/tex">(\mathbf{R}_A^{(i)} - \mathbf{I}) \mathbf{t}_X = \mathbf{R}_X \mathbf{t}_B^{(i)} - \mathbf{t}_A^{(i)}</script></p>
+<h3 id="43-&#x65CB;&#x8F6C;&#x8868;&#x793A;&#x65B9;&#x6CD5;">4.3 &#x65CB;&#x8F6C;&#x8868;&#x793A;&#x65B9;&#x6CD5;</h3>
+<h4 id="431-&#x65CB;&#x8F6C;&#x77E9;&#x9635;-rotation-matrix">4.3.1 &#x65CB;&#x8F6C;&#x77E9;&#x9635; (Rotation Matrix)</h4>
+<p>$3 \times 3$ &#x6B63;&#x4EA4;&#x77E9;&#x9635; $\mathbf{R} \in SO(3)$&#xFF0C;&#x6EE1;&#x8DB3;&#x7EA6;&#x675F;&#xFF1A;$\mathbf{R}^T\mathbf{R} = \mathbf{I}$&#xFF0C;$\det(\mathbf{R}) = 1$</p>
+<h4 id="432-&#x6B27;&#x62C9;&#x89D2;-euler-angles">4.3.2 &#x6B27;&#x62C9;&#x89D2; (Euler Angles)</h4>
+<p>&#x4F7F;&#x7528;&#x4E09;&#x4E2A;&#x89D2;&#x5EA6; $(\alpha, \beta, \gamma)$ &#x8868;&#x793A;&#x7ED5;&#x4E09;&#x4E2A;&#x8F74;&#x7684;&#x65CB;&#x8F6C;&#x3002;&#x5E38;&#x89C1;&#x7684; ZYX &#x6B27;&#x62C9;&#x89D2;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{R} = \mathbf{R}_z(\alpha) \mathbf{R}_y(\beta) \mathbf{R}_x(\gamma)</script></p>
+<blockquote>
+<p>&#x26A0;&#xFE0F; <strong>&#x6CE8;&#x610F;</strong>&#xFF1A;&#x5B58;&#x5728;&#x4E07;&#x5411;&#x8282;&#x9501;&#x95EE;&#x9898; (Gimbal Lock)</p>
+</blockquote>
+<h4 id="433-&#x56DB;&#x5143;&#x6570;-quaternion">4.3.3 &#x56DB;&#x5143;&#x6570; (Quaternion)</h4>
+<p>&#x56DB;&#x5143;&#x6570; $\mathbf{q} = [q_w, q_x, q_y, q_z]^T \in \mathbb{H}$&#xFF0C;&#x6EE1;&#x8DB3;&#xFF1A;</p>
+<p><script type="math/tex">q_w^2 + q_x^2 + q_y^2 + q_z^2 = 1</script></p>
+<p>&#x65CB;&#x8F6C;&#x77E9;&#x9635;&#x4E0E;&#x56DB;&#x5143;&#x6570;&#x7684;&#x8F6C;&#x6362;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{R} = \begin{bmatrix} 
+1-2(q_y^2+q_z^2) & 2(q_xq_y-q_wq_z) & 2(q_xq_z+q_wq_y) \\
+2(q_xq_y+q_wq_z) & 1-2(q_x^2+q_z^2) & 2(q_yq_z-q_wq_x) \\
+2(q_xq_z-q_wq_y) & 2(q_yq_z+q_wq_x) & 1-2(q_x^2+q_y^2)
+\end{bmatrix}</script></p>
+<h4 id="434-&#x8F74;&#x89D2;&#x8868;&#x793A;-axis-angle">4.3.4 &#x8F74;&#x89D2;&#x8868;&#x793A; (Axis-Angle)</h4>
+<p>&#x4F7F;&#x7528;&#x65CB;&#x8F6C;&#x8F74; $\mathbf{k} = [k_x, k_y, k_z]^T$ ($|\mathbf{k}| = 1$) &#x548C;&#x65CB;&#x8F6C;&#x89D2;&#x5EA6; $\theta$&#x3002;</p>
+<p><strong>&#x7F57;&#x5FB7;&#x91CC;&#x683C;&#x65AF;&#x516C;&#x5F0F;</strong> (Rodrigues&apos; formula)&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{R} = \mathbf{I} + \sin\theta \cdot [\mathbf{k}]_\times + (1-\cos\theta) \cdot [\mathbf{k}]_\times^2</script></p>
+<p>&#x5176;&#x4E2D; $[\mathbf{k}]_\times$ &#x662F;&#x53CD;&#x5BF9;&#x79F0;&#x77E9;&#x9635;&#xFF1A;</p>
+<p><script type="math/tex">[\mathbf{k}]_\times = \begin{bmatrix} 0 & -k_z & k_y \\ k_z & 0 & -k_x \\ -k_y & k_x & 0 \end{bmatrix}</script></p>
+<hr>
+<h2 id="5-&#x6807;&#x5B9A;&#x6D41;&#x7A0B;">5. &#x6807;&#x5B9A;&#x6D41;&#x7A0B;</h2>
+<h3 id="51-&#x51C6;&#x5907;&#x5DE5;&#x4F5C;">5.1 &#x51C6;&#x5907;&#x5DE5;&#x4F5C;</h3>
+<h4 id="511-&#x786C;&#x4EF6;&#x51C6;&#x5907;">5.1.1 &#x786C;&#x4EF6;&#x51C6;&#x5907;</h4>
+<table>
+<thead>
+<tr>
+<th>&#x8BBE;&#x5907;</th>
+<th>&#x8981;&#x6C42;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x6807;&#x5B9A;&#x677F;</strong></td>
+<td>&#x9AD8;&#x7CBE;&#x5EA6;&#x68CB;&#x76D8;&#x683C;&#x6216;&#x5706;&#x70B9;&#x9635;&#x5217;&#xFF0C;&#x5E73;&#x6574;&#x5EA6; &lt; 0.1 mm</td>
+</tr>
+<tr>
+<td><strong>&#x76F8;&#x673A;</strong></td>
+<td>&#x5206;&#x8FA8;&#x7387;&#x81F3;&#x5C11; 640&#xD7;480&#xFF0C;&#x5C3D;&#x91CF;&#x9009;&#x62E9;&#x4F4E;&#x7578;&#x53D8;&#x955C;&#x5934;</td>
+</tr>
+<tr>
+<td><strong>&#x5B89;&#x88C5;&#x652F;&#x67B6;</strong></td>
+<td>&#x7A33;&#x5B9A;&#x3001;&#x521A;&#x6027;&#x597D;&#xFF0C;&#x907F;&#x514D;&#x632F;&#x52A8;</td>
+</tr>
+<tr>
+<td><strong>&#x7167;&#x660E;</strong></td>
+<td>&#x5747;&#x5300;&#x67D4;&#x548C;&#xFF0C;&#x907F;&#x514D;&#x53CD;&#x5149;&#x548C;&#x9634;&#x5F71;</td>
+</tr>
+</tbody>
+</table>
+<h4 id="512-&#x6807;&#x5B9A;&#x677F;&#x5C3A;&#x5BF8;&#x9009;&#x62E9;">5.1.2 &#x6807;&#x5B9A;&#x677F;&#x5C3A;&#x5BF8;&#x9009;&#x62E9;</h4>
+<p>&#x6807;&#x5B9A;&#x677F;&#x65B9;&#x683C;&#x5927;&#x5C0F;&#x7684;&#x9009;&#x62E9;&#x516C;&#x5F0F;&#xFF1A;</p>
+<p><script type="math/tex">d_{square} = \frac{f \cdot W_{image}}{Z_{working} \cdot W_{sensor}} \cdot k</script></p>
+<p>&#x5176;&#x4E2D;&#xFF1A;</p>
+<ul>
+<li>$f$&#xFF1A;&#x955C;&#x5934;&#x7126;&#x8DDD;</li>
+<li>$W_{image}$&#xFF1A;&#x671F;&#x671B;&#x7684;&#x65B9;&#x683C;&#x56FE;&#x50CF;&#x5BBD;&#x5EA6;&#xFF08;&#x50CF;&#x7D20;&#xFF09;</li>
+<li>$Z_{working}$&#xFF1A;&#x5DE5;&#x4F5C;&#x8DDD;&#x79BB;</li>
+<li>$W_{sensor}$&#xFF1A;&#x76F8;&#x673A;&#x4F20;&#x611F;&#x5668;&#x5BBD;&#x5EA6;</li>
+<li>$k$&#xFF1A;&#x5B89;&#x5168;&#x7CFB;&#x6570;&#xFF0C;&#x901A;&#x5E38;&#x53D6; 0.1 - 0.15</li>
+</ul>
+<h3 id="52-&#x6807;&#x5B9A;&#x6B65;&#x9AA4;">5.2 &#x6807;&#x5B9A;&#x6B65;&#x9AA4;</h3>
+<h4 id="&#x7B2C;&#x4E00;&#x6B65;&#xFF1A;&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;">&#x7B2C;&#x4E00;&#x6B65;&#xFF1A;&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;</h4>
+<p>&#x5728;&#x8FDB;&#x884C;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x524D;&#xFF0C;&#x5FC5;&#x987B;&#x5148;&#x5B8C;&#x6210;&#x76F8;&#x673A;&#x5185;&#x53C2;&#x6807;&#x5B9A;&#x3002;&#x76F8;&#x673A;&#x5185;&#x53C2;&#x77E9;&#x9635;&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{K} = \begin{bmatrix} f_x & 0 & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix}</script></p>
+<p>&#x9700;&#x8981;&#x6807;&#x5B9A;&#x7684;&#x53C2;&#x6570;&#xFF1A;</p>
+<ul>
+<li>&#x7126;&#x8DDD;&#xFF1A;$(f_x, f_y)$</li>
+<li>&#x4E3B;&#x70B9;&#xFF1A;$(c_x, c_y)$</li>
+<li>&#x7578;&#x53D8;&#x7CFB;&#x6570;&#xFF1A;$(k_1, k_2, p_1, p_2, k_3, \ldots)$</li>
+</ul>
+<h4 id="&#x7B2C;&#x4E8C;&#x6B65;&#xFF1A;&#x91C7;&#x96C6;&#x6807;&#x5B9A;&#x6570;&#x636E;">&#x7B2C;&#x4E8C;&#x6B65;&#xFF1A;&#x91C7;&#x96C6;&#x6807;&#x5B9A;&#x6570;&#x636E;</h4>
+<p><strong>&#x773C;&#x5728;&#x624B;&#x4E0A;&#x6807;&#x5B9A;</strong>&#xFF1A;</p>
+<ol>
+<li>&#x5C06;&#x6807;&#x5B9A;&#x677F;&#x56FA;&#x5B9A;&#x5728;&#x5DE5;&#x4F5C;&#x53F0;&#x4E0A;</li>
+<li>&#x79FB;&#x52A8;&#x673A;&#x68B0;&#x81C2;&#x5230; $n$ &#x4E2A;&#x4E0D;&#x540C;&#x4F4D;&#x59FF;&#xFF08;&#x901A;&#x5E38; $n \geq 15$&#xFF09;</li>
+<li>&#x5728;&#x6BCF;&#x4E2A;&#x4F4D;&#x59FF; $i$ &#x8BB0;&#x5F55;&#xFF1A;<ul>
+<li>&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;&#x4F4D;&#x59FF;&#xFF1A;${}^B\mathbf{T}_E^{(i)}$&#xFF08;&#x4ECE;&#x6B63;&#x8FD0;&#x52A8;&#x5B66;&#x83B7;&#x5F97;&#xFF09;</li>
+<li>&#x76F8;&#x673A;&#x62CD;&#x6444;&#x7684;&#x6807;&#x5B9A;&#x677F;&#x56FE;&#x50CF;&#xFF0C;&#x901A;&#x8FC7; PnP &#x7B97;&#x6CD5;&#x8BA1;&#x7B97;&#xFF1A;${}^C\mathbf{T}_T^{(i)}$</li>
+</ul>
+</li>
+</ol>
+<p><strong>&#x773C;&#x5728;&#x624B;&#x5916;&#x6807;&#x5B9A;</strong>&#xFF1A;</p>
+<ol>
+<li>&#x5C06;&#x6807;&#x5B9A;&#x677F;&#x56FA;&#x5B9A;&#x5728;&#x673A;&#x68B0;&#x81C2;&#x672B;&#x7AEF;</li>
+<li>&#x79FB;&#x52A8;&#x673A;&#x68B0;&#x81C2;&#x5230; $n$ &#x4E2A;&#x4E0D;&#x540C;&#x4F4D;&#x59FF;</li>
+<li>&#x5728;&#x6BCF;&#x4E2A;&#x4F4D;&#x59FF; $i$ &#x8BB0;&#x5F55;&#x540C;&#x4E0A;&#x6570;&#x636E;</li>
+</ol>
+<h4 id="&#x7B2C;&#x4E09;&#x6B65;&#xFF1A;&#x4F4D;&#x59FF;&#x9009;&#x62E9;&#x539F;&#x5219;">&#x7B2C;&#x4E09;&#x6B65;&#xFF1A;&#x4F4D;&#x59FF;&#x9009;&#x62E9;&#x539F;&#x5219;</h4>
+<p>&#x4E3A;&#x4E86;&#x83B7;&#x5F97;&#x826F;&#x597D;&#x7684;&#x6807;&#x5B9A;&#x7ED3;&#x679C;&#xFF0C;&#x4F4D;&#x59FF;&#x9009;&#x62E9;&#x5E94;&#x9075;&#x5FAA;&#x4EE5;&#x4E0B;&#x539F;&#x5219;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x539F;&#x5219;</th>
+<th>&#x5EFA;&#x8BAE;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x8986;&#x76D6;&#x5DE5;&#x4F5C;&#x7A7A;&#x95F4;</strong></td>
+<td>&#x4F4D;&#x59FF;&#x5206;&#x5E03;&#x5E94;&#x8986;&#x76D6;&#x5B9E;&#x9645;&#x5DE5;&#x4F5C;&#x533A;&#x57DF;</td>
+</tr>
+<tr>
+<td><strong>&#x65CB;&#x8F6C;&#x591A;&#x6837;&#x6027;</strong></td>
+<td>&#x5305;&#x542B;&#x7ED5; X&#x3001;Y&#x3001;Z &#x8F74;&#x7684;&#x4E0D;&#x540C;&#x65CB;&#x8F6C;&#xFF0C;&#x6BCF;&#x8F74;&#x8DE8;&#x5EA6; &#x2265; 30&#xB0;</td>
+</tr>
+<tr>
+<td><strong>&#x5E73;&#x79FB;&#x591A;&#x6837;&#x6027;</strong></td>
+<td>&#x4F4D;&#x79FB;&#x8303;&#x56F4;&#x8986;&#x76D6;&#x5DE5;&#x4F5C;&#x7A7A;&#x95F4;&#x7684; 50% &#x4EE5;&#x4E0A;</td>
+</tr>
+<tr>
+<td><strong>&#x907F;&#x514D;&#x5947;&#x5F02;&#x4F4D;&#x59FF;</strong></td>
+<td>&#x907F;&#x514D;&#x63A5;&#x8FD1;&#x5173;&#x8282;&#x6781;&#x9650;&#x548C;&#x673A;&#x68B0;&#x81C2;&#x5947;&#x5F02;&#x70B9;</td>
+</tr>
+<tr>
+<td><strong>&#x56FE;&#x50CF;&#x8D28;&#x91CF;</strong></td>
+<td>&#x6807;&#x5B9A;&#x677F;&#x5360;&#x636E;&#x56FE;&#x50CF;&#x9762;&#x79EF;&#x7684; 20% - 60%</td>
+</tr>
+</tbody>
+</table>
+<h4 id="&#x7B2C;&#x56DB;&#x6B65;&#xFF1A;&#x6784;&#x5EFA;&#x65B9;&#x7A0B;&#x7EC4;">&#x7B2C;&#x56DB;&#x6B65;&#xFF1A;&#x6784;&#x5EFA;&#x65B9;&#x7A0B;&#x7EC4;</h4>
+<p>&#x5BF9;&#x4E8E; $n$ &#x7EC4;&#x89C2;&#x6D4B;&#x6570;&#x636E;&#xFF0C;&#x6784;&#x5EFA; $\mathbf{AX} = \mathbf{XB}$ &#x65B9;&#x7A0B;&#x7EC4;&#x3002;</p>
+<p><strong>&#x773C;&#x5728;&#x624B;&#x4E0A;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{A}_i = ({}^B\mathbf{T}_E^{(1)})^{-1} \cdot {}^B\mathbf{T}_E^{(i+1)}</script>
+<script type="math/tex">\mathbf{B}_i = ({}^C\mathbf{T}_T^{(i+1)})^{-1} \cdot {}^C\mathbf{T}_T^{(1)}</script>
+<script type="math/tex">\mathbf{X} = {}^E\mathbf{T}_C</script></p>
+<h4 id="&#x7B2C;&#x4E94;&#x6B65;&#xFF1A;&#x6C42;&#x89E3;&#x624B;&#x773C;&#x5173;&#x7CFB;">&#x7B2C;&#x4E94;&#x6B65;&#xFF1A;&#x6C42;&#x89E3;&#x624B;&#x773C;&#x5173;&#x7CFB;</h4>
+<p>&#x4F7F;&#x7528;&#x6807;&#x5B9A;&#x7B97;&#x6CD5;&#x6C42;&#x89E3; $\mathbf{X}$&#xFF08;&#x8BE6;&#x89C1;&#x4E0B;&#x4E00;&#x7AE0;&#x8282;&#xFF09;&#x3002;</p>
+<h4 id="&#x7B2C;&#x516D;&#x6B65;&#xFF1A;&#x9A8C;&#x8BC1;&#x6807;&#x5B9A;&#x7ED3;&#x679C;">&#x7B2C;&#x516D;&#x6B65;&#xFF1A;&#x9A8C;&#x8BC1;&#x6807;&#x5B9A;&#x7ED3;&#x679C;</h4>
+<p><strong>&#x91CD;&#x6295;&#x5F71;&#x8BEF;&#x5DEE;</strong>&#xFF1A;</p>
+<p><script type="math/tex">e_{reproj} = \frac{1}{n \cdot m} \sum_{i=1}^{n} \sum_{j=1}^{m} \|\mathbf{p}_{ij} - \hat{\mathbf{p}}_{ij}\|_2</script></p>
+<p>&#x901A;&#x5E38;&#x8981;&#x6C42;&#xFF1A;$e_{reproj} &lt; 1$ &#x50CF;&#x7D20;</p>
+<hr>
+<h2 id="6-&#x5E38;&#x89C1;&#x7B97;&#x6CD5;">6. &#x5E38;&#x89C1;&#x7B97;&#x6CD5;</h2>
+<h3 id="61-tsai-lenz-&#x65B9;&#x6CD5;-1989">6.1 Tsai-Lenz &#x65B9;&#x6CD5; (1989)</h3>
+<p><strong>&#x539F;&#x7406;</strong>&#xFF1A;&#x5206;&#x4E24;&#x6B65;&#x6C42;&#x89E3;&#xFF0C;&#x5148;&#x6C42;&#x65CB;&#x8F6C;&#x540E;&#x6C42;&#x5E73;&#x79FB;&#x3002;</p>
+<p><strong>&#x65CB;&#x8F6C;&#x6C42;&#x89E3;</strong>&#xFF1A;&#x4ECE; $\mathbf{R}_A^{(i)} \mathbf{R}_X = \mathbf{R}_X \mathbf{R}_B^{(i)}$ &#x51FA;&#x53D1;&#xFF0C;&#x4F7F;&#x7528;&#x8F74;&#x89D2;&#x8868;&#x793A;&#x6784;&#x5EFA;&#x7EBF;&#x6027;&#x65B9;&#x7A0B;&#x7EC4;&#x6C42;&#x89E3;&#x3002;</p>
+<p><strong>&#x5E73;&#x79FB;&#x6C42;&#x89E3;</strong>&#xFF1A;&#x5DF2;&#x77E5; $\mathbf{R}_X$ &#x540E;&#xFF0C;&#x4ECE; $(\mathbf{R}_A^{(i)} - \mathbf{I})\mathbf{t}_X = \mathbf{R}_X\mathbf{t}_B^{(i)} - \mathbf{t}_A^{(i)}$ &#x7528;&#x6700;&#x5C0F;&#x4E8C;&#x4E58;&#x6CD5;&#x6C42;&#x89E3; $\mathbf{t}_X$&#x3002;</p>
+<p><strong>&#x7279;&#x70B9;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x8BA1;&#x7B97;&#x6548;&#x7387;&#x9AD8;&#xFF1A;$O(n)$ &#x590D;&#x6742;&#x5EA6;</li>
+<li>&#x5BF9;&#x566A;&#x58F0;&#x8F83;&#x654F;&#x611F;</li>
+<li>&#x9700;&#x8981;&#x81F3;&#x5C11; 3 &#x7EC4;&#x6570;&#x636E;</li>
+</ul>
+<h3 id="62-park-martin-&#x65B9;&#x6CD5;-1994">6.2 Park-Martin &#x65B9;&#x6CD5; (1994)</h3>
+<p><strong>&#x539F;&#x7406;</strong>&#xFF1A;&#x4F7F;&#x7528;&#x56DB;&#x5143;&#x6570;&#x8868;&#x793A;&#x65CB;&#x8F6C;&#xFF0C;&#x907F;&#x514D;&#x4E07;&#x5411;&#x8282;&#x9501;&#x95EE;&#x9898;&#x3002;</p>
+<p><strong>&#x56DB;&#x5143;&#x6570;&#x7EA6;&#x675F;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\mathbf{q}_A^{(i)} \otimes \mathbf{q}_X = \mathbf{q}_X \otimes \mathbf{q}_B^{(i)}</script></p>
+<p>&#x8F6C;&#x5316;&#x4E3A;&#x77E9;&#x9635;&#x5F62;&#x5F0F;&#xFF0C;$\mathbf{q}_X$ &#x662F; $\mathbf{M}^T\mathbf{M}$ &#x5BF9;&#x5E94;&#x6700;&#x5C0F;&#x7279;&#x5F81;&#x503C;&#x7684;&#x7279;&#x5F81;&#x5411;&#x91CF;&#x3002;</p>
+<p><strong>&#x7279;&#x70B9;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x6570;&#x503C;&#x7A33;&#x5B9A;&#x6027;&#x597D;</li>
+<li>&#x907F;&#x514D;&#x4E07;&#x5411;&#x8282;&#x9501;</li>
+<li>&#x9002;&#x5408;&#x5927;&#x65CB;&#x8F6C;&#x89D2;&#x5EA6;</li>
+</ul>
+<h3 id="63-horaud-dornaika-&#x65B9;&#x6CD5;-1995">6.3 Horaud-Dornaika &#x65B9;&#x6CD5; (1995)</h3>
+<p><strong>&#x539F;&#x7406;</strong>&#xFF1A;&#x540C;&#x65F6;&#x4F18;&#x5316;&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;&#xFF0C;&#x4F7F;&#x7528;&#x975E;&#x7EBF;&#x6027;&#x6700;&#x5C0F;&#x5316;&#x3002;</p>
+<p><strong>&#x76EE;&#x6807;&#x51FD;&#x6570;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\min_{\mathbf{X}} \sum_{i=1}^{n} \|\mathbf{A}_i \mathbf{X} - \mathbf{X} \mathbf{B}_i\|_F^2</script></p>
+<p>&#x4F7F;&#x7528; Levenberg-Marquardt &#x65B9;&#x6CD5;&#x8FED;&#x4EE3;&#x4F18;&#x5316;&#x3002;</p>
+<p><strong>&#x7279;&#x70B9;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x7CBE;&#x5EA6;&#x8F83;&#x9AD8;</li>
+<li>&#x8BA1;&#x7B97;&#x590D;&#x6742;&#x5EA6;&#x8F83;&#x9AD8;</li>
+<li>&#x9700;&#x8981;&#x826F;&#x597D;&#x7684;&#x521D;&#x59CB;&#x503C;</li>
+</ul>
+<h3 id="64-daniilidis-&#x65B9;&#x6CD5;-1999">6.4 Daniilidis &#x65B9;&#x6CD5; (1999)</h3>
+<p><strong>&#x539F;&#x7406;</strong>&#xFF1A;&#x4F7F;&#x7528;&#x5BF9;&#x5076;&#x56DB;&#x5143;&#x6570;&#x7EDF;&#x4E00;&#x5904;&#x7406;&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;&#x3002;</p>
+<p><strong>&#x5BF9;&#x5076;&#x56DB;&#x5143;&#x6570;&#x8868;&#x793A;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\hat{\mathbf{q}} = \mathbf{q}_r + \epsilon\mathbf{q}_d</script></p>
+<p>&#x5176;&#x4E2D; $\mathbf{q}_r$ &#x8868;&#x793A;&#x65CB;&#x8F6C;&#xFF0C;$\mathbf{q}_d$ &#x4E0E;&#x5E73;&#x79FB;&#x76F8;&#x5173;&#xFF0C;$\epsilon^2 = 0$&#x3002;</p>
+<p><strong>&#x7279;&#x70B9;</strong>&#xFF1A;</p>
+<ul>
+<li>&#x6570;&#x5B66;&#x5F62;&#x5F0F;&#x4F18;&#x96C5;</li>
+<li>&#x5168;&#x5C40;&#x95ED;&#x5F0F;&#x89E3;</li>
+<li>&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;&#x7EDF;&#x4E00;&#x5904;&#x7406;</li>
+<li>&#x6570;&#x503C;&#x7A33;&#x5B9A;&#x6027;&#x597D;</li>
+</ul>
+<h3 id="65-opencv-&#x5B9E;&#x73B0;">6.5 OpenCV &#x5B9E;&#x73B0;</h3>
+<p>OpenCV &#x63D0;&#x4F9B;&#x4E86;&#x73B0;&#x6210;&#x7684;&#x624B;&#x773C;&#x6807;&#x5B9A;&#x51FD;&#x6570;&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-comment"># &#x51C6;&#x5907;&#x6570;&#x636E; (n&#x7EC4;&#x89C2;&#x6D4B;)</span>
+R_gripper2base = [...]  <span class="hljs-comment"># list of 3x3 rotation matrices</span>
+t_gripper2base = [...]  <span class="hljs-comment"># list of 3x1 translation vectors</span>
+R_target2cam = [...]    <span class="hljs-comment"># list of 3x3 rotation matrices</span>
+t_target2cam = [...]    <span class="hljs-comment"># list of 3x1 translation vectors</span>
+
+<span class="hljs-comment"># &#x773C;&#x5728;&#x624B;&#x4E0A;&#x6807;&#x5B9A;</span>
+R_cam2gripper, t_cam2gripper = cv2.calibrateHandEye(
+    R_gripper2base,
+    t_gripper2base,
+    R_target2cam,
+    t_target2cam,
+    method=cv2.CALIB_HAND_EYE_TSAI  <span class="hljs-comment"># &#x9009;&#x62E9;&#x7B97;&#x6CD5;</span>
+)
+
+<span class="hljs-comment"># &#x6784;&#x5EFA;&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;</span>
+T_cam2gripper = np.eye(<span class="hljs-number">4</span>)
+T_cam2gripper[:<span class="hljs-number">3</span>, :<span class="hljs-number">3</span>] = R_cam2gripper
+T_cam2gripper[:<span class="hljs-number">3</span>, <span class="hljs-number">3</span>] = t_cam2gripper.flatten()
+</code></pre>
+<p><strong>&#x652F;&#x6301;&#x7684;&#x7B97;&#x6CD5;&#x9009;&#x9879;</strong>&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x7B97;&#x6CD5;</th>
+<th>OpenCV &#x5E38;&#x91CF;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tsai-Lenz</td>
+<td><code>cv2.CALIB_HAND_EYE_TSAI</code></td>
+</tr>
+<tr>
+<td>Park-Martin</td>
+<td><code>cv2.CALIB_HAND_EYE_PARK</code></td>
+</tr>
+<tr>
+<td>Horaud-Dornaika</td>
+<td><code>cv2.CALIB_HAND_EYE_HORAUD</code></td>
+</tr>
+<tr>
+<td>Andreff</td>
+<td><code>cv2.CALIB_HAND_EYE_ANDREFF</code></td>
+</tr>
+<tr>
+<td>Daniilidis</td>
+<td><code>cv2.CALIB_HAND_EYE_DANIILIDIS</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-&#x6807;&#x5B9A;&#x8D28;&#x91CF;&#x8BC4;&#x4F30;">7. &#x6807;&#x5B9A;&#x8D28;&#x91CF;&#x8BC4;&#x4F30;</h2>
+<h3 id="71-&#x4E00;&#x81F4;&#x6027;&#x8BEF;&#x5DEE;">7.1 &#x4E00;&#x81F4;&#x6027;&#x8BEF;&#x5DEE;</h3>
+<p>&#x6807;&#x5B9A;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x9700;&#x8981;&#x8BC4;&#x4F30;&#x5916;&#x53C2;&#x7684;&#x7CBE;&#x5EA6;&#x3002;&#x6838;&#x5FC3;&#x601D;&#x60F3;&#xFF1A;<strong>&#x5982;&#x679C;&#x5916;&#x53C2;&#x6B63;&#x786E;&#xFF0C;&#x5219;&#x6240;&#x6709;&#x91C7;&#x6837;&#x5E94;&#x8BE5;&#x81EA;&#x6D3D;</strong>&#x3002;</p>
+<h4 id="eye-in-hand-&#x8BC4;&#x4F30;">Eye-in-Hand &#x8BC4;&#x4F30;</h4>
+<p>&#x8BA1;&#x7B97;&#x6B8B;&#x5DEE;&#x77E9;&#x9635;&#xFF1A;</p>
+<p><script type="math/tex">\Delta_{ij} = (A_{ij} \cdot X) \cdot (X \cdot B_{ij})^{-1}</script></p>
+<p>&#x7406;&#x60F3;&#x60C5;&#x51B5;&#x4E0B; $\Delta_{ij} = I$&#xFF08;&#x5355;&#x4F4D;&#x77E9;&#x9635;&#xFF09;&#x3002;</p>
+<h4 id="eye-to-hand-&#x8BC4;&#x4F30;">Eye-to-Hand &#x8BC4;&#x4F30;</h4>
+<p>&#x8BA1;&#x7B97;&#x6807;&#x5B9A;&#x677F;&#x76F8;&#x5BF9;&#x672B;&#x7AEF;&#x7684;&#x4F4D;&#x59FF;&#xFF1A;</p>
+<p><script type="math/tex">T_{TG}^{(i)} = (T_{GB}^{(i)})^{-1} \cdot T_{CB} \cdot T_{TC}^{(i)}</script></p>
+<p>&#x6BD4;&#x8F83;&#x4E0D;&#x540C;&#x91C7;&#x6837;&#x4E4B;&#x95F4;&#x7684;&#x5DEE;&#x5F02;&#xFF1A;</p>
+<p><script type="math/tex">\Delta_{ij} = T_{TG}^{(i)} \cdot (T_{TG}^{(j)})^{-1}</script></p>
+<h3 id="72-&#x8BEF;&#x5DEE;&#x5EA6;&#x91CF;">7.2 &#x8BEF;&#x5DEE;&#x5EA6;&#x91CF;</h3>
+<p>&#x4ECE;&#x6B8B;&#x5DEE;&#x77E9;&#x9635; $\Delta$ &#x4E2D;&#x63D0;&#x53D6;&#x8BEF;&#x5DEE;&#xFF1A;</p>
+<p><strong>&#x5E73;&#x79FB;&#x8BEF;&#x5DEE;</strong>&#xFF1A;</p>
+<p><script type="math/tex">e_t = \| t_\Delta \| \quad (\text{单位: mm})</script></p>
+<p><strong>&#x65CB;&#x8F6C;&#x8BEF;&#x5DEE;</strong>&#xFF08;&#x4F7F;&#x7528;&#x65CB;&#x8F6C;&#x5411;&#x91CF;&#xFF09;&#xFF1A;</p>
+<p><script type="math/tex">e_r = \| \text{rotvec}(R_\Delta) \| \cdot \frac{180}{\pi} \quad (\text{单位: deg})</script></p>
+<h3 id="73-&#x8D28;&#x91CF;&#x7B49;&#x7EA7;&#x6807;&#x51C6;">7.3 &#x8D28;&#x91CF;&#x7B49;&#x7EA7;&#x6807;&#x51C6;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x7B49;&#x7EA7;</th>
+<th>&#x91CD;&#x6295;&#x5F71;&#x8BEF;&#x5DEE; (pixel)</th>
+<th>&#x5E73;&#x79FB;&#x8BEF;&#x5DEE; (mm)</th>
+<th>&#x65CB;&#x8F6C;&#x8BEF;&#x5DEE; (deg)</th>
+<th>&#x9002;&#x7528;&#x573A;&#x666F;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x4F18;&#x79C0;</strong></td>
+<td>&lt; 0.5</td>
+<td>&lt; 1.0</td>
+<td>&lt; 0.2</td>
+<td>&#x7CBE;&#x5BC6;&#x88C5;&#x914D;</td>
+</tr>
+<tr>
+<td><strong>&#x826F;&#x597D;</strong></td>
+<td>0.5 - 1.0</td>
+<td>1.0 - 2.0</td>
+<td>0.2 - 0.5</td>
+<td>&#x4E00;&#x822C;&#x6293;&#x53D6;</td>
+</tr>
+<tr>
+<td><strong>&#x53EF;&#x63A5;&#x53D7;</strong></td>
+<td>1.0 - 2.0</td>
+<td>2.0 - 5.0</td>
+<td>0.5 - 1.0</td>
+<td>&#x7C97;&#x5B9A;&#x4F4D;</td>
+</tr>
+<tr>
+<td><strong>&#x9700;&#x6539;&#x8FDB;</strong></td>
+<td>&gt; 2.0</td>
+<td>&gt; 5.0</td>
+<td>&gt; 1.0</td>
+<td>&#x9700;&#x91CD;&#x65B0;&#x6807;&#x5B9A;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="74-&#x4E00;&#x81F4;&#x6027;&#x68C0;&#x9A8C;">7.4 &#x4E00;&#x81F4;&#x6027;&#x68C0;&#x9A8C;</h3>
+<p>&#x8FDB;&#x884C; $N$ &#x6B21;&#x72EC;&#x7ACB;&#x6807;&#x5B9A;&#xFF0C;&#x8BA1;&#x7B97;&#x53D8;&#x5F02;&#x7CFB;&#x6570;&#xFF08;CV&#xFF09;&#xFF1A;</p>
+<p><script type="math/tex">\text{CV} = \frac{\sigma}{\mu} \times 100\%</script></p>
+<table>
+<thead>
+<tr>
+<th>CV &#x8303;&#x56F4;</th>
+<th>&#x8BC4;&#x4EF7;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt; 5%</td>
+<td>&#x7A33;&#x5B9A;&#x53EF;&#x9760;</td>
+</tr>
+<tr>
+<td>5% - 10%</td>
+<td>&#x57FA;&#x672C;&#x53EF;&#x63A5;&#x53D7;</td>
+</tr>
+<tr>
+<td>&#x2265; 10%</td>
+<td>&#x9700;&#x8981;&#x6539;&#x8FDB;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="8-&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x5EFA;&#x8BAE;">8. &#x5B9E;&#x9645;&#x5E94;&#x7528;&#x5EFA;&#x8BAE;</h2>
+<h3 id="81-&#x63D0;&#x9AD8;&#x6807;&#x5B9A;&#x7CBE;&#x5EA6;&#x7684;&#x6280;&#x5DE7;">8.1 &#x63D0;&#x9AD8;&#x6807;&#x5B9A;&#x7CBE;&#x5EA6;&#x7684;&#x6280;&#x5DE7;</h3>
+<h4 id="&#x6570;&#x636E;&#x91C7;&#x96C6;&#x4F18;&#x5316;">&#x6570;&#x636E;&#x91C7;&#x96C6;&#x4F18;&#x5316;</h4>
+<table>
+<thead>
+<tr>
+<th>&#x9879;&#x76EE;</th>
+<th>&#x5EFA;&#x8BAE;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x91C7;&#x6837;&#x6570;&#x91CF;</strong></td>
+<td>&#x6700;&#x5C11; 3 &#x7EC4;&#xFF0C;&#x63A8;&#x8350; 15-20 &#x7EC4;&#xFF0C;&#x9AD8;&#x7CBE;&#x5EA6;&#x8981;&#x6C42; &gt; 30 &#x7EC4;</td>
+</tr>
+<tr>
+<td><strong>&#x65CB;&#x8F6C;&#x5206;&#x6563;&#x5EA6;</strong></td>
+<td>$D_{rot} &gt; 30&#xB0;$</td>
+</tr>
+<tr>
+<td><strong>&#x5E73;&#x79FB;&#x5206;&#x6563;&#x5EA6;</strong></td>
+<td>$D<em>{trans} &gt; 0.3 \times L</em>{workspace}$</td>
+</tr>
+<tr>
+<td><strong>&#x56FE;&#x50CF;&#x8D28;&#x91CF;</strong></td>
+<td>&#x6807;&#x5B9A;&#x677F;&#x5360;&#x6BD4; 20%-60%&#xFF0C;&#x907F;&#x514D;&#x8FD0;&#x52A8;&#x6A21;&#x7CCA;</td>
+</tr>
+</tbody>
+</table>
+<h4 id="&#x786C;&#x4EF6;&#x9009;&#x62E9;">&#x786C;&#x4EF6;&#x9009;&#x62E9;</h4>
+<p><strong>&#x7A7A;&#x95F4;&#x5206;&#x8FA8;&#x7387;&#x4F30;&#x8BA1;</strong>&#xFF1A;</p>
+<p><script type="math/tex">\Delta x = \frac{Z \cdot p}{f}</script></p>
+<p>&#x5BF9;&#x4E8E; &#xB1;1 mm &#x7684;&#x5B9A;&#x4F4D;&#x7CBE;&#x5EA6;&#xFF0C;&#x5EFA;&#x8BAE;&#xFF1A;$\Delta x &lt; 0.5$ mm</p>
+<h3 id="82-&#x5E38;&#x89C1;&#x95EE;&#x9898;&#x4E0E;&#x89E3;&#x51B3;&#x65B9;&#x6848;">8.2 &#x5E38;&#x89C1;&#x95EE;&#x9898;&#x4E0E;&#x89E3;&#x51B3;&#x65B9;&#x6848;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x95EE;&#x9898;</th>
+<th>&#x53EF;&#x80FD;&#x539F;&#x56E0;</th>
+<th>&#x89E3;&#x51B3;&#x65B9;&#x6848;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&#x6807;&#x5B9A;&#x7CBE;&#x5EA6;&#x4E0D;&#x9AD8;</td>
+<td>&#x76F8;&#x673A;&#x5185;&#x53C2;&#x8BEF;&#x5DEE;&#x5927;</td>
+<td>&#x91CD;&#x65B0;&#x6807;&#x5B9A;&#x76F8;&#x673A;&#xFF0C;&#x589E;&#x52A0;&#x6807;&#x5B9A;&#x56FE;&#x50CF;</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x4F4D;&#x59FF;&#x6570;&#x91CF;&#x4E0D;&#x8DB3;</td>
+<td>&#x589E;&#x52A0;&#x5230; &#x2265; 15 &#x7EC4;</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x4F4D;&#x59FF;&#x591A;&#x6837;&#x6027;&#x4E0D;&#x8DB3;</td>
+<td>&#x589E;&#x52A0;&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;&#x8986;&#x76D6;&#x8303;&#x56F4;</td>
+</tr>
+<tr>
+<td>&#x6807;&#x5B9A;&#x677F;&#x68C0;&#x6D4B;&#x5931;&#x8D25;</td>
+<td>&#x5149;&#x7167;&#x95EE;&#x9898;</td>
+<td>&#x4F7F;&#x7528;&#x6F2B;&#x53CD;&#x5C04;&#x5149;&#x6E90;&#xFF0C;&#x907F;&#x514D;&#x8FC7;&#x66DD;</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x6807;&#x5B9A;&#x677F;&#x5C3A;&#x5BF8;&#x4E0D;&#x5F53;</td>
+<td>&#x8C03;&#x6574;&#x6807;&#x5B9A;&#x677F;&#x5927;&#x5C0F;</td>
+</tr>
+<tr>
+<td>&#x7ED3;&#x679C;&#x4E0D;&#x7A33;&#x5B9A;</td>
+<td>&#x56FA;&#x5B9A;&#x6027;&#x4E0D;&#x8DB3;</td>
+<td>&#x786E;&#x4FDD;&#x6807;&#x5B9A;&#x677F;&#x6216;&#x76F8;&#x673A;&#x56FA;&#x5B9A;&#x7262;&#x56FA;</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x632F;&#x52A8;</td>
+<td>&#x964D;&#x4F4E;&#x79FB;&#x52A8;&#x901F;&#x5EA6;&#xFF0C;&#x589E;&#x52A0;&#x5EF6;&#x65F6;</td>
+</tr>
+<tr>
+<td>&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x8BEF;&#x5DEE;&#x5927;</td>
+<td>&#x5DE5;&#x4F5C;&#x533A;&#x57DF;&#x4E0D;&#x4E00;&#x81F4;</td>
+<td>&#x6807;&#x5B9A;&#x533A;&#x57DF;&#x5E94;&#x8986;&#x76D6;&#x5B9E;&#x9645;&#x5DE5;&#x4F5C;&#x533A;&#x57DF;</td>
+</tr>
+<tr>
+<td></td>
+<td>&#x6E29;&#x5EA6;&#x53D8;&#x5316;</td>
+<td>&#x63A7;&#x5236; &#x394;T &lt; 5&#xB0;C&#xFF0C;&#x5B9A;&#x671F;&#x91CD;&#x65B0;&#x6807;&#x5B9A;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="83-&#x7EF4;&#x62A4;&#x4E0E;&#x66F4;&#x65B0;">8.3 &#x7EF4;&#x62A4;&#x4E0E;&#x66F4;&#x65B0;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x9891;&#x7387;</th>
+<th>&#x68C0;&#x67E5;&#x9879;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x6BCF;&#x5929;</strong></td>
+<td>&#x68C0;&#x67E5;&#x76F8;&#x673A;/&#x6807;&#x5B9A;&#x677F;&#x56FA;&#x5B9A;&#xFF0C;&#x5FEB;&#x901F;&#x7CBE;&#x5EA6;&#x6D4B;&#x8BD5;</td>
+</tr>
+<tr>
+<td><strong>&#x6BCF;&#x5468;</strong></td>
+<td>&#x4F7F;&#x7528;&#x6807;&#x51C6;&#x6D4B;&#x8BD5;&#x4F4D;&#x59FF;&#x9A8C;&#x8BC1;&#x7CBE;&#x5EA6;&#xFF0C;&#x8BB0;&#x5F55;&#x8BEF;&#x5DEE;&#x8D8B;&#x52BF;</td>
+</tr>
+<tr>
+<td><strong>&#x6BCF;&#x6708;</strong></td>
+<td>&#x5B8C;&#x6574;&#x91CD;&#x65B0;&#x6807;&#x5B9A;&#xFF08;&#x6216;&#x7CBE;&#x5EA6;&#x4E0B;&#x964D; &gt; 20% &#x65F6;&#xFF09;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="84-&#x914D;&#x7F6E;&#x9009;&#x62E9;&#x5EFA;&#x8BAE;">8.4 &#x914D;&#x7F6E;&#x9009;&#x62E9;&#x5EFA;&#x8BAE;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x7279;&#x6027;</th>
+<th>&#x773C;&#x5728;&#x624B;&#x4E0A;</th>
+<th>&#x773C;&#x5728;&#x624B;&#x5916;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>&#x7075;&#x6D3B;&#x6027;</strong></td>
+<td>&#x9AD8; - &#x76F8;&#x673A;&#x53EF;&#x79FB;&#x52A8;&#x89C2;&#x5BDF;</td>
+<td>&#x4F4E; - &#x56FA;&#x5B9A;&#x89C6;&#x91CE;</td>
+</tr>
+<tr>
+<td><strong>&#x7CBE;&#x5EA6;</strong></td>
+<td>&#x53D7;&#x632F;&#x52A8;&#x5F71;&#x54CD;</td>
+<td>&#x56FE;&#x50CF;&#x7A33;&#x5B9A;</td>
+</tr>
+<tr>
+<td><strong>&#x8D1F;&#x8F7D;</strong></td>
+<td>&#x589E;&#x52A0;&#x672B;&#x7AEF;&#x8D1F;&#x8F7D;</td>
+<td>&#x65E0;&#x989D;&#x5916;&#x8D1F;&#x8F7D;</td>
+</tr>
+<tr>
+<td><strong>&#x5DE5;&#x4F5C;&#x8303;&#x56F4;</strong></td>
+<td>&#x53D7;&#x673A;&#x68B0;&#x81C2;&#x9650;&#x5236;</td>
+<td>&#x5927;&#x89C6;&#x91CE;&#x8986;&#x76D6;</td>
+</tr>
+<tr>
+<td><strong>&#x5178;&#x578B;&#x5E94;&#x7528;</strong></td>
+<td>&#x6293;&#x53D6;&#x3001;&#x88C5;&#x914D;&#x3001;&#x68C0;&#x6D4B;</td>
+<td>&#x5206;&#x62E3;&#x3001;&#x7801;&#x579B;&#x3001;&#x76D1;&#x63A7;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="9-&#x4EE3;&#x7801;&#x5B9E;&#x73B0;&#x53C2;&#x8003;">9. &#x4EE3;&#x7801;&#x5B9E;&#x73B0;&#x53C2;&#x8003;</h2>
+<h3 id="91-&#x5B8C;&#x6574;&#x6807;&#x5B9A;&#x6D41;&#x7A0B;">9.1 &#x5B8C;&#x6574;&#x6807;&#x5B9A;&#x6D41;&#x7A0B;</h3>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> cv2
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calibrate_eye_in_hand</span><span class="hljs-params">(robot_poses, camera_poses, method=cv2.CALIB_HAND_EYE_TSAI)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    Eye-in-Hand &#x624B;&#x773C;&#x6807;&#x5B9A;
+
+    Args:
+        robot_poses: list of 4x4 T_GB matrices (gripper to base)
+        camera_poses: list of 4x4 T_TC matrices (target to camera)
+        method: OpenCV &#x6807;&#x5B9A;&#x7B97;&#x6CD5;
+
+    Returns:
+        T_CG: 4x4 camera to gripper transformation
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># &#x63D0;&#x53D6;&#x65CB;&#x8F6C;&#x548C;&#x5E73;&#x79FB;</span>
+    R_gripper2base = [T[:<span class="hljs-number">3</span>, :<span class="hljs-number">3</span>] <span class="hljs-keyword">for</span> T <span class="hljs-keyword">in</span> robot_poses]
+    t_gripper2base = [T[:<span class="hljs-number">3</span>, <span class="hljs-number">3</span>:<span class="hljs-number">4</span>] <span class="hljs-keyword">for</span> T <span class="hljs-keyword">in</span> robot_poses]
+    R_target2cam = [T[:<span class="hljs-number">3</span>, :<span class="hljs-number">3</span>] <span class="hljs-keyword">for</span> T <span class="hljs-keyword">in</span> camera_poses]
+    t_target2cam = [T[:<span class="hljs-number">3</span>, <span class="hljs-number">3</span>:<span class="hljs-number">4</span>] <span class="hljs-keyword">for</span> T <span class="hljs-keyword">in</span> camera_poses]
+
+    <span class="hljs-comment"># OpenCV &#x6807;&#x5B9A;</span>
+    R_cam2gripper, t_cam2gripper = cv2.calibrateHandEye(
+        R_gripper2base, t_gripper2base,
+        R_target2cam, t_target2cam,
+        method=method
+    )
+
+    <span class="hljs-comment"># &#x6784;&#x9020;&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635;</span>
+    T_CG = np.eye(<span class="hljs-number">4</span>)
+    T_CG[:<span class="hljs-number">3</span>, :<span class="hljs-number">3</span>] = R_cam2gripper
+    T_CG[:<span class="hljs-number">3</span>, <span class="hljs-number">3</span>] = t_cam2gripper.flatten()
+
+    <span class="hljs-keyword">return</span> T_CG
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_consistency</span><span class="hljs-params">(robot_poses, camera_poses, T_CG)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    &#x8BC4;&#x4F30; Eye-in-Hand &#x6807;&#x5B9A;&#x4E00;&#x81F4;&#x6027;
+
+    Returns:
+        trans_errors: &#x5E73;&#x79FB;&#x8BEF;&#x5DEE;&#x5217;&#x8868; (mm)
+        rot_errors: &#x65CB;&#x8F6C;&#x8BEF;&#x5DEE;&#x5217;&#x8868; (deg)
+    &quot;&quot;&quot;</span>
+    trans_errors = []
+    rot_errors = []
+
+    n = len(robot_poses)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(n):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(i + <span class="hljs-number">1</span>, n):
+            <span class="hljs-comment"># &#x6784;&#x9020; A &#x548C; B</span>
+            A = np.linalg.inv(robot_poses[j]) @ robot_poses[i]
+            B = camera_poses[j] @ np.linalg.inv(camera_poses[i])
+
+            <span class="hljs-comment"># &#x8BA1;&#x7B97;&#x6B8B;&#x5DEE;</span>
+            AX = A @ T_CG
+            XB = T_CG @ B
+            Delta = AX @ np.linalg.inv(XB)
+
+            <span class="hljs-comment"># &#x63D0;&#x53D6;&#x8BEF;&#x5DEE;</span>
+            t_err = np.linalg.norm(Delta[:<span class="hljs-number">3</span>, <span class="hljs-number">3</span>]) * <span class="hljs-number">1000</span>  <span class="hljs-comment"># mm</span>
+            r_err = np.linalg.norm(cv2.Rodrigues(Delta[:<span class="hljs-number">3</span>, :<span class="hljs-number">3</span>])[<span class="hljs-number">0</span>]) * <span class="hljs-number">180</span> / np.pi  <span class="hljs-comment"># deg</span>
+
+            trans_errors.append(t_err)
+            rot_errors.append(r_err)
+
+    <span class="hljs-keyword">return</span> trans_errors, rot_errors
+</code></pre>
+<h3 id="92-&#x4ED3;&#x5E93;&#x5BF9;&#x5E94;&#x6587;&#x4EF6;">9.2 &#x4ED3;&#x5E93;&#x5BF9;&#x5E94;&#x6587;&#x4EF6;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x529F;&#x80FD;</th>
+<th>&#x6587;&#x4EF6;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eye-in-Hand &#x6807;&#x5B9A;</td>
+<td><code>vision/handeye_calibration_eyeinhand.py</code></td>
+</tr>
+<tr>
+<td>Eye-to-Hand &#x6807;&#x5B9A;</td>
+<td><code>vision/handeye_calibration_eyetohand.py</code></td>
+</tr>
+<tr>
+<td>&#x4E00;&#x81F4;&#x6027;&#x8BC4;&#x4F30;</td>
+<td><code>vision/handeye_utils.py</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="10-&#x53C2;&#x8003;&#x6587;&#x732E;">10. &#x53C2;&#x8003;&#x6587;&#x732E;</h2>
+<ol>
+<li><p><strong>Tsai, R. Y., &amp; Lenz, R. K.</strong> (1989). &quot;A new technique for fully autonomous and efficient 3D robotics hand/eye calibration.&quot; <em>IEEE Transactions on Robotics and Automation</em>, 5(3), 345-358.</p>
+</li>
+<li><p><strong>Park, F. C., &amp; Martin, B. J.</strong> (1994). &quot;Robot sensor calibration: solving AX= XB on the Euclidean group.&quot; <em>IEEE Transactions on Robotics and Automation</em>, 10(5), 717-721.</p>
+</li>
+<li><p><strong>Horaud, R., &amp; Dornaika, F.</strong> (1995). &quot;Hand-eye calibration.&quot; <em>The International Journal of Robotics Research</em>, 14(3), 195-210.</p>
+</li>
+<li><p><strong>Daniilidis, K.</strong> (1999). &quot;Hand-eye calibration using dual quaternions.&quot; <em>The International Journal of Robotics Research</em>, 18(3), 286-298.</p>
+</li>
+<li><p><strong>OpenCV Documentation</strong>: <a href="https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html" target="_blank">Hand-Eye Calibration</a></p>
+</li>
+</ol>
+<hr>
+<h2 id="&#x9644;&#x5F55;&#xFF1A;&#x6570;&#x5B66;&#x7B26;&#x53F7;&#x8868;">&#x9644;&#x5F55;&#xFF1A;&#x6570;&#x5B66;&#x7B26;&#x53F7;&#x8868;</h2>
+<table>
+<thead>
+<tr>
+<th>&#x7B26;&#x53F7;</th>
+<th>&#x542B;&#x4E49;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$\mathbf{T}$</td>
+<td>&#x9F50;&#x6B21;&#x53D8;&#x6362;&#x77E9;&#x9635; ($4 \times 4$)</td>
+</tr>
+<tr>
+<td>$\mathbf{R}$</td>
+<td>&#x65CB;&#x8F6C;&#x77E9;&#x9635; ($3 \times 3$)</td>
+</tr>
+<tr>
+<td>$\mathbf{t}$</td>
+<td>&#x5E73;&#x79FB;&#x5411;&#x91CF; ($3 \times 1$)</td>
+</tr>
+<tr>
+<td>${}^A\mathbf{T}_B$</td>
+<td>&#x4ECE;&#x5750;&#x6807;&#x7CFB; $B$ &#x5230; $A$ &#x7684;&#x53D8;&#x6362;</td>
+</tr>
+<tr>
+<td>$\mathbf{q}$</td>
+<td>&#x56DB;&#x5143;&#x6570; ($4 \times 1$)</td>
+</tr>
+<tr>
+<td>$\otimes$</td>
+<td>&#x56DB;&#x5143;&#x6570;&#x4E58;&#x6CD5;</td>
+</tr>
+<tr>
+<td>$[\mathbf{v}]_\times$</td>
+<td>&#x5411;&#x91CF;&#x7684;&#x53CD;&#x5BF9;&#x79F0;&#x77E9;&#x9635;</td>
+</tr>
+<tr>
+<td>$SO(3)$</td>
+<td>&#x4E09;&#x7EF4;&#x65CB;&#x8F6C;&#x7FA4;</td>
+</tr>
+<tr>
+<td>$SE(3)$</td>
+<td>&#x4E09;&#x7EF4;&#x521A;&#x4F53;&#x8FD0;&#x52A8;&#x7FA4;</td>
+</tr>
+<tr>
+<td>$\</td>
+<td>\cdot\</td>
+<td>_2$</td>
+<td>&#x6B27;&#x51E0;&#x91CC;&#x5F97;&#x8303;&#x6570;</td>
+</tr>
+<tr>
+<td>$\</td>
+<td>\cdot\</td>
+<td>_F$</td>
+<td>Frobenius &#x8303;&#x6570;</td>
+</tr>
+</tbody>
+</table>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch3_1_theory_rdt_format.html" class="navigation navigation-prev " aria-label="Previous page: 3.1 理论：RDT 数据格式">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch3_3_calibration.html" class="navigation navigation-next " aria-label="Next page: 3.3 相机与手眼标定">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"3.2 理论：手眼标定","level":"4.1.2","depth":2,"next":{"title":"3.3 相机与手眼标定","level":"4.1.3","depth":2,"path":"ch3_3_calibration.md","ref":"ch3_3_calibration.md","articles":[]},"previous":{"title":"3.1 理论：RDT 数据格式","level":"4.1.1","depth":2,"path":"ch3_1_theory_rdt_format.md","ref":"ch3_1_theory_rdt_format.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ch3_2_theory_handeye.md","mtime":"2026-01-30T12:45:52.545Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-31T00:50:12.433Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

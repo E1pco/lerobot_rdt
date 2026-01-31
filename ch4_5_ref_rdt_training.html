@@ -1,0 +1,980 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>4.5 函数解析：RDT 模型与训练 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch5_fpga.html" />
+    
+    
+    <link rel="prev" href="ch4_4_deploy.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="ch0_overview.html">
+            
+                <a href="ch0_overview.html">
+            
+                    
+                    总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="ch0_env_setup.html">
+            
+                <a href="ch0_env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第一章 自设计 SDK</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ch1_sdk.html">
+            
+                <a href="ch1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="ch1_1_sdk_api.html">
+            
+                <a href="ch1_1_sdk_api.html">
+            
+                    
+                    1.1 API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="ch1_2_ref_driver.html">
+            
+                <a href="ch1_2_ref_driver.html">
+            
+                    
+                    1.2 函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="ch1_3_ref_ik.html">
+            
+                <a href="ch1_3_ref_ik.html">
+            
+                    
+                    1.3 函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第二章 人机交互</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ch2_hci_teleop.html">
+            
+                <a href="ch2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.1" data-path="ch2_1_controls.html">
+            
+                <a href="ch2_1_controls.html">
+            
+                    
+                    2.1 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2" data-path="ch2_2_leader_follower.html">
+            
+                <a href="ch2_2_leader_follower.html">
+            
+                    
+                    2.2 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第三章 数据集构建</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ch3_dataset.html">
+            
+                <a href="ch3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1.1" data-path="ch3_1_theory_rdt_format.html">
+            
+                <a href="ch3_1_theory_rdt_format.html">
+            
+                    
+                    3.1 理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.2" data-path="ch3_2_theory_handeye.html">
+            
+                <a href="ch3_2_theory_handeye.html">
+            
+                    
+                    3.2 理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.3" data-path="ch3_3_calibration.html">
+            
+                <a href="ch3_3_calibration.html">
+            
+                    
+                    3.3 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.4" data-path="ch3_4_timesync.html">
+            
+                <a href="ch3_4_timesync.html">
+            
+                    
+                    3.4 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.5" data-path="ch3_5_ref_handeye.html">
+            
+                <a href="ch3_5_ref_handeye.html">
+            
+                    
+                    3.5 函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.6" data-path="ch3_6_ref_rdt_pipeline.html">
+            
+                <a href="ch3_6_ref_rdt_pipeline.html">
+            
+                    
+                    3.6 函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第四章 RDT 训练与微调</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="ch4_rdt_training.html">
+            
+                <a href="ch4_rdt_training.html">
+            
+                    
+                    4. RDT 训练与微调
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1.1" data-path="ch4_1_env_setup.html">
+            
+                <a href="ch4_1_env_setup.html">
+            
+                    
+                    4.1 训练环境配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.2" data-path="ch4_2_data_prep.html">
+            
+                <a href="ch4_2_data_prep.html">
+            
+                    
+                    4.2 数据集准备与转换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.3" data-path="ch4_3_finetune.html">
+            
+                <a href="ch4_3_finetune.html">
+            
+                    
+                    4.3 模型微调
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.4" data-path="ch4_4_deploy.html">
+            
+                <a href="ch4_4_deploy.html">
+            
+                    
+                    4.4 模型部署与推理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="5.1.5" data-path="ch4_5_ref_rdt_training.html">
+            
+                <a href="ch4_5_ref_rdt_training.html">
+            
+                    
+                    4.5 函数解析：RDT 模型与训练
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第五章 FPGA 硬件加速</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="ch5_fpga.html">
+            
+                <a href="ch5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >4.5 函数解析：RDT 模型与训练</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;rdt-&#x6A21;&#x578B;&#x4E0E;&#x8BAD;&#x7EC3;">&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;RDT &#x6A21;&#x578B;&#x4E0E;&#x8BAD;&#x7EC3;</h1>
+<p>&#x672C;&#x6587;&#x6863;&#x89E3;&#x6790; RDT &#x8BAD;&#x7EC3;&#x4E0E;&#x63A8;&#x7406;&#x4E2D;&#x7684;&#x6838;&#x5FC3;&#x51FD;&#x6570;&#x548C;&#x7C7B;&#x3002;</p>
+<hr>
+<h2 id="1-&#x6570;&#x636E;&#x52A0;&#x8F7D;&#x5C42;">1. &#x6570;&#x636E;&#x52A0;&#x8F7D;&#x5C42;</h2>
+<h3 id="11-hdf5vladataset-datahdf5vladatasetpy">1.1 HDF5VLADataset (<code>data/hdf5_vla_dataset.py</code>)</h3>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HDF5VLADataset</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;HDF5 &#x6570;&#x636E;&#x96C6;&#x52A0;&#x8F7D;&#x5668;&quot;&quot;&quot;</span>
+</code></pre>
+<h4 id="initself"><code>__init__(self)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;&#x96C6;&#xFF0C;&#x626B;&#x63CF; HDF5 &#x6587;&#x4EF6;&#x5E76;&#x8BA1;&#x7B97;&#x91C7;&#x6837;&#x6743;&#x91CD;&#x3002;</p>
+<p><strong>&#x5173;&#x952E;&#x53D8;&#x91CF;</strong>&#xFF1A;</p>
+<ul>
+<li><code>HDF5_DIR</code>: HDF5 &#x6587;&#x4EF6;&#x76EE;&#x5F55;</li>
+<li><code>DATASET_NAME</code>: &#x6570;&#x636E;&#x96C6;&#x540D;&#x79F0;</li>
+<li><code>episode_sample_weights</code>: &#x6309; episode &#x957F;&#x5EA6;&#x7684;&#x91C7;&#x6837;&#x6743;&#x91CD;</li>
+</ul>
+<h4 id="getitemself-indexnone-stateonlyfalse"><code>get_item(self, index=None, state_only=False)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x83B7;&#x53D6;&#x5355;&#x4E2A;&#x8BAD;&#x7EC3;&#x6837;&#x672C;&#x3002;</p>
+<p><strong>&#x53C2;&#x6570;</strong>&#xFF1A;</p>
+<ul>
+<li><code>index</code>: episode &#x7D22;&#x5F15;&#xFF0C;None &#x5219;&#x6309;&#x6743;&#x91CD;&#x968F;&#x673A;&#x91C7;&#x6837;</li>
+<li><code>state_only</code>: &#x662F;&#x5426;&#x53EA;&#x8FD4;&#x56DE;&#x72B6;&#x6001;&#x5E8F;&#x5217;</li>
+</ul>
+<p><strong>&#x8FD4;&#x56DE;</strong>&#xFF1A;</p>
+<pre><code class="lang-python">{
+    <span class="hljs-string">&quot;meta&quot;</span>: {<span class="hljs-string">&quot;dataset_name&quot;</span>, <span class="hljs-string">&quot;#steps&quot;</span>, <span class="hljs-string">&quot;instruction&quot;</span>},
+    <span class="hljs-string">&quot;step_id&quot;</span>: int,
+    <span class="hljs-string">&quot;state&quot;</span>: np.ndarray,       <span class="hljs-comment"># [1, 128]</span>
+    <span class="hljs-string">&quot;actions&quot;</span>: np.ndarray,     <span class="hljs-comment"># [64, 128]</span>
+    <span class="hljs-string">&quot;images&quot;</span>: np.ndarray,      <span class="hljs-comment"># [6, 3, H, W]</span>
+    ...
+}
+</code></pre>
+<h4 id="parsehdf5fileself-filepath"><code>parse_hdf5_file(self, file_path)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x89E3;&#x6790;&#x5355;&#x4E2A; HDF5 &#x6587;&#x4EF6;&#xFF0C;&#x751F;&#x6210;&#x8BAD;&#x7EC3;&#x6837;&#x672C;&#x3002;</p>
+<p><strong>&#x9700;&#x8981;&#x81EA;&#x5B9A;&#x4E49;</strong>&#xFF1A;&#x6839;&#x636E;&#x4F60;&#x7684;&#x6570;&#x636E;&#x683C;&#x5F0F;&#x5B9E;&#x73B0;&#x6B64;&#x65B9;&#x6CD5;&#x3002;</p>
+<hr>
+<h2 id="2-&#x6A21;&#x578B;&#x5C42;">2. &#x6A21;&#x578B;&#x5C42;</h2>
+<h3 id="21-rdtrunner-modelsrdtrunnerpy">2.1 RDTRunner (<code>models/rdt_runner.py</code>)</h3>
+<pre><code class="lang-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RDTRunner</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;RDT &#x6A21;&#x578B;&#x8FD0;&#x884C;&#x5668;&#xFF0C;&#x5C01;&#x88C5;&#x8BAD;&#x7EC3;&#x548C;&#x63A8;&#x7406;&#x903B;&#x8F91;&quot;&quot;&quot;</span>
+</code></pre>
+<h4 id="frompretrainedcls-pretrainedpath-kwargs"><code>from_pretrained(cls, pretrained_path, **kwargs)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x4ECE;&#x68C0;&#x67E5;&#x70B9;&#x52A0;&#x8F7D;&#x9884;&#x8BAD;&#x7EC3;&#x6A21;&#x578B;&#x3002;</p>
+<p><strong>&#x53C2;&#x6570;</strong>&#xFF1A;</p>
+<ul>
+<li><code>pretrained_path</code>: &#x68C0;&#x67E5;&#x70B9;&#x8DEF;&#x5F84;&#x6216; HuggingFace &#x6A21;&#x578B; ID</li>
+</ul>
+<p><strong>&#x8FD4;&#x56DE;</strong>&#xFF1A;&#x521D;&#x59CB;&#x5316;&#x597D;&#x7684; RDTRunner &#x5B9E;&#x4F8B;</p>
+<h4 id="predictactionself-images-state-langembeddingsnone"><code>predict_action(self, images, state, lang_embeddings=None)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x63A8;&#x7406;&#xFF0C;&#x9884;&#x6D4B;&#x672A;&#x6765;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;&#x3002;</p>
+<p><strong>&#x53C2;&#x6570;</strong>&#xFF1A;</p>
+<ul>
+<li><code>images</code>: [B, 6, 3, H, W] &#x56FE;&#x50CF;&#x5F20;&#x91CF;&#xFF08;t-1 &#x548C; t &#x65F6;&#x523B;&#x5404; 3 &#x89C6;&#x89D2;&#xFF09;</li>
+<li><code>state</code>: [B, 128] &#x5F53;&#x524D;&#x72B6;&#x6001;&#x5411;&#x91CF;</li>
+<li><code>lang_embeddings</code>: &#x9884;&#x8BA1;&#x7B97;&#x7684;&#x8BED;&#x8A00;&#x5D4C;&#x5165;&#xFF0C;&#x6216; None</li>
+</ul>
+<p><strong>&#x8FD4;&#x56DE;</strong>&#xFF1A;</p>
+<ul>
+<li><code>actions</code>: [B, 64, 128] &#x9884;&#x6D4B;&#x7684; 64 &#x6B65;&#x52A8;&#x4F5C;</li>
+</ul>
+<h4 id="computelossself-batch"><code>compute_loss(self, batch)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x8BA1;&#x7B97;&#x8BAD;&#x7EC3;&#x635F;&#x5931;&#x3002;</p>
+<p><strong>&#x53C2;&#x6570;</strong>&#xFF1A;</p>
+<ul>
+<li><code>batch</code>: &#x8BAD;&#x7EC3;&#x6279;&#x6B21;&#x6570;&#x636E;</li>
+</ul>
+<p><strong>&#x8FD4;&#x56DE;</strong>&#xFF1A;</p>
+<ul>
+<li><code>loss</code>: &#x6269;&#x6563;&#x635F;&#x5931;&#x6807;&#x91CF;</li>
+</ul>
+<hr>
+<h2 id="3-&#x72B6;&#x6001;&#x5411;&#x91CF;&#x5C42;">3. &#x72B6;&#x6001;&#x5411;&#x91CF;&#x5C42;</h2>
+<h3 id="31-statevecidxmapping-configsstatevecpy">3.1 STATE_VEC_IDX_MAPPING (<code>configs/state_vec.py</code>)</h3>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5B9A;&#x4E49; 128 &#x7EF4;&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#x4E2D;&#x6BCF;&#x4E2A;&#x7269;&#x7406;&#x91CF;&#x7684;&#x7D22;&#x5F15;&#x3002;</p>
+<p><strong>&#x5173;&#x952E;&#x6620;&#x5C04;</strong>&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x7269;&#x7406;&#x91CF;</th>
+<th>&#x7D22;&#x5F15;</th>
+<th>&#x522B;&#x540D;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&#x53F3;&#x81C2;&#x5173;&#x8282; 0-9 &#x4F4D;&#x7F6E;</td>
+<td>0-9</td>
+<td><code>arm_joint_0_pos</code> ...</td>
+</tr>
+<tr>
+<td>&#x53F3;&#x5939;&#x722A;&#x4F4D;&#x7F6E;</td>
+<td>10-14</td>
+<td><code>gripper_open</code></td>
+</tr>
+<tr>
+<td>&#x53F3;&#x81C2;&#x5173;&#x8282;&#x901F;&#x5EA6;</td>
+<td>15-24</td>
+<td><code>arm_joint_0_vel</code> ...</td>
+</tr>
+<tr>
+<td>&#x53F3;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E; xyz</td>
+<td>30-32</td>
+<td><code>eef_pos_x/y/z</code></td>
+</tr>
+<tr>
+<td>&#x53F3;&#x672B;&#x7AEF;&#x59FF;&#x6001; 6D</td>
+<td>33-38</td>
+<td><code>eef_angle_0</code> ...</td>
+</tr>
+<tr>
+<td>&#x5DE6;&#x81C2;&#x5173;&#x8282;&#x4F4D;&#x7F6E;</td>
+<td>50-59</td>
+<td><code>left_arm_joint_0_pos</code> ...</td>
+</tr>
+<tr>
+<td>&#x5DE6;&#x5939;&#x722A;&#x4F4D;&#x7F6E;</td>
+<td>60-64</td>
+<td><code>left_gripper_open</code></td>
+</tr>
+<tr>
+<td>&#x5DE6;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E; xyz</td>
+<td>80-82</td>
+<td><code>left_eef_pos_x/y/z</code></td>
+</tr>
+<tr>
+<td>&#x5DE6;&#x672B;&#x7AEF;&#x59FF;&#x6001; 6D</td>
+<td>83-88</td>
+<td><code>left_eef_angle_0</code> ...</td>
+</tr>
+<tr>
+<td>&#x5E95;&#x76D8;&#x901F;&#x5EA6;</td>
+<td>100-102</td>
+<td><code>base_vel_x/y</code>, <code>base_angular_vel</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>&#x4F7F;&#x7528;&#x793A;&#x4F8B;</strong>&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-keyword">from</span> configs.state_vec <span class="hljs-keyword">import</span> STATE_VEC_IDX_MAPPING
+
+<span class="hljs-comment"># &#x586B;&#x5145;&#x53F3;&#x81C2;&#x7B2C;&#x4E00;&#x4E2A;&#x5173;&#x8282;&#x4F4D;&#x7F6E;</span>
+idx = STATE_VEC_IDX_MAPPING[<span class="hljs-string">&apos;arm_joint_0_pos&apos;</span>]  <span class="hljs-comment"># = 0</span>
+state[idx] = joint_0_value
+
+<span class="hljs-comment"># &#x586B;&#x5145;&#x5DE6;&#x5939;&#x722A;</span>
+idx = STATE_VEC_IDX_MAPPING[<span class="hljs-string">&apos;left_gripper_open&apos;</span>]  <span class="hljs-comment"># = 60</span>
+state[idx] = gripper_value
+</code></pre>
+<hr>
+<h2 id="4-&#x8BAD;&#x7EC3;&#x5C42;">4. &#x8BAD;&#x7EC3;&#x5C42;</h2>
+<h3 id="41-&#x8BAD;&#x7EC3;&#x5FAA;&#x73AF;-traintrainpy">4.1 &#x8BAD;&#x7EC3;&#x5FAA;&#x73AF; (<code>train/train.py</code>)</h3>
+<h4 id="trainonestepmodel-batch-optimizer"><code>train_one_step(model, batch, optimizer)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x6267;&#x884C;&#x4E00;&#x6B65;&#x8BAD;&#x7EC3;&#x3002;</p>
+<p><strong>&#x6D41;&#x7A0B;</strong>&#xFF1A;</p>
+<ol>
+<li>&#x524D;&#x5411;&#x4F20;&#x64AD;&#x8BA1;&#x7B97;&#x635F;&#x5931;</li>
+<li>&#x53CD;&#x5411;&#x4F20;&#x64AD;&#x8BA1;&#x7B97;&#x68AF;&#x5EA6;</li>
+<li>&#x68AF;&#x5EA6;&#x88C1;&#x526A;</li>
+<li>&#x4F18;&#x5316;&#x5668;&#x66F4;&#x65B0;</li>
+<li>&#x8BB0;&#x5F55;&#x6307;&#x6807;</li>
+</ol>
+<h4 id="validatemodel-dataloader"><code>validate(model, dataloader)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5728;&#x9A8C;&#x8BC1;&#x96C6;&#x4E0A;&#x8BC4;&#x4F30;&#x6A21;&#x578B;&#x3002;</p>
+<p><strong>&#x6307;&#x6807;</strong>&#xFF1A;</p>
+<ul>
+<li><code>overall_avg_sample_mse</code>: &#x91C7;&#x6837; MSE&#xFF08;&#x6700;&#x91CD;&#x8981;&#xFF09;</li>
+<li><code>loss</code>: &#x9A8C;&#x8BC1;&#x635F;&#x5931;</li>
+</ul>
+<hr>
+<h2 id="5-&#x8BED;&#x8A00;&#x7F16;&#x7801;&#x5C42;">5. &#x8BED;&#x8A00;&#x7F16;&#x7801;&#x5C42;</h2>
+<h3 id="51-encodelangpy-scriptsencodelangpy">5.1 encode_lang.py (<code>scripts/encode_lang.py</code>)</h3>
+<h4 id="encodeinstructionmodel-tokenizer-instruction"><code>encode_instruction(model, tokenizer, instruction)</code></h4>
+<p><strong>&#x4F5C;&#x7528;</strong>&#xFF1A;&#x5C06;&#x6587;&#x672C;&#x6307;&#x4EE4;&#x7F16;&#x7801;&#x4E3A;&#x5D4C;&#x5165;&#x5411;&#x91CF;&#x3002;</p>
+<p><strong>&#x53C2;&#x6570;</strong>&#xFF1A;</p>
+<ul>
+<li><code>model</code>: T5 &#x7F16;&#x7801;&#x5668;</li>
+<li><code>tokenizer</code>: T5 &#x5206;&#x8BCD;&#x5668;</li>
+<li><code>instruction</code>: &#x6587;&#x672C;&#x6307;&#x4EE4;&#x5B57;&#x7B26;&#x4E32;</li>
+</ul>
+<p><strong>&#x8FD4;&#x56DE;</strong>&#xFF1A;</p>
+<ul>
+<li><code>embeddings</code>: [1, seq_len, hidden_dim] &#x8BED;&#x8A00;&#x5D4C;&#x5165;&#x5F20;&#x91CF;</li>
+</ul>
+<p><strong>&#x793A;&#x4F8B;</strong>&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-comment"># &#x7F16;&#x7801;&#x6307;&#x4EE4;</span>
+embeddings = encode_instruction(
+    model, tokenizer,
+    <span class="hljs-string">&quot;Pick up the red cube and place it in the blue box.&quot;</span>
+)
+
+<span class="hljs-comment"># &#x4FDD;&#x5B58;</span>
+torch.save(embeddings, <span class="hljs-string">&quot;outs/lang_embeddings/pick_and_place.pt&quot;</span>)
+</code></pre>
+<hr>
+<h2 id="6-&#x56FE;&#x50CF;&#x5904;&#x7406;&#x5C42;">6. &#x56FE;&#x50CF;&#x5904;&#x7406;&#x5C42;</h2>
+<h3 id="61-&#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;">6.1 &#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;</h3>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">preprocess_image</span><span class="hljs-params">(image, target_size=<span class="hljs-number">224</span>)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    &#x6807;&#x51C6;&#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;
+
+    Args:
+        image: np.ndarray (H, W, 3) RGB
+        target_size: &#x76EE;&#x6807;&#x5C3A;&#x5BF8;
+
+    Returns:
+        tensor: [3, target_size, target_size]
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> transforms
+
+    transform = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Resize((target_size, target_size)),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>],
+            std=[<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>]
+        )
+    ])
+
+    <span class="hljs-keyword">return</span> transform(image)
+</code></pre>
+<h3 id="62-&#x56FE;&#x50CF;&#x987A;&#x5E8F;">6.2 &#x56FE;&#x50CF;&#x987A;&#x5E8F;</h3>
+<p>RDT &#x671F;&#x671B;&#x7684;&#x56FE;&#x50CF;&#x987A;&#x5E8F;&#xFF08;6 &#x89C6;&#x89D2;&#xFF09;&#xFF1A;</p>
+<pre><code>[ext_{t-1}, right_wrist_{t-1}, left_wrist_{t-1}, ext_{t}, right_wrist_{t}, left_wrist_{t}]
+</code></pre><p>&#x7D22;&#x5F15;&#x5BF9;&#x5E94;&#xFF1A;</p>
+<ul>
+<li>0: &#x5916;&#x90E8;&#x76F8;&#x673A; t-1</li>
+<li>1: &#x53F3;&#x8155;&#x76F8;&#x673A; t-1</li>
+<li>2: &#x5DE6;&#x8155;&#x76F8;&#x673A; t-1</li>
+<li>3: &#x5916;&#x90E8;&#x76F8;&#x673A; t</li>
+<li>4: &#x53F3;&#x8155;&#x76F8;&#x673A; t</li>
+<li>5: &#x5DE6;&#x8155;&#x76F8;&#x673A; t</li>
+</ul>
+<hr>
+<h2 id="7-6d-&#x65CB;&#x8F6C;&#x8868;&#x793A;">7. 6D &#x65CB;&#x8F6C;&#x8868;&#x793A;</h2>
+<h3 id="71-&#x8F6C;&#x6362;&#x51FD;&#x6570;">7.1 &#x8F6C;&#x6362;&#x51FD;&#x6570;</h3>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">from</span> scipy.spatial.transform <span class="hljs-keyword">import</span> Rotation
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rotation_matrix_to_6d</span><span class="hljs-params">(R)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;3x3 &#x65CB;&#x8F6C;&#x77E9;&#x9635; &#x2192; 6D &#x8868;&#x793A;&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> R[:, :<span class="hljs-number">2</span>].flatten()  <span class="hljs-comment"># &#x53D6;&#x524D;&#x4E24;&#x5217;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">euler_to_6d</span><span class="hljs-params">(roll, pitch, yaw)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;&#x6B27;&#x62C9;&#x89D2; (xyz) &#x2192; 6D &#x8868;&#x793A;&quot;&quot;&quot;</span>
+    R = Rotation.from_euler(<span class="hljs-string">&apos;xyz&apos;</span>, [roll, pitch, yaw]).as_matrix()
+    <span class="hljs-keyword">return</span> rotation_matrix_to_6d(R)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quat_to_6d</span><span class="hljs-params">(quat)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;&#x56DB;&#x5143;&#x6570; (xyzw) &#x2192; 6D &#x8868;&#x793A;&quot;&quot;&quot;</span>
+    R = Rotation.from_quat(quat).as_matrix()
+    <span class="hljs-keyword">return</span> rotation_matrix_to_6d(R)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rot6d_to_matrix</span><span class="hljs-params">(rot6d)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;6D &#x8868;&#x793A; &#x2192; 3x3 &#x65CB;&#x8F6C;&#x77E9;&#x9635;&#xFF08;Gram-Schmidt &#x6B63;&#x4EA4;&#x5316;&#xFF09;&quot;&quot;&quot;</span>
+    a1 = rot6d[:<span class="hljs-number">3</span>]
+    a2 = rot6d[<span class="hljs-number">3</span>:<span class="hljs-number">6</span>]
+
+    b1 = a1 / np.linalg.norm(a1)
+    b2 = a2 - np.dot(b1, a2) * b1
+    b2 = b2 / np.linalg.norm(b2)
+    b3 = np.cross(b1, b2)
+
+    <span class="hljs-keyword">return</span> np.stack([b1, b2, b3], axis=<span class="hljs-number">1</span>)
+</code></pre>
+<hr>
+<h2 id="8-&#x6570;&#x636E;&#x7EDF;&#x8BA1;&#x8BA1;&#x7B97;">8. &#x6570;&#x636E;&#x7EDF;&#x8BA1;&#x8BA1;&#x7B97;</h2>
+<h3 id="81-computedatasetstathdf5py">8.1 compute_dataset_stat_hdf5.py</h3>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compute_statistics</span><span class="hljs-params">(dataset)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    &#x8BA1;&#x7B97;&#x6570;&#x636E;&#x96C6;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;
+
+    Returns:
+        stat: {
+            &quot;state_mean&quot;: [128],
+            &quot;state_std&quot;: [128],
+            &quot;action_mean&quot;: [128],
+            &quot;action_std&quot;: [128]
+        }
+    &quot;&quot;&quot;</span>
+    all_states = []
+    all_actions = []
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(dataset)):
+        sample = dataset.get_item(i, state_only=<span class="hljs-keyword">True</span>)
+        all_states.append(sample[<span class="hljs-string">&apos;state&apos;</span>])
+        all_actions.append(sample[<span class="hljs-string">&apos;actions&apos;</span>])
+
+    all_states = np.concatenate(all_states, axis=<span class="hljs-number">0</span>)
+    all_actions = np.concatenate(all_actions, axis=<span class="hljs-number">0</span>)
+
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&quot;state_mean&quot;</span>: all_states.mean(axis=<span class="hljs-number">0</span>).tolist(),
+        <span class="hljs-string">&quot;state_std&quot;</span>: all_states.std(axis=<span class="hljs-number">0</span>).tolist(),
+        <span class="hljs-string">&quot;action_mean&quot;</span>: all_actions.mean(axis=<span class="hljs-number">0</span>).tolist(),
+        <span class="hljs-string">&quot;action_std&quot;</span>: all_actions.std(axis=<span class="hljs-number">0</span>).tolist(),
+    }
+</code></pre>
+<hr>
+<h2 id="9-deepspeed-&#x914D;&#x7F6E;">9. DeepSpeed &#x914D;&#x7F6E;</h2>
+<h3 id="91-zero-2-&#x914D;&#x7F6E;-configszero2json">9.1 ZeRO-2 &#x914D;&#x7F6E; (<code>configs/zero2.json</code>)</h3>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;train_batch_size&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,
+    <span class="hljs-string">&quot;gradient_accumulation_steps&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,
+    <span class="hljs-string">&quot;fp16&quot;</span>: {
+        <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>
+    },
+    <span class="hljs-string">&quot;bf16&quot;</span>: {
+        <span class="hljs-string">&quot;enabled&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>
+    },
+    <span class="hljs-string">&quot;zero_optimization&quot;</span>: {
+        <span class="hljs-string">&quot;stage&quot;</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-string">&quot;offload_optimizer&quot;</span>: {
+            <span class="hljs-string">&quot;device&quot;</span>: <span class="hljs-string">&quot;none&quot;</span>
+        },
+        <span class="hljs-string">&quot;allgather_partitions&quot;</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-string">&quot;allgather_bucket_size&quot;</span>: <span class="hljs-number">5e8</span>,
+        <span class="hljs-string">&quot;reduce_scatter&quot;</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-string">&quot;reduce_bucket_size&quot;</span>: <span class="hljs-number">5e8</span>
+    }
+}
+</code></pre>
+<h3 id="92-zero-3-&#x914D;&#x7F6E;&#xFF08;&#x66F4;&#x4F4E;&#x663E;&#x5B58;&#xFF09;">9.2 ZeRO-3 &#x914D;&#x7F6E;&#xFF08;&#x66F4;&#x4F4E;&#x663E;&#x5B58;&#xFF09;</h3>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;zero_optimization&quot;</span>: {
+        <span class="hljs-string">&quot;stage&quot;</span>: <span class="hljs-number">3</span>,
+        <span class="hljs-string">&quot;offload_optimizer&quot;</span>: {
+            <span class="hljs-string">&quot;device&quot;</span>: <span class="hljs-string">&quot;cpu&quot;</span>
+        },
+        <span class="hljs-string">&quot;offload_param&quot;</span>: {
+            <span class="hljs-string">&quot;device&quot;</span>: <span class="hljs-string">&quot;cpu&quot;</span>
+        }
+    }
+}
+</code></pre>
+<hr>
+<h2 id="10-&#x5173;&#x952E;&#x53C2;&#x6570;&#x6C47;&#x603B;">10. &#x5173;&#x952E;&#x53C2;&#x6570;&#x6C47;&#x603B;</h2>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;</th>
+<th>&#x4F4D;&#x7F6E;</th>
+<th>&#x9ED8;&#x8BA4;&#x503C;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>action_chunk_size</code></td>
+<td><code>configs/base.yaml</code></td>
+<td>64</td>
+<td>&#x52A8;&#x4F5C;&#x5E8F;&#x5217;&#x957F;&#x5EA6;</td>
+</tr>
+<tr>
+<td><code>img_history_size</code></td>
+<td><code>configs/base.yaml</code></td>
+<td>2</td>
+<td>&#x56FE;&#x50CF;&#x5386;&#x53F2;&#x5E27;&#x6570;</td>
+</tr>
+<tr>
+<td><code>state_dim</code></td>
+<td><code>configs/base.yaml</code></td>
+<td>128</td>
+<td>&#x72B6;&#x6001;&#x5411;&#x91CF;&#x7EF4;&#x5EA6;</td>
+</tr>
+<tr>
+<td><code>learning_rate</code></td>
+<td>CLI</td>
+<td>1e-4</td>
+<td>&#x5B66;&#x4E60;&#x7387;</td>
+</tr>
+<tr>
+<td><code>train_batch_size</code></td>
+<td>CLI</td>
+<td>32</td>
+<td>&#x6279;&#x6B21;&#x5927;&#x5C0F;</td>
+</tr>
+<tr>
+<td><code>max_train_steps</code></td>
+<td>CLI</td>
+<td>200000</td>
+<td>&#x6700;&#x5927;&#x8BAD;&#x7EC3;&#x6B65;&#x6570;</td>
+</tr>
+</tbody>
+</table>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch4_4_deploy.html" class="navigation navigation-prev " aria-label="Previous page: 4.4 模型部署与推理">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch5_fpga.html" class="navigation navigation-next " aria-label="Next page: 5. FPGA 逆解加速">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"4.5 函数解析：RDT 模型与训练","level":"5.1.5","depth":2,"next":{"title":"5. FPGA 逆解加速","level":"6.1","depth":1,"path":"ch5_fpga.md","ref":"ch5_fpga.md","articles":[]},"previous":{"title":"4.4 模型部署与推理","level":"5.1.4","depth":2,"path":"ch4_4_deploy.md","ref":"ch4_4_deploy.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ch4_5_ref_rdt_training.md","mtime":"2026-01-30T04:12:18.993Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-31T00:50:12.433Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

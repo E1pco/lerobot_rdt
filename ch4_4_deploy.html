@@ -1,0 +1,1147 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>4.4 模型部署与推理 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch4_5_ref_rdt_training.html" />
+    
+    
+    <link rel="prev" href="ch4_3_finetune.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="ch0_overview.html">
+            
+                <a href="ch0_overview.html">
+            
+                    
+                    总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="ch0_env_setup.html">
+            
+                <a href="ch0_env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第一章 自设计 SDK</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ch1_sdk.html">
+            
+                <a href="ch1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="ch1_1_sdk_api.html">
+            
+                <a href="ch1_1_sdk_api.html">
+            
+                    
+                    1.1 API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="ch1_2_ref_driver.html">
+            
+                <a href="ch1_2_ref_driver.html">
+            
+                    
+                    1.2 函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="ch1_3_ref_ik.html">
+            
+                <a href="ch1_3_ref_ik.html">
+            
+                    
+                    1.3 函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第二章 人机交互</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ch2_hci_teleop.html">
+            
+                <a href="ch2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.1" data-path="ch2_1_controls.html">
+            
+                <a href="ch2_1_controls.html">
+            
+                    
+                    2.1 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2" data-path="ch2_2_leader_follower.html">
+            
+                <a href="ch2_2_leader_follower.html">
+            
+                    
+                    2.2 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第三章 数据集构建</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ch3_dataset.html">
+            
+                <a href="ch3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1.1" data-path="ch3_1_theory_rdt_format.html">
+            
+                <a href="ch3_1_theory_rdt_format.html">
+            
+                    
+                    3.1 理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.2" data-path="ch3_2_theory_handeye.html">
+            
+                <a href="ch3_2_theory_handeye.html">
+            
+                    
+                    3.2 理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.3" data-path="ch3_3_calibration.html">
+            
+                <a href="ch3_3_calibration.html">
+            
+                    
+                    3.3 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.4" data-path="ch3_4_timesync.html">
+            
+                <a href="ch3_4_timesync.html">
+            
+                    
+                    3.4 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.5" data-path="ch3_5_ref_handeye.html">
+            
+                <a href="ch3_5_ref_handeye.html">
+            
+                    
+                    3.5 函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.6" data-path="ch3_6_ref_rdt_pipeline.html">
+            
+                <a href="ch3_6_ref_rdt_pipeline.html">
+            
+                    
+                    3.6 函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第四章 RDT 训练与微调</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="ch4_rdt_training.html">
+            
+                <a href="ch4_rdt_training.html">
+            
+                    
+                    4. RDT 训练与微调
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1.1" data-path="ch4_1_env_setup.html">
+            
+                <a href="ch4_1_env_setup.html">
+            
+                    
+                    4.1 训练环境配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.2" data-path="ch4_2_data_prep.html">
+            
+                <a href="ch4_2_data_prep.html">
+            
+                    
+                    4.2 数据集准备与转换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.3" data-path="ch4_3_finetune.html">
+            
+                <a href="ch4_3_finetune.html">
+            
+                    
+                    4.3 模型微调
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="5.1.4" data-path="ch4_4_deploy.html">
+            
+                <a href="ch4_4_deploy.html">
+            
+                    
+                    4.4 模型部署与推理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.5" data-path="ch4_5_ref_rdt_training.html">
+            
+                <a href="ch4_5_ref_rdt_training.html">
+            
+                    
+                    4.5 函数解析：RDT 模型与训练
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第五章 FPGA 硬件加速</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="ch5_fpga.html">
+            
+                <a href="ch5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >4.4 模型部署与推理</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="44-rdt-&#x6A21;&#x578B;&#x90E8;&#x7F72;&#x4E0E;&#x63A8;&#x7406;">4.4 RDT &#x6A21;&#x578B;&#x90E8;&#x7F72;&#x4E0E;&#x63A8;&#x7406;</h1>
+<p>&#x672C;&#x8282;&#x8BF4;&#x660E;&#x5982;&#x4F55;&#x5C06;&#x5FAE;&#x8C03;&#x540E;&#x7684; RDT &#x6A21;&#x578B;&#x90E8;&#x7F72;&#x5230;&#x771F;&#x5B9E;&#x673A;&#x5668;&#x4EBA;&#x4E0A;&#x8FDB;&#x884C;&#x63A8;&#x7406;&#x3002;</p>
+<hr>
+<h2 id="1-&#x90E8;&#x7F72;&#x67B6;&#x6784;">1. &#x90E8;&#x7F72;&#x67B6;&#x6784;</h2>
+<pre><code>&#x8BED;&#x8A00;&#x6307;&#x4EE4; &#x2500;&#x2500;&#x2192; T5 &#x7F16;&#x7801;&#x5668; &#x2500;&#x2500;&#x2192; &#x8BED;&#x8A00;&#x5D4C;&#x5165;
+                              &#x2193;
+&#x4E09;&#x89C6;&#x89D2;&#x56FE;&#x50CF; &#x2500;&#x2500;&#x2192; SigLIP &#x7F16;&#x7801;&#x5668; &#x2500;&#x2500;&#x2192; &#x89C6;&#x89C9;&#x5D4C;&#x5165; &#x2500;&#x2500;&#x2192; RDT &#x2500;&#x2500;&#x2192; 64&#x6B65;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;
+                              &#x2193;                        &#x2193;
+&#x5F53;&#x524D;&#x72B6;&#x6001; &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2192; &#x72B6;&#x6001;&#x5D4C;&#x5165; &#x2500;&#x2500;&#x2518;          &#x52A8;&#x4F5C;&#x6267;&#x884C;&#x5668;
+</code></pre><hr>
+<h2 id="2-&#x63A8;&#x7406;&#x811A;&#x672C;&#x914D;&#x7F6E;">2. &#x63A8;&#x7406;&#x811A;&#x672C;&#x914D;&#x7F6E;</h2>
+<h3 id="21-&#x57FA;&#x7840;&#x63A8;&#x7406;&#x811A;&#x672C;&#xFF08;inferencesh&#xFF09;">2.1 &#x57FA;&#x7840;&#x63A8;&#x7406;&#x811A;&#x672C;&#xFF08;inference.sh&#xFF09;</h3>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-comment"># inference.sh - SO-101 &#x53CC;&#x81C2;&#x63A8;&#x7406;&#x914D;&#x7F6E;</span>
+
+python -m scripts.so101_inference \
+    --use_actions_interpolation \
+    --pretrained_model_name_or_path=<span class="hljs-string">&quot;checkpoints/rdt-finetune-so101/checkpoint-150000&quot;</span> \
+    --lang_embeddings_path=<span class="hljs-string">&quot;outs/lang_embeddings/pick_and_place.pt&quot;</span> \
+    --ctrl_freq=30
+</code></pre>
+<h3 id="22-&#x53C2;&#x6570;&#x8BF4;&#x660E;">2.2 &#x53C2;&#x6570;&#x8BF4;&#x660E;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x53C2;&#x6570;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pretrained_model_name_or_path</code></td>
+<td>&#x5FAE;&#x8C03;&#x540E;&#x68C0;&#x67E5;&#x70B9;&#x8DEF;&#x5F84;</td>
+</tr>
+<tr>
+<td><code>lang_embeddings_path</code></td>
+<td>&#x9884;&#x8BA1;&#x7B97;&#x7684;&#x8BED;&#x8A00;&#x5D4C;&#x5165;&#x6587;&#x4EF6;</td>
+</tr>
+<tr>
+<td><code>ctrl_freq</code></td>
+<td>&#x63A7;&#x5236;&#x9891;&#x7387;&#xFF08;&#x4E0E;&#x91C7;&#x96C6;&#x65F6;&#x4E00;&#x81F4;&#xFF09;</td>
+</tr>
+<tr>
+<td><code>use_actions_interpolation</code></td>
+<td>&#x52A8;&#x4F5C;&#x63D2;&#x503C;&#xFF08;&#x66F4;&#x5E73;&#x6ED1;&#xFF09;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-&#x63A8;&#x7406;&#x4EE3;&#x7801;&#x5B9E;&#x73B0;">3. &#x63A8;&#x7406;&#x4EE3;&#x7801;&#x5B9E;&#x73B0;</h2>
+<h3 id="31-&#x6A21;&#x578B;&#x52A0;&#x8F7D;&#x7C7B;">3.1 &#x6A21;&#x578B;&#x52A0;&#x8F7D;&#x7C7B;</h3>
+<p>&#x521B;&#x5EFA; <code>scripts/so101_model.py</code>&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-string">&quot;&quot;&quot;SO-101 &#x53CC;&#x81C2; RDT &#x63A8;&#x7406;&#x6A21;&#x578B;&#x5C01;&#x88C5;&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> torch
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image
+<span class="hljs-keyword">from</span> torchvision <span class="hljs-keyword">import</span> transforms
+<span class="hljs-keyword">from</span> models.rdt_runner <span class="hljs-keyword">import</span> RDTRunner
+<span class="hljs-keyword">from</span> configs.state_vec <span class="hljs-keyword">import</span> STATE_VEC_IDX_MAPPING
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SO101RDTModel</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;SO-101 &#x53CC;&#x81C2; RDT &#x63A8;&#x7406;&#x5C01;&#x88C5;&#x7C7B;&quot;&quot;&quot;</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(
+        self,
+        pretrained_path: str,
+        lang_embeddings_path: str = None,
+        device: str = <span class="hljs-string">&quot;cuda&quot;</span>,
+        ctrl_freq: int = <span class="hljs-number">30</span>,
+    )</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;
+        &#x521D;&#x59CB;&#x5316;&#x63A8;&#x7406;&#x6A21;&#x578B;
+
+        Args:
+            pretrained_path: &#x5FAE;&#x8C03;&#x540E;&#x68C0;&#x67E5;&#x70B9;&#x8DEF;&#x5F84;
+            lang_embeddings_path: &#x9884;&#x8BA1;&#x7B97;&#x8BED;&#x8A00;&#x5D4C;&#x5165;&#x8DEF;&#x5F84;
+            device: &#x63A8;&#x7406;&#x8BBE;&#x5907;
+            ctrl_freq: &#x63A7;&#x5236;&#x9891;&#x7387;
+        &quot;&quot;&quot;</span>
+        self.device = device
+        self.ctrl_freq = ctrl_freq
+
+        <span class="hljs-comment"># &#x52A0;&#x8F7D;&#x6A21;&#x578B;</span>
+        print(f<span class="hljs-string">&quot;Loading model from {pretrained_path}...&quot;</span>)
+        self.model = RDTRunner.from_pretrained(pretrained_path)
+        self.model.to(device)
+        self.model.eval()
+
+        <span class="hljs-comment"># &#x52A0;&#x8F7D;&#x8BED;&#x8A00;&#x5D4C;&#x5165;</span>
+        <span class="hljs-keyword">if</span> lang_embeddings_path <span class="hljs-keyword">and</span> os.path.exists(lang_embeddings_path):
+            self.lang_embeddings = torch.load(lang_embeddings_path, map_location=device)
+        <span class="hljs-keyword">else</span>:
+            self.lang_embeddings = <span class="hljs-keyword">None</span>
+
+        <span class="hljs-comment"># &#x56FE;&#x50CF;&#x9884;&#x5904;&#x7406;</span>
+        self.image_transform = transforms.Compose([
+            transforms.Resize((<span class="hljs-number">224</span>, <span class="hljs-number">224</span>)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], std=[<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>])
+        ])
+
+        <span class="hljs-comment"># &#x5386;&#x53F2;&#x7F13;&#x5B58;</span>
+        self.image_history = []
+        self.action_buffer = []
+        self.action_idx = <span class="hljs-number">0</span>
+
+        print(<span class="hljs-string">&quot;Model loaded successfully!&quot;</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x91CD;&#x7F6E;&#x63A8;&#x7406;&#x72B6;&#x6001;&quot;&quot;&quot;</span>
+        self.image_history = []
+        self.action_buffer = []
+        self.action_idx = <span class="hljs-number">0</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_format_state</span><span class="hljs-params">(self, left_joints, left_gripper, right_joints, right_gripper)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;
+        &#x5C06; SO-101 &#x72B6;&#x6001;&#x8F6C;&#x6362;&#x4E3A;&#x7EDF;&#x4E00;&#x5411;&#x91CF;
+
+        Args:
+            left_joints: [6] &#x5DE6;&#x81C2;&#x5173;&#x8282;&#x89D2;&#x5EA6; (rad)
+            left_gripper: float &#x5DE6;&#x5939;&#x722A; (0-1)
+            right_joints: [6] &#x53F3;&#x81C2;&#x5173;&#x8282;&#x89D2;&#x5EA6; (rad)
+            right_gripper: float &#x53F3;&#x5939;&#x722A; (0-1)
+
+        Returns:
+            state: [128] &#x7EDF;&#x4E00;&#x72B6;&#x6001;&#x5411;&#x91CF;
+        &quot;&quot;&quot;</span>
+        state = np.zeros(<span class="hljs-number">128</span>, dtype=np.float32)
+
+        <span class="hljs-comment"># &#x53F3;&#x81C2;</span>
+        state[<span class="hljs-number">0</span>:<span class="hljs-number">6</span>] = right_joints
+        state[<span class="hljs-number">10</span>] = right_gripper
+
+        <span class="hljs-comment"># &#x5DE6;&#x81C2;</span>
+        state[<span class="hljs-number">50</span>:<span class="hljs-number">56</span>] = left_joints
+        state[<span class="hljs-number">60</span>] = left_gripper
+
+        <span class="hljs-keyword">return</span> state
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_unformat_action</span><span class="hljs-params">(self, action)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;
+        &#x4ECE;&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#x63D0;&#x53D6; SO-101 &#x52A8;&#x4F5C;
+
+        Args:
+            action: [128] &#x7EDF;&#x4E00;&#x52A8;&#x4F5C;&#x5411;&#x91CF;
+
+        Returns:
+            left_joints, left_gripper, right_joints, right_gripper
+        &quot;&quot;&quot;</span>
+        right_joints = action[<span class="hljs-number">0</span>:<span class="hljs-number">6</span>]
+        right_gripper = action[<span class="hljs-number">10</span>]
+        left_joints = action[<span class="hljs-number">50</span>:<span class="hljs-number">56</span>]
+        left_gripper = action[<span class="hljs-number">60</span>]
+
+        <span class="hljs-keyword">return</span> left_joints, left_gripper, right_joints, right_gripper
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_preprocess_images</span><span class="hljs-params">(self, images_dict)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;
+        &#x9884;&#x5904;&#x7406;&#x56FE;&#x50CF;
+
+        Args:
+            images_dict: {
+                &apos;cam_exterior&apos;: np.ndarray (H, W, 3),
+                &apos;cam_right_wrist&apos;: np.ndarray (H, W, 3),
+                &apos;cam_left_wrist&apos;: np.ndarray (H, W, 3)  # &#x53EF;&#x9009;
+            }
+
+        Returns:
+            images_tensor: [6, 3, 224, 224] (t-1 &#x548C; t &#x65F6;&#x523B;&#x5404; 3 &#x89C6;&#x89D2;)
+        &quot;&quot;&quot;</span>
+        current_images = []
+
+        <span class="hljs-keyword">for</span> cam_name <span class="hljs-keyword">in</span> [<span class="hljs-string">&apos;cam_exterior&apos;</span>, <span class="hljs-string">&apos;cam_right_wrist&apos;</span>, <span class="hljs-string">&apos;cam_left_wrist&apos;</span>]:
+            <span class="hljs-keyword">if</span> cam_name <span class="hljs-keyword">in</span> images_dict:
+                img = Image.fromarray(images_dict[cam_name])
+                img_tensor = self.image_transform(img)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># &#x7F3A;&#x5931;&#x89C6;&#x89D2;&#x7528;&#x96F6;&#x586B;&#x5145;</span>
+                img_tensor = torch.zeros(<span class="hljs-number">3</span>, <span class="hljs-number">224</span>, <span class="hljs-number">224</span>)
+            current_images.append(img_tensor)
+
+        current_images = torch.stack(current_images)  <span class="hljs-comment"># [3, 3, 224, 224]</span>
+
+        <span class="hljs-comment"># &#x7EF4;&#x62A4;&#x5386;&#x53F2;</span>
+        <span class="hljs-keyword">if</span> len(self.image_history) == <span class="hljs-number">0</span>:
+            <span class="hljs-comment"># &#x9996;&#x5E27;&#xFF0C;t-1 &#x7528;&#x5F53;&#x524D;&#x5E27;&#x4EE3;&#x66FF;</span>
+            self.image_history = current_images.clone()
+
+        <span class="hljs-comment"># &#x62FC;&#x63A5; t-1 &#x548C; t &#x65F6;&#x523B;</span>
+        images_tensor = torch.cat([self.image_history, current_images], dim=<span class="hljs-number">0</span>)  <span class="hljs-comment"># [6, 3, 224, 224]</span>
+
+        <span class="hljs-comment"># &#x66F4;&#x65B0;&#x5386;&#x53F2;</span>
+        self.image_history = current_images.clone()
+
+        <span class="hljs-keyword">return</span> images_tensor.unsqueeze(<span class="hljs-number">0</span>).to(self.device)  <span class="hljs-comment"># [1, 6, 3, 224, 224]</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">step</span><span class="hljs-params">(self, images_dict, left_joints, left_gripper, right_joints, right_gripper)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;
+        &#x6267;&#x884C;&#x4E00;&#x6B65;&#x63A8;&#x7406;
+
+        Args:
+            images_dict: &#x56FE;&#x50CF;&#x5B57;&#x5178;
+            left_joints: [6] &#x5DE6;&#x81C2;&#x5173;&#x8282;&#x89D2;&#x5EA6;
+            left_gripper: &#x5DE6;&#x5939;&#x722A;&#x5F00;&#x5408;
+            right_joints: [6] &#x53F3;&#x81C2;&#x5173;&#x8282;&#x89D2;&#x5EA6;
+            right_gripper: &#x53F3;&#x5939;&#x722A;&#x5F00;&#x5408;
+
+        Returns:
+            left_joints_cmd, left_gripper_cmd, right_joints_cmd, right_gripper_cmd
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># &#x5982;&#x679C;&#x52A8;&#x4F5C;&#x7F13;&#x51B2;&#x533A;&#x6709;&#x6570;&#x636E;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x4E0B;&#x4E00;&#x4E2A;&#x52A8;&#x4F5C;</span>
+        <span class="hljs-keyword">if</span> self.action_idx &lt; len(self.action_buffer):
+            action = self.action_buffer[self.action_idx]
+            self.action_idx += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">return</span> self._unformat_action(action)
+
+        <span class="hljs-comment"># &#x9700;&#x8981;&#x91CD;&#x65B0;&#x63A8;&#x7406;</span>
+        <span class="hljs-keyword">with</span> torch.no_grad():
+            <span class="hljs-comment"># &#x51C6;&#x5907;&#x8F93;&#x5165;</span>
+            images = self._preprocess_images(images_dict)
+            state = self._format_state(left_joints, left_gripper, right_joints, right_gripper)
+            state_tensor = torch.from_numpy(state).unsqueeze(<span class="hljs-number">0</span>).to(self.device)  <span class="hljs-comment"># [1, 128]</span>
+
+            <span class="hljs-comment"># &#x63A8;&#x7406;</span>
+            actions = self.model.predict_action(
+                images=images,
+                state=state_tensor,
+                lang_embeddings=self.lang_embeddings,
+            )  <span class="hljs-comment"># [1, 64, 128]</span>
+
+            <span class="hljs-comment"># &#x66F4;&#x65B0;&#x52A8;&#x4F5C;&#x7F13;&#x51B2;&#x533A;</span>
+            self.action_buffer = actions[<span class="hljs-number">0</span>].cpu().numpy()  <span class="hljs-comment"># [64, 128]</span>
+            self.action_idx = <span class="hljs-number">1</span>
+
+            <span class="hljs-keyword">return</span> self._unformat_action(self.action_buffer[<span class="hljs-number">0</span>])
+</code></pre>
+<h3 id="32-&#x4E3B;&#x63A8;&#x7406;&#x5FAA;&#x73AF;">3.2 &#x4E3B;&#x63A8;&#x7406;&#x5FAA;&#x73AF;</h3>
+<p>&#x521B;&#x5EFA; <code>scripts/so101_inference.py</code>&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+<span class="hljs-string">&quot;&quot;&quot;SO-101 &#x53CC;&#x81C2; RDT &#x5B9E;&#x673A;&#x63A8;&#x7406;&quot;&quot;&quot;</span>
+
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> argparse
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-comment"># &#x6DFB;&#x52A0;&#x9879;&#x76EE;&#x8DEF;&#x5F84;</span>
+sys.path.insert(<span class="hljs-number">0</span>, <span class="hljs-string">&apos;/path/to/lerobot_rdt&apos;</span>)
+
+<span class="hljs-keyword">from</span> scripts.so101_model <span class="hljs-keyword">import</span> SO101RDTModel
+<span class="hljs-keyword">from</span> driver.ftservo_controller <span class="hljs-keyword">import</span> ServoController
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SO101RDTInference</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;SO-101 &#x53CC;&#x81C2; RDT &#x63A8;&#x7406;&#x63A7;&#x5236;&#x5668;&quot;&quot;&quot;</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(
+        self,
+        pretrained_path: str,
+        lang_embeddings_path: str,
+        left_port: str = <span class="hljs-string">&quot;/dev/left_arm&quot;</span>,
+        right_port: str = <span class="hljs-string">&quot;/dev/right_arm&quot;</span>,
+        left_config: str = <span class="hljs-string">&quot;./driver/left_arm.json&quot;</span>,
+        right_config: str = <span class="hljs-string">&quot;./driver/right_arm.json&quot;</span>,
+        ctrl_freq: int = <span class="hljs-number">30</span>,
+        use_interpolation: bool = True,
+    )</span>:</span>
+        print(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span>)
+        print(<span class="hljs-string">&quot;SO-101 RDT Inference Controller&quot;</span>)
+        print(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span>)
+
+        <span class="hljs-comment"># &#x521D;&#x59CB;&#x5316;&#x8235;&#x673A;&#x63A7;&#x5236;&#x5668;</span>
+        print(<span class="hljs-string">&quot;\n[1/3] Connecting servo controllers...&quot;</span>)
+        self.left_controller = ServoController(
+            port=left_port, baudrate=<span class="hljs-number">1</span>_000_000, config_path=left_config
+        )
+        self.right_controller = ServoController(
+            port=right_port, baudrate=<span class="hljs-number">1</span>_000_000, config_path=right_config
+        )
+        print(<span class="hljs-string">&quot;&#x2713; Servo controllers connected&quot;</span>)
+
+        <span class="hljs-comment"># &#x521D;&#x59CB;&#x5316;&#x76F8;&#x673A;&#xFF08;&#x793A;&#x4F8B;&#xFF09;</span>
+        print(<span class="hljs-string">&quot;\n[2/3] Initializing cameras...&quot;</span>)
+        self.cameras = self._init_cameras()
+        print(<span class="hljs-string">&quot;&#x2713; Cameras initialized&quot;</span>)
+
+        <span class="hljs-comment"># &#x52A0;&#x8F7D; RDT &#x6A21;&#x578B;</span>
+        print(<span class="hljs-string">&quot;\n[3/3] Loading RDT model...&quot;</span>)
+        self.model = SO101RDTModel(
+            pretrained_path=pretrained_path,
+            lang_embeddings_path=lang_embeddings_path,
+            ctrl_freq=ctrl_freq,
+        )
+        print(<span class="hljs-string">&quot;&#x2713; Model loaded&quot;</span>)
+
+        self.ctrl_freq = ctrl_freq
+        self.use_interpolation = use_interpolation
+        self.running = <span class="hljs-keyword">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_init_cameras</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x521D;&#x59CB;&#x5316;&#x76F8;&#x673A;&#xFF08;&#x6839;&#x636E;&#x5B9E;&#x9645;&#x786C;&#x4EF6;&#x4FEE;&#x6539;&#xFF09;&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">import</span> cv2
+        cameras = {}
+        <span class="hljs-comment"># &#x5916;&#x90E8;&#x76F8;&#x673A;</span>
+        cameras[<span class="hljs-string">&apos;cam_exterior&apos;</span>] = cv2.VideoCapture(<span class="hljs-number">2</span>)
+        <span class="hljs-comment"># &#x53F3;&#x8155;&#x76F8;&#x673A;</span>
+        cameras[<span class="hljs-string">&apos;cam_right_wrist&apos;</span>] = cv2.VideoCapture(<span class="hljs-number">4</span>)
+        <span class="hljs-comment"># &#x5DE6;&#x8155;&#x76F8;&#x673A;</span>
+        cameras[<span class="hljs-string">&apos;cam_left_wrist&apos;</span>] = cv2.VideoCapture(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> cameras
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_capture_images</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x91C7;&#x96C6;&#x56FE;&#x50CF;&quot;&quot;&quot;</span>
+        images = {}
+        <span class="hljs-keyword">for</span> name, cap <span class="hljs-keyword">in</span> self.cameras.items():
+            ret, frame = cap.read()
+            <span class="hljs-keyword">if</span> ret:
+                images[name] = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            <span class="hljs-keyword">else</span>:
+                images[name] = np.zeros((<span class="hljs-number">480</span>, <span class="hljs-number">640</span>, <span class="hljs-number">3</span>), dtype=np.uint8)
+        <span class="hljs-keyword">return</span> images
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_read_state</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x8BFB;&#x53D6;&#x5F53;&#x524D;&#x72B6;&#x6001;&quot;&quot;&quot;</span>
+        <span class="hljs-comment"># &#x8BFB;&#x53D6;&#x5173;&#x8282;&#x89D2;&#x5EA6;&#xFF08;&#x793A;&#x4F8B;&#xFF0C;&#x9700;&#x8981;&#x6839;&#x636E;&#x5B9E;&#x9645; API &#x4FEE;&#x6539;&#xFF09;</span>
+        left_joints = np.zeros(<span class="hljs-number">6</span>)
+        right_joints = np.zeros(<span class="hljs-number">6</span>)
+        left_gripper = <span class="hljs-number">0.5</span>
+        right_gripper = <span class="hljs-number">0.5</span>
+
+        <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> &#x4ECE; controller &#x8BFB;&#x53D6;&#x5B9E;&#x9645;&#x5173;&#x8282;&#x89D2;&#x5EA6;</span>
+
+        <span class="hljs-keyword">return</span> left_joints, left_gripper, right_joints, right_gripper
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_execute_action</span><span class="hljs-params">(self, left_joints, left_gripper, right_joints, right_gripper)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x6267;&#x884C;&#x52A8;&#x4F5C;&quot;&quot;&quot;</span>
+        <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> &#x5C06;&#x5173;&#x8282;&#x89D2;&#x5EA6;&#x8F6C;&#x6362;&#x4E3A;&#x8235;&#x673A;&#x547D;&#x4EE4;&#x5E76;&#x6267;&#x884C;</span>
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x4E3B;&#x63A8;&#x7406;&#x5FAA;&#x73AF;&quot;&quot;&quot;</span>
+        print(<span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span>)
+        print(<span class="hljs-string">&quot;&#x1F916; RDT Inference Running&quot;</span>)
+        print(<span class="hljs-string">&quot;Press Ctrl+C to stop&quot;</span>)
+        print(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">60</span> + <span class="hljs-string">&quot;\n&quot;</span>)
+
+        self.model.reset()
+        dt = <span class="hljs-number">1.0</span> / self.ctrl_freq
+
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">while</span> self.running:
+                t_start = time.time()
+
+                <span class="hljs-comment"># &#x91C7;&#x96C6;&#x56FE;&#x50CF;</span>
+                images = self._capture_images()
+
+                <span class="hljs-comment"># &#x8BFB;&#x53D6;&#x72B6;&#x6001;</span>
+                left_joints, left_gripper, right_joints, right_gripper = self._read_state()
+
+                <span class="hljs-comment"># &#x63A8;&#x7406;</span>
+                cmd = self.model.step(
+                    images,
+                    left_joints, left_gripper,
+                    right_joints, right_gripper
+                )
+
+                <span class="hljs-comment"># &#x6267;&#x884C;</span>
+                self._execute_action(*cmd)
+
+                <span class="hljs-comment"># &#x63A7;&#x5236;&#x9891;&#x7387;</span>
+                elapsed = time.time() - t_start
+                <span class="hljs-keyword">if</span> elapsed &lt; dt:
+                    time.sleep(dt - elapsed)
+
+        <span class="hljs-keyword">except</span> KeyboardInterrupt:
+            print(<span class="hljs-string">&quot;\n&#x26D4; Stopped by user&quot;</span>)
+        <span class="hljs-keyword">finally</span>:
+            self._cleanup()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_cleanup</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">&quot;&quot;&quot;&#x6E05;&#x7406;&#x8D44;&#x6E90;&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> cap <span class="hljs-keyword">in</span> self.cameras.values():
+            cap.release()
+        print(<span class="hljs-string">&quot;Resources released&quot;</span>)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    parser = argparse.ArgumentParser(description=<span class="hljs-string">&quot;SO-101 RDT Inference&quot;</span>)
+    parser.add_argument(<span class="hljs-string">&quot;--pretrained_model_name_or_path&quot;</span>, type=str, required=<span class="hljs-keyword">True</span>)
+    parser.add_argument(<span class="hljs-string">&quot;--lang_embeddings_path&quot;</span>, type=str, required=<span class="hljs-keyword">True</span>)
+    parser.add_argument(<span class="hljs-string">&quot;--ctrl_freq&quot;</span>, type=int, default=<span class="hljs-number">30</span>)
+    parser.add_argument(<span class="hljs-string">&quot;--use_actions_interpolation&quot;</span>, action=<span class="hljs-string">&quot;store_true&quot;</span>)
+
+    args = parser.parse_args()
+
+    controller = SO101RDTInference(
+        pretrained_path=args.pretrained_model_name_or_path,
+        lang_embeddings_path=args.lang_embeddings_path,
+        ctrl_freq=args.ctrl_freq,
+        use_interpolation=args.use_actions_interpolation,
+    )
+    controller.run()
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    main()
+</code></pre>
+<hr>
+<h2 id="4-&#x52A8;&#x4F5C;&#x63D2;&#x503C;">4. &#x52A8;&#x4F5C;&#x63D2;&#x503C;</h2>
+<p>&#x4E3A;&#x4F7F;&#x52A8;&#x4F5C;&#x66F4;&#x5E73;&#x6ED1;&#xFF0C;&#x53EF;&#x4EE5;&#x542F;&#x7528;&#x52A8;&#x4F5C;&#x63D2;&#x503C;&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">interpolate_actions</span><span class="hljs-params">(self, prev_action, curr_action, num_steps=<span class="hljs-number">5</span>)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    &#x52A8;&#x4F5C;&#x63D2;&#x503C;
+
+    Args:
+        prev_action: &#x4E0A;&#x4E00;&#x6B65;&#x52A8;&#x4F5C; [128]
+        curr_action: &#x5F53;&#x524D;&#x52A8;&#x4F5C; [128]
+        num_steps: &#x63D2;&#x503C;&#x6B65;&#x6570;
+
+    Returns:
+        interpolated: [num_steps, 128]
+    &quot;&quot;&quot;</span>
+    alphas = np.linspace(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, num_steps + <span class="hljs-number">1</span>)[<span class="hljs-number">1</span>:]
+    interpolated = []
+    <span class="hljs-keyword">for</span> alpha <span class="hljs-keyword">in</span> alphas:
+        action = (<span class="hljs-number">1</span> - alpha) * prev_action + alpha * curr_action
+        interpolated.append(action)
+    <span class="hljs-keyword">return</span> np.array(interpolated)
+</code></pre>
+<hr>
+<h2 id="5-&#x5B89;&#x5168;&#x4E0E;&#x9650;&#x4F4D;">5. &#x5B89;&#x5168;&#x4E0E;&#x9650;&#x4F4D;</h2>
+<h3 id="51-&#x5173;&#x8282;&#x9650;&#x4F4D;">5.1 &#x5173;&#x8282;&#x9650;&#x4F4D;</h3>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clamp_joints</span><span class="hljs-params">(self, joints, joint_limits)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    &#x5173;&#x8282;&#x9650;&#x4F4D;
+
+    Args:
+        joints: [6] &#x5173;&#x8282;&#x89D2;&#x5EA6;
+        joint_limits: [(min, max), ...] &#x6BCF;&#x4E2A;&#x5173;&#x8282;&#x7684;&#x9650;&#x4F4D;
+
+    Returns:
+        clamped: [6] &#x9650;&#x4F4D;&#x540E;&#x7684;&#x5173;&#x8282;&#x89D2;&#x5EA6;
+    &quot;&quot;&quot;</span>
+    clamped = joints.copy()
+    <span class="hljs-keyword">for</span> i, (jmin, jmax) <span class="hljs-keyword">in</span> enumerate(joint_limits):
+        clamped[i] = np.clip(clamped[i], jmin, jmax)
+    <span class="hljs-keyword">return</span> clamped
+</code></pre>
+<h3 id="52-&#x901F;&#x5EA6;&#x9650;&#x5236;">5.2 &#x901F;&#x5EA6;&#x9650;&#x5236;</h3>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">limit_velocity</span><span class="hljs-params">(self, prev_joints, curr_joints, max_vel, dt)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;
+    &#x901F;&#x5EA6;&#x9650;&#x5236;
+
+    Args:
+        prev_joints: &#x4E0A;&#x4E00;&#x65F6;&#x523B;&#x5173;&#x8282;&#x89D2;&#x5EA6;
+        curr_joints: &#x5F53;&#x524D;&#x76EE;&#x6807;&#x5173;&#x8282;&#x89D2;&#x5EA6;
+        max_vel: &#x6700;&#x5927;&#x89D2;&#x901F;&#x5EA6; (rad/s)
+        dt: &#x65F6;&#x95F4;&#x95F4;&#x9694;
+
+    Returns:
+        limited: &#x901F;&#x5EA6;&#x9650;&#x5236;&#x540E;&#x7684;&#x76EE;&#x6807;
+    &quot;&quot;&quot;</span>
+    delta = curr_joints - prev_joints
+    max_delta = max_vel * dt
+    delta = np.clip(delta, -max_delta, max_delta)
+    <span class="hljs-keyword">return</span> prev_joints + delta
+</code></pre>
+<hr>
+<h2 id="6-&#x63A8;&#x7406;&#x4F18;&#x5316;">6. &#x63A8;&#x7406;&#x4F18;&#x5316;</h2>
+<h3 id="61-&#x534A;&#x7CBE;&#x5EA6;&#x63A8;&#x7406;">6.1 &#x534A;&#x7CBE;&#x5EA6;&#x63A8;&#x7406;</h3>
+<pre><code class="lang-python"><span class="hljs-comment"># &#x6A21;&#x578B;&#x8F6C;&#x534A;&#x7CBE;&#x5EA6;</span>
+self.model = self.model.half()
+
+<span class="hljs-comment"># &#x8F93;&#x5165;&#x4E5F;&#x9700;&#x8981;&#x8F6C;&#x534A;&#x7CBE;&#x5EA6;</span>
+images = images.half()
+state = state.half()
+</code></pre>
+<h3 id="62-tensorrt-&#x52A0;&#x901F;">6.2 TensorRT &#x52A0;&#x901F;</h3>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> torch_tensorrt
+
+<span class="hljs-comment"># &#x7F16;&#x8BD1;&#x6A21;&#x578B;</span>
+trt_model = torch_tensorrt.compile(
+    self.model,
+    inputs=[
+        torch_tensorrt.Input(shape=[<span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">3</span>, <span class="hljs-number">224</span>, <span class="hljs-number">224</span>], dtype=torch.half),
+        torch_tensorrt.Input(shape=[<span class="hljs-number">1</span>, <span class="hljs-number">128</span>], dtype=torch.half),
+    ],
+    enabled_precisions={torch.half}
+)
+</code></pre>
+<hr>
+<h2 id="7-&#x8C03;&#x8BD5;&#x4E0E;&#x53EF;&#x89C6;&#x5316;">7. &#x8C03;&#x8BD5;&#x4E0E;&#x53EF;&#x89C6;&#x5316;</h2>
+<h3 id="71-&#x52A8;&#x4F5C;&#x53EF;&#x89C6;&#x5316;">7.1 &#x52A8;&#x4F5C;&#x53EF;&#x89C6;&#x5316;</h3>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">visualize_action_chunk</span><span class="hljs-params">(actions)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;&#x53EF;&#x89C6;&#x5316;&#x52A8;&#x4F5C;&#x5E8F;&#x5217;&quot;&quot;&quot;</span>
+    fig, axes = plt.subplots(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">8</span>))
+
+    <span class="hljs-comment"># &#x53F3;&#x81C2;&#x5173;&#x8282;</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">6</span>):
+        axes[<span class="hljs-number">0</span>].plot(actions[:, i], label=f<span class="hljs-string">&apos;right_joint_{i}&apos;</span>)
+    axes[<span class="hljs-number">0</span>].legend()
+    axes[<span class="hljs-number">0</span>].set_title(<span class="hljs-string">&apos;Right Arm Joints&apos;</span>)
+
+    <span class="hljs-comment"># &#x5DE6;&#x81C2;&#x5173;&#x8282;</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">6</span>):
+        axes[<span class="hljs-number">1</span>].plot(actions[:, <span class="hljs-number">50</span>+i], label=f<span class="hljs-string">&apos;left_joint_{i}&apos;</span>)
+    axes[<span class="hljs-number">1</span>].legend()
+    axes[<span class="hljs-number">1</span>].set_title(<span class="hljs-string">&apos;Left Arm Joints&apos;</span>)
+
+    plt.tight_layout()
+    plt.savefig(<span class="hljs-string">&apos;action_chunk.png&apos;</span>)
+</code></pre>
+<h3 id="72-&#x5B9E;&#x65F6;&#x76D1;&#x63A7;">7.2 &#x5B9E;&#x65F6;&#x76D1;&#x63A7;</h3>
+<pre><code class="lang-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_step</span><span class="hljs-params">(self, step, images, state, action)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;&#x8BB0;&#x5F55;&#x63A8;&#x7406;&#x6B65;&#x9AA4;&quot;&quot;&quot;</span>
+    print(f<span class="hljs-string">&quot;Step {step}:&quot;</span>)
+    print(f<span class="hljs-string">&quot;  State: {state[:6]} (right arm)&quot;</span>)
+    print(f<span class="hljs-string">&quot;  Action: {action[:6]} (right arm)&quot;</span>)
+</code></pre>
+<hr>
+<h2 id="8-&#x5E38;&#x89C1;&#x95EE;&#x9898;">8. &#x5E38;&#x89C1;&#x95EE;&#x9898;</h2>
+<h3 id="q1-&#x63A8;&#x7406;&#x5EF6;&#x8FDF;&#x592A;&#x9AD8;">Q1: &#x63A8;&#x7406;&#x5EF6;&#x8FDF;&#x592A;&#x9AD8;</h3>
+<p><strong>&#x89E3;&#x51B3;&#x65B9;&#x6848;</strong>&#xFF1A;</p>
+<ol>
+<li>&#x4F7F;&#x7528;&#x534A;&#x7CBE;&#x5EA6; (<code>model.half()</code>)</li>
+<li>&#x51CF;&#x5C11;&#x56FE;&#x50CF;&#x5206;&#x8FA8;&#x7387;</li>
+<li>&#x4F7F;&#x7528; TensorRT &#x52A0;&#x901F;</li>
+<li>&#x51CF;&#x5C0F; action chunk &#x4F7F;&#x7528;&#x9891;&#x7387;</li>
+</ol>
+<h3 id="q2-&#x52A8;&#x4F5C;&#x6296;&#x52A8;">Q2: &#x52A8;&#x4F5C;&#x6296;&#x52A8;</h3>
+<p><strong>&#x89E3;&#x51B3;&#x65B9;&#x6848;</strong>&#xFF1A;</p>
+<ol>
+<li>&#x542F;&#x7528;&#x52A8;&#x4F5C;&#x63D2;&#x503C;</li>
+<li>&#x589E;&#x52A0;&#x4F4E;&#x901A;&#x6EE4;&#x6CE2;</li>
+<li>&#x68C0;&#x67E5;&#x63A7;&#x5236;&#x9891;&#x7387;&#x662F;&#x5426;&#x4E0E;&#x8BAD;&#x7EC3;&#x4E00;&#x81F4;</li>
+</ol>
+<h3 id="q3-&#x4EFB;&#x52A1;&#x6267;&#x884C;&#x5931;&#x8D25;">Q3: &#x4EFB;&#x52A1;&#x6267;&#x884C;&#x5931;&#x8D25;</h3>
+<p><strong>&#x6392;&#x67E5;&#x6B65;&#x9AA4;</strong>&#xFF1A;</p>
+<ol>
+<li>&#x68C0;&#x67E5;&#x8BED;&#x8A00;&#x6307;&#x4EE4;&#x662F;&#x5426;&#x6B63;&#x786E;</li>
+<li>&#x786E;&#x8BA4;&#x76F8;&#x673A;&#x89C6;&#x89D2;&#x4E0E;&#x8BAD;&#x7EC3;&#x4E00;&#x81F4;</li>
+<li>&#x9A8C;&#x8BC1;&#x72B6;&#x6001;&#x5411;&#x91CF;&#x6620;&#x5C04;&#x662F;&#x5426;&#x6B63;&#x786E;</li>
+<li>&#x68C0;&#x67E5;&#x5173;&#x8282;&#x9650;&#x4F4D;&#x662F;&#x5426;&#x5408;&#x7406;</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch4_3_finetune.html" class="navigation navigation-prev " aria-label="Previous page: 4.3 模型微调">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch4_5_ref_rdt_training.html" class="navigation navigation-next " aria-label="Next page: 4.5 函数解析：RDT 模型与训练">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"4.4 模型部署与推理","level":"5.1.4","depth":2,"next":{"title":"4.5 函数解析：RDT 模型与训练","level":"5.1.5","depth":2,"path":"ch4_5_ref_rdt_training.md","ref":"ch4_5_ref_rdt_training.md","articles":[]},"previous":{"title":"4.3 模型微调","level":"5.1.3","depth":2,"path":"ch4_3_finetune.md","ref":"ch4_3_finetune.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ch4_4_deploy.md","mtime":"2026-01-30T04:11:30.976Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-31T00:50:12.433Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

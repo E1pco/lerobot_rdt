@@ -1,0 +1,862 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>4.1 训练环境配置 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch4_2_data_prep.html" />
+    
+    
+    <link rel="prev" href="ch4_rdt_training.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="ch0_overview.html">
+            
+                <a href="ch0_overview.html">
+            
+                    
+                    总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="ch0_env_setup.html">
+            
+                <a href="ch0_env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第一章 自设计 SDK</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ch1_sdk.html">
+            
+                <a href="ch1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="ch1_1_sdk_api.html">
+            
+                <a href="ch1_1_sdk_api.html">
+            
+                    
+                    1.1 API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="ch1_2_ref_driver.html">
+            
+                <a href="ch1_2_ref_driver.html">
+            
+                    
+                    1.2 函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="ch1_3_ref_ik.html">
+            
+                <a href="ch1_3_ref_ik.html">
+            
+                    
+                    1.3 函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第二章 人机交互</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ch2_hci_teleop.html">
+            
+                <a href="ch2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.1" data-path="ch2_1_controls.html">
+            
+                <a href="ch2_1_controls.html">
+            
+                    
+                    2.1 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2" data-path="ch2_2_leader_follower.html">
+            
+                <a href="ch2_2_leader_follower.html">
+            
+                    
+                    2.2 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第三章 数据集构建</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ch3_dataset.html">
+            
+                <a href="ch3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1.1" data-path="ch3_1_theory_rdt_format.html">
+            
+                <a href="ch3_1_theory_rdt_format.html">
+            
+                    
+                    3.1 理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.2" data-path="ch3_2_theory_handeye.html">
+            
+                <a href="ch3_2_theory_handeye.html">
+            
+                    
+                    3.2 理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.3" data-path="ch3_3_calibration.html">
+            
+                <a href="ch3_3_calibration.html">
+            
+                    
+                    3.3 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.4" data-path="ch3_4_timesync.html">
+            
+                <a href="ch3_4_timesync.html">
+            
+                    
+                    3.4 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.5" data-path="ch3_5_ref_handeye.html">
+            
+                <a href="ch3_5_ref_handeye.html">
+            
+                    
+                    3.5 函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.6" data-path="ch3_6_ref_rdt_pipeline.html">
+            
+                <a href="ch3_6_ref_rdt_pipeline.html">
+            
+                    
+                    3.6 函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第四章 RDT 训练与微调</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="ch4_rdt_training.html">
+            
+                <a href="ch4_rdt_training.html">
+            
+                    
+                    4. RDT 训练与微调
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="5.1.1" data-path="ch4_1_env_setup.html">
+            
+                <a href="ch4_1_env_setup.html">
+            
+                    
+                    4.1 训练环境配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.2" data-path="ch4_2_data_prep.html">
+            
+                <a href="ch4_2_data_prep.html">
+            
+                    
+                    4.2 数据集准备与转换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.3" data-path="ch4_3_finetune.html">
+            
+                <a href="ch4_3_finetune.html">
+            
+                    
+                    4.3 模型微调
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.4" data-path="ch4_4_deploy.html">
+            
+                <a href="ch4_4_deploy.html">
+            
+                    
+                    4.4 模型部署与推理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.5" data-path="ch4_5_ref_rdt_training.html">
+            
+                <a href="ch4_5_ref_rdt_training.html">
+            
+                    
+                    4.5 函数解析：RDT 模型与训练
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第五章 FPGA 硬件加速</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="ch5_fpga.html">
+            
+                <a href="ch5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >4.1 训练环境配置</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="41-rdt-&#x8BAD;&#x7EC3;&#x73AF;&#x5883;&#x914D;&#x7F6E;">4.1 RDT &#x8BAD;&#x7EC3;&#x73AF;&#x5883;&#x914D;&#x7F6E;</h1>
+<p>&#x672C;&#x8282;&#x8BE6;&#x7EC6;&#x8BF4;&#x660E;&#x5982;&#x4F55;&#x914D;&#x7F6E; RDT &#x5FAE;&#x8C03;&#x6240;&#x9700;&#x7684;&#x5B8C;&#x6574;&#x73AF;&#x5883;&#x3002;</p>
+<hr>
+<h2 id="1-&#x786C;&#x4EF6;&#x8981;&#x6C42;">1. &#x786C;&#x4EF6;&#x8981;&#x6C42;</h2>
+<h3 id="&#x6700;&#x4F4E;&#x914D;&#x7F6E;&#xFF08;rdt-170m&#xFF09;">&#x6700;&#x4F4E;&#x914D;&#x7F6E;&#xFF08;RDT-170M&#xFF09;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x7EC4;&#x4EF6;</th>
+<th>&#x8981;&#x6C42;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU</td>
+<td>NVIDIA GPU&#xFF0C;8GB+ &#x663E;&#x5B58;&#xFF08;&#x5982; RTX 4060/3070&#xFF09;</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>32GB+ &#x7CFB;&#x7EDF;&#x5185;&#x5B58;</td>
+</tr>
+<tr>
+<td>&#x5B58;&#x50A8;</td>
+<td>100GB+ SSD&#xFF08;&#x6570;&#x636E;&#x96C6; + &#x68C0;&#x67E5;&#x70B9;&#xFF09;</td>
+</tr>
+<tr>
+<td>CUDA</td>
+<td>11.8 &#x6216; 12.1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="&#x63A8;&#x8350;&#x914D;&#x7F6E;&#xFF08;rdt-1b&#xFF09;">&#x63A8;&#x8350;&#x914D;&#x7F6E;&#xFF08;RDT-1B&#xFF09;</h3>
+<table>
+<thead>
+<tr>
+<th>&#x7EC4;&#x4EF6;</th>
+<th>&#x8981;&#x6C42;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU</td>
+<td>&#x591A;&#x5361; A100/H100&#xFF0C;80GB+ &#x663E;&#x5B58;</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>128GB+ &#x7CFB;&#x7EDF;&#x5185;&#x5B58;</td>
+</tr>
+<tr>
+<td>&#x5B58;&#x50A8;</td>
+<td>500GB+ NVMe SSD</td>
+</tr>
+<tr>
+<td>CUDA</td>
+<td>12.1+</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-&#x8F6F;&#x4EF6;&#x73AF;&#x5883;&#x5B89;&#x88C5;">2. &#x8F6F;&#x4EF6;&#x73AF;&#x5883;&#x5B89;&#x88C5;</h2>
+<h3 id="21-&#x521B;&#x5EFA;-conda-&#x73AF;&#x5883;">2.1 &#x521B;&#x5EFA; Conda &#x73AF;&#x5883;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x521B;&#x5EFA;&#x65B0;&#x73AF;&#x5883;</span>
+conda create -n rdt python=3.10.0
+conda activate rdt
+
+<span class="hljs-comment"># &#x9A8C;&#x8BC1; Python &#x7248;&#x672C;</span>
+python --version  <span class="hljs-comment"># &#x5E94;&#x663E;&#x793A; Python 3.10.0</span>
+</code></pre>
+<h3 id="22-&#x5B89;&#x88C5;-pytorch">2.2 &#x5B89;&#x88C5; PyTorch</h3>
+<p>&#x6839;&#x636E;&#x4F60;&#x7684; CUDA &#x7248;&#x672C;&#x9009;&#x62E9;&#x5BF9;&#x5E94;&#x547D;&#x4EE4;&#xFF1A;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># CUDA 11.8</span>
+pip install torch==2.1.0 torchvision==0.16.0 --index-url https://download.pytorch.org/whl/cu118
+
+<span class="hljs-comment"># CUDA 12.1&#xFF08;&#x63A8;&#x8350;&#xFF09;</span>
+pip install torch==2.1.0 torchvision==0.16.0 --index-url https://download.pytorch.org/whl/cu121
+
+<span class="hljs-comment"># &#x9A8C;&#x8BC1;&#x5B89;&#x88C5;</span>
+python -c <span class="hljs-string">&quot;import torch; print(torch.cuda.is_available())&quot;</span>  <span class="hljs-comment"># &#x5E94;&#x8F93;&#x51FA; True</span>
+</code></pre>
+<h3 id="23-&#x5B89;&#x88C5;-flash-attention">2.3 &#x5B89;&#x88C5; Flash Attention</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x5FC5;&#x987B;&#x5148;&#x5B89;&#x88C5; packaging</span>
+pip install packaging==24.0
+
+<span class="hljs-comment"># &#x5B89;&#x88C5; flash-attn&#xFF08;&#x9700;&#x8981;&#x7F16;&#x8BD1;&#xFF0C;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x51E0;&#x5206;&#x949F;&#xFF09;</span>
+pip install flash-attn --no-build-isolation
+
+<span class="hljs-comment"># &#x9A8C;&#x8BC1;&#x5B89;&#x88C5;</span>
+python -c <span class="hljs-string">&quot;import flash_attn; print(flash_attn.__version__)&quot;</span>
+</code></pre>
+<blockquote>
+<p><strong>&#x6CE8;&#x610F;</strong>&#xFF1A;&#x5982;&#x679C;&#x7F16;&#x8BD1;&#x5931;&#x8D25;&#xFF0C;&#x786E;&#x4FDD;&#x5DF2;&#x5B89;&#x88C5; CUDA toolkit &#x548C; gcc/g++&#x3002;</p>
+</blockquote>
+<h3 id="24-&#x5B89;&#x88C5;&#x5176;&#x4ED6;&#x4F9D;&#x8D56;">2.4 &#x5B89;&#x88C5;&#x5176;&#x4ED6;&#x4F9D;&#x8D56;</h3>
+<pre><code class="lang-bash"><span class="hljs-built_in">cd</span> RoboticsDiffusionTransformer
+
+<span class="hljs-comment"># &#x5B89;&#x88C5;&#x4E3B;&#x8981;&#x4F9D;&#x8D56;</span>
+pip install -r requirements.txt
+
+<span class="hljs-comment"># &#x5982;&#x679C;&#x9700;&#x8981;&#x5904;&#x7406;&#x6570;&#x636E;</span>
+pip install -r requirements_data.txt
+</code></pre>
+<hr>
+<h2 id="3-&#x9884;&#x8BAD;&#x7EC3;&#x6A21;&#x578B;&#x4E0B;&#x8F7D;">3. &#x9884;&#x8BAD;&#x7EC3;&#x6A21;&#x578B;&#x4E0B;&#x8F7D;</h2>
+<h3 id="31-&#x4E0B;&#x8F7D;-rdt-&#x6A21;&#x578B;">3.1 &#x4E0B;&#x8F7D; RDT &#x6A21;&#x578B;</h3>
+<p>&#x4ECE; HuggingFace &#x4E0B;&#x8F7D;&#x9884;&#x8BAD;&#x7EC3;&#x6743;&#x91CD;&#xFF1A;</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x65B9;&#x5F0F; 1&#xFF1A;&#x4F7F;&#x7528; huggingface-cli&#xFF08;&#x63A8;&#x8350;&#xFF09;</span>
+pip install huggingface_hub
+huggingface-cli download robotics-diffusion-transformer/rdt-170m --local-dir ./models/rdt-170m
+
+<span class="hljs-comment"># &#x65B9;&#x5F0F; 2&#xFF1A;&#x4F7F;&#x7528; git lfs</span>
+git lfs install
+git <span class="hljs-built_in">clone</span> https://huggingface.co/robotics-diffusion-transformer/rdt-170m models/rdt-170m
+</code></pre>
+<h3 id="32-&#x4E0B;&#x8F7D;&#x7F16;&#x7801;&#x5668;">3.2 &#x4E0B;&#x8F7D;&#x7F16;&#x7801;&#x5668;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># T5-v1.1-XXL&#xFF08;&#x8BED;&#x8A00;&#x7F16;&#x7801;&#x5668;&#xFF09;</span>
+huggingface-cli download google/t5-v1_1-xxl --local-dir ./models/t5-v1_1-xxl
+
+<span class="hljs-comment"># SigLIP&#xFF08;&#x89C6;&#x89C9;&#x7F16;&#x7801;&#x5668;&#xFF09;</span>
+huggingface-cli download google/siglip-so400m-patch14-384 --local-dir ./models/siglip-so400m-patch14-384
+</code></pre>
+<h3 id="33-&#x521B;&#x5EFA;&#x7B26;&#x53F7;&#x94FE;&#x63A5;">3.3 &#x521B;&#x5EFA;&#x7B26;&#x53F7;&#x94FE;&#x63A5;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x5728; RoboticsDiffusionTransformer &#x6839;&#x76EE;&#x5F55;&#x4E0B;</span>
+mkdir -p google
+ln <span class="hljs-_">-s</span> $(<span class="hljs-built_in">pwd</span>)/models/t5-v1_1-xxl google/t5-v1_1-xxl
+ln <span class="hljs-_">-s</span> $(<span class="hljs-built_in">pwd</span>)/models/siglip-so400m-patch14-384 google/siglip-so400m-patch14-384
+</code></pre>
+<hr>
+<h2 id="4-&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4FEE;&#x6539;">4. &#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4FEE;&#x6539;</h2>
+<h3 id="41-baseyaml">4.1 base.yaml</h3>
+<p>&#x7F16;&#x8F91; <code>configs/base.yaml</code>&#xFF0C;&#x8BBE;&#x7F6E;&#x7F13;&#x51B2;&#x533A;&#x8DEF;&#x5F84;&#xFF1A;</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">dataset:</span>
+  <span class="hljs-comment"># &#x8BBE;&#x7F6E;&#x6570;&#x636E;&#x7F13;&#x51B2;&#x533A;&#x8DEF;&#x5F84;&#xFF08;&#x9700;&#x8981;&#x81F3;&#x5C11; 400GB &#x7A7A;&#x95F4;&#xFF09;</span>
+<span class="hljs-attr">  buf_path:</span> /path/to/your/buffer
+</code></pre>
+<h3 id="42-&#x6570;&#x636E;&#x96C6;&#x914D;&#x7F6E;">4.2 &#x6570;&#x636E;&#x96C6;&#x914D;&#x7F6E;</h3>
+<p>&#x7F16;&#x8F91; <code>configs/finetune_datasets.json</code>&#xFF1A;</p>
+<pre><code class="lang-json">[
+    <span class="hljs-string">&quot;lerobot&quot;</span>
+]
+</code></pre>
+<p>&#x7F16;&#x8F91; <code>configs/finetune_sample_weights.json</code>&#xFF1A;</p>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;lerobot&quot;</span>: <span class="hljs-number">1.0</span>
+}
+</code></pre>
+<p>&#x7F16;&#x8F91; <code>configs/dataset_control_freq.json</code>&#xFF0C;&#x6DFB;&#x52A0;&#x4F60;&#x7684;&#x6570;&#x636E;&#x96C6;&#xFF1A;</p>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;lerobot&quot;</span>: <span class="hljs-number">30</span>
+}
+</code></pre>
+<hr>
+<h2 id="5-&#x663E;&#x5B58;&#x4F18;&#x5316;&#x914D;&#x7F6E;">5. &#x663E;&#x5B58;&#x4F18;&#x5316;&#x914D;&#x7F6E;</h2>
+<h3 id="51-&#x4F4E;&#x663E;&#x5B58;&#x573A;&#x666F;&#xFF08;16gb&#xFF09;">5.1 &#x4F4E;&#x663E;&#x5B58;&#x573A;&#x666F;&#xFF08;&lt;16GB&#xFF09;</h3>
+<p>&#x4FEE;&#x6539; <code>finetune.sh</code>&#xFF1A;</p>
+<pre><code class="lang-bash">python main.py \
+    --pretrained_model_name_or_path=<span class="hljs-string">&quot;./models/rdt-170m&quot;</span> \  <span class="hljs-comment"># &#x4F7F;&#x7528;&#x5C0F;&#x6A21;&#x578B;</span>
+    --train_batch_size=1 \                                  <span class="hljs-comment"># &#x6700;&#x5C0F; batch</span>
+    --gradient_accumulation_steps=32 \                      <span class="hljs-comment"># &#x68AF;&#x5EA6;&#x7D2F;&#x79EF;</span>
+    --mixed_precision=<span class="hljs-string">&quot;no&quot;</span> \                                <span class="hljs-comment"># &#x5173;&#x95ED;&#x6DF7;&#x5408;&#x7CBE;&#x5EA6;&#xFF08;&#x5982;&#x679C; bf16 &#x6709;&#x95EE;&#x9898;&#xFF09;</span>
+    --precomp_lang_embed \                                  <span class="hljs-comment"># &#x9884;&#x8BA1;&#x7B97;&#x8BED;&#x8A00;&#x5D4C;&#x5165;</span>
+    --dataloader_num_workers=0                              <span class="hljs-comment"># &#x51CF;&#x5C11;&#x5185;&#x5B58;&#x5360;&#x7528;</span>
+</code></pre>
+<h3 id="52-&#x4E2D;&#x7B49;&#x663E;&#x5B58;&#xFF08;24gb-48gb&#xFF09;">5.2 &#x4E2D;&#x7B49;&#x663E;&#x5B58;&#xFF08;24GB-48GB&#xFF09;</h3>
+<pre><code class="lang-bash">deepspeed --num_gpus=1 main.py \
+    --deepspeed=<span class="hljs-string">&quot;./configs/zero2.json&quot;</span> \
+    --pretrained_model_name_or_path=<span class="hljs-string">&quot;./models/rdt-170m&quot;</span> \
+    --train_batch_size=4 \
+    --gradient_accumulation_steps=8 \
+    --mixed_precision=<span class="hljs-string">&quot;bf16&quot;</span> \
+    --precomp_lang_embed
+</code></pre>
+<h3 id="53-&#x591A;&#x5361;&#x8BAD;&#x7EC3;&#xFF08;a100h100&#xFF09;">5.3 &#x591A;&#x5361;&#x8BAD;&#x7EC3;&#xFF08;A100/H100&#xFF09;</h3>
+<p>&#x521B;&#x5EFA; <code>hostfile.txt</code>&#xFF1A;</p>
+<pre><code>localhost slots=4
+</code></pre><p>&#x542F;&#x52A8;&#x8BAD;&#x7EC3;&#xFF1A;</p>
+<pre><code class="lang-bash">deepspeed --hostfile=hostfile.txt main.py \
+    --deepspeed=<span class="hljs-string">&quot;./configs/zero2.json&quot;</span> \
+    --pretrained_model_name_or_path=<span class="hljs-string">&quot;robotics-diffusion-transformer/rdt-1b&quot;</span> \
+    --train_batch_size=32 \
+    --mixed_precision=<span class="hljs-string">&quot;bf16&quot;</span>
+</code></pre>
+<hr>
+<h2 id="6-&#x73AF;&#x5883;&#x9A8C;&#x8BC1;">6. &#x73AF;&#x5883;&#x9A8C;&#x8BC1;</h2>
+<p>&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x811A;&#x672C;&#x9A8C;&#x8BC1;&#x73AF;&#x5883;&#x662F;&#x5426;&#x6B63;&#x786E;&#x914D;&#x7F6E;&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-comment">#!/usr/bin/env python3</span>
+<span class="hljs-comment"># test_env.py</span>
+
+<span class="hljs-keyword">import</span> sys
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_env</span><span class="hljs-params">()</span>:</span>
+    print(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">50</span>)
+    print(<span class="hljs-string">&quot;RDT &#x73AF;&#x5883;&#x68C0;&#x67E5;&quot;</span>)
+    print(<span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">50</span>)
+
+    <span class="hljs-comment"># Python &#x7248;&#x672C;</span>
+    print(f<span class="hljs-string">&quot;\n[1] Python: {sys.version}&quot;</span>)
+
+    <span class="hljs-comment"># PyTorch</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">import</span> torch
+        print(f<span class="hljs-string">&quot;[2] PyTorch: {torch.__version__}&quot;</span>)
+        print(f<span class="hljs-string">&quot;    CUDA available: {torch.cuda.is_available()}&quot;</span>)
+        <span class="hljs-keyword">if</span> torch.cuda.is_available():
+            print(f<span class="hljs-string">&quot;    CUDA version: {torch.version.cuda}&quot;</span>)
+            print(f<span class="hljs-string">&quot;    GPU: {torch.cuda.get_device_name(0)}&quot;</span>)
+            print(f<span class="hljs-string">&quot;    GPU memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB&quot;</span>)
+    <span class="hljs-keyword">except</span> ImportError:
+        print(<span class="hljs-string">&quot;[2] PyTorch: NOT INSTALLED&quot;</span>)
+
+    <span class="hljs-comment"># Flash Attention</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">import</span> flash_attn
+        print(f<span class="hljs-string">&quot;[3] Flash Attention: {flash_attn.__version__}&quot;</span>)
+    <span class="hljs-keyword">except</span> ImportError:
+        print(<span class="hljs-string">&quot;[3] Flash Attention: NOT INSTALLED&quot;</span>)
+
+    <span class="hljs-comment"># DeepSpeed</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">import</span> deepspeed
+        print(f<span class="hljs-string">&quot;[4] DeepSpeed: {deepspeed.__version__}&quot;</span>)
+    <span class="hljs-keyword">except</span> ImportError:
+        print(<span class="hljs-string">&quot;[4] DeepSpeed: NOT INSTALLED (optional)&quot;</span>)
+
+    <span class="hljs-comment"># Transformers</span>
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-keyword">import</span> transformers
+        print(f<span class="hljs-string">&quot;[5] Transformers: {transformers.__version__}&quot;</span>)
+    <span class="hljs-keyword">except</span> ImportError:
+        print(<span class="hljs-string">&quot;[5] Transformers: NOT INSTALLED&quot;</span>)
+
+    print(<span class="hljs-string">&quot;\n&quot;</span> + <span class="hljs-string">&quot;=&quot;</span> * <span class="hljs-number">50</span>)
+    print(<span class="hljs-string">&quot;&#x68C0;&#x67E5;&#x5B8C;&#x6210;&#xFF01;&quot;</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    check_env()
+</code></pre>
+<p>&#x8FD0;&#x884C;&#xFF1A;</p>
+<pre><code class="lang-bash">python test_env.py
+</code></pre>
+<hr>
+<h2 id="7-&#x5E38;&#x89C1;&#x95EE;&#x9898;">7. &#x5E38;&#x89C1;&#x95EE;&#x9898;</h2>
+<h3 id="q1-flash-attn-&#x7F16;&#x8BD1;&#x5931;&#x8D25;">Q1: flash-attn &#x7F16;&#x8BD1;&#x5931;&#x8D25;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x786E;&#x4FDD;&#x5B89;&#x88C5;&#x4E86; CUDA toolkit</span>
+nvcc --version
+
+<span class="hljs-comment"># &#x5B89;&#x88C5;&#x7F16;&#x8BD1;&#x5DE5;&#x5177;</span>
+sudo apt install build-essential
+
+<span class="hljs-comment"># &#x5C1D;&#x8BD5;&#x6307;&#x5B9A; CUDA &#x67B6;&#x6784;</span>
+TORCH_CUDA_ARCH_LIST=<span class="hljs-string">&quot;8.0;8.6&quot;</span> pip install flash-attn --no-build-isolation
+</code></pre>
+<h3 id="q2-&#x627E;&#x4E0D;&#x5230;-cuda">Q2: &#x627E;&#x4E0D;&#x5230; CUDA</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x68C0;&#x67E5; CUDA &#x8DEF;&#x5F84;</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-variable">$CUDA_HOME</span>
+
+<span class="hljs-comment"># &#x5982;&#x679C;&#x4E3A;&#x7A7A;&#xFF0C;&#x8BBE;&#x7F6E;&#x8DEF;&#x5F84;</span>
+<span class="hljs-built_in">export</span> CUDA_HOME=/usr/<span class="hljs-built_in">local</span>/cuda
+<span class="hljs-built_in">export</span> PATH=<span class="hljs-variable">$CUDA_HOME</span>/bin:<span class="hljs-variable">$PATH</span>
+<span class="hljs-built_in">export</span> LD_LIBRARY_PATH=<span class="hljs-variable">$CUDA_HOME</span>/lib64:<span class="hljs-variable">$LD_LIBRARY_PATH</span>
+</code></pre>
+<h3 id="q3-&#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#xFF08;oom&#xFF09;">Q3: &#x5185;&#x5B58;&#x4E0D;&#x8DB3;&#xFF08;OOM&#xFF09;</h3>
+<ol>
+<li>&#x51CF;&#x5C0F; <code>train_batch_size</code></li>
+<li>&#x589E;&#x5927; <code>gradient_accumulation_steps</code></li>
+<li>&#x4F7F;&#x7528; ZeRO-3 &#x914D;&#x7F6E;</li>
+<li>&#x542F;&#x7528; CPU offload</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch4_rdt_training.html" class="navigation navigation-prev " aria-label="Previous page: 4. RDT 训练与微调">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch4_2_data_prep.html" class="navigation navigation-next " aria-label="Next page: 4.2 数据集准备与转换">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"4.1 训练环境配置","level":"5.1.1","depth":2,"next":{"title":"4.2 数据集准备与转换","level":"5.1.2","depth":2,"path":"ch4_2_data_prep.md","ref":"ch4_2_data_prep.md","articles":[]},"previous":{"title":"4. RDT 训练与微调","level":"5.1","depth":1,"path":"ch4_rdt_training.md","ref":"ch4_rdt_training.md","articles":[{"title":"4.1 训练环境配置","level":"5.1.1","depth":2,"path":"ch4_1_env_setup.md","ref":"ch4_1_env_setup.md","articles":[]},{"title":"4.2 数据集准备与转换","level":"5.1.2","depth":2,"path":"ch4_2_data_prep.md","ref":"ch4_2_data_prep.md","articles":[]},{"title":"4.3 模型微调","level":"5.1.3","depth":2,"path":"ch4_3_finetune.md","ref":"ch4_3_finetune.md","articles":[]},{"title":"4.4 模型部署与推理","level":"5.1.4","depth":2,"path":"ch4_4_deploy.md","ref":"ch4_4_deploy.md","articles":[]},{"title":"4.5 函数解析：RDT 模型与训练","level":"5.1.5","depth":2,"path":"ch4_5_ref_rdt_training.md","ref":"ch4_5_ref_rdt_training.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ch4_1_env_setup.md","mtime":"2026-01-30T04:08:16.670Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-31T00:50:12.433Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

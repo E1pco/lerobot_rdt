@@ -1,0 +1,872 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>4. RDT 训练与微调 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch4_1_env_setup.html" />
+    
+    
+    <link rel="prev" href="ch3_6_ref_rdt_pipeline.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="ch0_overview.html">
+            
+                <a href="ch0_overview.html">
+            
+                    
+                    总览
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="ch0_env_setup.html">
+            
+                <a href="ch0_env_setup.html">
+            
+                    
+                    环境与依赖
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第一章 自设计 SDK</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ch1_sdk.html">
+            
+                <a href="ch1_sdk.html">
+            
+                    
+                    1. 自设计 SDK
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1.1" data-path="ch1_1_sdk_api.html">
+            
+                <a href="ch1_1_sdk_api.html">
+            
+                    
+                    1.1 API 速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.2" data-path="ch1_2_ref_driver.html">
+            
+                <a href="ch1_2_ref_driver.html">
+            
+                    
+                    1.2 函数解析：driver
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.1.3" data-path="ch1_3_ref_ik.html">
+            
+                <a href="ch1_3_ref_ik.html">
+            
+                    
+                    1.3 函数解析：ik
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第二章 人机交互</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="ch2_hci_teleop.html">
+            
+                <a href="ch2_hci_teleop.html">
+            
+                    
+                    2. 人机交互（键盘/JoyCon）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1.1" data-path="ch2_1_controls.html">
+            
+                <a href="ch2_1_controls.html">
+            
+                    
+                    2.1 控制映射速查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.1.2" data-path="ch2_2_leader_follower.html">
+            
+                <a href="ch2_2_leader_follower.html">
+            
+                    
+                    2.2 主从臂遥操
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第三章 数据集构建</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="ch3_dataset.html">
+            
+                <a href="ch3_dataset.html">
+            
+                    
+                    3. 数据集构建（RDT）
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1.1" data-path="ch3_1_theory_rdt_format.html">
+            
+                <a href="ch3_1_theory_rdt_format.html">
+            
+                    
+                    3.1 理论：RDT 数据格式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.2" data-path="ch3_2_theory_handeye.html">
+            
+                <a href="ch3_2_theory_handeye.html">
+            
+                    
+                    3.2 理论：手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.3" data-path="ch3_3_calibration.html">
+            
+                <a href="ch3_3_calibration.html">
+            
+                    
+                    3.3 相机与手眼标定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.4" data-path="ch3_4_timesync.html">
+            
+                <a href="ch3_4_timesync.html">
+            
+                    
+                    3.4 时序同步说明
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.5" data-path="ch3_5_ref_handeye.html">
+            
+                <a href="ch3_5_ref_handeye.html">
+            
+                    
+                    3.5 函数解析：手眼评估
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.6" data-path="ch3_6_ref_rdt_pipeline.html">
+            
+                <a href="ch3_6_ref_rdt_pipeline.html">
+            
+                    
+                    3.6 函数解析：RDT 采集链路
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第四章 RDT 训练与微调</li>
+        
+        
+    
+        <li class="chapter active" data-level="5.1" data-path="ch4_rdt_training.html">
+            
+                <a href="ch4_rdt_training.html">
+            
+                    
+                    4. RDT 训练与微调
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1.1" data-path="ch4_1_env_setup.html">
+            
+                <a href="ch4_1_env_setup.html">
+            
+                    
+                    4.1 训练环境配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.2" data-path="ch4_2_data_prep.html">
+            
+                <a href="ch4_2_data_prep.html">
+            
+                    
+                    4.2 数据集准备与转换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.3" data-path="ch4_3_finetune.html">
+            
+                <a href="ch4_3_finetune.html">
+            
+                    
+                    4.3 模型微调
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.4" data-path="ch4_4_deploy.html">
+            
+                <a href="ch4_4_deploy.html">
+            
+                    
+                    4.4 模型部署与推理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.1.5" data-path="ch4_5_ref_rdt_training.html">
+            
+                <a href="ch4_5_ref_rdt_training.html">
+            
+                    
+                    4.5 函数解析：RDT 模型与训练
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第五章 FPGA 硬件加速</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="ch5_fpga.html">
+            
+                <a href="ch5_fpga.html">
+            
+                    
+                    5. FPGA 逆解加速
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >4. RDT 训练与微调</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="4-rdt-&#x8BAD;&#x7EC3;&#x4E0E;&#x5FAE;&#x8C03;">4. RDT &#x8BAD;&#x7EC3;&#x4E0E;&#x5FAE;&#x8C03;</h1>
+<p>&#x5FEB;&#x901F;&#x8DF3;&#x8F6C;&#xFF1A;</p>
+<ul>
+<li>&#x73AF;&#x5883;&#x914D;&#x7F6E;&#xFF1A;<a href="stage1_4_1_env_setup.md">4.1 &#x8BAD;&#x7EC3;&#x73AF;&#x5883;&#x914D;&#x7F6E;</a></li>
+<li>&#x6570;&#x636E;&#x51C6;&#x5907;&#xFF1A;<a href="stage1_4_2_data_prep.md">4.2 &#x6570;&#x636E;&#x96C6;&#x51C6;&#x5907;&#x4E0E;&#x8F6C;&#x6362;</a></li>
+<li>&#x5FAE;&#x8C03;&#x6D41;&#x7A0B;&#xFF1A;<a href="stage1_4_3_finetune.md">4.3 &#x6A21;&#x578B;&#x5FAE;&#x8C03;</a></li>
+<li>&#x90E8;&#x7F72;&#x63A8;&#x7406;&#xFF1A;<a href="stage1_4_4_deploy.md">4.4 &#x6A21;&#x578B;&#x90E8;&#x7F72;&#x4E0E;&#x63A8;&#x7406;</a></li>
+<li>&#x53C2;&#x8003;&#xFF1A;<a href="ref_rdt_training.md">&#x51FD;&#x6570;&#x89E3;&#x6790;&#xFF1A;RDT &#x6A21;&#x578B;&#x4E0E;&#x8BAD;&#x7EC3;</a></li>
+</ul>
+<p>&#x5BF9;&#x5E94; <code>decument/task.txt</code> &#x7684; 4. &#x4EA7;&#x51FA;&#x7269;&#xFF1A;</p>
+<ul>
+<li>&#x5FAE;&#x8C03;&#x811A;&#x672C;&#xFF1A;<code>RoboticsDiffusionTransformer/finetune.sh</code></li>
+<li>&#x63A8;&#x7406;&#x811A;&#x672C;&#xFF1A;<code>RoboticsDiffusionTransformer/inference.sh</code></li>
+<li>&#x6A21;&#x578B;&#x68C0;&#x67E5;&#x70B9;&#xFF1A;<code>RoboticsDiffusionTransformer/checkpoints/</code></li>
+</ul>
+<hr>
+<h2 id="1-&#x7406;&#x8BBA;&#x80CC;&#x666F;">1. &#x7406;&#x8BBA;&#x80CC;&#x666F;</h2>
+<p>RDT&#xFF08;Robotics Diffusion Transformer&#xFF09;&#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E;&#x6269;&#x6563;&#x6A21;&#x578B;&#x7684;&#x673A;&#x5668;&#x4EBA;&#x57FA;&#x7840;&#x6A21;&#x578B;&#xFF0C;&#x4E13;&#x4E3A;&#x53CC;&#x81C2;&#x64CD;&#x4F5C;&#x8BBE;&#x8BA1;&#x3002;&#x5176;&#x6838;&#x5FC3;&#x7279;&#x70B9;&#xFF1A;</p>
+<ul>
+<li><strong>&#x6A21;&#x578B;&#x89C4;&#x6A21;</strong>&#xFF1A;RDT-1B&#xFF08;10&#x4EBF;&#x53C2;&#x6570;&#xFF09;&#x6216; RDT-170M&#xFF08;1.7&#x4EBF;&#x53C2;&#x6570;&#xFF0C;&#x8F7B;&#x91CF;&#x7248;&#xFF09;</li>
+<li><strong>&#x9884;&#x8BAD;&#x7EC3;&#x6570;&#x636E;</strong>&#xFF1A;100&#x4E07;+ &#x591A;&#x673A;&#x5668;&#x4EBA; episodes</li>
+<li><strong>&#x8F93;&#x51FA;&#x683C;&#x5F0F;</strong>&#xFF1A;&#x9884;&#x6D4B;&#x672A;&#x6765; 64 &#x6B65;&#x52A8;&#x4F5C;&#xFF08;Action Chunking&#xFF09;</li>
+<li><strong>&#x8F93;&#x5165;&#x683C;&#x5F0F;</strong>&#xFF1A;&#x8BED;&#x8A00;&#x6307;&#x4EE4; + &#x6700;&#x591A;&#x4E09;&#x89C6;&#x89D2; RGB &#x56FE;&#x50CF;</li>
+</ul>
+<h3 id="&#x7EDF;&#x4E00;&#x52A8;&#x4F5C;&#x5411;&#x91CF;&#xFF08;unified-action-vector&#xFF09;">&#x7EDF;&#x4E00;&#x52A8;&#x4F5C;&#x5411;&#x91CF;&#xFF08;Unified Action Vector&#xFF09;</h3>
+<p>RDT &#x4F7F;&#x7528; <code>float32[128]</code> &#x7684;&#x7EDF;&#x4E00;&#x5411;&#x91CF;&#x8868;&#x793A;&#x6240;&#x6709;&#x673A;&#x5668;&#x4EBA;&#x7684;&#x72B6;&#x6001;&#x548C;&#x52A8;&#x4F5C;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>&#x7D22;&#x5F15;&#x8303;&#x56F4;</th>
+<th>&#x542B;&#x4E49;</th>
+<th>&#x8BF4;&#x660E;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[0, 10)</td>
+<td>&#x53F3;&#x81C2;&#x5173;&#x8282;&#x4F4D;&#x7F6E;</td>
+<td>&#x6700;&#x591A; 10 &#x4E2A;&#x5173;&#x8282;</td>
+</tr>
+<tr>
+<td>[10, 15)</td>
+<td>&#x53F3;&#x5939;&#x722A;&#x4F4D;&#x7F6E;</td>
+<td>&#x5939;&#x722A;&#x5F00;&#x5408;</td>
+</tr>
+<tr>
+<td>[15, 25)</td>
+<td>&#x53F3;&#x81C2;&#x5173;&#x8282;&#x901F;&#x5EA6;</td>
+<td>&#x53EF;&#x9009;</td>
+</tr>
+<tr>
+<td>[25, 30)</td>
+<td>&#x53F3;&#x5939;&#x722A;&#x901F;&#x5EA6;</td>
+<td>&#x53EF;&#x9009;</td>
+</tr>
+<tr>
+<td>[30, 33)</td>
+<td>&#x53F3;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E;</td>
+<td>xyz</td>
+</tr>
+<tr>
+<td>[33, 39)</td>
+<td>&#x53F3;&#x672B;&#x7AEF;&#x59FF;&#x6001;</td>
+<td>6D &#x65CB;&#x8F6C;&#x8868;&#x793A;</td>
+</tr>
+<tr>
+<td>[39, 45)</td>
+<td>&#x53F3;&#x672B;&#x7AEF;&#x901F;&#x5EA6;</td>
+<td>&#x53EF;&#x9009;</td>
+</tr>
+<tr>
+<td>[50, 60)</td>
+<td>&#x5DE6;&#x81C2;&#x5173;&#x8282;&#x4F4D;&#x7F6E;</td>
+<td>&#x6700;&#x591A; 10 &#x4E2A;&#x5173;&#x8282;</td>
+</tr>
+<tr>
+<td>[60, 65)</td>
+<td>&#x5DE6;&#x5939;&#x722A;&#x4F4D;&#x7F6E;</td>
+<td>&#x5939;&#x722A;&#x5F00;&#x5408;</td>
+</tr>
+<tr>
+<td>[65, 80)</td>
+<td>&#x5DE6;&#x81C2;&#x901F;&#x5EA6;</td>
+<td>&#x53EF;&#x9009;</td>
+</tr>
+<tr>
+<td>[80, 83)</td>
+<td>&#x5DE6;&#x672B;&#x7AEF;&#x4F4D;&#x7F6E;</td>
+<td>xyz</td>
+</tr>
+<tr>
+<td>[83, 89)</td>
+<td>&#x5DE6;&#x672B;&#x7AEF;&#x59FF;&#x6001;</td>
+<td>6D &#x65CB;&#x8F6C;&#x8868;&#x793A;</td>
+</tr>
+<tr>
+<td>[89, 95)</td>
+<td>&#x5DE6;&#x672B;&#x7AEF;&#x901F;&#x5EA6;</td>
+<td>&#x53EF;&#x9009;</td>
+</tr>
+<tr>
+<td>[100, 103)</td>
+<td>&#x5E95;&#x76D8;&#x901F;&#x5EA6;</td>
+<td>&#x79FB;&#x52A8;&#x5E95;&#x76D8;&#x7528;</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>&#x91CD;&#x8981;</strong>&#xFF1A;&#x5355;&#x81C2;&#x673A;&#x5668;&#x4EBA;&#x5E94;&#x5C06;&#x52A8;&#x4F5C;&#x586B;&#x5165;<strong>&#x53F3;&#x81C2;</strong>&#x90E8;&#x5206;&#xFF08;&#x7D22;&#x5F15; 0-50&#xFF09;&#xFF0C;&#x4EE5;&#x4E0E;&#x9884;&#x8BAD;&#x7EC3;&#x6570;&#x636E;&#x5BF9;&#x9F50;&#x3002;</p>
+</blockquote>
+<h3 id="6d-&#x65CB;&#x8F6C;&#x8868;&#x793A;">6D &#x65CB;&#x8F6C;&#x8868;&#x793A;</h3>
+<p>RDT &#x4F7F;&#x7528; <a href="https://arxiv.org/pdf/1812.07035" target="_blank">6D &#x65CB;&#x8F6C;&#x8868;&#x793A;</a> &#x800C;&#x975E;&#x6B27;&#x62C9;&#x89D2;&#x6216;&#x56DB;&#x5143;&#x6570;&#xFF1A;</p>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rotation_matrix_to_6d</span><span class="hljs-params">(R)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;&#x5C06; 3x3 &#x65CB;&#x8F6C;&#x77E9;&#x9635;&#x8F6C;&#x6362;&#x4E3A; 6D &#x8868;&#x793A;&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">return</span> R[:, :<span class="hljs-number">2</span>].flatten()  <span class="hljs-comment"># &#x53D6;&#x524D;&#x4E24;&#x5217;&#xFF0C;&#x5C55;&#x5E73;&#x4E3A; 6 &#x7EF4;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">euler_to_6d</span><span class="hljs-params">(roll, pitch, yaw)</span>:</span>
+    <span class="hljs-string">&quot;&quot;&quot;&#x6B27;&#x62C9;&#x89D2;&#x8F6C; 6D &#x8868;&#x793A;&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> scipy.spatial.transform <span class="hljs-keyword">import</span> Rotation
+    R = Rotation.from_euler(<span class="hljs-string">&apos;xyz&apos;</span>, [roll, pitch, yaw]).as_matrix()
+    <span class="hljs-keyword">return</span> rotation_matrix_to_6d(R)
+</code></pre>
+<hr>
+<h2 id="2-&#x672C;&#x7AE0;&#x76EE;&#x6807;">2. &#x672C;&#x7AE0;&#x76EE;&#x6807;</h2>
+<ol>
+<li><strong>&#x73AF;&#x5883;&#x642D;&#x5EFA;</strong>&#xFF1A;&#x914D;&#x7F6E; RDT &#x8BAD;&#x7EC3;&#x6240;&#x9700;&#x7684; Python &#x73AF;&#x5883;&#x3001;CUDA&#x3001;DeepSpeed</li>
+<li><strong>&#x6570;&#x636E;&#x51C6;&#x5907;</strong>&#xFF1A;&#x5C06;&#x91C7;&#x96C6;&#x7684; HDF5 &#x6570;&#x636E;&#x96C6;&#x8F6C;&#x6362;&#x4E3A; RDT &#x8BAD;&#x7EC3;&#x683C;&#x5F0F;</li>
+<li><strong>&#x6A21;&#x578B;&#x5FAE;&#x8C03;</strong>&#xFF1A;&#x57FA;&#x4E8E;&#x9884;&#x8BAD;&#x7EC3;&#x6743;&#x91CD;&#x5728;&#x81EA;&#x91C7;&#x6570;&#x636E;&#x4E0A;&#x5FAE;&#x8C03;</li>
+<li><strong>&#x90E8;&#x7F72;&#x63A8;&#x7406;</strong>&#xFF1A;&#x5728;&#x771F;&#x5B9E;&#x673A;&#x5668;&#x4EBA;&#x4E0A;&#x90E8;&#x7F72;&#x5FAE;&#x8C03;&#x540E;&#x7684;&#x6A21;&#x578B;</li>
+</ol>
+<hr>
+<h2 id="3-&#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;">3. &#x7A0B;&#x5E8F;&#x8BBE;&#x8BA1;&#x7ED3;&#x6784;</h2>
+<p>RDT &#x8BAD;&#x7EC3;&#x7BA1;&#x7EBF;&#x53EF;&#x5206;&#x4E3A;&#x4EE5;&#x4E0B;&#x6A21;&#x5757;&#xFF1A;</p>
+<pre><code>RoboticsDiffusionTransformer/
+&#x251C;&#x2500;&#x2500; configs/                    # &#x914D;&#x7F6E;&#x6587;&#x4EF6;
+&#x2502;   &#x251C;&#x2500;&#x2500; base.yaml              # &#x6A21;&#x578B;&#x67B6;&#x6784;&#x4E0E;&#x6570;&#x636E;&#x5904;&#x7406;&#x914D;&#x7F6E;
+&#x2502;   &#x251C;&#x2500;&#x2500; state_vec.py           # &#x7EDF;&#x4E00;&#x5411;&#x91CF;&#x7D22;&#x5F15;&#x5B9A;&#x4E49;
+&#x2502;   &#x251C;&#x2500;&#x2500; finetune_datasets.json # &#x5FAE;&#x8C03;&#x6570;&#x636E;&#x96C6;&#x5217;&#x8868;
+&#x2502;   &#x2514;&#x2500;&#x2500; zero2.json             # DeepSpeed ZeRO-2 &#x914D;&#x7F6E;
+&#x251C;&#x2500;&#x2500; data/                       # &#x6570;&#x636E;&#x52A0;&#x8F7D;
+&#x2502;   &#x251C;&#x2500;&#x2500; hdf5_vla_dataset.py    # HDF5 &#x6570;&#x636E;&#x96C6;&#x52A0;&#x8F7D;&#x5668;&#xFF08;&#x9700;&#x4FEE;&#x6539;&#xFF09;
+&#x2502;   &#x2514;&#x2500;&#x2500; compute_dataset_stat_hdf5.py  # &#x6570;&#x636E;&#x96C6;&#x7EDF;&#x8BA1;
+&#x251C;&#x2500;&#x2500; models/                     # &#x6A21;&#x578B;&#x5B9E;&#x73B0;
+&#x2502;   &#x2514;&#x2500;&#x2500; rdt_runner.py          # RDT &#x6A21;&#x578B;&#x6838;&#x5FC3;
+&#x251C;&#x2500;&#x2500; train/                      # &#x8BAD;&#x7EC3;&#x903B;&#x8F91;
+&#x2502;   &#x2514;&#x2500;&#x2500; train.py               # &#x8BAD;&#x7EC3;&#x4E3B;&#x5FAA;&#x73AF;
+&#x251C;&#x2500;&#x2500; scripts/                    # &#x5B9E;&#x7528;&#x811A;&#x672C;
+&#x2502;   &#x251C;&#x2500;&#x2500; encode_lang.py         # &#x8BED;&#x8A00;&#x7F16;&#x7801;&#x9884;&#x8BA1;&#x7B97;
+&#x2502;   &#x2514;&#x2500;&#x2500; agilex_inference.py    # &#x63A8;&#x7406;&#x793A;&#x4F8B;
+&#x251C;&#x2500;&#x2500; finetune.sh                # &#x5FAE;&#x8C03;&#x542F;&#x52A8;&#x811A;&#x672C;
+&#x2514;&#x2500;&#x2500; inference.sh               # &#x63A8;&#x7406;&#x542F;&#x52A8;&#x811A;&#x672C;
+</code></pre><hr>
+<h2 id="4-&#x5FEB;&#x901F;&#x5F00;&#x59CB;">4. &#x5FEB;&#x901F;&#x5F00;&#x59CB;</h2>
+<h3 id="41-&#x73AF;&#x5883;&#x5B89;&#x88C5;">4.1 &#x73AF;&#x5883;&#x5B89;&#x88C5;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x521B;&#x5EFA; Conda &#x73AF;&#x5883;</span>
+conda create -n rdt python=3.10.0
+conda activate rdt
+
+<span class="hljs-comment"># &#x5B89;&#x88C5; PyTorch&#xFF08;&#x6839;&#x636E; CUDA &#x7248;&#x672C;&#x8C03;&#x6574;&#xFF09;</span>
+pip install torch==2.1.0 torchvision==0.16.0 --index-url https://download.pytorch.org/whl/cu121
+
+<span class="hljs-comment"># &#x5B89;&#x88C5;&#x4F9D;&#x8D56;</span>
+pip install packaging==24.0
+pip install flash-attn --no-build-isolation
+pip install -r requirements.txt
+</code></pre>
+<h3 id="42-&#x4E0B;&#x8F7D;&#x9884;&#x8BAD;&#x7EC3;&#x6A21;&#x578B;">4.2 &#x4E0B;&#x8F7D;&#x9884;&#x8BAD;&#x7EC3;&#x6A21;&#x578B;</h3>
+<pre><code class="lang-bash"><span class="hljs-built_in">cd</span> RoboticsDiffusionTransformer
+
+<span class="hljs-comment"># &#x521B;&#x5EFA;&#x6A21;&#x578B;&#x76EE;&#x5F55;</span>
+mkdir -p models
+
+<span class="hljs-comment"># &#x4E0B;&#x8F7D; RDT-170M&#xFF08;&#x8F7B;&#x91CF;&#x7248;&#xFF0C;&#x63A8;&#x8350; 8GB &#x663E;&#x5B58;&#xFF09;</span>
+<span class="hljs-comment"># &#x4ECE; HuggingFace &#x4E0B;&#x8F7D;&#xFF1A;https://huggingface.co/robotics-diffusion-transformer/rdt-170m</span>
+
+<span class="hljs-comment"># &#x4E0B;&#x8F7D;&#x7F16;&#x7801;&#x5668;</span>
+<span class="hljs-comment"># T5-XXL: https://huggingface.co/google/t5-v1_1-xxl</span>
+<span class="hljs-comment"># SigLIP: https://huggingface.co/google/siglip-so400m-patch14-384</span>
+
+<span class="hljs-comment"># &#x94FE;&#x63A5;&#x5230; models &#x76EE;&#x5F55;</span>
+ln <span class="hljs-_">-s</span> /path/to/rdt-170m models/rdt-170m
+ln <span class="hljs-_">-s</span> /path/to/t5-v1_1-xxl models/t5-v1_1-xxl
+ln <span class="hljs-_">-s</span> /path/to/siglip-so400m-patch14-384 models/siglip-so400m-patch14-384
+</code></pre>
+<h3 id="43-&#x51C6;&#x5907;&#x6570;&#x636E;&#x96C6;">4.3 &#x51C6;&#x5907;&#x6570;&#x636E;&#x96C6;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x94FE;&#x63A5; HDF5 &#x6570;&#x636E;&#x96C6;</span>
+<span class="hljs-built_in">cd</span> data
+mkdir -p datasets
+ln <span class="hljs-_">-s</span> /path/to/your/hdf5_dataset datasets/lerobot
+
+<span class="hljs-comment"># &#x8BA1;&#x7B97;&#x6570;&#x636E;&#x96C6;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;</span>
+<span class="hljs-built_in">cd</span> ..
+python -m data.compute_dataset_stat_hdf5
+</code></pre>
+<h3 id="44-&#x9884;&#x8BA1;&#x7B97;&#x8BED;&#x8A00;&#x5D4C;&#x5165;&#xFF08;&#x4F4E;&#x663E;&#x5B58;&#x5FC5;&#x9700;&#xFF09;">4.4 &#x9884;&#x8BA1;&#x7B97;&#x8BED;&#x8A00;&#x5D4C;&#x5165;&#xFF08;&#x4F4E;&#x663E;&#x5B58;&#x5FC5;&#x9700;&#xFF09;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x4FEE;&#x6539; scripts/encode_lang.py &#x4E2D;&#x7684;&#x53C2;&#x6570;</span>
+<span class="hljs-comment"># &#x7136;&#x540E;&#x8FD0;&#x884C;</span>
+python -m scripts.encode_lang
+</code></pre>
+<h3 id="45-&#x542F;&#x52A8;&#x5FAE;&#x8C03;">4.5 &#x542F;&#x52A8;&#x5FAE;&#x8C03;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x7F16;&#x8F91; finetune.sh &#x914D;&#x7F6E;&#x53C2;&#x6570;&#x540E;&#x8FD0;&#x884C;</span>
+<span class="hljs-built_in">source</span> finetune.sh
+</code></pre>
+<h3 id="46-&#x90E8;&#x7F72;&#x63A8;&#x7406;">4.6 &#x90E8;&#x7F72;&#x63A8;&#x7406;</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># &#x7F16;&#x8F91; inference.sh &#x914D;&#x7F6E;&#x68C0;&#x67E5;&#x70B9;&#x8DEF;&#x5F84;&#x540E;&#x8FD0;&#x884C;</span>
+<span class="hljs-built_in">source</span> inference.sh
+</code></pre>
+<hr>
+<h2 id="5-&#x811A;&#x672C;&#x4F5C;&#x7528;">5. &#x811A;&#x672C;&#x4F5C;&#x7528;</h2>
+<table>
+<thead>
+<tr>
+<th>&#x811A;&#x672C;</th>
+<th>&#x529F;&#x80FD;</th>
+<th>&#x8F93;&#x5165;</th>
+<th>&#x8F93;&#x51FA;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>finetune.sh</code></td>
+<td>&#x542F;&#x52A8;&#x5FAE;&#x8C03;&#x8BAD;&#x7EC3;</td>
+<td>HDF5 &#x6570;&#x636E;&#x96C6;</td>
+<td>&#x6A21;&#x578B;&#x68C0;&#x67E5;&#x70B9;</td>
+</tr>
+<tr>
+<td><code>inference.sh</code></td>
+<td>&#x542F;&#x52A8;&#x63A8;&#x7406;</td>
+<td>&#x68C0;&#x67E5;&#x70B9; + &#x56FE;&#x50CF;</td>
+<td>&#x52A8;&#x4F5C;&#x5E8F;&#x5217;</td>
+</tr>
+<tr>
+<td><code>encode_lang.py</code></td>
+<td>&#x9884;&#x8BA1;&#x7B97;&#x8BED;&#x8A00;&#x5D4C;&#x5165;</td>
+<td>&#x6587;&#x672C;&#x6307;&#x4EE4;</td>
+<td><code>.pt</code> &#x5D4C;&#x5165;&#x6587;&#x4EF6;</td>
+</tr>
+<tr>
+<td><code>compute_dataset_stat_hdf5.py</code></td>
+<td>&#x8BA1;&#x7B97;&#x6570;&#x636E;&#x96C6;&#x7EDF;&#x8BA1;</td>
+<td>HDF5 &#x6570;&#x636E;&#x96C6;</td>
+<td>&#x5747;&#x503C;/&#x65B9;&#x5DEE;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6-&#x5E38;&#x89C1;&#x95EE;&#x9898;">6. &#x5E38;&#x89C1;&#x95EE;&#x9898;</h2>
+<h3 id="q1-&#x663E;&#x5B58;&#x4E0D;&#x8DB3;&#x600E;&#x4E48;&#x529E;&#xFF1F;">Q1: &#x663E;&#x5B58;&#x4E0D;&#x8DB3;&#x600E;&#x4E48;&#x529E;&#xFF1F;</h3>
+<ol>
+<li><strong>&#x4F7F;&#x7528; RDT-170M</strong>&#xFF1A;&#x6BD4; RDT-1B &#x5C0F; 6 &#x500D;</li>
+<li><strong>&#x9884;&#x8BA1;&#x7B97;&#x8BED;&#x8A00;&#x5D4C;&#x5165;</strong>&#xFF1A;&#x6DFB;&#x52A0; <code>--precomp_lang_embed</code> &#x53C2;&#x6570;</li>
+<li><strong>&#x68AF;&#x5EA6;&#x7D2F;&#x79EF;</strong>&#xFF1A;&#x8BBE;&#x7F6E; <code>--gradient_accumulation_steps=32</code></li>
+<li><strong>ZeRO-3</strong>&#xFF1A;&#x4F7F;&#x7528; <code>configs/zero3.json</code> &#x914D;&#x7F6E;</li>
+<li><strong>&#x6DF7;&#x5408;&#x7CBE;&#x5EA6;</strong>&#xFF1A;&#x4F7F;&#x7528; <code>--mixed_precision=&quot;bf16&quot;</code></li>
+</ol>
+<h3 id="q2-&#x9700;&#x8981;&#x8BAD;&#x7EC3;&#x591A;&#x5C11;&#x6B65;&#xFF1F;">Q2: &#x9700;&#x8981;&#x8BAD;&#x7EC3;&#x591A;&#x5C11;&#x6B65;&#xFF1F;</h3>
+<ul>
+<li>&#x5EFA;&#x8BAE;&#x81F3;&#x5C11; <strong>150K &#x6B65;</strong>&#x4EE5;&#x83B7;&#x5F97;&#x6700;&#x4F73;&#x6548;&#x679C;</li>
+<li>&#x89C2;&#x5BDF; <code>overall_avg_sample_mse</code> &#x6307;&#x6807;&#x6536;&#x655B;&#x60C5;&#x51B5;</li>
+<li>&#x5982;&#x679C;&#x8BAD;&#x7EC3;&#x632F;&#x8361;&#xFF0C;&#x589E;&#x5927; batch size</li>
+</ul>
+<h3 id="q3-&#x5982;&#x4F55;&#x5224;&#x65AD;&#x8BAD;&#x7EC3;&#x662F;&#x5426;&#x6536;&#x655B;&#xFF1F;">Q3: &#x5982;&#x4F55;&#x5224;&#x65AD;&#x8BAD;&#x7EC3;&#x662F;&#x5426;&#x6536;&#x655B;&#xFF1F;</h3>
+<p>&#x76D1;&#x63A7;&#x4EE5;&#x4E0B;&#x6307;&#x6807;&#xFF08;&#x901A;&#x8FC7; TensorBoard &#x6216; WandB&#xFF09;&#xFF1A;</p>
+<ul>
+<li><code>loss</code>&#xFF1A;&#x8BAD;&#x7EC3;&#x635F;&#x5931;&#xFF08;&#x79FB;&#x52A8;&#x5E73;&#x5747;&#xFF09;</li>
+<li><code>overall_avg_sample_mse</code>&#xFF1A;&#x91C7;&#x6837; MSE&#xFF08;&#x8D8A;&#x4F4E;&#x8D8A;&#x597D;&#xFF09;</li>
+</ul>
+<hr>
+<h2 id="7-&#x53C2;&#x8003;&#x8D44;&#x6599;">7. &#x53C2;&#x8003;&#x8D44;&#x6599;</h2>
+<ul>
+<li><a href="https://github.com/thu-ml/RoboticsDiffusionTransformer" target="_blank">RDT &#x5B98;&#x65B9;&#x4ED3;&#x5E93;</a></li>
+<li><a href="https://arxiv.org/pdf/2410.07864" target="_blank">RDT &#x8BBA;&#x6587;</a></li>
+<li><a href="https://huggingface.co/robotics-diffusion-transformer/rdt-1b" target="_blank">HuggingFace &#x6A21;&#x578B;</a></li>
+<li><a href="https://arxiv.org/pdf/1812.07035" target="_blank">6D &#x65CB;&#x8F6C;&#x8868;&#x793A;&#x8BBA;&#x6587;</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch3_6_ref_rdt_pipeline.html" class="navigation navigation-prev " aria-label="Previous page: 3.6 函数解析：RDT 采集链路">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch4_1_env_setup.html" class="navigation navigation-next " aria-label="Next page: 4.1 训练环境配置">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"4. RDT 训练与微调","level":"5.1","depth":1,"next":{"title":"4.1 训练环境配置","level":"5.1.1","depth":2,"path":"ch4_1_env_setup.md","ref":"ch4_1_env_setup.md","articles":[]},"previous":{"title":"3.6 函数解析：RDT 采集链路","level":"4.1.6","depth":2,"path":"ch3_6_ref_rdt_pipeline.md","ref":"ch3_6_ref_rdt_pipeline.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["highlight","search","lunr","sharing","fontsettings","theme-default","mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"ignoreSpecialCharacters":false,"maxIndexSize":1000000},"sharing":{"all":["facebook","google","twitter","weibo","instapaper"],"facebook":true,"google":false,"instapaper":false,"twitter":true,"vk":false,"weibo":false},"fontsettings":{"family":"sans","size":2,"theme":"white"},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"file":{"path":"ch4_rdt_training.md","mtime":"2026-01-30T04:07:42.067Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-31T00:50:12.433Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-mathjax/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+
