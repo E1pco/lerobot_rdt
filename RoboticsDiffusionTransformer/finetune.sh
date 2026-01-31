@@ -22,12 +22,12 @@ python main.py \
     --train_batch_size=1 \
     --gradient_accumulation_steps=32 \
     --sample_batch_size=1 \
-    --max_train_steps=2000 \
-    --checkpointing_period=100 \
+    --max_train_steps=11000 \
+    --checkpointing_period=2000 \
     --sample_period=1000 \
     --checkpoints_total_limit=10 \
     --lr_scheduler="constant" \
-    --learning_rate=1e-4 \
+    --learning_rate=2e-6 \
     --mixed_precision="no" \
     --max_grad_norm=0 \
     --dataloader_num_workers=0 \
@@ -37,4 +37,4 @@ python main.py \
     --load_from_hdf5 \
     --precomp_lang_embed \
     --report_to=tensorboard \
-    --resume_from_checkpoint="checkpoint-30" \
+    --resume_from_checkpoint="latest" 

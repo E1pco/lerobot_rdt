@@ -21,7 +21,7 @@ $ 或 $T_{CB}$ 后，用多组采样构造误差指标（mm/deg），回答“�
 
 ## 方法作用
 
-下文逐个函数说明输入/输出与误差计算方式，便于你在报告中引用“误差如何定义”。
+下文逐个函数说明输入/输出与误差计算方式
 
 ## 1. `evaluate_eye_in_hand_consistency(T_cam_gripper, T_gripper_base_list, T_target_cam_list)`
 

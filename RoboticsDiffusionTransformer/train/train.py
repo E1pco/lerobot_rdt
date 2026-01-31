@@ -278,7 +278,7 @@ def train(args, logger):
         collate_fn=data_collator,
         num_workers=args.dataloader_num_workers,
         pin_memory=True,
-        persistent_workers=True
+        persistent_workers=args.dataloader_num_workers > 0
     )
     sample_dataloader = torch.utils.data.DataLoader(
         sample_dataset,
@@ -287,7 +287,7 @@ def train(args, logger):
         collate_fn=data_collator,
         num_workers=args.dataloader_num_workers,
         pin_memory=True,
-        persistent_workers=True
+        persistent_workers=args.dataloader_num_workers > 0
     )
     
     # Scheduler and math around the number of training steps.
@@ -376,14 +376,44 @@ def train(args, logger):
             accelerator.print(f"Resuming from checkpoint {path}")
             try:
                 accelerator.load_state(os.path.join(args.output_dir, path)) # load_module_strict=False
-            except:
+            except Exception as e:
                 # load deepspeed's state_dict
-                logger.info("Resuming training state failed. Attempting to only load from model checkpoint.")
-                checkpoint = torch.load(os.path.join(args.output_dir, path, "pytorch_model", "mp_rank_00_model_states.pt"))
-                rdt.module.load_state_dict(checkpoint["module"])
+                logger.info(f"Resuming training state failed: {e}. Attempting to only load from model checkpoint.")
+                checkpoint_path = os.path.join(args.output_dir, path)
+                if os.path.exists(os.path.join(checkpoint_path, "pytorch_model", "mp_rank_00_model_states.pt")):
+                    checkpoint = torch.load(os.path.join(checkpoint_path, "pytorch_model", "mp_rank_00_model_states.pt"))
+                    rdt.module.load_state_dict(checkpoint["module"])
+                elif os.path.exists(os.path.join(checkpoint_path, "model.safetensors")):
+                    from safetensors.torch import load_file
+                    state_dict = load_file(os.path.join(checkpoint_path, "model.safetensors"))
+                    accelerator.unwrap_model(rdt).load_state_dict(state_dict)
+                elif os.path.exists(os.path.join(checkpoint_path, "pytorch_model.bin")):
+                    state_dict = torch.load(os.path.join(checkpoint_path, "pytorch_model.bin"))
+                    accelerator.unwrap_model(rdt).load_state_dict(state_dict)
+                else:
+                    raise e
                 
-            load_model(ema_rdt, os.path.join(args.output_dir, path, "ema", "model.safetensors"))
+            ema_path = os.path.join(args.output_dir, path, "ema", "model.safetensors")
+            if os.path.exists(ema_path):
+                load_model(ema_rdt, ema_path)
+            else:
+                 logger.info(f"EMA model not found at {ema_path}, skipping EMA load.")
+
             global_step = int(path.split("-")[1])
+
+            # Force update learning rate if resumed
+            if args.learning_rate is not None:
+                logger.info(f"Overwriting learning rate to {args.learning_rate}")
+                for param_group in optimizer.param_groups:
+                    param_group["lr"] = args.learning_rate
+                
+                # Also update scheduler's base_lrs, otherwise scheduler.step() might revert it
+                if hasattr(lr_scheduler, "base_lrs"):
+                    for i in range(len(lr_scheduler.base_lrs)):
+                        lr_scheduler.base_lrs[i] = args.learning_rate
+                elif hasattr(lr_scheduler, "scheduler") and hasattr(lr_scheduler.scheduler, "base_lrs"):
+                     for i in range(len(lr_scheduler.scheduler.base_lrs)):
+                        lr_scheduler.scheduler.base_lrs[i] = args.learning_rate
 
             resume_global_step = global_step * args.gradient_accumulation_steps
             first_epoch = global_step // num_update_steps_per_epoch

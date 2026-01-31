@@ -5,9 +5,9 @@ LeRobot 实际机器人推理脚本（无 ROS）。
 
 用法示例:
 python3 RoboticsDiffusionTransformer/scripts/lerobot_real_inference.py \
-    --checkpoint ./checkpoints/rdt-finetune-lerobot/checkpoint-1620 \
-    --vision-encoder ./models/siglip-so400m-patch14-384 \
-    --lang-embed ./data/datasets/lerobot/lerobot_task.pt \
+    --checkpoint RoboticsDiffusionTransformer/checkpoints/rdt-finetune-lerobot/checkpoint-1620 \
+    --vision-encoder RoboticsDiffusionTransformer/models/siglip-so400m-patch14-384 \
+    --lang-embed RoboticsDiffusionTransformer/data/datasets/lerobot/lerobot_task.pt \
     --left-port /dev/left_arm --left-config ./driver/left_arm.json \
     --right-port /dev/right_arm --right-config ./driver/right_arm.json \
     --cam-exterior 2 --cam-right-wrist 4 --cam-left-wrist 0 \
@@ -251,6 +251,11 @@ class RealRobotInferencer:
         # State tracking
         self.prev_left_rad = np.zeros(6, dtype=np.float32)
         self.prev_right_rad = np.zeros(6, dtype=np.float32)
+        
+        # Action chunking: buffer predicted action sequence
+        self.action_chunk_size = 64  # Must match training config
+        self.action_buffer: Optional[np.ndarray] = None  # (chunk_size, 128)
+        self.action_step = 0  # Current step within the chunk
 
     def _read_positions(self, ctrl: ServoController) -> Dict[str, int]:
         names = self.joint_names_6dof + ["gripper"]
@@ -348,6 +353,7 @@ class RealRobotInferencer:
 
     def run(self) -> int:
         print("\n=== Real Robot Inference ===")
+        print(f"Action chunk size: {self.action_chunk_size}")
         print("Press Ctrl+C to stop.")
         last_t = time.time()
 
@@ -370,27 +376,40 @@ class RealRobotInferencer:
                     cv2.imshow("Robot Vision", preview_canvas)
                     cv2.waitKey(1)
 
-                image_tensor = self._preprocess_images(imgs).to(self.device, dtype=torch.float32)
+                # Check if we need new inference (start of chunk or no buffer)
+                need_inference = (
+                    self.action_buffer is None or 
+                    self.action_step >= self.action_chunk_size
+                )
+                
+                if need_inference:
+                    image_tensor = self._preprocess_images(imgs).to(self.device, dtype=torch.float32)
+                    image_embeds = self.vision(image_tensor).detach()
+                    image_embeds = image_embeds.reshape(1, -1, self.vision.hidden_size)
 
-                image_embeds = self.vision(image_tensor).detach()
-                image_embeds = image_embeds.reshape(1, -1, self.vision.hidden_size)
+                    state_vec, _, _ = self._build_state_vec(dt)
+                    states = torch.from_numpy(state_vec.value).unsqueeze(0).unsqueeze(0).to(self.device, dtype=torch.float32)
+                    action_mask = torch.from_numpy(state_vec.mask).unsqueeze(0).to(self.device, dtype=torch.float32)
+                    ctrl_freqs = torch.tensor([self.rate], device=self.device)
 
-                state_vec, _, _ = self._build_state_vec(dt)
-                states = torch.from_numpy(state_vec.value).unsqueeze(0).unsqueeze(0).to(self.device, dtype=torch.float32)
-                action_mask = torch.from_numpy(state_vec.mask).unsqueeze(0).to(self.device, dtype=torch.float32)
-                ctrl_freqs = torch.tensor([self.rate], device=self.device)
-
-                with torch.inference_mode():
-                    pred = self.rdt.predict_action(
-                        lang_tokens=self.lang_embed.to(self.device, dtype=torch.float32),
-                        lang_attn_mask=self.lang_attn_mask.to(self.device),
-                        img_tokens=image_embeds,
-                        state_tokens=states,
-                        action_mask=action_mask.unsqueeze(1),
-                        ctrl_freqs=ctrl_freqs,
-                    )
-                action_vec = pred[0, 0].float().cpu().numpy()
+                    with torch.inference_mode():
+                        pred = self.rdt.predict_action(
+                            lang_tokens=self.lang_embed.to(self.device, dtype=torch.float32),
+                            lang_attn_mask=self.lang_attn_mask.to(self.device),
+                            img_tokens=image_embeds,
+                            state_tokens=states,
+                            action_mask=action_mask.unsqueeze(1),
+                            ctrl_freqs=ctrl_freqs,
+                        )
+                    # pred shape: (1, chunk_size, 128)
+                    self.action_buffer = pred[0].float().cpu().numpy()
+                    self.action_step = 0
+                    print(f"[Inference] Generated new action chunk at t={time.time():.3f}")
+                
+                # Execute current action from buffer
+                action_vec = self.action_buffer[self.action_step]
                 self._apply_action(action_vec)
+                self.action_step += 1
 
                 # Maintain control rate
                 elapsed = time.time() - start_time
@@ -418,7 +437,7 @@ def parse_bgr(s: str) -> Tuple[int, int, int]:
 def main() -> int:
     ap = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    ap.add_argument("--checkpoint", required=True, help="Checkpoint dir, e.g. ./checkpoints/rdt-finetune-lerobot/checkpoint-1620")
+    ap.add_argument("--checkpoint", required=True, help="Checkpoint dir, e.g. ./checkpoints/rdt-finetune-lerobot/checkpoint-10000")
     ap.add_argument("--vision-encoder", required=True, help="SigLIP vision encoder path")
     ap.add_argument("--lang-embed", required=True, help="Precomputed language embedding .pt")
 

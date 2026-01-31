@@ -1,5 +1,11 @@
 import os
+import sys
+from pathlib import Path
 
+# Ensure repo-root imports work when running this script directly.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 import torch
 import yaml
 
@@ -13,10 +19,10 @@ SAVE_DIR = "data/datasets/lerobot/"
 
 # Modify this to your task name and instruction
 TASK_NAME = "lerobot_task"
-INSTRUCTION = "First, use your right hand to place the green cuboid into the black box, then use your left hand to take it out of the brown box."
+INSTRUCTION = "First, use your right hand to place the red object into the black box, then use your left hand to take it out of the brown box."
 
 # Note: if your GPU VRAM is less than 24GB, 
-# it is recommended to enable offloading by specifying an offload directory.
+# it is recommended to enable offloading by specifying an offload di    rectory.
 OFFLOAD_DIR = "/tmp/t5_offload"  # 4060 需要启用 offload
 
 def main():

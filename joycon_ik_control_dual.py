@@ -12,7 +12,7 @@ from scipy.spatial.transform import Rotation as R
 
 from joyconrobotics import JoyconRobotics
 from driver.ftservo_controller import ServoController
-from ik.robot import create_so101_5dof_gripper
+from ik.robot import create_so101_6dof_gripper
 
 
 class _ButtonHelper:
@@ -98,9 +98,9 @@ class DualJoyConIKController:
         print("✓ Servo controllers connected")
 
         print("\n[2/5] Building robot models...")
-        right_robot = create_so101_5dof_gripper()
-        left_robot = create_so101_5dof_gripper()
-        print("✓ Robot models ready (5 DOF each)")
+        right_robot = create_so101_6dof_gripper()
+        left_robot = create_so101_6dof_gripper()
+        print("✓ Robot models ready (6 DOF each)")
 
         print("\n[3/5] Homing both arms...")
         self.right_controller.move_all_home()
@@ -252,7 +252,7 @@ class DualJoyConIKController:
             ilimit=50,
             slimit=3,
             tol=1e-3,
-            mask=[1, 1, 1, 0.8, 0.8, 0],
+            mask=[1, 1, 1, 0.8, 0.8, 0.8],
             k=0.1,
             method="chan",
         )
@@ -274,7 +274,7 @@ class DualJoyConIKController:
 
     def run(self) -> None:
         print("\n" + "=" * 70)
-        print("🎮 Dual JoyCon control ready")
+        print("🎮 Dual JoyCon 6DOF control ready")
         print("Controls (per Joy-Con): X=exit, Home=home+recenter, +/-=speed, ZR/R=gripper, B=raise Z")
         print("=" * 70 + "\n")
 
@@ -307,13 +307,13 @@ class DualJoyConIKController:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Dual JoyCon IK control for both arms")
+    parser = argparse.ArgumentParser(description="Dual JoyCon 6DOF IK control for both arms")
     parser.add_argument("--right-port", type=str, default="/dev/right_arm", help="Serial port for right arm")
     parser.add_argument("--left-port", type=str, default="/dev/left_arm", help="Serial port for left arm")
     parser.add_argument("--right-config", type=str, default="./driver/right_arm.json", help="Config for right arm")
     parser.add_argument("--left-config", type=str, default="./driver/left_arm.json", help="Config for left arm")
     parser.add_argument("--baudrate", type=int, default=1_000_000, help="Servo baudrate")
-    parser.add_argument("--base-speed", type=int, default=800, help="Initial servo speed for both arms")
+    parser.add_argument("--base-speed", type=int, default=800, help="Initial servo speed for both arms (6DOF)")
 
     args = parser.parse_args()
 

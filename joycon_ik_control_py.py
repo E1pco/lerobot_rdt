@@ -288,19 +288,12 @@ class JoyConIKController:
                 # 获取 Joy-Con 姿态数据（偏移量）
                 pose, gripper_status, _ = self.joycon.get_control()
                 joycon_offset_pos = np.array([pose[0], pose[1], pose[2]])
-                joycon_offset_rpy = np.array([-pose[3], -pose[4], pose[5]])
-                
-                # 添加 Z 轴手动调整
+                joycon_offset_rpy = np.array([-pose[3], -pose[4], -pose[5]])
                 joycon_offset_pos[2] += self.z_offset
-                
-                # 实时打印 JoyCon 原始数据
                 print(f"JoyCon偏移: {[f'{x:.3f}' for x in joycon_offset_pos]}, Z_manual={self.z_offset:.4f}, 夹爪状态={gripper_status}")
-                
-                # 叠加到基准位姿上
                 pos = self.base_pos + joycon_offset_pos
                 rpy = self.base_rpy + joycon_offset_rpy
                 
-                # 打印叠加后的目标位姿
                 print(f"目标位姿: pos={pos.round(3)}, rpy(deg)={np.rad2deg(rpy).round(1)}")
                 
                 # 构建目标位姿矩阵并使用 Robot 的 ikine_LM 求解

@@ -35,7 +35,7 @@ def main():
     
     q0 = np.zeros(6)
     controller.move_all_home()
-    time.sleep(1)
+    #time.sleep(1)
     
     # 读取当前关节角度
     q0 = robot.read_joint_angles(
@@ -53,19 +53,19 @@ def main():
     ))
 
   
-    T_goal = build_target_pose(x=0.4, y=0, z=0.2, roll=0, pitch=0, yaw=-0.5)#
+    T_goal = build_target_pose(x=0.3, y=0.3, z=0.3, roll=np.pi/2, pitch=-np.pi/4, yaw=0)#
     print("\n目标末端位姿矩阵：")
     print(np.round(T_goal, 3))
     print(f"目标位置: x={T_goal[0,3]:.4f}, y={T_goal[1,3]:.4f}, z={T_goal[2,3]:.4f}")
     
-    print("\n🔄 开始从当前位置进行逆运动学求解...")
+    print("\n 开始从当前位置进行逆运动学求解...")
     sol = robot.ikine_LM(
         Tep=T_goal,
         q0=q0,
-        ilimit=300, 
-        slimit=3,
+        ilimit=1000, 
+        slimit=10,
         tol=1e-3,
-        mask=np.array([1, 1, 1, 1, 1, 1]),  
+        mask=np.array([0.5, 0.5, 0.5, 1, 1, 1]),  
         k=0.1, 
         method="sugihara"
     )
